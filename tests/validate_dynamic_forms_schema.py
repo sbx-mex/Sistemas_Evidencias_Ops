@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import build_payload, load_cms, load_responses
 
 
-BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
+BASE = ["Id", "Hora de inicio", "Hora de finalizaciÃ³n", "Correo electrÃ³nico", "Nombre"]
 ACTIVITY = "Selecciona la actividad que deseas registrar"
 
 
@@ -39,10 +39,10 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         temp = Path(temp_dir)
 
-        # Escenario 1: exportación ancha, columnas reordenadas y una por actividad.
+        # Escenario 1: exportaciÃ³n ancha, columnas reordenadas y una por actividad.
         wide = temp / "wide.xlsx"
         start, finish = timestamps(1)
-        wide_headers = BASE + ["CeCo", ACTIVITY, "¿Comentario operativo?", "Evidencia_Lay_Out", "Evidencia_RollOut"]
+        wide_headers = BASE + ["CeCo", ACTIVITY, "Â¿Comentario operativo?", "Evidencia_Lay_Out", "Evidencia_RollOut"]
         save_book(wide, wide_headers, [[1, start, finish, "", "Prueba", "38115", "Roll Out", "x", "", f"{allowed}/rollout.jpg"]])
         rows, schema = load_responses(wide)
         assert rows[0]["evidence"].endswith("rollout.jpg")
@@ -51,19 +51,19 @@ def main() -> None:
 
         # Escenario 2: formato largo; Forms agrega nuevas respuestas hacia abajo.
         long_book = temp / "long.xlsx"
-        long_headers = BASE + ["CeCo", ACTIVITY, "¿Confirmas que realizaste la actividad seleccionada?", "Evidencia del avance"]
+        long_headers = BASE + ["CeCo", ACTIVITY, "Â¿Confirmas que realizaste la actividad seleccionada?", "Evidencia del avance"]
         start1, finish1 = timestamps(2)
         start2, finish2 = timestamps(3)
         save_book(long_book, long_headers, [
             [2, start1, finish1, "", "Prueba", "38115", "Roll Out", "No", f"{allowed}/uno.jpg"],
-            [3, start2, finish2, "", "Prueba", "38149", "Lay Out", "Sí", f"{allowed}/dos.jpg"],
+            [3, start2, finish2, "", "Prueba", "38149", "Lay Out", "SÃ­", f"{allowed}/dos.jpg"],
         ])
         rows, schema = load_responses(long_book)
         assert len(rows) == 2 and all(row["confirmed"] for row in rows)
-        assert all(row["explicitNo"] is False and row["confirmedAnswer"] == "Sí" for row in rows)
+        assert all(row["explicitNo"] is False and row["confirmedAnswer"] == "SÃ­" for row in rows)
         assert schema["evidenceHeaderMap"] == {"Evidencia del avance": "generic"}
 
-        # Escenario 3: encabezados base duplicados; se toma el único valor poblado.
+        # Escenario 3: encabezados base duplicados; se toma el Ãºnico valor poblado.
         duplicate = temp / "duplicate.xlsx"
         start, finish = timestamps(4)
         duplicate_headers = BASE + ["CeCo", "CeCo", ACTIVITY, ACTIVITY, "Evidencia_QR_Qualtrics"]
@@ -112,7 +112,7 @@ def main() -> None:
         workbook = Workbook()
         cover = workbook.active
         cover.title = "Instrucciones"
-        cover["A1"] = "Exportación Microsoft Forms"
+        cover["A1"] = "ExportaciÃ³n Microsoft Forms"
         data_sheet = workbook.create_sheet("Respuestas")
         data_sheet.append(["Sistema de Evidencias OPS"])
         data_sheet.append([])
@@ -127,13 +127,13 @@ def main() -> None:
         assert rows[0]["id"].startswith("respuesta-")
 
         # Escenario 8: el orden cambia y los encabezados pueden ser aproximados
-        # o únicamente el nombre de la actividad. El CMS aporta el catálogo válido.
+        # o Ãºnicamente el nombre de la actividad. El CMS aporta el catÃ¡logo vÃ¡lido.
         flexible = temp / "flexible.xlsx"
         start1, finish1 = timestamps(8)
         start2, finish2 = timestamps(9)
         flexible_headers = [
             "Columna nueva", "Fotografia SM", "CeCo", ACTIVITY,
-            "Evidencia_Programacion_Horno_Merry_Focaccia", "Hora de finalización",
+            "Evidencia_Programacion_Horno_Merry_Focaccia", "Hora de finalizaciÃ³n",
         ]
         save_book(flexible, flexible_headers, [
             ["x", "", "38333", "Programacion Hornos Merry - Focaccia", f"{allowed}/horno.jpg", finish1],
@@ -153,8 +153,8 @@ def main() -> None:
         assert schema["evidenceHeaderMatch"]["Fotografia SM"] == "exact"
         assert schema["evidenceIssues"] == {}
 
-        # Escenario 9: cambiar el orden editorial del CMS sólo cambia la
-        # presentación; el cumplimiento continúa cruzándose por nombre.
+        # Escenario 9: cambiar el orden editorial del CMS sÃ³lo cambia la
+        # presentaciÃ³n; el cumplimiento continÃºa cruzÃ¡ndose por nombre.
         reordered_cms = temp / "cms_reordered.xlsx"
         cms_book = load_workbook(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
         activity_sheet = cms_book["Actividades"]
@@ -176,13 +176,13 @@ def main() -> None:
         assert stores["38333"]["activities"]["Programacion Hornos Merry - Focaccia"] is True
         assert stores["38115"]["activities"]["Fotografia - SM"] is True
 
-        # Escenario 10: preguntas Sí/No duplicadas, reordenadas y con texto adicional.
+        # Escenario 10: preguntas SÃ­/No duplicadas, reordenadas y con texto adicional.
         # La respuesta se asocia a la actividad elegida en la misma fila.
         conditional = temp / "conditional.xlsx"
         conditional_headers = BASE + [
             "CeCo", ACTIVITY,
-            "¿ Tienes Horno Merry Chef ?", "¿Tienes Horno Merry Chef? (2)",
-            "¿Cuentas con Community Board?",
+            "Â¿ Tienes Horno Merry Chef ?", "Â¿Tienes Horno Merry Chef? (2)",
+            "Â¿Cuentas con Community Board?",
             "Evidencia_Programacion_Hornos_Merry_Focaccia", "Evidencia_Community_Board",
         ]
         enrique_cecos = ["38333", "38339", "38368", "38401", "38456", "38515", "38604", "38862", "38894", "43193"]
@@ -192,7 +192,7 @@ def main() -> None:
             if index < 8:
                 conditional_rows.append([
                     20 + index, start, finish, "", "Prueba", ceco,
-                    "Programacion Hornos Merry - Focaccia", "Sí, contamos con horno", "", "",
+                    "Programacion Hornos Merry - Focaccia", "SÃ­, contamos con horno", "", "",
                     f"{allowed}/horno-{index}.jpg", "",
                 ])
             else:
@@ -203,7 +203,7 @@ def main() -> None:
                 ])
         start, finish = timestamps(40)
         conditional_rows.append([
-            40, start, finish, "", "Prueba", "38115", "Community Board", "", "", "Sí",
+            40, start, finish, "", "Prueba", "38115", "Community Board", "", "", "SÃ­",
             "", f"{allowed}/community.jpg",
         ])
         start, finish = timestamps(41)
@@ -224,7 +224,8 @@ def main() -> None:
         assert horno["completedStores"] == 8 and horno["notApplicableStores"] == 2
         assert community["completedStores"] == 1 and community["notApplicableStores"] == 1
         enrique = next(item for item in payload["dms"] if item["dm"] == "Enrique Cesar Flores")
-        assert enrique["completed"] == 8 and enrique["expected"] == 88
+        expected_enrique = len(enrique_cecos) * len(cms_activities) - 2
+        assert enrique["completed"] == 8 and enrique["expected"] == expected_enrique
         assert payload["summary"]["notApplicableCompletions"] == 3
         assert payload["quality"]["responseSchema"]["applicabilityIssues"] == {}
         assert len(payload["quality"]["responseSchema"]["applicabilityHeaders"]) == 3
@@ -251,26 +252,26 @@ def main() -> None:
             values = {
                 "Id": 50 + index,
                 "Hora de inicio": start,
-                "Hora de finalización": finish,
+                "Hora de finalizaciÃ³n": finish,
                 "CeCo": ceco,
                 ACTIVITY: "Programacion Hornos Merry - Focaccia",
-                "¿ Tienes Horno Merry Chef ?": "Sí" if index < 8 else "No",
+                "Â¿ Tienes Horno Merry Chef ?": "SÃ­" if index < 8 else "No",
             }
             if index < 8:
                 values["Evidencia_Programacion_Hornos_Merry_Focaccia"] = f"{allowed}/actual-horno-{index}.jpg"
             actual_rows.append(actual_row(values))
         start, finish = timestamps(70)
         actual_rows.append(actual_row({
-            "Id": 70, "Hora de inicio": start, "Hora de finalización": finish,
+            "Id": 70, "Hora de inicio": start, "Hora de finalizaciÃ³n": finish,
             "CeCo": "38115", ACTIVITY: "Community Board",
-            "¿Cuentas con Community Board?": "Sí",
+            "Â¿Cuentas con Community Board?": "SÃ­",
             "Evidencia_Community_Board": f"{allowed}/actual-community.jpg",
         }))
         start, finish = timestamps(71)
         actual_rows.append(actual_row({
-            "Id": 71, "Hora de inicio": start, "Hora de finalización": finish,
+            "Id": 71, "Hora de inicio": start, "Hora de finalizaciÃ³n": finish,
             "CeCo": "38119", ACTIVITY: "Community Board",
-            "¿Cuentas con Community Board?": "No",
+            "Â¿Cuentas con Community Board?": "No",
         }))
         save_book(actual, actual_headers, actual_rows)
         payload = build_payload(
@@ -289,7 +290,7 @@ def main() -> None:
         start, finish = timestamps(42)
         save_book(conflicting, conditional_headers, [[
             42, start, finish, "", "Prueba", "38333", "Programacion Hornos Merry - Focaccia",
-            "Sí", "No", "", f"{allowed}/conflicto.jpg", "",
+            "SÃ­", "No", "", f"{allowed}/conflicto.jpg", "",
         ]])
         rows, schema = load_responses(conflicting, [item["name"] for item in cms_activities])
         assert rows[0]["confirmed"] is False and rows[0]["applicabilityConflict"] is True
@@ -301,11 +302,11 @@ def main() -> None:
         try:
             load_responses(damaged)
         except ValueError as error:
-            assert "dañado" in str(error)
+            assert "daÃ±ado" in str(error)
         else:
-            raise AssertionError("El XLSX dañado no fue rechazado")
+            raise AssertionError("El XLSX daÃ±ado no fue rechazado")
 
-        # Escenario 14: Forms puede quedar sólo con encabezados después de limpiar filas.
+        # Escenario 14: Forms puede quedar sÃ³lo con encabezados despuÃ©s de limpiar filas.
         empty = temp / "empty.xlsx"
         save_book(empty, ["CeCo", ACTIVITY, "Evidencia_RollOut"], [])
         payload = build_payload(
@@ -318,7 +319,7 @@ def main() -> None:
         assert payload["summary"]["completedCompletions"] == 0
         assert payload["submissions"] == []
 
-    print("Forms dinámico aprobado · orden real · Sí/No implícito · CMS controla visibilidad")
+    print("Forms dinÃ¡mico aprobado Â· orden real Â· SÃ­/No implÃ­cito Â· CMS controla visibilidad")
 
 
 if __name__ == "__main__":
