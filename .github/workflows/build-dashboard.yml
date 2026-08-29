@@ -12,11 +12,13 @@ on:
       - 'config/settings.json'
       - 'scripts/build_dashboard.py'
       - 'scripts/export_excel.py'
+      - 'scripts/export_pdf.py'
       - 'scripts/audit_project.py'
       - 'tests/**'
       - 'index.html'
       - 'styles.css'
       - 'app.js'
+      - 'pdf-export.js'
       - 'xlsx-export.js'
       - 'service-worker.js'
       - 'manifest.webmanifest'
@@ -50,6 +52,7 @@ jobs:
         run: |
           python scripts/build_dashboard.py
           python scripts/export_excel.py
+          python scripts/export_pdf.py
 
       - name: Validar proyecto
         env:
@@ -62,11 +65,11 @@ jobs:
         if: github.event_name == 'push'
         shell: bash
         run: |
-          if git diff --quiet -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx; then
+          if git diff --quiet -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf; then
             echo "El Forms no produjo cambios nuevos."
             exit 0
           fi
-          git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx
+          git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "data: actualizar evidencias OPS"
