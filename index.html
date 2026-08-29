@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#006241">
-  <meta name="description" content="Seguimiento simple de evidencias operativas de Centro Norte.">
-  <title>Sistema de Evidencias OPS</title>
+  <meta name="description" content="Dashboard de avance de actividades de Centro Norte.">
+  <title>Sistema de Evidencia OPS</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-64.png" type="image/png">
   <link rel="stylesheet" href="./styles.css">
@@ -16,10 +16,6 @@
   <div id="error-banner" class="notice error" role="alert" hidden></div>
 
   <header class="app-header">
-    <a class="brand" href="#main" aria-label="Inicio Sistema de Evidencias OPS">
-      <img src="./assets/icons/icon-64.webp" alt="" width="48" height="48">
-      <span><strong>Sistema de Evidencias OPS</strong><small>Diseñado por Jorge Alcantar Aguiar &amp; Enrique César Flores</small></span>
-    </a>
     <nav class="main-nav" aria-label="Navegación principal">
       <a href="#resumen">Resumen</a>
       <a href="#actividades">Actividades</a>
@@ -38,14 +34,13 @@
   <main id="main" tabindex="-1">
     <section class="hero" id="resumen">
       <div class="hero-copy">
-        <p class="eyebrow">Visibilidad regional · Centro Norte</p>
-        <h1>Evidencias claras. Decisiones rápidas.</h1>
-        <p>Consulta el cumplimiento por gerente, actividad y tienda desde una sola vista ejecutiva.</p>
+        <h1>Sistema de Evidencia OPS</h1>
+        <p>Dashboard de Avance de Actividades</p>
       </div>
       <div class="hero-status">
         <span>Fecha de corte</span>
         <strong id="last-updated">—</strong>
-        <small>Momento del último dato recibido</small>
+        <small>Última hora del dato actualizado</small>
       </div>
     </section>
 
@@ -54,10 +49,10 @@
       <label><span>Tienda / CeCo</span><select id="filter-store"><option value="">Todas</option></select></label>
       <label><span>Actividad</span><select id="filter-activity"><option value="">Todas</option></select></label>
       <button id="clear-filters" class="button quiet" type="button">Limpiar</button>
-      <button id="export-csv" class="button primary" type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/></svg>
-        <span id="export-label">Exportar región</span>
-      </button>
+      <div class="export-actions" aria-label="Exportar reporte">
+        <button id="export-image" class="button primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 2-2 5 5"/></svg>Imagen</button>
+        <button id="export-pdf" class="button quiet" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7zM14 3v5h5M9 15h6M9 18h4"/></svg>PDF</button>
+      </div>
     </section>
 
     <section class="summary" aria-live="polite">
@@ -70,21 +65,24 @@
 
     <section id="actividades">
       <article class="panel activities-panel">
-        <header><div><p class="eyebrow">Semaforización por actividad</p><h2>Avance de actividades</h2></div><span id="activity-context" class="tag">Centro Norte</span></header>
+        <header><div><p class="eyebrow">Semaforización por actividad</p><h2>Avance de actividades</h2></div><div class="panel-actions"><button id="toggle-dates" class="button compact" type="button" aria-expanded="false" aria-controls="commitment-dates">Actividad · Fecha compromiso</button><span id="activity-context" class="tag">Centro Norte</span></div></header>
+        <div id="commitment-dates" class="commitment-dates" hidden></div>
         <div id="activity-progress" class="progress-list"></div>
       </article>
     </section>
 
     <section class="section-block" id="ranking" aria-labelledby="team-title">
-      <header class="section-heading"><div><p class="eyebrow">De mayor a menor avance</p><h2 id="team-title">Ranking DM</h2><p>Selecciona un gerente para enfocar todos los indicadores en su portafolio.</p></div><div class="legend"><span class="green">En meta</span><span class="amber">Seguimiento</span><span class="red">Atención</span></div></header>
+      <header class="section-heading"><h2 id="team-title">Ranking DM</h2><div class="legend"><span class="green">En meta</span><span class="amber">Seguimiento</span><span class="red">Atención</span></div></header>
       <div id="dm-team" class="dm-team"></div>
     </section>
 
     <section class="section-block" id="tiendas" aria-labelledby="stores-title">
-      <header class="section-heading split"><div><p class="eyebrow">Detalle dinámico</p><h2 id="stores-title">Tiendas</h2><p id="store-summary">—</p></div></header>
+      <header class="section-heading split"><div><h2 id="stores-title">Tiendas CN</h2><p id="store-summary">—</p></div></header>
       <div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>DM</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
     </section>
   </main>
+
+  <section id="report-sheet" class="report-sheet" aria-hidden="true"></section>
 
   <footer>
     <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong></span></div>

@@ -184,6 +184,7 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             "order": int(float(row[cols["orden"]] or 999)),
             "startDate": start.isoformat() if start else None,
             "endDate": end.isoformat() if end else None,
+            "commitmentDateDisplay": end.strftime("%d/%m/%y") if end else "Sin fecha compromiso",
             "requireEvidence": is_yes(row[evidence_col]) if evidence_col is not None else True,
             "priority": clean_text(row[priority_col]) if priority_col is not None else "Media",
             "autoDetected": False,
@@ -345,6 +346,7 @@ def build_payload(
                 "order": 900 + len(configured),
                 "startDate": None,
                 "endDate": None,
+                "commitmentDateDisplay": "Sin fecha compromiso",
                 "requireEvidence": settings.get("requireEvidence", True),
                 "priority": "Media",
                 "autoDetected": True,
@@ -461,12 +463,19 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
         "lastUpdated": iso_or_none(latest_update),
         "lastUpdatedDisplay": latest_update.strftime("%d/%m/%Y %H:%M") if latest_update else "Sin respuestas",
+        "report": {
+            "title": "Sistema de Evidencia OPS",
+            "subtitle": "Dashboard de Avance de Actividades",
+            "motto": "JUNTÉMONOS MÁS",
+            "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
+            "cutOffDisplay": latest_update.strftime("%d/%m/%y · %H:%M h") if latest_update else "Sin datos",
+        },
         "sources": {
             "responses": responses_path.name,
             "directory": directory_path.name,

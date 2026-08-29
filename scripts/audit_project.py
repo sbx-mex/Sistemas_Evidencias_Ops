@@ -40,21 +40,29 @@ if duplicate_ids:
 if missing_dom_targets:
     issues.append("Controles JavaScript sin destino HTML: " + ", ".join(missing_dom_targets))
 
-for forbidden in ("Guía rápida", "guide-steps", "Atención prioritaria", "priority-stores", "Estado de actualización y calidad de datos", "quality-strip"):
+for forbidden in ("Guía rápida", "guide-steps", "Atención prioritaria", "priority-stores", "Estado de actualización y calidad de datos", "quality-strip", "De mayor a menor avance", "Detalle dinámico"):
     if forbidden in html:
         issues.append(f"Bloque repetitivo aún visible: {forbidden}")
+for forbidden in ("Gerente de Distrito</small>", "ordenadas de mayor a menor"):
+    if forbidden in js:
+        issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Ranking DM", "Semaforización por actividad", "Fecha de corte", "export-label"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Ranking DM", "Tiendas CN", "Fecha de corte", "export-image", "export-pdf", "toggle-dates"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("Tiendas sin iniciar", "semaphore", "Exportar región", "completedStores", "notStartedStores"):
+for required in ("Tiendas sin iniciar", "semaphore", "exportImage", "exportPdf", "renderReportSheet", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 3:
-    issues.append("Contrato JSON distinto de la versión 3")
+if data.get("schemaVersion") != 4:
+    issues.append("Contrato JSON distinto de la versión 4")
+report_meta = data.get("report", {})
+if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", ""):
+    issues.append("Metadatos Python de exportación incompletos")
+if any("commitmentDateDisplay" not in item for item in data.get("activities", [])):
+    issues.append("Fechas compromiso no fueron preparadas por Python")
 if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
     issues.append("Ranking DM no es consecutivo")
 if [item.get("compliance", 0) for item in ranking] != sorted((item.get("compliance", 0) for item in ranking), reverse=True):
