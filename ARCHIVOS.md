@@ -5,6 +5,7 @@
 | `index.html` | Estructura del dashboard y navegación. |
 | `styles.css` | Diseño corporativo, responsive e impresión. |
 | `app.js` | Filtros, KPI, evidencias directas y exportación dinámica por alcance. |
+| `pdf-export.js` | Generador PDF multipágina y descarga directa desde el navegador. |
 | `xlsx-export.js` | Generador XLSX sin dependencias para la exportación filtrada en navegador. |
 | `service-worker.js` | Caché offline y actualización de datos. |
 | `manifest.webmanifest` | Instalación como aplicación. |
@@ -17,12 +18,15 @@
 | `assets/ui/Un_placer_haber_Ayudado.webp` | Confirmación visual posterior a la exportación. |
 | `config/settings.json` | Región, hoja y autorización de enlaces SharePoint. |
 | `scripts/build_dashboard.py` | Motor Python de cruce y cumplimiento. |
-| `scripts/export_excel.py` | Genera el XLSX ejecutivo con fórmulas y gráfica. |
+| `scripts/export_excel.py` | Genera el XLSX ejecutivo con fórmulas y formatos numéricos congruentes. |
+| `scripts/export_pdf.py` | Genera el respaldo PDF regional con fotografía del Director Regional. |
 | `scripts/prepare_images.py` | Convierte fotografías a WebP corporativo. |
 | `data/dashboard.json` | Salida consumida por la PWA. |
 | `exports/Resumen_Evidencias_OPS.xlsx` | Respaldo ejecutivo generado por Python. |
+| `exports/Resumen_Evidencias_OPS.pdf` | Respaldo PDF regional generado por Python. |
 | `tests/validate_project.py` | Validación integral del proyecto. |
 | `tests/build_dynamic_xlsx.js` | Prueba que la exportación XLSX dinámica sea válida. |
+| `tests/build_direct_pdf.js` | Prueba que el PDF directo sea estructuralmente válido. |
 | `.github/workflows/build-dashboard.yml` | Automatización al actualizar los Excel. |
 | `MEJORAS.md` | Resumen verificable de las 10 mejoras visuales. |
 

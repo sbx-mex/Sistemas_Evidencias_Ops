@@ -47,10 +47,17 @@
   function sheetXml(sheet) {
     const headerRows = new Set(sheet.headerRows || []);
     const percentColumns = new Set(sheet.percentColumns || []);
+    const countColumns = new Set(sheet.countColumns || []);
+    const dataStartRow = Math.max(0, ...(sheet.headerRows || [])) + 1;
     const rows = sheet.rows.map((values, index) => {
       const rowNumber = index + 1;
       const baseStyle = rowNumber === 1 ? 1 : rowNumber === 2 ? 4 : headerRows.has(rowNumber) ? 2 : 0;
-      const cells = values.map((value, column) => cellXml(value, rowNumber, column, percentColumns.has(column + 1) ? 3 : baseStyle)).join("");
+      const cells = values.map((value, column) => {
+        let style = baseStyle;
+        if (rowNumber >= dataStartRow && percentColumns.has(column + 1)) style = 3;
+        else if (rowNumber >= dataStartRow && countColumns.has(column + 1)) style = 6;
+        return cellXml(value, rowNumber, column, style);
+      }).join("");
       const height = rowNumber === 1 ? 31 : rowNumber === 2 ? 24 : headerRows.has(rowNumber) ? 23 : 20;
       return `<row r="${rowNumber}" ht="${height}" customHeight="1">${cells}</row>`;
     }).join("");
@@ -121,7 +128,7 @@
       "_rels/.rels": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`,
       "xl/workbook.xml": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView/></bookViews><sheets>${sheetEntries}</sheets><calcPr calcId="191029" fullCalcOnLoad="1" forceFullCalc="1"/></workbook>`,
       "xl/_rels/workbook.xml.rels": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheetRelationships}<Relationship Id="rId${spec.sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`,
-      "xl/styles.xml": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.0%"/></numFmts><fonts count="5"><font><sz val="10"/><name val="Aptos"/><color rgb="FF17221E"/></font><font><b/><sz val="18"/><name val="Aptos Display"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="10"/><name val="Aptos"/><color rgb="FFFFFFFF"/></font><font><i/><sz val="10"/><name val="Aptos"/><color rgb="FF43544C"/></font><font><b/><sz val="13"/><name val="Aptos Display"/><color rgb="FF006241"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF006241"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1E3932"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE9F4EF"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border/><border><bottom style="thin"><color rgb="FFDCE5E0"/></bottom></border></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="6"><xf fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"/><xf fontId="1" fillId="1" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center"/></xf><xf fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center"/></xf><xf numFmtId="164" fontId="4" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1"/><xf fontId="3" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center"/></xf><xf fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`,
+      "xl/styles.xml": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="0.0%"/><numFmt numFmtId="165" formatCode="#,##0"/></numFmts><fonts count="5"><font><sz val="10"/><name val="Aptos"/><color rgb="FF17221E"/></font><font><b/><sz val="18"/><name val="Aptos Display"/><color rgb="FFFFFFFF"/></font><font><b/><sz val="10"/><name val="Aptos"/><color rgb="FFFFFFFF"/></font><font><i/><sz val="10"/><name val="Aptos"/><color rgb="FF43544C"/></font><font><b/><sz val="13"/><name val="Aptos Display"/><color rgb="FF006241"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF006241"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1E3932"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE9F4EF"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border/><border><bottom style="thin"><color rgb="FFDCE5E0"/></bottom></border></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="7"><xf fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1"/><xf fontId="1" fillId="1" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center"/></xf><xf fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center"/></xf><xf numFmtId="164" fontId="4" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1"><alignment horizontal="right"/></xf><xf fontId="3" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"><alignment vertical="center"/></xf><xf fontId="4" fillId="0" borderId="1" xfId="0" applyFont="1"/><xf numFmtId="165" fontId="4" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1"><alignment horizontal="right"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`,
       "docProps/core.xml": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xml(spec.title || "Sistema de Evidencias OPS")}</dc:title><dc:creator>Centro Norte</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${new Date().toISOString()}</dcterms:created></cp:coreProperties>`,
       "docProps/app.xml": `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>Sistema de Evidencias OPS</Application></Properties>`,
     };
@@ -130,11 +137,12 @@
   }
 
   function downloadWorkbook(spec, filename) {
-    const blob = new Blob([buildWorkbook(spec)], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const bytes = buildWorkbook(spec);
+    const blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url; link.download = filename; link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove();
+    return { url, blob, bytes };
   }
 
   root.OPSXlsx = { buildWorkbook, downloadWorkbook };

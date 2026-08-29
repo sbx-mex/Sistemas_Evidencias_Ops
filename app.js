@@ -4,6 +4,8 @@ const state = {
   evidenceFilters: { dm: "", store: "", activity: "" },
   showAllEvidence: false,
   exporting: false,
+  exportDecision: null,
+  exportUrl: "",
   installPrompt: null,
 };
 
@@ -47,13 +49,6 @@ function metrics() {
     completedStores: storeProgress.filter((item) => item.completed > 0).length,
     notStartedStores: storeProgress.filter((item) => item.completed === 0).length,
   };
-}
-
-function regionalMetrics() {
-  const activities = state.data.activities.map((item) => item.name);
-  const expected = state.data.stores.length * activities.length;
-  const completed = state.data.stores.reduce((sum, store) => sum + completionFor(store, activities).completed, 0);
-  return { completed, expected, compliance: expected ? completed / expected * 100 : 0 };
 }
 
 function currentScope() {
@@ -100,8 +95,8 @@ function renderSummary() {
   $("#kpi-grid").innerHTML = [
     [number(item.dms), "DM"],
     [number(item.activities), "Actividades"],
-    [number(item.completedStores), "Tiendas realizadas"],
-    [number(item.notStartedStores), "Tiendas sin iniciar"],
+    [number(item.stores), "Tiendas"],
+    [number(item.pending), "Pendientes"],
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
 
@@ -271,42 +266,33 @@ function reportScope() {
   return state.filters.store ? `Tienda · ${currentScope()}` : state.filters.dm ? `DM · ${state.filters.dm}` : `Región · ${state.data.region}`;
 }
 
-function renderReportSheet() {
-  const rows = exportRows();
-  const meta = reportMeta();
-  const regional = regionalMetrics();
-  const current = metrics();
-  const mode = exportMode();
-  const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
-  $("#report-sheet").innerHTML = `<header class="report-header">
-    <img src="./assets/icons/icon-64.webp" alt="" width="68" height="68">
-    <div><small>${esc(meta.motto)}</small><h1>${esc(meta.title)}</h1><p>${esc(meta.subtitle)} · ${esc(reportScope())}</p></div>
-    <div class="report-cut"><span>Fecha de corte</span><strong>${esc(cutStamp())}</strong><span>${mode === "dms" ? "Avance regional" : "Avance del filtro"}</span><b>${percent(mode === "dms" ? regional.compliance : current.compliance)}</b></div>
-  </header>
-  <table class="report-table"><thead><tr><th>Ranking</th><th>${mode === "dms" ? "DM" : "Tienda / CeCo"}</th><th>Realizadas</th><th>Total</th><th>Pendientes</th><th>% Avance</th></tr></thead><tbody>${rows.map((item) => {
-    const signal = semaphore(item.value);
-    const identity = item.kind === "dm"
-      ? `<div class="report-dm"><img src="./${esc(item.photo)}" alt=""><strong>${esc(item.label)}</strong></div>`
-      : `<div class="report-store"><strong>${esc(item.label)}</strong><small>${esc(item.detail)}</small></div>`;
-    return `<tr><td><span class="table-rank">${item.rank}</span></td><td>${identity}</td><td>${item.completed}</td><td>${item.expected}</td><td>${item.pending}</td><td><span class="status ${signal.tone}">${percent(item.value)}</span></td></tr>`;
-  }).join("")}</tbody></table>
-  <footer class="report-footer"><strong>${esc(meta.motto)}</strong><span>${esc(director.role)} · ${esc(director.name)}</span><span>${esc(meta.credits)}</span></footer>`;
+function exportContext(format) {
+  const item = metrics();
+  const activity = state.filters.activity || "Todas las actividades";
+  const type = state.filters.store ? "Tienda" : state.filters.dm ? "DM" : "Regional";
+  const name = state.filters.store ? currentScope() : state.filters.dm || state.data.region;
+  const filename = `Sistema_Evidencia_OPS_${type}_${fileSafe(name)}_${fileSafe(activity)}_Corte_${cutDate().replaceAll("/", "-")}.${format}`;
+  return {
+    item, activity, type, name, filename,
+    summary: [
+      ["Alcance", `${type} · ${name}`],
+      ["Actividad", activity],
+      ["Avance", `${number(item.completed)} realizadas / ${number(item.expected)} total / ${percent(item.compliance)}`],
+    ],
+  };
 }
 
 async function exportPdf() {
   if (!await beginExport("PDF")) return;
-  renderReportSheet();
-  $("#export-modal").hidden = true;
-  document.body.style.overflow = "";
-  document.body.classList.add("printing-report");
-  $("#report-sheet").setAttribute("aria-hidden", "false");
-  const filename = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.pdf`;
-  const cleanup = () => {
-    document.body.classList.remove("printing-report"); $("#report-sheet").setAttribute("aria-hidden", "true");
-    finishExport(filename);
-  };
-  window.addEventListener("afterprint", cleanup, { once: true });
-  setTimeout(() => window.print(), 50);
+  try {
+    if (!window.OPSPdf) throw new Error("El motor PDF no está disponible.");
+    const context = exportContext("pdf");
+    const canvases = await renderPdfPages();
+    const result = await window.OPSPdf.downloadCanvases(canvases, context.filename);
+    finishExport(context.filename, result.url);
+  } catch (error) {
+    failExport(error);
+  }
 }
 
 function loadImage(source) {
@@ -323,32 +309,118 @@ function drawCover(context, image, x, y, width, height) {
   context.drawImage(image, (image.width - sw) / 2, (image.height - sh) / 2, sw, sh, x, y, width, height);
 }
 
+function fitText(context, value, maxWidth) {
+  const text = String(value ?? "");
+  if (context.measureText(text).width <= maxWidth) return text;
+  let clipped = text;
+  while (clipped.length > 1 && context.measureText(`${clipped}…`).width > maxWidth) clipped = clipped.slice(0, -1);
+  return `${clipped}…`;
+}
+
+async function renderPdfPages() {
+  const rows = exportRows();
+  const meta = reportMeta();
+  const current = metrics();
+  const mode = exportMode();
+  const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp" };
+  const sources = ["./assets/icons/icon-64.webp", `./${director.photo}`, ...rows.map((item) => item.photo ? `./${item.photo}` : "")];
+  const loaded = await Promise.all(sources.map((source) => source ? loadImage(source) : Promise.resolve(null)));
+  const [logo, directorPhoto, ...photos] = loaded;
+  const rowHeight = mode === "dms" ? 92 : 58;
+  const rowsPerPage = mode === "dms" ? 6 : 11;
+  const chunks = [];
+  for (let index = 0; index < Math.max(rows.length, 1); index += rowsPerPage) chunks.push(rows.slice(index, index + rowsPerPage));
+
+  return chunks.map((pageRows, pageIndex) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1600; canvas.height = 1131;
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#f5f8f6"; context.fillRect(0, 0, 1600, 1131);
+    context.fillStyle = "#006241"; context.fillRect(0, 0, 1600, 205);
+    if (logo) context.drawImage(logo, 55, 66, 76, 76);
+    context.fillStyle = "#a9dbc5"; context.font = "800 18px Segoe UI, sans-serif"; context.fillText(meta.motto, 155, 48);
+    context.fillStyle = "#ffffff"; context.font = "800 38px Segoe UI, sans-serif"; context.fillText(meta.title, 155, 94);
+    context.font = "500 21px Segoe UI, sans-serif"; context.fillText(fitText(context, `${meta.subtitle} · ${reportScope()}`, 850), 155, 132);
+    context.fillStyle = "#b9e1d0"; context.font = "650 17px Segoe UI, sans-serif"; context.fillText(`Actividad: ${fitText(context, state.filters.activity || "Todas", 760)}`, 155, 168);
+
+    if (directorPhoto) {
+      context.save(); context.beginPath(); context.arc(1248, 92, 48, 0, Math.PI * 2); context.clip(); drawCover(context, directorPhoto, 1200, 44, 96, 96); context.restore();
+      context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(director.name, 1184, 162);
+      context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(director.role, 1184, 181);
+    }
+    context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "750 15px Segoe UI, sans-serif"; context.fillText("FECHA DE CORTE", 1540, 61);
+    context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(cutStamp(), 1540, 91);
+    context.fillStyle = "#b9e1d0"; context.font = "750 15px Segoe UI, sans-serif"; context.fillText(`PÁGINA ${pageIndex + 1} DE ${chunks.length}`, 1540, 139); context.textAlign = "left";
+
+    const cards = [["REALIZADAS", number(current.completed)], ["TOTAL", number(current.expected)], ["% AVANCE", percent(current.compliance)]];
+    cards.forEach(([label, value], cardIndex) => {
+      const x = 55 + cardIndex * 505;
+      context.fillStyle = cardIndex === 2 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, 470, 82);
+      context.fillStyle = "#5d7067"; context.font = "750 14px Segoe UI, sans-serif"; context.fillText(label, x + 20, 252);
+      context.fillStyle = "#1e3932"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(value, x + 20, 287);
+    });
+
+    const tableTop = 330;
+    context.fillStyle = "#1e3932"; context.fillRect(55, tableTop, 1490, 55);
+    context.fillStyle = "#ffffff"; context.font = "750 14px Segoe UI, sans-serif";
+    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["REALIZADAS", 985], ["TOTAL", 1160], ["% AVANCE", 1310], ["PENDIENTES", 1440]];
+    headers.forEach(([label, x]) => context.fillText(label, x, tableTop + 34));
+
+    pageRows.forEach((item, localIndex) => {
+      const globalIndex = pageIndex * rowsPerPage + localIndex;
+      const y = tableTop + 55 + localIndex * rowHeight;
+      const signal = semaphore(item.value);
+      context.fillStyle = localIndex % 2 ? "#f1f6f3" : "#ffffff"; context.fillRect(55, y, 1490, rowHeight - 2);
+      context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#c98612" : "#c54435"; context.fillRect(55, y, 8, rowHeight - 2);
+      context.fillStyle = "#006241"; context.font = "850 17px Segoe UI, sans-serif"; context.fillText(String(item.rank), 91, y + rowHeight / 2 + 6);
+      let labelX = 185;
+      if (item.photo && photos[globalIndex]) {
+        context.save(); context.beginPath(); context.arc(202, y + rowHeight / 2, 31, 0, Math.PI * 2); context.clip(); drawCover(context, photos[globalIndex], 171, y + rowHeight / 2 - 31, 62, 62); context.restore();
+        labelX = 250;
+      }
+      context.fillStyle = "#1e3932"; context.font = `750 ${mode === "dms" ? 22 : 18}px Segoe UI, sans-serif`; context.fillText(fitText(context, item.label, 650), labelX, y + rowHeight / 2 - (mode === "dms" ? 4 : -6));
+      if (mode === "dms") { context.fillStyle = "#687970"; context.font = "500 15px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, y + rowHeight / 2 + 22); }
+      context.fillStyle = "#1e3932"; context.font = "800 20px Segoe UI, sans-serif"; context.fillText(number(item.completed), 1015, y + rowHeight / 2 + 7); context.fillText(number(item.expected), 1180, y + rowHeight / 2 + 7);
+      context.fillStyle = signal.tone === "green" ? "#116444" : signal.tone === "amber" ? "#80520c" : "#922f24"; context.font = "850 20px Segoe UI, sans-serif"; context.fillText(percent(item.value), 1330, y + rowHeight / 2 + 7);
+      context.fillStyle = "#1e3932"; context.font = "800 20px Segoe UI, sans-serif"; context.fillText(number(item.pending), 1480, y + rowHeight / 2 + 7);
+    });
+
+    context.fillStyle = "#1e3932"; context.fillRect(55, 1055, 1490, 50);
+    context.fillStyle = "#ffffff"; context.font = "750 15px Segoe UI, sans-serif"; context.fillText(meta.motto, 75, 1086);
+    context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "500 13px Segoe UI, sans-serif"; context.fillText(meta.credits, 1525, 1086); context.textAlign = "left";
+    return canvas;
+  });
+}
+
 async function exportImage() {
   if (!await beginExport("imagen")) return;
   try {
     const rows = exportRows();
     const meta = reportMeta();
-    const regional = regionalMetrics();
     const current = metrics();
     const mode = exportMode();
-    const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
+    const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp" };
     const width = 1600; const headerHeight = 230; const tableHeader = 72; const rowHeight = mode === "dms" ? 148 : 108; const footerHeight = 110;
     const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = headerHeight + tableHeader + Math.max(rows.length, 1) * rowHeight + footerHeight;
     const context = canvas.getContext("2d");
     context.fillStyle = "#f6f8f7"; context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "#006241"; context.fillRect(0, 0, width, headerHeight);
-    const assets = await Promise.all([loadImage("./assets/icons/icon-64.webp"), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
-    const [logo, ...photos] = assets;
+    const assets = await Promise.all([loadImage("./assets/icons/icon-64.webp"), loadImage(`./${director.photo}`), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
+    const [logo, directorPhoto, ...photos] = assets;
     if (logo) context.drawImage(logo, 72, 70, 78, 78);
     context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 180, 58);
     context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 180, 108);
     context.font = "400 23px Segoe UI, sans-serif"; context.fillText(`${meta.subtitle} · ${reportScope()}`, 180, 148);
-    context.fillStyle = "#b9e1d0"; context.font = "600 18px Segoe UI, sans-serif"; context.fillText(mode === "dms" ? "Ranking dinámico por Gerente de Distrito" : "Tiendas ordenadas de mayor a menor avance", 180, 184);
+    context.fillStyle = "#b9e1d0"; context.font = "650 18px Segoe UI, sans-serif"; context.fillText(`Realizadas ${number(current.completed)} / Total ${number(current.expected)} / ${percent(current.compliance)}`, 180, 184);
+    if (directorPhoto) {
+      context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, directorPhoto, 1217, 62, 86, 86); context.restore();
+      context.fillStyle = "#ffffff"; context.font = "700 15px Segoe UI, sans-serif"; context.fillText(director.name, 1190, 169);
+      context.fillStyle = "#b9e1d0"; context.font = "600 13px Segoe UI, sans-serif"; context.fillText(director.role, 1190, 190);
+    }
     context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("FECHA DE CORTE", 1525, 48);
     context.fillStyle = "#ffffff"; context.font = "700 27px Segoe UI, sans-serif"; context.fillText(cutStamp(), 1525, 81);
     context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(mode === "dms" ? "AVANCE REGIONAL" : "AVANCE DEL FILTRO", 1525, 133);
-    context.fillStyle = "#ffffff"; context.font = "800 40px Segoe UI, sans-serif"; context.fillText(percent(mode === "dms" ? regional.compliance : current.compliance), 1525, 177);
-    if (mode !== "dms") { context.fillStyle = "#b9e1d0"; context.font = "600 16px Segoe UI, sans-serif"; context.fillText(`Regional ${percent(regional.compliance)}`, 1525, 204); }
+    context.fillStyle = "#ffffff"; context.font = "800 40px Segoe UI, sans-serif"; context.fillText(percent(current.compliance), 1525, 177);
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
     context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
@@ -373,9 +445,11 @@ async function exportImage() {
     context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
     context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 72, footerY + 79);
     context.textAlign = "right"; context.fillStyle = "#ffffff"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`${director.role} · ${director.name}`, 1525, footerY + 64); context.textAlign = "left";
-    const filename = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.png`;
-    const link = document.createElement("a"); link.href = canvas.toDataURL("image/png"); link.download = filename; link.click();
-    finishExport(filename);
+    const exportInfo = exportContext("png");
+    const blob = await new Promise((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error("No fue posible crear la imagen.")), "image/png"));
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a"); link.href = url; link.download = exportInfo.filename; document.body.appendChild(link); link.click(); link.remove();
+    finishExport(exportInfo.filename, url);
   } catch (error) {
     failExport(error);
   }
@@ -394,19 +468,45 @@ async function beginExport(format) {
   card.classList.remove("complete");
   $("#export-modal-image").src = "./assets/ui/Damos_Seguimiento.webp";
   $("#export-modal-image").alt = "Le damos seguimiento, estamos trabajando para ti";
-  $("#export-modal-kicker").textContent = `Preparando ${format}`;
-  $("#export-modal-title").textContent = "Estamos creando tu reporte";
-  $("#export-modal-message").textContent = exportMode() === "dms"
-    ? `La vista regional exportará ${exportRows().length} DM con el filtro actual.`
-    : `La vista filtrada exportará ${exportRows().length} tiendas ordenadas de mayor a menor avance.`;
+  $("#export-modal-kicker").textContent = `Exportar ${format}`;
+  $("#export-modal-title").textContent = "Confirma los datos del filtro";
+  $("#export-modal-message").textContent = "Al aceptar, el archivo se descargará directamente con este alcance:";
+  $("#export-modal-summary").innerHTML = exportContext(format.toLowerCase() === "excel" ? "xlsx" : format.toLowerCase()).summary
+    .map(([label, value]) => `<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("");
+  $("#export-progress").hidden = true;
+  $("#export-modal-accept").textContent = "Aceptar y descargar";
+  $("#export-modal-accept").hidden = false;
+  $("#export-modal-cancel").hidden = false;
+  $("#export-modal-open").hidden = true;
   $("#export-modal-close").hidden = true;
   modal.hidden = false;
   document.body.style.overflow = "hidden";
-  await new Promise((resolve) => setTimeout(resolve, 700));
-  return true;
+  $("#export-modal-accept").focus();
+  const accepted = await new Promise((resolve) => { state.exportDecision = resolve; });
+  state.exportDecision = null;
+  if (!accepted) {
+    state.exporting = false; setExportButtonsDisabled(false); modal.hidden = true; document.body.style.overflow = "";
+    return false;
+  }
+  $("#export-modal-accept").hidden = true;
+  $("#export-modal-cancel").hidden = true;
+  $("#export-progress").hidden = false;
+  $("#export-modal-kicker").textContent = `Preparando ${format}`;
+  $("#export-modal-title").textContent = "Estamos creando tu reporte";
+  $("#export-modal-message").textContent = "La descarga iniciará automáticamente en unos segundos.";
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  return accepted;
 }
 
-function finishExport(filename) {
+function acceptExportConfirmation() {
+  if (state.exportDecision) state.exportDecision(true);
+}
+
+function cancelExportConfirmation() {
+  if (state.exportDecision) state.exportDecision(false);
+}
+
+function finishExport(filename, url = "") {
   const modal = $("#export-modal");
   modal.hidden = false;
   modal.querySelector(".export-card").classList.add("complete");
@@ -414,7 +514,15 @@ function finishExport(filename) {
   $("#export-modal-image").alt = "Un placer haber ayudado";
   $("#export-modal-kicker").textContent = "Exportación completada";
   $("#export-modal-title").textContent = "Tu reporte está listo";
-  $("#export-modal-message").textContent = filename;
+  $("#export-modal-message").textContent = `Descarga iniciada: ${filename}`;
+  $("#export-modal-summary").innerHTML = "";
+  $("#export-progress").hidden = true;
+  $("#export-modal-accept").hidden = true;
+  $("#export-modal-cancel").hidden = true;
+  if (state.exportUrl && state.exportUrl !== url) URL.revokeObjectURL(state.exportUrl);
+  state.exportUrl = url;
+  $("#export-modal-open").href = url || "#";
+  $("#export-modal-open").hidden = !url;
   $("#export-modal-close").hidden = false;
   state.exporting = false;
   setExportButtonsDisabled(false);
@@ -429,6 +537,11 @@ function failExport(error) {
   $("#export-modal-kicker").textContent = "No fue posible exportar";
   $("#export-modal-title").textContent = "Revisa e intenta nuevamente";
   $("#export-modal-message").textContent = error?.message || "Ocurrió un error inesperado.";
+  $("#export-modal-summary").innerHTML = "";
+  $("#export-progress").hidden = true;
+  $("#export-modal-accept").hidden = true;
+  $("#export-modal-cancel").hidden = true;
+  $("#export-modal-open").hidden = true;
   $("#export-modal-close").hidden = false;
   state.exporting = false;
   setExportButtonsDisabled(false);
@@ -446,8 +559,12 @@ function buildExcelSpec() {
   const rows = exportRows();
   const mode = exportMode();
   const scope = reportScope();
-  const detailHeaders = ["Ranking", mode === "dms" ? "DM" : "Tienda", "CeCo", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"];
-  const detailRows = rows.map((row) => [row.rank, row.label, row.ceco || "—", row.completed, row.expected, row.pending, row.value / 100, semaphore(row.value).label]);
+  const detailHeaders = mode === "dms"
+    ? ["Ranking", "DM", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"]
+    : ["Ranking", "Tienda", "CeCo", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"];
+  const detailRows = rows.map((row) => mode === "dms"
+    ? [row.rank, row.label, row.completed, row.expected, row.pending, row.value / 100, semaphore(row.value).label]
+    : [row.rank, row.label, row.ceco, row.completed, row.expected, row.pending, row.value / 100, semaphore(row.value).label]);
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
   const activityRows = activities.map((activity, index) => {
@@ -465,17 +582,20 @@ function buildExcelSpec() {
           [`${scope} · Corte ${cutStamp()}`, "", ""],
           [],
           ["Indicador", "Valor", "Lectura rápida"],
-          ["Avance del filtro", item.compliance / 100, `${item.completed} de ${item.expected} actividades realizadas`],
-          [mode === "dms" ? "DM incluidos" : "Tiendas incluidas", mode === "dms" ? item.dms : item.stores, mode === "dms" ? "Ranking por DM" : "Ordenadas de mayor a menor avance"],
-          ["Tiendas con avance", item.completedStores, `${item.notStartedStores} tiendas sin iniciar`],
+          ["Realizadas", item.completed, `${item.completed} actividades completadas en el filtro`],
+          ["Total", item.expected, `${item.stores} tiendas · ${item.activities} actividades`],
+          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} realizadas / ${item.expected} total`],
           ["Pendientes", item.pending, `Actividad: ${state.filters.activity || "Todas"}`],
         ],
-        widths: [24, 18, 46], merges: ["A1:C1", "A2:C2"], headerRows: [4], percentColumns: [2], freezeRow: 4, autoFilter: "A4:C8",
+        widths: [24, 18, 52], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C8",
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
-        rows: [[mode === "dms" ? "Ranking por DM" : "Desglose de tiendas", "", "", "", "", "", "", ""], [`${scope} · Mayor a menor avance`, "", "", "", "", "", "", ""], [], detailHeaders, ...detailRows],
-        widths: [10, 32, 13, 14, 12, 14, 14, 16], merges: ["A1:H1", "A2:H2"], headerRows: [4], percentColumns: [7], freezeRow: 4, autoFilter: `A4:H${4 + detailRows.length}`,
+        rows: [[mode === "dms" ? "Ranking por DM" : "Desglose de tiendas", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Mayor a menor avance`, ...Array(detailHeaders.length - 1).fill("")], [], detailHeaders, ...detailRows],
+        widths: mode === "dms" ? [10, 34, 14, 12, 14, 14, 16] : [10, 32, 13, 14, 12, 14, 14, 16],
+        merges: mode === "dms" ? ["A1:G1", "A2:G2"] : ["A1:H1", "A2:H2"], headerRows: [4],
+        percentColumns: [mode === "dms" ? 6 : 7], countColumns: mode === "dms" ? [1, 3, 4, 5] : [1, 4, 5, 6], freezeRow: 4,
+        autoFilter: `A4:${mode === "dms" ? "G" : "H"}${4 + detailRows.length}`,
       },
       {
         name: "Actividades",
@@ -490,9 +610,9 @@ async function exportExcel() {
   if (!await beginExport("Excel")) return;
   try {
     if (!window.OPSXlsx) throw new Error("El motor XLSX no está disponible.");
-    const filename = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.xlsx`;
-    window.OPSXlsx.downloadWorkbook(buildExcelSpec(), filename);
-    finishExport(filename);
+    const context = exportContext("xlsx");
+    const result = window.OPSXlsx.downloadWorkbook(buildExcelSpec(), context.filename);
+    finishExport(context.filename, result.url);
   } catch (error) {
     failExport(error);
   }
@@ -530,6 +650,8 @@ function bindEvents() {
   $("#export-image").addEventListener("click", exportImage);
   $("#export-pdf").addEventListener("click", exportPdf);
   $("#export-excel").addEventListener("click", exportExcel);
+  $("#export-modal-accept").addEventListener("click", acceptExportConfirmation);
+  $("#export-modal-cancel").addEventListener("click", cancelExportConfirmation);
   $("#export-modal-close").addEventListener("click", closeExportModal);
   $("#export-modal").addEventListener("click", (event) => { if (event.target === event.currentTarget) closeExportModal(); });
   $("#toggle-dates").addEventListener("click", () => {

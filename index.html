@@ -107,17 +107,21 @@
     </section>
   </main>
 
-  <section id="report-sheet" class="report-sheet" aria-hidden="true"></section>
-
   <section id="export-modal" class="export-modal" role="dialog" aria-modal="true" aria-labelledby="export-modal-title" hidden>
     <article class="export-card">
       <img id="export-modal-image" src="./assets/ui/Damos_Seguimiento.webp" alt="Le damos seguimiento, estamos trabajando para ti" width="768" height="512">
       <div class="export-card-copy">
         <p id="export-modal-kicker" class="eyebrow">Preparando exportación</p>
-        <h2 id="export-modal-title">Estamos creando tu reporte</h2>
-        <p id="export-modal-message">La estructura se adapta automáticamente al filtro activo.</p>
-        <div class="export-progress" id="export-progress" aria-hidden="true"><span></span></div>
-        <button id="export-modal-close" class="button primary" type="button" hidden>Cerrar</button>
+        <h2 id="export-modal-title">Confirma tu exportación</h2>
+        <p id="export-modal-message">Revisa el alcance antes de descargar.</p>
+        <div id="export-modal-summary" class="export-filter-summary" aria-live="polite"></div>
+        <div class="export-progress" id="export-progress" aria-hidden="true" hidden><span></span></div>
+        <div class="export-modal-actions">
+          <button id="export-modal-cancel" class="button quiet" type="button">Cancelar</button>
+          <button id="export-modal-accept" class="button primary" type="button">Aceptar y descargar</button>
+          <a id="export-modal-open" class="button primary" href="#" target="_blank" rel="noopener" hidden>Ver archivo</a>
+          <button id="export-modal-close" class="button quiet" type="button" hidden>Cerrar</button>
+        </div>
       </div>
     </article>
   </section>
@@ -127,6 +131,7 @@
     <small>Diseñado por Jorge Alcantar Aguiar &amp; Enrique César Flores</small>
   </footer>
 
+  <script src="./pdf-export.js" defer></script>
   <script src="./xlsx-export.js" defer></script>
   <script src="./app.js" defer></script>
 </body>

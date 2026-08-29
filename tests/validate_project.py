@@ -16,15 +16,15 @@ sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import safe_evidence_url
 
 REQUIRED = [
-    "index.html", "styles.css", "app.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
-    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "scripts/build_dashboard.py", "scripts/export_excel.py", "scripts/prepare_images.py",
+    "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
+    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
     "scripts/audit_project.py", "config/settings.json",
     "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
     "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
     "assets/director/jorge-alcantar.webp",
-    "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js",
+    "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
 ]
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
     "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
@@ -117,14 +117,23 @@ static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", d
 if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades"]:
     fail("El Excel Python no contiene las tres vistas ejecutivas")
 expected_summary_formula = f"=IFERROR(SUM(D10:D{static_excel['Resumen'].max_row})/SUM(E10:E{static_excel['Resumen'].max_row}),0)"
-if static_excel["Resumen"]["A6"].value != expected_summary_formula or not static_excel["Resumen"]._charts:
-    fail("El resumen Excel no conserva fórmula o gráfica ejecutiva")
+if static_excel["Resumen"]["E6"].value != expected_summary_formula or static_excel["Resumen"]["A6"].number_format != "#,##0" or static_excel["Resumen"]["E6"].number_format != "0.0%" or static_excel["Resumen"]._charts:
+    fail("El resumen Excel no conserva fórmula, formato numérico o limpieza visual")
 with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
     subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     dynamic_book = load_workbook(dynamic_excel, data_only=False)
     if dynamic_book.sheetnames != ["Resumen"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
         fail("El motor XLSX dinámico generó un libro inválido")
+with tempfile.TemporaryDirectory() as temp_dir:
+    direct_pdf = Path(temp_dir) / "directo.pdf"
+    subprocess.run(["node", str(ROOT / "tests" / "build_direct_pdf.js"), str(direct_pdf)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    pdf_bytes = direct_pdf.read_bytes()
+    if not pdf_bytes.startswith(b"%PDF-1.4") or not pdf_bytes.rstrip().endswith(b"%%EOF"):
+        fail("El motor PDF directo generó un archivo inválido")
+regional_pdf = (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").read_bytes()
+if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
+    fail("El PDF regional Python no fue generado correctamente")
 
 for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "toggle-dates", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
@@ -138,11 +147,13 @@ if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="e
 for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\""]:
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "regionalMetrics", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "semaphore", "Tiendas sin iniciar", "AVANCE REGIONAL", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Aceptar y descargar", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
     if text not in js:
         fail(f"Funcionalidad faltante: {text}")
-if "sistema-evidencias-ops-v10" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v10 incompleto")
+if "sistema-evidencias-ops-v11" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v11 incompleto")
+if "window.print" in js or "Tiendas realizadas" in js:
+    fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
 if [item.get("rank") for item in data.get("dms", [])] != list(range(1, 7)):
@@ -152,7 +163,7 @@ if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("na
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
-for text in ["python scripts/build_dashboard.py", "python scripts/export_excel.py", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx"]:
+for text in ["python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
 

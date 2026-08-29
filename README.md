@@ -68,18 +68,18 @@ La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía 
 2. Navegación y contenido comparten el orden Resumen, Ranking DM, Actividades, Tiendas y Evidencias.
 3. Exportación regional dinámica: **Todos los DM** genera un ranking por DM.
 4. Exportación focalizada: un solo DM desglosa sus tiendas de mayor a menor avance.
-5. Pantalla previa **Le damos seguimiento** antes de preparar cada archivo.
-6. Confirmación **Un placer haber ayudado** al finalizar la descarga.
-7. Exportación XLSX dinámica con Resumen, ranking/tiendas y actividades.
-8. Generador Python de XLSX ejecutivo con fórmulas, formato y gráfica por DM.
-9. Imagen y PDF incluyen realizados, total, pendientes, avance filtrado y regional.
-10. PWA offline v10 y pruebas automáticas para archivos, Excel, imágenes y seguridad.
+5. Pantalla previa **Le damos seguimiento** con confirmación del filtro y botón **Aceptar y descargar**.
+6. PDF multipágina de descarga directa y confirmación **Un placer haber ayudado** con vínculo para abrir el archivo.
+7. Exportación XLSX dinámica con Resumen, ranking/tiendas y actividades; Ranking DM omite CeCo.
+8. Generadores Python de XLSX y PDF regional con fotografía de Jorge Alcantar.
+9. Imagen, PDF y Excel incluyen **Realizadas / Total / % Avance** del filtro actual.
+10. PWA offline v11 y pruebas automáticas para archivos, PDF, Excel, imágenes y seguridad.
 
 ## Python como producto principal
 
 `scripts/build_dashboard.py` es el motor del proyecto. Valida encabezados, normaliza CeCo, verifica evidencia segura, cruza tienda y DM, comprueba fotografías, deduplica respuestas, protege datos personales y genera `data/dashboard.json`. La prueba ya no congela una hora fija: compara el JSON publicado contra una reconstrucción completa desde el Excel.
 
-`scripts/export_excel.py` construye `exports/Resumen_Evidencias_OPS.xlsx` como respaldo ejecutivo: Resumen, Tiendas y Actividades, con fórmulas recalculables, filtros, congelación de encabezados, semáforo y gráfica nativa. En el dashboard, el botón **Excel XLSX** genera una versión nueva con el alcance de los filtros actuales.
+`scripts/export_excel.py` construye `exports/Resumen_Evidencias_OPS.xlsx` como respaldo ejecutivo: Resumen, Tiendas y Actividades, con fórmulas recalculables, filtros, congelación de encabezados, semáforo y formatos separados para cantidades y porcentajes. `scripts/export_pdf.py` genera el respaldo regional con la fotografía de Jorge Alcantar. En el dashboard, PDF, imagen y Excel generan una versión nueva con el alcance de los filtros actuales.
 
 ## Regla de cumplimiento
 

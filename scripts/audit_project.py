@@ -10,7 +10,7 @@ from urllib.parse import unquote, urlsplit
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-TEXT_FILES = [ROOT / "index.html", ROOT / "styles.css", ROOT / "app.js", ROOT / "xlsx-export.js", ROOT / "service-worker.js", ROOT / "manifest.webmanifest"]
+TEXT_FILES = [ROOT / "index.html", ROOT / "styles.css", ROOT / "app.js", ROOT / "pdf-export.js", ROOT / "xlsx-export.js", ROOT / "service-worker.js", ROOT / "manifest.webmanifest"]
 MAX_FILE_BYTES = 20 * 1024 * 1024
 
 missing = []
@@ -50,7 +50,7 @@ for forbidden in ("Gerente de Distrito</small>",):
 for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "toggle-dates"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("Tiendas sin iniciar", "semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "regionalMetrics", "exportRows", "AVANCE REGIONAL", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
+for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 
@@ -99,6 +99,10 @@ for name in ("Damos_Seguimiento.webp", "Un_placer_haber_Ayudado.webp"):
             issues.append(f"Recurso de exportación inválido: {name}")
 if not (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file():
     issues.append("No se generó el resumen XLSX de respaldo")
+if not (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file():
+    issues.append("No se generó el PDF regional de respaldo")
+if "window.print" in js or "Tiendas realizadas" in js:
+    issues.append("La descarga PDF o el KPI inicial conservan comportamiento obsoleto")
 
 report = {
     "filesReviewed": sum(1 for path in ROOT.rglob("*") if path.is_file() and ".git" not in path.parts),
@@ -112,6 +116,7 @@ report = {
     "exportVisuals": 2,
     "directEvidenceLinks": len(published_evidence),
     "xlsxFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file(),
+    "pdfFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file(),
     "issues": issues,
 }
 print(json.dumps(report, ensure_ascii=False, indent=2))

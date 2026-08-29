@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 
 from openpyxl import Workbook
-from openpyxl.chart import BarChart, Reference
 from openpyxl.formatting.rule import DataBarRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
@@ -24,6 +23,8 @@ CANVAS = "F6F8F7"
 LINE = "DCE5E0"
 WHITE = "FFFFFF"
 RED = "C54435"
+AMBER = "C98612"
+GOOD = "16845B"
 
 
 def style_title(ws, end_column: int, title: str, subtitle: str) -> None:
@@ -78,6 +79,20 @@ def status(value: float) -> str:
     return "Atención"
 
 
+def style_status_column(ws, start_row: int, end_row: int, column: int) -> None:
+    palette = {
+        "En meta": ("DAF1E6", "116444"),
+        "Seguimiento": ("FFF0D5", "80520C"),
+        "Atención": ("F9E6E3", "922F24"),
+    }
+    for row in range(start_row, end_row + 1):
+        cell = ws.cell(row=row, column=column)
+        fill, font = palette.get(cell.value, (CANVAS, DARK))
+        cell.fill = PatternFill("solid", fgColor=fill)
+        cell.font = Font(name="Aptos", size=9, bold=True, color=font)
+        cell.alignment = Alignment(horizontal="center", vertical="center")
+
+
 def build_workbook(data: dict) -> Workbook:
     workbook = Workbook()
     summary = workbook.active
@@ -90,8 +105,8 @@ def build_workbook(data: dict) -> Workbook:
 
     style_title(summary, 8, "Sistema de Evidencias OPS", f"Resumen ejecutivo · Región {region} · Corte {cut}")
     summary.append([])
-    summary.append(["Avance regional", None, "DM", None, "Tiendas", None, "Pendientes", None])
-    summary.append([None, None, source.get("dms", 0), None, source.get("stores", 0), None, source.get("pendingCompletions", 0), None])
+    summary.append(["Realizadas", None, "Total", None, "% Avance", None, "Pendientes", None])
+    summary.append([source.get("completedCompletions", 0), None, source.get("expectedCompletions", 0), None, None, None, source.get("pendingCompletions", 0), None])
     summary.merge_cells("A5:B5"); summary.merge_cells("C5:D5"); summary.merge_cells("E5:F5"); summary.merge_cells("G5:H5")
     summary.merge_cells("A6:B7"); summary.merge_cells("C6:D7"); summary.merge_cells("E6:F7"); summary.merge_cells("G6:H7")
     for label_cell in ("A5", "C5", "E5", "G5"):
@@ -102,7 +117,9 @@ def build_workbook(data: dict) -> Workbook:
         summary[value_cell].fill = PatternFill("solid", fgColor=SOFT)
         summary[value_cell].font = Font(name="Aptos Display", size=18, bold=True, color=GREEN)
         summary[value_cell].alignment = Alignment(horizontal="center", vertical="center")
-    summary["A6"].number_format = "0.0%"
+    for value_cell in ("A6", "C6", "G6"):
+        summary[value_cell].number_format = "#,##0"
+    summary["E6"].number_format = "0.0%"
 
     headers = ["Ranking", "DM", "Tiendas", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"]
     for column, value in enumerate(headers, 1):
@@ -113,32 +130,20 @@ def build_workbook(data: dict) -> Workbook:
         values = [rank, item.get("shortName"), item.get("stores", 0), item.get("completed", 0), item.get("expected", 0), item.get("pending", 0), f"=IFERROR(D{row}/E{row},0)", status(item.get("compliance", 0))]
         for column, value in enumerate(values, 1):
             summary.cell(row=row, column=column, value=value)
-    summary["A6"] = f"=IFERROR(SUM(D10:D{summary.max_row})/SUM(E10:E{summary.max_row}),0)"
+    summary["E6"] = f"=IFERROR(SUM(D10:D{summary.max_row})/SUM(E10:E{summary.max_row}),0)"
     style_header(summary, 9, 1, 8)
     style_table(summary, 10, summary.max_row, 8)
     summary.freeze_panes = "A10"
     summary.auto_filter.ref = f"A9:H{summary.max_row}"
     summary.conditional_formatting.add(f"G10:G{summary.max_row}", DataBarRule(start_type="num", start_value=0, end_type="num", end_value=1, color=GREEN, showValue=True))
     for row in range(10, summary.max_row + 1):
+        for column in (1, 3, 4, 5, 6):
+            summary.cell(row=row, column=column).number_format = "#,##0"
         summary[f"G{row}"].number_format = "0.0%"
+    style_status_column(summary, 10, summary.max_row, 8)
     set_widths(summary, [10, 28, 12, 14, 12, 14, 14, 16])
 
-    chart = BarChart()
-    chart.type = "bar"
-    chart.style = 10
-    chart.title = "Avance por DM"
-    chart.y_axis.title = "DM"
-    chart.x_axis.title = "% avance"
-    chart.x_axis.scaling.min = 0
-    chart.x_axis.scaling.max = 1
-    chart.x_axis.numFmt = "0%"
-    chart.height = 7.2
-    chart.width = 13.8
-    chart.add_data(Reference(summary, min_col=7, min_row=9, max_row=summary.max_row), titles_from_data=True)
-    chart.set_categories(Reference(summary, min_col=2, min_row=10, max_row=summary.max_row))
-    chart.legend = None
-    summary.add_chart(chart, "J5")
-    summary.print_area = f"A1:Q{max(summary.max_row, 21)}"
+    summary.print_area = f"A1:H{summary.max_row}"
     summary.page_setup.orientation = "landscape"
     summary.page_setup.fitToWidth = 1
 
@@ -156,7 +161,10 @@ def build_workbook(data: dict) -> Workbook:
     stores_sheet.conditional_formatting.add(f"H5:H{stores_sheet.max_row}", DataBarRule(start_type="num", start_value=0, end_type="num", end_value=1, color=GREEN, showValue=True))
     for row in range(5, stores_sheet.max_row + 1):
         stores_sheet[f"B{row}"].number_format = "@"
+        for column in (1, 5, 6, 7):
+            stores_sheet.cell(row=row, column=column).number_format = "#,##0"
         stores_sheet[f"H{row}"].number_format = "0.0%"
+    style_status_column(stores_sheet, 5, stores_sheet.max_row, 9)
     set_widths(stores_sheet, [10, 12, 30, 32, 14, 12, 14, 14, 16])
     stores_sheet.print_title_rows = "1:4"
     stores_sheet.page_setup.orientation = "landscape"
@@ -175,11 +183,14 @@ def build_workbook(data: dict) -> Workbook:
     activities_sheet.auto_filter.ref = f"A4:G{activities_sheet.max_row}"
     activities_sheet.conditional_formatting.add(f"F5:F{activities_sheet.max_row}", DataBarRule(start_type="num", start_value=0, end_type="num", end_value=1, color=GREEN, showValue=True))
     for row in range(5, activities_sheet.max_row + 1):
+        for column in (1, 3, 4, 5):
+            activities_sheet.cell(row=row, column=column).number_format = "#,##0"
         activities_sheet[f"F{row}"].number_format = "0.0%"
     set_widths(activities_sheet, [10, 42, 14, 14, 12, 14, 20])
 
-    for ws in workbook.worksheets:
+    for index, ws in enumerate(workbook.worksheets):
         ws.sheet_properties.pageSetUpPr.fitToPage = True
+        ws.sheet_properties.tabColor = [GREEN, DARK, GOOD][index]
         ws.sheet_view.zoomScale = 90
     return workbook
 
