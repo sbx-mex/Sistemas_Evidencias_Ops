@@ -10,7 +10,7 @@ from urllib.parse import unquote
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-TEXT_FILES = [ROOT / "index.html", ROOT / "styles.css", ROOT / "app.js", ROOT / "service-worker.js", ROOT / "manifest.webmanifest"]
+TEXT_FILES = [ROOT / "index.html", ROOT / "styles.css", ROOT / "app.js", ROOT / "xlsx-export.js", ROOT / "service-worker.js", ROOT / "manifest.webmanifest"]
 MAX_FILE_BYTES = 20 * 1024 * 1024
 
 missing = []
@@ -43,14 +43,14 @@ if missing_dom_targets:
 for forbidden in ("Guía rápida", "guide-steps", "Atención prioritaria", "priority-stores", "Estado de actualización y calidad de datos", "quality-strip", "De mayor a menor avance", "Detalle dinámico"):
     if forbidden in html:
         issues.append(f"Bloque repetitivo aún visible: {forbidden}")
-for forbidden in ("Gerente de Distrito</small>", "ordenadas de mayor a menor"):
+for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "evidence-grid", "Director Regional", "Jorge Alcantar", "Ranking DM", "Tiendas CN", "Fecha de corte", "export-image", "export-pdf", "toggle-dates"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "evidence-grid", "Director Regional", "Jorge Alcantar", "Ranking DM", "Tiendas CN", "Fecha de corte", "filter-notice", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "toggle-dates"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("Tiendas sin iniciar", "semaphore", "renderEvidence", "regionalMetrics", "AVANCE REGIONAL", "exportImage", "exportPdf", "renderReportSheet", "completedStores", "notStartedStores"):
+for required in ("Tiendas sin iniciar", "semaphore", "renderFilterNotice", "renderEvidence", "regionalMetrics", "exportRows", "AVANCE REGIONAL", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 
@@ -81,6 +81,13 @@ with Image.open(photo_path).convert("RGB") as photo:
 if white_corner_ratio < 0.9:
     issues.append("La fotografía de Vanessa no conserva un fondo blanco uniforme")
 
+for name in ("Damos_Seguimiento.webp", "Un_placer_haber_Ayudado.webp"):
+    with Image.open(ROOT / "assets" / "ui" / name) as visual:
+        if visual.size != (768, 512) or visual.format != "WEBP":
+            issues.append(f"Recurso de exportación inválido: {name}")
+if not (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file():
+    issues.append("No se generó el resumen XLSX de respaldo")
+
 report = {
     "filesReviewed": sum(1 for path in ROOT.rglob("*") if path.is_file() and ".git" not in path.parts),
     "missingReferences": missing,
@@ -90,6 +97,8 @@ report = {
     "repetitiveBlocks": 0 if not any("repetitivo" in issue for issue in issues) else 1,
     "rankingSorted": not any("Ranking DM" in issue for issue in issues),
     "vanessaWhiteBackground": round(white_corner_ratio * 100, 1),
+    "exportVisuals": 2,
+    "xlsxFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file(),
     "issues": issues,
 }
 print(json.dumps(report, ensure_ascii=False, indent=2))

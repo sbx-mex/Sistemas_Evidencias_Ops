@@ -34,6 +34,7 @@ El correo, nombre del respondente y vínculo privado de SharePoint no se publica
 ```bash
 pip install -r requirements.txt
 python scripts/build_dashboard.py
+python scripts/export_excel.py
 python tests/validate_project.py
 python scripts/audit_project.py
 ```
@@ -61,22 +62,24 @@ En `Configuracion` se administran región, privacidad, dominios autorizados y Di
 
 La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía en `assets/dm/`. La hoja `Configuracion` publica a **Jorge Alcantar** como **Director Regional** mediante `assets/director/jorge-alcantar.webp`. Python detiene la generación si falta una imagen configurada.
 
-## 10 mejoras de facilidad visual
+## 10 mejoras de navegación, visibilidad y exportación
 
-1. Nueva vista **Equipo DM** con fotografía por Gerente de Distrito.
-2. Tarjetas DM con tiendas, avance, pendientes y estado en una sola lectura.
-3. Selección directa del portafolio al tocar la tarjeta o el ranking.
-4. Medidor circular de cumplimiento para lectura ejecutiva en 10 segundos.
-5. Mensaje automático de prioridad generado según los pendientes.
-6. Semáforo visual: Completo, En avance y Por iniciar.
-7. Filtros persistentes por DM, tienda/CeCo y actividad.
-8. Ranking DM enriquecido con avatar y acceso rápido.
-9. Cola de atención priorizada generada por Python para las tiendas pendientes.
-10. PWA offline v7 que conserva dashboard, liderazgo y fotografías del equipo.
+1. Navegación adaptable y sección activa visible, también en celular.
+2. Aviso de alcance que explica exactamente qué producirán los filtros.
+3. Exportación regional dinámica: **Todos los DM** genera un ranking por DM.
+4. Exportación focalizada: un solo DM desglosa sus tiendas de mayor a menor avance.
+5. Pantalla previa **Le damos seguimiento** antes de preparar cada archivo.
+6. Confirmación **Un placer haber ayudado** al finalizar la descarga.
+7. Exportación XLSX dinámica con Resumen, ranking/tiendas y actividades.
+8. Generador Python de XLSX ejecutivo con fórmulas, formato y gráfica por DM.
+9. Imagen y PDF incluyen realizados, total, pendientes, avance filtrado y regional.
+10. PWA offline v8 y pruebas automáticas para archivos, Excel, imágenes y seguridad.
 
 ## Python como producto principal
 
 `scripts/build_dashboard.py` es el motor del proyecto. Valida encabezados, normaliza CeCo, verifica evidencia segura, cruza tienda y DM, comprueba fotografías, deduplica respuestas, protege datos personales y genera `data/dashboard.json`. La prueba ya no congela una hora fija: compara el JSON publicado contra una reconstrucción completa desde el Excel.
+
+`scripts/export_excel.py` construye `exports/Resumen_Evidencias_OPS.xlsx` como respaldo ejecutivo: Resumen, Tiendas y Actividades, con fórmulas recalculables, filtros, congelación de encabezados, semáforo y gráfica nativa. En el dashboard, el botón **Excel XLSX** genera una versión nueva con el alcance de los filtros actuales.
 
 ## Regla de cumplimiento
 
@@ -104,7 +107,7 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 - **Actividades:** catálogo administrable y cumplimiento individual.
 - **Tiendas:** cruce CeCo, avance, última respuesta y exportación CSV.
 - **Evidencias:** registros compactos `Actividad_CeCo`, filtrables y con acceso gobernado por el CMS.
-- **Exportación:** imagen y PDF con porcentaje de avance regional, incluso al consultar un alcance filtrado.
+- **Exportación:** imagen, PDF y Excel con alcance dinámico. Todos los DM exporta el ranking regional; un DM exporta sus tiendas ordenadas de mayor a menor avance.
 
 ## Fuente inicial validada
 

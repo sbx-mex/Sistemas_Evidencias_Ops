@@ -1,4 +1,4 @@
-const state = { data: null, filters: { dm: "", store: "", activity: "" }, showAllEvidence: false, installPrompt: null };
+const state = { data: null, filters: { dm: "", store: "", activity: "" }, showAllEvidence: false, exporting: false, installPrompt: null };
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -98,6 +98,30 @@ function renderSummary() {
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
 
+function renderFilterNotice() {
+  const panel = $("#filter-notice");
+  const item = metrics();
+  const activity = state.filters.activity ? ` para “${state.filters.activity}”` : "";
+  if (state.filters.store) {
+    panel.dataset.scope = "store";
+    $("#filter-notice-title").textContent = `Vista de tienda · ${currentScope()}`;
+    $("#filter-notice-message").textContent = `Imagen, PDF y Excel mostrarán únicamente esta tienda${activity}.`;
+    $("#filter-scope-count").textContent = "1 tienda";
+    return;
+  }
+  if (state.filters.dm) {
+    panel.dataset.scope = "dm";
+    $("#filter-notice-title").textContent = `Vista DM · ${state.filters.dm}`;
+    $("#filter-notice-message").textContent = `Imagen, PDF y Excel desglosarán ${item.stores} tiendas de mayor a menor avance${activity}.`;
+    $("#filter-scope-count").textContent = `${item.stores} tiendas`;
+    return;
+  }
+  panel.dataset.scope = "region";
+  $("#filter-notice-title").textContent = `Vista regional · ${state.data.region}`;
+  $("#filter-notice-message").textContent = `Imagen, PDF y Excel mostrarán el ranking de ${item.dms} DM${activity}.`;
+  $("#filter-scope-count").textContent = `${item.dms} DM`;
+}
+
 function renderActivities() {
   const stores = filteredStores();
   const activities = state.data.activities.filter((item) => !state.filters.activity || item.name === state.filters.activity);
@@ -168,6 +192,28 @@ function dmRanking() {
   }).sort((a, b) => b.value - a.value || a.shortName.localeCompare(b.shortName, "es-MX"));
 }
 
+function exportMode() {
+  return state.filters.dm || state.filters.store ? "stores" : "dms";
+}
+
+function exportRows() {
+  if (exportMode() === "dms") {
+    return dmRanking().map((item, index) => ({
+      kind: "dm", rank: index + 1, label: item.shortName, detail: `${item.dmStores.length} tiendas`, photo: item.photo,
+      completed: item.completed, expected: item.expected, pending: item.expected - item.completed, value: item.value,
+    }));
+  }
+  const activities = selectedActivities();
+  return filteredStores().map((store) => {
+    const result = completionFor(store, activities);
+    return {
+      kind: "store", label: store.store, detail: `CeCo ${store.ceco}`, ceco: store.ceco, dm: store.dm,
+      completed: result.completed, expected: result.expected, pending: result.pending, value: result.compliance,
+    };
+  }).sort((a, b) => b.value - a.value || b.completed - a.completed || a.label.localeCompare(b.label, "es-MX"))
+    .map((item, index) => ({ ...item, rank: index + 1 }));
+}
+
 function renderTeam() {
   const rows = dmRanking();
 
@@ -202,7 +248,7 @@ function renderStores() {
 }
 
 function renderAll() {
-  renderSummary(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores();
+  renderSummary(); renderFilterNotice(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores();
 }
 
 function populateFilters() {
@@ -226,27 +272,39 @@ function reportScope() {
 }
 
 function renderReportSheet() {
-  const rows = dmRanking();
+  const rows = exportRows();
   const meta = reportMeta();
   const regional = regionalMetrics();
+  const current = metrics();
+  const mode = exportMode();
   const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
   $("#report-sheet").innerHTML = `<header class="report-header">
     <img src="./assets/icons/icon-64.webp" alt="" width="68" height="68">
     <div><small>${esc(meta.motto)}</small><h1>${esc(meta.title)}</h1><p>${esc(meta.subtitle)} · ${esc(reportScope())}</p></div>
-    <div class="report-cut"><span>Fecha de corte</span><strong>${esc(cutStamp())}</strong><span>Avance regional</span><b>${percent(regional.compliance)}</b></div>
+    <div class="report-cut"><span>Fecha de corte</span><strong>${esc(cutStamp())}</strong><span>${mode === "dms" ? "Avance regional" : "Avance del filtro"}</span><b>${percent(mode === "dms" ? regional.compliance : current.compliance)}</b></div>
   </header>
-  <table class="report-table"><thead><tr><th>DM</th><th>Actividades realizadas</th><th>Actividades totales</th><th>% Avance</th></tr></thead><tbody>${rows.map((dm) => {
-    const signal = semaphore(dm.value);
-    return `<tr><td><div class="report-dm"><img src="./${esc(dm.photo)}" alt=""><strong>${esc(dm.shortName)}</strong></div></td><td>${dm.completed}</td><td>${dm.expected}</td><td><span class="status ${signal.tone}">${percent(dm.value)}</span></td></tr>`;
+  <table class="report-table"><thead><tr><th>Ranking</th><th>${mode === "dms" ? "DM" : "Tienda / CeCo"}</th><th>Realizadas</th><th>Total</th><th>Pendientes</th><th>% Avance</th></tr></thead><tbody>${rows.map((item) => {
+    const signal = semaphore(item.value);
+    const identity = item.kind === "dm"
+      ? `<div class="report-dm"><img src="./${esc(item.photo)}" alt=""><strong>${esc(item.label)}</strong></div>`
+      : `<div class="report-store"><strong>${esc(item.label)}</strong><small>${esc(item.detail)}</small></div>`;
+    return `<tr><td><span class="table-rank">${item.rank}</span></td><td>${identity}</td><td>${item.completed}</td><td>${item.expected}</td><td>${item.pending}</td><td><span class="status ${signal.tone}">${percent(item.value)}</span></td></tr>`;
   }).join("")}</tbody></table>
   <footer class="report-footer"><strong>${esc(meta.motto)}</strong><span>${esc(director.role)} · ${esc(director.name)}</span><span>${esc(meta.credits)}</span></footer>`;
 }
 
-function exportPdf() {
+async function exportPdf() {
+  if (!await beginExport("PDF")) return;
   renderReportSheet();
+  $("#export-modal").hidden = true;
+  document.body.style.overflow = "";
   document.body.classList.add("printing-report");
   $("#report-sheet").setAttribute("aria-hidden", "false");
-  const cleanup = () => { document.body.classList.remove("printing-report"); $("#report-sheet").setAttribute("aria-hidden", "true"); };
+  const filename = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.pdf`;
+  const cleanup = () => {
+    document.body.classList.remove("printing-report"); $("#report-sheet").setAttribute("aria-hidden", "true");
+    finishExport(filename);
+  };
   window.addEventListener("afterprint", cleanup, { once: true });
   setTimeout(() => window.print(), 50);
 }
@@ -266,42 +324,191 @@ function drawCover(context, image, x, y, width, height) {
 }
 
 async function exportImage() {
-  const rows = dmRanking();
-  const meta = reportMeta();
-  const regional = regionalMetrics();
-  const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
-  const width = 1600; const headerHeight = 210; const tableHeader = 72; const rowHeight = 148; const footerHeight = 110;
-  const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = headerHeight + tableHeader + rows.length * rowHeight + footerHeight;
-  const context = canvas.getContext("2d");
-  context.fillStyle = "#f6f8f7"; context.fillRect(0, 0, canvas.width, canvas.height);
-  context.fillStyle = "#006241"; context.fillRect(0, 0, width, headerHeight);
-  const [logo, ...photos] = await Promise.all([loadImage("./assets/icons/icon-64.webp"), ...rows.map((dm) => loadImage(`./${dm.photo}`))]);
-  if (logo) context.drawImage(logo, 72, 64, 78, 78);
-  context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 180, 58);
-  context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 180, 108);
-  context.font = "400 23px Segoe UI, sans-serif"; context.fillText(`${meta.subtitle} · ${reportScope()}`, 180, 148);
-  context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("FECHA DE CORTE", 1525, 55);
-  context.fillStyle = "#ffffff"; context.font = "700 27px Segoe UI, sans-serif"; context.fillText(cutStamp(), 1525, 88);
-  context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("AVANCE REGIONAL", 1525, 135);
-  context.fillStyle = "#ffffff"; context.font = "800 40px Segoe UI, sans-serif"; context.fillText(percent(regional.compliance), 1525, 180); context.textAlign = "left";
-  const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
-  context.fillStyle = "#42564d"; context.font = "700 20px Segoe UI, sans-serif";
-  context.fillText("DM", 190, top + 45); context.fillText("ACTIVIDADES REALIZADAS", 820, top + 45); context.fillText("ACTIVIDADES TOTALES", 1110, top + 45); context.fillText("% AVANCE", 1390, top + 45);
-  rows.forEach((dm, index) => {
-    const y = top + tableHeader + index * rowHeight; const signal = semaphore(dm.value);
-    context.fillStyle = index % 2 ? "#f4f7f5" : "#ffffff"; context.fillRect(0, y, width, rowHeight - 2);
-    context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#c98612" : "#c54435"; context.fillRect(0, y, 12, rowHeight - 2);
-    context.save(); context.beginPath(); context.arc(105, y + 72, 46, 0, Math.PI * 2); context.clip(); drawCover(context, photos[index], 59, y + 26, 92, 92); context.restore();
-    context.fillStyle = "#1e3932"; context.font = "700 28px Segoe UI, sans-serif"; context.fillText(dm.shortName, 190, y + 67);
-    context.fillStyle = "#65756d"; context.font = "400 20px Segoe UI, sans-serif"; context.fillText(`${dm.dmStores.length} tiendas`, 190, y + 99);
-    context.fillStyle = "#1e3932"; context.font = "700 30px Segoe UI, sans-serif"; context.fillText(String(dm.completed), 930, y + 82); context.fillText(String(dm.expected), 1210, y + 82);
-    context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#a86b0a" : "#a2352a"; context.font = "800 34px Segoe UI, sans-serif"; context.fillText(percent(dm.value), 1410, y + 82);
+  if (!await beginExport("imagen")) return;
+  try {
+    const rows = exportRows();
+    const meta = reportMeta();
+    const regional = regionalMetrics();
+    const current = metrics();
+    const mode = exportMode();
+    const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
+    const width = 1600; const headerHeight = 230; const tableHeader = 72; const rowHeight = mode === "dms" ? 148 : 108; const footerHeight = 110;
+    const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = headerHeight + tableHeader + Math.max(rows.length, 1) * rowHeight + footerHeight;
+    const context = canvas.getContext("2d");
+    context.fillStyle = "#f6f8f7"; context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "#006241"; context.fillRect(0, 0, width, headerHeight);
+    const assets = await Promise.all([loadImage("./assets/icons/icon-64.webp"), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
+    const [logo, ...photos] = assets;
+    if (logo) context.drawImage(logo, 72, 70, 78, 78);
+    context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 180, 58);
+    context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 180, 108);
+    context.font = "400 23px Segoe UI, sans-serif"; context.fillText(`${meta.subtitle} · ${reportScope()}`, 180, 148);
+    context.fillStyle = "#b9e1d0"; context.font = "600 18px Segoe UI, sans-serif"; context.fillText(mode === "dms" ? "Ranking dinámico por Gerente de Distrito" : "Tiendas ordenadas de mayor a menor avance", 180, 184);
+    context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("FECHA DE CORTE", 1525, 48);
+    context.fillStyle = "#ffffff"; context.font = "700 27px Segoe UI, sans-serif"; context.fillText(cutStamp(), 1525, 81);
+    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(mode === "dms" ? "AVANCE REGIONAL" : "AVANCE DEL FILTRO", 1525, 133);
+    context.fillStyle = "#ffffff"; context.font = "800 40px Segoe UI, sans-serif"; context.fillText(percent(mode === "dms" ? regional.compliance : current.compliance), 1525, 177);
+    if (mode !== "dms") { context.fillStyle = "#b9e1d0"; context.font = "600 16px Segoe UI, sans-serif"; context.fillText(`Regional ${percent(regional.compliance)}`, 1525, 204); }
+    context.textAlign = "left";
+    const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
+    context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
+    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("REALIZADAS", 905, top + 45); context.fillText("TOTAL", 1120, top + 45); context.fillText("PENDIENTES", 1280, top + 45); context.fillText("% AVANCE", 1450, top + 45);
+    rows.forEach((item, index) => {
+      const y = top + tableHeader + index * rowHeight; const signal = semaphore(item.value); const centerY = y + rowHeight / 2;
+      context.fillStyle = index % 2 ? "#f4f7f5" : "#ffffff"; context.fillRect(0, y, width, rowHeight - 2);
+      context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#c98612" : "#c54435"; context.fillRect(0, y, 12, rowHeight - 2);
+      context.fillStyle = "#edf3f0"; context.beginPath(); context.arc(95, centerY, 25, 0, Math.PI * 2); context.fill();
+      context.fillStyle = "#006241"; context.font = "800 20px Segoe UI, sans-serif"; context.textAlign = "center"; context.fillText(String(item.rank), 95, centerY + 7); context.textAlign = "left";
+      let labelX = 190;
+      if (item.photo) {
+        context.save(); context.beginPath(); context.arc(165, centerY, 39, 0, Math.PI * 2); context.clip(); drawCover(context, photos[index], 126, centerY - 39, 78, 78); context.restore();
+        labelX = 225;
+      }
+      context.fillStyle = "#1e3932"; context.font = `${mode === "dms" ? 700 : 650} ${mode === "dms" ? 27 : 23}px Segoe UI, sans-serif`; context.fillText(item.label, labelX, centerY - 4);
+      context.fillStyle = "#65756d"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, centerY + 24);
+      context.fillStyle = "#1e3932"; context.font = "700 28px Segoe UI, sans-serif"; context.fillText(String(item.completed), 940, centerY + 10); context.fillText(String(item.expected), 1145, centerY + 10); context.fillText(String(item.pending), 1325, centerY + 10);
+      context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#a86b0a" : "#a2352a"; context.font = "800 31px Segoe UI, sans-serif"; context.fillText(percent(item.value), 1460, centerY + 10);
+    });
+    const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
+    context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
+    context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 72, footerY + 79);
+    context.textAlign = "right"; context.fillStyle = "#ffffff"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`${director.role} · ${director.name}`, 1525, footerY + 64); context.textAlign = "left";
+    const filename = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.png`;
+    const link = document.createElement("a"); link.href = canvas.toDataURL("image/png"); link.download = filename; link.click();
+    finishExport(filename);
+  } catch (error) {
+    failExport(error);
+  }
+}
+
+function setExportButtonsDisabled(disabled) {
+  ["#export-image", "#export-pdf", "#export-excel"].forEach((selector) => { $(selector).disabled = disabled; });
+}
+
+async function beginExport(format) {
+  if (state.exporting || !state.data) return false;
+  state.exporting = true;
+  setExportButtonsDisabled(true);
+  const modal = $("#export-modal");
+  const card = modal.querySelector(".export-card");
+  card.classList.remove("complete");
+  $("#export-modal-image").src = "./assets/ui/Damos_Seguimiento.webp";
+  $("#export-modal-image").alt = "Le damos seguimiento, estamos trabajando para ti";
+  $("#export-modal-kicker").textContent = `Preparando ${format}`;
+  $("#export-modal-title").textContent = "Estamos creando tu reporte";
+  $("#export-modal-message").textContent = exportMode() === "dms"
+    ? `La vista regional exportará ${exportRows().length} DM con el filtro actual.`
+    : `La vista filtrada exportará ${exportRows().length} tiendas ordenadas de mayor a menor avance.`;
+  $("#export-modal-close").hidden = true;
+  modal.hidden = false;
+  document.body.style.overflow = "hidden";
+  await new Promise((resolve) => setTimeout(resolve, 700));
+  return true;
+}
+
+function finishExport(filename) {
+  const modal = $("#export-modal");
+  modal.hidden = false;
+  modal.querySelector(".export-card").classList.add("complete");
+  $("#export-modal-image").src = "./assets/ui/Un_placer_haber_Ayudado.webp";
+  $("#export-modal-image").alt = "Un placer haber ayudado";
+  $("#export-modal-kicker").textContent = "Exportación completada";
+  $("#export-modal-title").textContent = "Tu reporte está listo";
+  $("#export-modal-message").textContent = filename;
+  $("#export-modal-close").hidden = false;
+  state.exporting = false;
+  setExportButtonsDisabled(false);
+  document.body.style.overflow = "hidden";
+  $("#export-modal-close").focus();
+}
+
+function failExport(error) {
+  const modal = $("#export-modal");
+  modal.hidden = false;
+  modal.querySelector(".export-card").classList.add("complete");
+  $("#export-modal-kicker").textContent = "No fue posible exportar";
+  $("#export-modal-title").textContent = "Revisa e intenta nuevamente";
+  $("#export-modal-message").textContent = error?.message || "Ocurrió un error inesperado.";
+  $("#export-modal-close").hidden = false;
+  state.exporting = false;
+  setExportButtonsDisabled(false);
+}
+
+function closeExportModal() {
+  if (state.exporting) return;
+  $("#export-modal").hidden = true;
+  document.body.style.overflow = "";
+  $("#export-image").focus();
+}
+
+function buildExcelSpec() {
+  const item = metrics();
+  const rows = exportRows();
+  const mode = exportMode();
+  const scope = reportScope();
+  const detailHeaders = ["Ranking", mode === "dms" ? "DM" : "Tienda", "CeCo", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"];
+  const detailRows = rows.map((row) => [row.rank, row.label, row.ceco || "—", row.completed, row.expected, row.pending, row.value / 100, semaphore(row.value).label]);
+  const stores = filteredStores();
+  const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
+  const activityRows = activities.map((activity, index) => {
+    const completed = stores.filter((store) => store.activities[activity.name]).length;
+    const value = stores.length ? completed / stores.length : 0;
+    return [index + 1, activity.name, completed, stores.length - completed, stores.length, value, activity.commitmentDateDisplay || "Sin fecha"];
   });
-  const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
-  context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
-  context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 72, footerY + 79);
-  context.textAlign = "right"; context.fillStyle = "#ffffff"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`${director.role} · ${director.name}`, 1525, footerY + 64); context.textAlign = "left";
-  const link = document.createElement("a"); link.href = canvas.toDataURL("image/png"); link.download = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.png`; link.click();
+  return {
+    title: `Sistema de Evidencias OPS · ${scope}`,
+    sheets: [
+      {
+        name: "Resumen",
+        rows: [
+          ["Sistema de Evidencias OPS", "", ""],
+          [`${scope} · Corte ${cutStamp()}`, "", ""],
+          [],
+          ["Indicador", "Valor", "Lectura rápida"],
+          ["Avance del filtro", item.compliance / 100, `${item.completed} de ${item.expected} actividades realizadas`],
+          [mode === "dms" ? "DM incluidos" : "Tiendas incluidas", mode === "dms" ? item.dms : item.stores, mode === "dms" ? "Ranking por DM" : "Ordenadas de mayor a menor avance"],
+          ["Tiendas con avance", item.completedStores, `${item.notStartedStores} tiendas sin iniciar`],
+          ["Pendientes", item.pending, `Actividad: ${state.filters.activity || "Todas"}`],
+        ],
+        widths: [24, 18, 46], merges: ["A1:C1", "A2:C2"], headerRows: [4], percentColumns: [2], freezeRow: 4, autoFilter: "A4:C8",
+      },
+      {
+        name: mode === "dms" ? "Ranking DM" : "Tiendas",
+        rows: [[mode === "dms" ? "Ranking por DM" : "Desglose de tiendas", "", "", "", "", "", "", ""], [`${scope} · Mayor a menor avance`, "", "", "", "", "", "", ""], [], detailHeaders, ...detailRows],
+        widths: [10, 32, 13, 14, 12, 14, 14, 16], merges: ["A1:H1", "A2:H2"], headerRows: [4], percentColumns: [7], freezeRow: 4, autoFilter: `A4:H${4 + detailRows.length}`,
+      },
+      {
+        name: "Actividades",
+        rows: [["Avance por actividad", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "Total", "% Avance", "Fecha compromiso"], ...activityRows],
+        widths: [10, 42, 14, 14, 12, 14, 20], merges: ["A1:G1", "A2:G2"], headerRows: [4], percentColumns: [6], freezeRow: 4, autoFilter: `A4:G${4 + activityRows.length}`,
+      },
+    ],
+  };
+}
+
+async function exportExcel() {
+  if (!await beginExport("Excel")) return;
+  try {
+    if (!window.OPSXlsx) throw new Error("El motor XLSX no está disponible.");
+    const filename = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.xlsx`;
+    window.OPSXlsx.downloadWorkbook(buildExcelSpec(), filename);
+    finishExport(filename);
+  } catch (error) {
+    failExport(error);
+  }
+}
+
+function initNavigation() {
+  const links = [...document.querySelectorAll(".main-nav a")];
+  const sections = links.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+  const setCurrent = (id) => links.forEach((link) => link.setAttribute("aria-current", link.getAttribute("href") === `#${id}` ? "page" : "false"));
+  links.forEach((link) => link.addEventListener("click", () => setCurrent(link.getAttribute("href").slice(1))));
+  if (!("IntersectionObserver" in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (visible) setCurrent(visible.target.id);
+  }, { rootMargin: "-20% 0px -65%", threshold: [0.05, 0.25, 0.5] });
+  sections.forEach((section) => observer.observe(section));
 }
 
 function bindEvents() {
@@ -312,6 +519,9 @@ function bindEvents() {
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
   $("#export-image").addEventListener("click", exportImage);
   $("#export-pdf").addEventListener("click", exportPdf);
+  $("#export-excel").addEventListener("click", exportExcel);
+  $("#export-modal-close").addEventListener("click", closeExportModal);
+  $("#export-modal").addEventListener("click", (event) => { if (event.target === event.currentTarget) closeExportModal(); });
   $("#toggle-dates").addEventListener("click", () => {
     const panel = $("#commitment-dates"); panel.hidden = !panel.hidden;
     $("#toggle-dates").setAttribute("aria-expanded", String(!panel.hidden));
@@ -326,6 +536,7 @@ function bindEvents() {
   window.addEventListener("online", updateConnection); window.addEventListener("offline", updateConnection);
   window.addEventListener("beforeinstallprompt", (event) => { event.preventDefault(); state.installPrompt = event; $("#install-button").hidden = false; });
   $("#install-button").addEventListener("click", async () => { if (!state.installPrompt) return; state.installPrompt.prompt(); await state.installPrompt.userChoice; state.installPrompt = null; $("#install-button").hidden = true; });
+  initNavigation();
 }
 
 function updateConnection() {

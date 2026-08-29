@@ -17,7 +17,7 @@
 
   <header class="app-header">
     <nav class="main-nav" aria-label="Navegación principal">
-      <a href="#resumen">Resumen</a>
+      <a href="#resumen" aria-current="page">Resumen</a>
       <a href="#actividades">Actividades</a>
       <a href="#evidencias">Evidencias</a>
       <a href="#ranking">Ranking DM</a>
@@ -55,8 +55,15 @@
       <div class="export-actions" aria-label="Exportar reporte">
         <button id="export-image" class="button primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 2-2 5 5"/></svg>Imagen</button>
         <button id="export-pdf" class="button quiet" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7zM14 3v5h5M9 15h6M9 18h4"/></svg>PDF</button>
+        <button id="export-excel" class="button quiet" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10l4 4v14H5zM15 3v5h4M8 12l5 6M13 12l-5 6"/></svg>Excel</button>
       </div>
     </section>
+
+    <aside id="filter-notice" class="filter-notice" aria-live="polite">
+      <span class="filter-notice-icon" aria-hidden="true">i</span>
+      <div><strong id="filter-notice-title">Vista regional activa</strong><p id="filter-notice-message">Las exportaciones mostrarán el ranking de todos los DM.</p></div>
+      <span id="filter-scope-count" class="tag">6 DM</span>
+    </aside>
 
     <section class="summary" aria-live="polite">
       <article class="main-score">
@@ -97,11 +104,25 @@
 
   <section id="report-sheet" class="report-sheet" aria-hidden="true"></section>
 
+  <section id="export-modal" class="export-modal" role="dialog" aria-modal="true" aria-labelledby="export-modal-title" hidden>
+    <article class="export-card">
+      <img id="export-modal-image" src="./assets/ui/Damos_Seguimiento.webp" alt="Le damos seguimiento, estamos trabajando para ti" width="768" height="512">
+      <div class="export-card-copy">
+        <p id="export-modal-kicker" class="eyebrow">Preparando exportación</p>
+        <h2 id="export-modal-title">Estamos creando tu reporte</h2>
+        <p id="export-modal-message">La estructura se adapta automáticamente al filtro activo.</p>
+        <div class="export-progress" id="export-progress" aria-hidden="true"><span></span></div>
+        <button id="export-modal-close" class="button primary" type="button" hidden>Cerrar</button>
+      </div>
+    </article>
+  </section>
+
   <footer>
     <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong></span></div>
     <small>Diseñado por Jorge Alcantar Aguiar &amp; Enrique César Flores</small>
   </footer>
 
+  <script src="./xlsx-export.js" defer></script>
   <script src="./app.js" defer></script>
 </body>
 </html>

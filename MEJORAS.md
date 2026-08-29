@@ -1,18 +1,18 @@
-# 10 mejoras visuales implementadas
+# 10 mejoras implementadas
 
 | # | Mejora | Resultado |
 |---:|---|---|
-| 1 | Evidencias compactas | Encabezados Actividad, CeCo y Evidencia con nombre `Actividad_CeCo`. |
-| 2 | Enlaces seguros | HTTPS, lista de dominios, acceso aislado y privacidad pública por defecto. |
-| 3 | Enfoque por gerente | Un clic filtra todas las métricas y abre el portafolio correspondiente. |
-| 4 | Lectura en 10 segundos | Medidor circular y mensaje automático de prioridad. |
-| 5 | Semáforo operativo | Estados Completo, En avance y Por iniciar. |
-| 6 | Ranking con identidad | Avatar, posición, tiendas y porcentaje por DM. |
-| 7 | Filtros persistentes | Barra visible por DM, tienda/CeCo y actividad. |
-| 8 | Liderazgo regional | Jorge Alcantar aparece como Director Regional con fotografía optimizada. |
-| 9 | Exportación ejecutiva | Imagen y PDF incluyen el porcentaje de avance regional. |
-| 10 | Motor certificado | La fecha se deriva del Excel y la prueba compara una reconstrucción completa. |
+| 1 | Navegación visible | La sección activa queda marcada y el menú se conserva desplazable en móvil. |
+| 2 | Aviso del filtro | El usuario ve si exportará la región, un DM o una sola tienda. |
+| 3 | Reporte regional dinámico | Con Todos los DM, imagen, PDF y Excel presentan el ranking de DMs. |
+| 4 | Reporte por DM | Al elegir un DM, las tiendas se ordenan de mayor a menor avance. |
+| 5 | Aviso antes de exportar | `Damos_Seguimiento.webp` confirma que el archivo se está preparando. |
+| 6 | Confirmación posterior | `Un_placer_haber_Ayudado.webp` informa que la descarga terminó. |
+| 7 | Excel desde filtros | El XLSX dinámico contiene Resumen, ranking/tiendas y actividades. |
+| 8 | Excel con Python | `export_excel.py` crea un respaldo ejecutivo con fórmulas y gráfica nativa. |
+| 9 | Métricas completas | Los reportes incluyen realizados, total, pendientes, avance del filtro y regional. |
+| 10 | Certificación automatizada | PWA v8, imágenes, OOXML, fórmulas y flujo Python se validan antes de publicar. |
 
 ## Control del motor Python
 
-El comando `python scripts/build_dashboard.py` valida los encabezados del Forms, el directorio, las fotografías, el dominio de evidencia y la configuración; luego reconstruye las métricas públicas. Si falta una foto, cambia un encabezado o aparece un vínculo inseguro, el proceso lo identifica antes de publicar información incompleta.
+Los comandos `python scripts/build_dashboard.py` y `python scripts/export_excel.py` reconstruyen los datos y el libro ejecutivo. `python tests/validate_project.py` valida encabezados, directorio, fotografías, dominio de evidencia, libro estático, generador dinámico y flujo de publicación antes de exponer información incompleta.
