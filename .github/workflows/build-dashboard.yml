@@ -7,6 +7,8 @@ on:
     paths:
       - 'cms/**.xlsx'
       - 'config/actividades.csv'
+      - 'config/gerentes.csv'
+      - 'assets/dm/**'
       - 'config/settings.json'
       - 'scripts/build_dashboard.py'
 
