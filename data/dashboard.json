@@ -2,7 +2,7 @@
   "schemaVersion": 10,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T19:05:48+00:00",
+  "generatedAt": "2026-08-29T19:16:39+00:00",
   "lastUpdated": "2026-08-29T12:13:32",
   "lastUpdatedDisplay": "29/08/2026 12:13",
   "report": {
@@ -19,7 +19,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "214f02617c5cc60c597ee708f8169cea9fee221cc53495137d728b451271c85f",
+    "responsesSha256": "f37b19e6503ae8204195eb4e9f2a2df68e40572088efa7f553a96980df1f8260",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -49,7 +49,7 @@
     "responseSchema": {
       "sheet": "Sheet1",
       "headerRow": 1,
-      "columns": 15,
+      "columns": 18,
       "activityHeaders": [
         "Selecciona la actividad que deseas registrar"
       ],
@@ -57,7 +57,10 @@
         "CeCo"
       ],
       "confirmationHeaders": [],
-      "applicabilityHeaders": [],
+      "applicabilityHeaders": [
+        "¿ Tienes Horno Merry Chef ?",
+        "¿Cuentas con Community Board?"
+      ],
       "evidenceHeaders": [
         "Evidencia_RollOut",
         "Evidencia_Programacion_Hornos_Merry_Focaccia",
@@ -66,7 +69,8 @@
         "Evidencia_Max&Min",
         "Evidencia_Fotografia_SM",
         "Evidencia_Mandil Verde",
-        "Evidencia_Lay_Out"
+        "Evidencia_Lay_Out",
+        "Evidencia_Community_Board"
       ],
       "evidenceHeaderMap": {
         "Evidencia_RollOut": "rollout",
@@ -76,7 +80,8 @@
         "Evidencia_Max&Min": "maxmin",
         "Evidencia_Fotografia_SM": "fotografiasm",
         "Evidencia_Mandil Verde": "mandilverde",
-        "Evidencia_Lay_Out": "layout"
+        "Evidencia_Lay_Out": "layout",
+        "Evidencia_Community_Board": "communityboard"
       },
       "evidenceHeaderMatch": {
         "Evidencia_RollOut": "exact",
@@ -86,7 +91,8 @@
         "Evidencia_Max&Min": "exact",
         "Evidencia_Fotografia_SM": "exact",
         "Evidencia_Mandil Verde": "exact",
-        "Evidencia_Lay_Out": "exact"
+        "Evidencia_Lay_Out": "exact",
+        "Evidencia_Community_Board": "exact"
       },
       "rowConflicts": [],
       "evidenceIssues": {},
