@@ -30,6 +30,11 @@ concurrency:
   group: evidencias-ops-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  PYTHONUTF8: '1'
+  PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache
+  PYTHONDONTWRITEBYTECODE: '1'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -47,37 +52,39 @@ jobs:
       - name: Instalar dependencias
         run: pip install --disable-pip-version-check -r requirements.txt
 
-      - name: Validar integridad y encabezados de los Excel
-        run: python scripts/validate_sources.py
+      - name: Validar los tres motores Excel
+        run: python -X utf8 scripts/validate_sources.py
 
       - name: Limpiar archivos obsoletos conocidos
         run: python scripts/clean_obsolete.py --apply
 
       - name: Reconstruir dashboard y exportaciones
         run: |
-          python scripts/build_dashboard.py
-          python scripts/export_excel.py
-          python scripts/export_pdf.py
+          set -euo pipefail
+          python -X utf8 scripts/build_dashboard.py
+          python -X utf8 scripts/export_excel.py
+          python -X utf8 scripts/export_pdf.py
 
       - name: Validar sintaxis y controles del proyecto
-        env:
-          PYTHONDONTWRITEBYTECODE: '1'
         run: |
-          python -m compileall -q scripts tests
+          set -euo pipefail
+          python -X utf8 -m compileall -q scripts tests
           node --check app.js
           node --check pdf-export.js
           node --check xlsx-export.js
-          python scripts/clean_obsolete.py --check
-          python tests/validate_dynamic_forms_schema.py
-          python tests/validate_project.py
-          python scripts/audit_project.py
+          git diff --check
+          python -X utf8 scripts/clean_obsolete.py --check
+          python -X utf8 tests/validate_dynamic_forms_schema.py
+          python -X utf8 tests/validate_project.py
+          python -X utf8 scripts/audit_project.py
 
       - name: Resumen de actualización
         if: always()
         run: |
           echo "## Sistema de Evidencias OPS" >> "$GITHUB_STEP_SUMMARY"
           echo "- Fuente: Excel Forms + Directorio + CMS" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Validación: integridad, encabezados, CeCo, actividad, evidencia y caché" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Excel: Forms + Directorio + CMS auditados de forma independiente" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Validación: UTF-8, fórmulas CMS, CeCo, actividad, evidencia y limpieza" >> "$GITHUB_STEP_SUMMARY"
           echo "- Publicación: sólo datos y exportaciones generadas" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publicar únicamente datos generados
