@@ -1,4 +1,4 @@
-const CACHE_NAME = "sistema-evidencias-ops-v4";
+const CACHE_NAME = "sistema-evidencias-ops-v5";
 const CORE = [
   "./",
   "./index.html",

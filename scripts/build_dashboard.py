@@ -245,13 +245,11 @@ def load_managers(path: Path) -> dict[str, dict[str, str]]:
 
 
 def status_label(compliance: float) -> str:
-    if compliance >= 100:
-        return "Completo"
-    if compliance >= 60:
-        return "En ritmo"
-    if compliance > 0:
-        return "En avance"
-    return "Por iniciar"
+    if compliance >= 80:
+        return "En meta"
+    if compliance >= 40:
+        return "Seguimiento"
+    return "Atención"
 
 
 def find_directory_header(ws) -> tuple[int, list[Any]]:
@@ -453,6 +451,9 @@ def build_payload(
             "compliance": compliance,
             "status": status_label(compliance),
         })
+    dm_stats.sort(key=lambda item: (-item["compliance"], key_text(item["shortName"])))
+    for rank, item in enumerate(dm_stats, 1):
+        item["rank"] = rank
 
     expected_total = len(stores) * len(activity_names)
     completed_total = len(completion_pairs)
@@ -460,7 +461,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -473,6 +474,7 @@ def build_payload(
             "cms": cms_path.name,
         },
         "summary": {
+            "dms": len(dm_stats),
             "stores": len(stores),
             "activities": len(activity_names),
             "expectedCompletions": expected_total,
@@ -490,16 +492,6 @@ def build_payload(
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
         },
         "calendar": calendar,
-        "guide": {
-            "title": settings.get("guideTitle") or "Registra correctamente tu evidencia",
-            "intro": settings.get("guideIntro") or "Usa el celular de tienda configurado y registra cada actividad por separado.",
-            "steps": [
-                "Accede al Forms desde el celular de tienda con Microsoft Authenticator activo.",
-                "Selecciona la tienda y la actividad que realmente realizaste.",
-                "Envía una encuesta por cada actividad y adjunta una evidencia clara.",
-            ],
-            "note": settings.get("guideNote") or "Revisa esta página con frecuencia: las actividades y fechas se actualizan desde el CMS.",
-        },
         "activities": activity_stats,
         "dms": dm_stats,
         "attention": sorted(

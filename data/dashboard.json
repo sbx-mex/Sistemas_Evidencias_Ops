@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T04:28:01+00:00",
+  "generatedAt": "2026-08-29T00:33:07-04:00",
   "lastUpdated": "2026-08-28T20:32:52",
   "lastUpdatedDisplay": "28/08/2026 20:32",
   "sources": {
@@ -12,6 +12,7 @@
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx"
   },
   "summary": {
+    "dms": 6,
     "stores": 72,
     "activities": 7,
     "expectedCompletions": 504,
@@ -34,23 +35,13 @@
     "expired": 0,
     "inactive": 0
   },
-  "guide": {
-    "title": "Registra correctamente tu evidencia",
-    "intro": "Usa el celular de tienda configurado y registra cada actividad por separado.",
-    "steps": [
-      "Accede al Forms desde el celular de tienda con Microsoft Authenticator activo.",
-      "Selecciona la tienda y la actividad que realmente realizaste.",
-      "Envía una encuesta por cada actividad y adjunta una evidencia clara."
-    ],
-    "note": "Revisa esta página con frecuencia: las actividades y fechas se actualizan desde el CMS."
-  },
   "activities": [
     {
       "name": "Roll Out",
       "description": "Seguimiento del despliegue o implementación operativa.",
       "order": 1,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-03",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -62,8 +53,8 @@
       "name": "Programacion Hornos Merry - Focaccia",
       "description": "Validación de programación y ejecución.",
       "order": 2,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-03",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -75,8 +66,8 @@
       "name": "Rack FHW",
       "description": "Instalación o seguimiento del rack FHW.",
       "order": 3,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-06",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -88,8 +79,8 @@
       "name": "QR - Qualtrics",
       "description": "Disponibilidad y colocación del código QR.",
       "order": 4,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-03",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -101,8 +92,8 @@
       "name": "Max & Min",
       "description": "Validación del estándar Max & Min.",
       "order": 5,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-06",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -114,8 +105,8 @@
       "name": "Fotografia - SM",
       "description": "Carga de evidencia visual solicitada.",
       "order": 6,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-06",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Baja",
       "autoDetected": false,
@@ -127,8 +118,8 @@
       "name": "Mandil Verde",
       "description": "Seguimiento de la actividad Mandil Verde.",
       "order": 7,
-      "startDate": "2026-08-28",
-      "endDate": "2026-09-13",
+      "startDate": null,
+      "endDate": null,
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -148,7 +139,8 @@
       "pending": 69,
       "pendingStores": 10,
       "compliance": 1.4,
-      "status": "En avance"
+      "status": "Atención",
+      "rank": 1
     },
     {
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -160,7 +152,8 @@
       "pending": 84,
       "pendingStores": 12,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención",
+      "rank": 2
     },
     {
       "dm": "Vanessa Carreño Rios",
@@ -172,7 +165,8 @@
       "pending": 91,
       "pendingStores": 13,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención",
+      "rank": 3
     },
     {
       "dm": "Veronica Garcia Ortega",
@@ -184,7 +178,8 @@
       "pending": 77,
       "pendingStores": 11,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención",
+      "rank": 4
     },
     {
       "dm": "Yazmin Chabela Guadarrama",
@@ -196,7 +191,8 @@
       "pending": 91,
       "pendingStores": 13,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención",
+      "rank": 5
     },
     {
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -208,7 +204,8 @@
       "pending": 91,
       "pendingStores": 13,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención",
+      "rank": 6
     }
   ],
   "attention": [
@@ -220,7 +217,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43193",
@@ -230,7 +227,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38894",
@@ -240,7 +237,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38333",
@@ -250,7 +247,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38368",
@@ -260,7 +257,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38515",
@@ -270,7 +267,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38456",
@@ -280,7 +277,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38339",
@@ -290,7 +287,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38862",
@@ -300,7 +297,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38186",
@@ -310,7 +307,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38230",
@@ -320,7 +317,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38661",
@@ -330,7 +327,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38674",
@@ -340,7 +337,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38845",
@@ -350,7 +347,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38792",
@@ -360,7 +357,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38136",
@@ -370,7 +367,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38460",
@@ -380,7 +377,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38442",
@@ -390,7 +387,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38606",
@@ -400,7 +397,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38374",
@@ -410,7 +407,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38694",
@@ -420,7 +417,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43194",
@@ -430,7 +427,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38527",
@@ -440,7 +437,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38837",
@@ -450,7 +447,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38205",
@@ -460,7 +457,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38207",
@@ -470,7 +467,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38371",
@@ -480,7 +477,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43111",
@@ -490,7 +487,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43195",
@@ -500,7 +497,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38546",
@@ -510,7 +507,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38677",
@@ -520,7 +517,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43132",
@@ -530,7 +527,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38411",
@@ -540,7 +537,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38651",
@@ -550,7 +547,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38930",
@@ -560,7 +557,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38529",
@@ -570,7 +567,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38431",
@@ -580,7 +577,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38903",
@@ -590,7 +587,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38995",
@@ -600,7 +597,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38937",
@@ -610,7 +607,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38965",
@@ -620,7 +617,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38924",
@@ -630,7 +627,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38719",
@@ -640,7 +637,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38811",
@@ -650,7 +647,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38992",
@@ -660,7 +657,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38695",
@@ -670,7 +667,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38197",
@@ -680,7 +677,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38458",
@@ -690,7 +687,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38770",
@@ -700,7 +697,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38561",
@@ -710,7 +707,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38590",
@@ -720,7 +717,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38176",
@@ -730,7 +727,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38427",
@@ -740,7 +737,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38859",
@@ -750,7 +747,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43152",
@@ -760,7 +757,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38117",
@@ -770,7 +767,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38475",
@@ -780,7 +777,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38656",
@@ -790,7 +787,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43043",
@@ -800,7 +797,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38149",
@@ -810,7 +807,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38394",
@@ -820,7 +817,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38535",
@@ -830,7 +827,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38507",
@@ -840,7 +837,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38363",
@@ -850,7 +847,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38119",
@@ -860,7 +857,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38270",
@@ -870,7 +867,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38266",
@@ -880,7 +877,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38925",
@@ -890,7 +887,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "43130",
@@ -900,7 +897,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38115",
@@ -910,7 +907,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38142",
@@ -920,7 +917,7 @@
       "expected": 7,
       "pending": 7,
       "compliance": 0.0,
-      "status": "Por iniciar"
+      "status": "Atención"
     },
     {
       "ceco": "38401",
@@ -930,7 +927,7 @@
       "expected": 7,
       "pending": 6,
       "compliance": 14.3,
-      "status": "En avance"
+      "status": "Atención"
     }
   ],
   "stores": [

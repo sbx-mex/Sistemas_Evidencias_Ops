@@ -23,6 +23,7 @@
     <nav class="main-nav" aria-label="Navegación principal">
       <a href="#resumen">Resumen</a>
       <a href="#actividades">Actividades</a>
+      <a href="#ranking">Ranking DM</a>
       <a href="#tiendas">Tiendas</a>
     </nav>
     <div class="header-actions">
@@ -37,25 +38,15 @@
   <main id="main" tabindex="-1">
     <section class="hero" id="resumen">
       <div class="hero-copy">
-        <p class="eyebrow">Seguimiento operativo</p>
-        <h1>Revisa el avance y actúa.</h1>
-        <p>Filtra por gerente, tienda o actividad para identificar rápidamente qué está completo y qué sigue pendiente.</p>
+        <p class="eyebrow">Visibilidad regional · Centro Norte</p>
+        <h1>Evidencias claras. Decisiones rápidas.</h1>
+        <p>Consulta el cumplimiento por gerente, actividad y tienda desde una sola vista ejecutiva.</p>
       </div>
       <div class="hero-status">
-        <span>Última actualización</span>
+        <span>Fecha de corte</span>
         <strong id="last-updated">—</strong>
-        <small>Tomada de la hora de finalización del Forms</small>
+        <small>Momento del último dato recibido</small>
       </div>
-    </section>
-
-    <section class="guide" id="guia" aria-labelledby="guide-title">
-      <div class="guide-intro">
-        <p class="eyebrow">Guía rápida</p>
-        <h2 id="guide-title">Registra correctamente tu evidencia</h2>
-        <p id="guide-intro">Las instrucciones se actualizan desde el mismo motor del proyecto.</p>
-      </div>
-      <ol id="guide-steps" class="guide-steps"></ol>
-      <div id="guide-note" class="guide-note"></div>
     </section>
 
     <section class="filters" aria-label="Filtros del dashboard">
@@ -63,6 +54,10 @@
       <label><span>Tienda / CeCo</span><select id="filter-store"><option value="">Todas</option></select></label>
       <label><span>Actividad</span><select id="filter-activity"><option value="">Todas</option></select></label>
       <button id="clear-filters" class="button quiet" type="button">Limpiar</button>
+      <button id="export-csv" class="button primary" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/></svg>
+        <span id="export-label">Exportar región</span>
+      </button>
     </section>
 
     <section class="summary" aria-live="polite">
@@ -73,31 +68,22 @@
       <div id="kpi-grid" class="kpi-grid"></div>
     </section>
 
-    <section class="content-grid" id="actividades">
+    <section id="actividades">
       <article class="panel activities-panel">
-        <header><div><p class="eyebrow">Actividades vigentes</p><h2>Avance</h2></div><span id="activity-context" class="tag">Centro Norte</span></header>
+        <header><div><p class="eyebrow">Semaforización por actividad</p><h2>Avance de actividades</h2></div><span id="activity-context" class="tag">Centro Norte</span></header>
         <div id="activity-progress" class="progress-list"></div>
-      </article>
-      <article class="panel action-panel">
-        <header><div><p class="eyebrow">Siguiente acción</p><h2>Atención prioritaria</h2></div></header>
-        <div id="priority-stores" class="priority-list"></div>
       </article>
     </section>
 
-    <section class="section-block" aria-labelledby="team-title">
-      <header class="section-heading"><div><p class="eyebrow">Responsables</p><h2 id="team-title">Equipo DM</h2><p>Selecciona una tarjeta para enfocar toda la vista en su portafolio.</p></div></header>
+    <section class="section-block" id="ranking" aria-labelledby="team-title">
+      <header class="section-heading"><div><p class="eyebrow">De mayor a menor avance</p><h2 id="team-title">Ranking DM</h2><p>Selecciona un gerente para enfocar todos los indicadores en su portafolio.</p></div><div class="legend"><span class="green">En meta</span><span class="amber">Seguimiento</span><span class="red">Atención</span></div></header>
       <div id="dm-team" class="dm-team"></div>
     </section>
 
     <section class="section-block" id="tiendas" aria-labelledby="stores-title">
-      <header class="section-heading split"><div><p class="eyebrow">Detalle operativo</p><h2 id="stores-title">Tiendas</h2><p id="store-summary">—</p></div><button id="export-csv" class="button quiet" type="button">Descargar CSV</button></header>
-      <div class="table-shell"><table><thead><tr><th>CeCo</th><th>Tienda</th><th>DM</th><th>Avance</th><th>Pendiente</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
+      <header class="section-heading split"><div><p class="eyebrow">Detalle dinámico</p><h2 id="stores-title">Tiendas</h2><p id="store-summary">—</p></div></header>
+      <div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>DM</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
     </section>
-
-    <details class="data-health">
-      <summary>Estado de actualización y calidad de datos</summary>
-      <section class="quality" id="quality-strip" aria-label="Calidad de los datos"></section>
-    </details>
   </main>
 
   <footer>

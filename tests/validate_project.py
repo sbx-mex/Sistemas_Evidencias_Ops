@@ -38,7 +38,7 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 2:
+if data.get("schemaVersion") != 3:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
     fail("Identidad del proyecto incorrecta")
@@ -48,7 +48,7 @@ if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
     fail("Python no está leyendo el Excel CMS")
 if data.get("lastUpdatedDisplay") != "28/08/2026 20:32":
     fail("Última actualización incorrecta")
-if data.get("summary", {}).get("stores") != 72 or data.get("summary", {}).get("activities") != 7:
+if data.get("summary", {}).get("dms") != 6 or data.get("summary", {}).get("stores") != 72 or data.get("summary", {}).get("activities") != 7:
     fail("Conteos iniciales incorrectos")
 if data.get("calendar", {}).get("active") != 7:
     fail("Las actividades vigentes del CMS no fueron calculadas")
@@ -74,20 +74,21 @@ for payload in (data, fresh):
 if data != fresh:
     fail("data/dashboard.json está desincronizado")
 
-for text in ["Revisa el avance y actúa.", "guide-steps", "dm-team", "store-table", "Diseñado por Jorge Alcantar Aguiar"]:
+for text in ["Evidencias claras. Decisiones rápidas.", "Ranking DM", "export-label", "dm-team", "store-table", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
-for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar"]:
+for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria"]:
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
-for text in ["renderSummary", "renderActivities", "renderTeam", "renderStores", "exportCsv", "serviceWorker"]:
+for text in ["renderSummary", "renderActivities", "renderTeam", "renderStores", "exportCsv", "semaphore", "Tiendas sin iniciar", "serviceWorker"]:
     if text not in js:
         fail(f"Funcionalidad faltante: {text}")
-if "sistema-evidencias-ops-v4" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v4 incompleto")
-guide = data.get("guide", {})
-if len(guide.get("steps", [])) != 3 or "una encuesta por cada actividad" not in " ".join(guide.get("steps", [])).lower():
-    fail("La guía operativa no fue publicada por Python")
+if "sistema-evidencias-ops-v5" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v5 incompleto")
+if "guide" in data:
+    fail("La guía eliminada todavía se publica en el JSON")
+if [item.get("rank") for item in data.get("dms", [])] != list(range(1, 7)):
+    fail("Ranking DM inválido")
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
 for text in ["python scripts/build_dashboard.py", "python tests/validate_project.py", "git add data/dashboard.json"]:
