@@ -1,0 +1,58 @@
+name: Actualizar Sistema de Evidencias OPS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'cms/**.xlsx'
+      - 'config/actividades.csv'
+      - 'config/settings.json'
+      - 'scripts/build_dashboard.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: evidencias-ops-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Reconstruir dashboard
+        run: python scripts/build_dashboard.py
+
+      - name: Validar proyecto
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python tests/validate_project.py
+          python scripts/audit_project.py
+
+      - name: Publicar únicamente datos generados
+        shell: bash
+        run: |
+          if git diff --quiet -- data/dashboard.json; then
+            echo "El Forms no produjo cambios nuevos."
+            exit 0
+          fi
+          git add data/dashboard.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "data: actualizar evidencias OPS"
+          git push
