@@ -54,10 +54,10 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "toggle-dates"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderActiveScope", "syncFilterUrl", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente · vacío = No aplica", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
+for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente · vacío = No aplica", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 for required in ("Valida tu archivo", "Carpeta Descargas", "URL.revokeObjectURL(state.exportUrl)"):
@@ -124,11 +124,18 @@ if nav_order != sorted(nav_order) or section_order != sorted(section_order):
     issues.append("Navegación y contenido no comparten el mismo orden")
 if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
     issues.append("La fecha de corte o el panel de evidencias no están simplificados")
-for obsolete in ('id="filter-notice"', 'id="activity-context"', 'id="evidence-title"', 'id="team-title"', 'id="stores-title"', 'id="store-summary"'):
+for obsolete in ('id="filter-notice"', 'id="activity-context"', 'id="evidence-title"', 'id="team-title"', 'id="stores-title"', 'id="store-summary"', 'id="active-scope"', 'id="toggle-dates"', 'id="commitment-dates"'):
     if obsolete in html:
         issues.append(f"El layout todavía contiene el bloque eliminado: {obsolete}")
-if any("commitmentDateDisplay" not in item for item in data.get("activities", [])):
+if any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     issues.append("Fechas compromiso no fueron preparadas por Python")
+focus = data.get("activities", [])
+if [item.get("focusRank") for item in focus] != list(range(1, len(focus) + 1)):
+    issues.append("El orden de foco por fecha no es consecutivo")
+summary_source = js[js.index("function renderSummary"):js.index("function renderActivities")]
+team_source = js[js.index("function renderTeam"):js.index("function renderStores")]
+if '"Aplican"' in summary_source or "aplican${" in team_source or "renderActiveScope" in js:
+    issues.append("La interfaz conserva Aplican/No aplica o la vista redundante")
 if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
     issues.append("Ranking DM no es consecutivo")
 if [item.get("compliance", 0) for item in ranking] != sorted((item.get("compliance", 0) for item in ranking), reverse=True):

@@ -384,10 +384,8 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             continue
         if status == "Programada":
             calendar["scheduled"] += 1
-            continue
-        if status == "Vencida":
+        elif status == "Vencida":
             calendar["expired"] += 1
-            continue
         calendar["active"] += 1
         evidence_col = cols.get("evidencia requerida")
         priority_col = cols.get("prioridad")
@@ -398,6 +396,7 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             "startDate": start.isoformat() if start else None,
             "endDate": end.isoformat() if end else None,
             "commitmentDateDisplay": end.strftime("%d/%m/%y") if end else "Sin fecha compromiso",
+            "dateStatus": status,
             "requireEvidence": is_yes(row[evidence_col]) if evidence_col is not None else True,
             "priority": clean_text(row[priority_col]) if priority_col is not None else "Media",
             "autoDetected": False,
@@ -426,6 +425,23 @@ def status_label(compliance: float) -> str:
     if compliance >= 40:
         return "Seguimiento"
     return "Atención"
+
+
+def deadline_focus(end_date: str | None, pending: int) -> dict[str, Any]:
+    """Define el foco visual desde la fecha CMS sin ocultar actividades activas."""
+    if pending <= 0:
+        return {"deadlineLabel": "Completa", "deadlineTone": "green", "daysRemaining": None}
+    if not end_date:
+        return {"deadlineLabel": "Sin fecha", "deadlineTone": "neutral", "daysRemaining": None}
+    end = datetime.fromisoformat(end_date).date()
+    days = (end - datetime.now().date()).days
+    if days < 0:
+        return {"deadlineLabel": "Vencida", "deadlineTone": "red", "daysRemaining": days}
+    if days == 0:
+        return {"deadlineLabel": "Vence hoy", "deadlineTone": "red", "daysRemaining": 0}
+    if days <= 7:
+        return {"deadlineLabel": f"Vence en {days} días", "deadlineTone": "amber", "daysRemaining": days}
+    return {"deadlineLabel": f"En {days} días", "deadlineTone": "green", "daysRemaining": days}
 
 
 def find_directory_header(ws) -> tuple[int, list[Any]]:
@@ -709,14 +725,24 @@ def build_payload(
         completed = sum((ceco, item["name"]) in completion_pairs for ceco in stores)
         not_applicable = sum((ceco, item["name"]) in not_applicable_pairs for ceco in stores)
         applicable = len(stores) - not_applicable
+        pending = applicable - completed
         activity_stats.append({
             **item,
             "completedStores": completed,
             "applicableStores": applicable,
             "notApplicableStores": not_applicable,
-            "pendingStores": applicable - completed,
+            "pendingStores": pending,
             "compliance": round(completed / applicable * 100, 1) if applicable else 0,
+            **deadline_focus(item.get("endDate"), pending),
         })
+    activity_stats.sort(key=lambda item: (
+        item["pendingStores"] == 0,
+        item.get("endDate") or "9999-12-31",
+        item["order"],
+        key_text(item["name"]),
+    ))
+    for focus_rank, item in enumerate(activity_stats, 1):
+        item["focusRank"] = focus_rank
 
     dm_groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for store in store_rows:

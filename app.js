@@ -103,16 +103,14 @@ function renderSummary() {
   $("#score-ring").style.setProperty("--score", `${Math.min(item.compliance, 100) * 3.6}deg`);
   $("#score-title").textContent = currentScope();
   $("#score-message").textContent = !item.expected
-    ? "El alcance seleccionado no aplica para esta actividad."
+    ? "Sin actividades disponibles para el alcance seleccionado."
     : item.pending
-      ? `${number(item.completed)} de ${number(item.expected)} actividades aplicables realizadas · ${signal.label}.`
+      ? `${number(item.completed)} realizadas · ${number(item.pending)} pendientes · ${signal.label}.`
       : "El alcance seleccionado está completo.";
   $("#kpi-grid").innerHTML = [
     [number(item.dms), "DM"],
     [number(item.activities), "Actividades"],
     [number(item.stores), "Tiendas"],
-    [number(item.expected), "Aplican"],
-    [number(item.notApplicable), "No aplica"],
     [number(item.pending), "Pendientes"],
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
@@ -120,38 +118,29 @@ function renderSummary() {
 function renderActivities() {
   const stores = filteredStores();
   const activities = state.data.activities.filter((item) => !state.filters.activity || item.name === state.filters.activity);
-  $("#activity-progress").innerHTML = activities.length ? activities.map((item) => {
+  const rows = activities.map((item) => {
     const progress = stores.map((store) => completionFor(store, [item.name]));
     const completed = progress.reduce((sum, row) => sum + row.completed, 0);
     const expected = progress.reduce((sum, row) => sum + row.expected, 0);
-    const notApplicable = progress.reduce((sum, row) => sum + row.notApplicable, 0);
     const value = expected ? completed / expected * 100 : 0;
-    const signal = semaphore(value);
-    return `<article class="progress-item ${signal.tone}">
-      <span class="traffic-light" aria-hidden="true"></span>
-      <div class="progress-title"><strong>${esc(item.name)}</strong><span>${esc(item.description || "Actividad vigente")}</span></div>
-      <div class="bar" aria-label="${percent(value)} de avance"><span style="--progress:${Math.min(value, 100)}%"></span></div>
-      <div class="progress-number"><strong>${percent(value)}</strong><small>${completed}/${expected} aplican${notApplicable ? ` · ${notApplicable} N/A` : ""}</small></div>
-      <span class="status ${signal.tone}">${signal.label}</span>
-    </article>`;
-  }).join("") : '<div class="empty-state">No hay actividades para el filtro seleccionado.</div>';
-}
-
-function commitmentSignal(item) {
-  if (!item.endDate) return { label: "Sin fecha definida", tone: "neutral" };
-  const end = new Date(`${item.endDate}T23:59:59`);
-  const days = Math.ceil((end - new Date()) / 86400000);
-  if (days < 0) return { label: "Vencida", tone: "red" };
-  if (days <= 7) return { label: "Próxima", tone: "amber" };
-  return { label: "Programada", tone: "green" };
-}
-
-function renderCommitments() {
-  const activities = state.data.activities.filter((item) => !state.filters.activity || item.name === state.filters.activity);
-  $("#commitment-dates").innerHTML = activities.map((item) => {
-    const signal = commitmentSignal(item);
-    return `<div class="commitment-row"><span class="date-dot ${signal.tone}"></span><strong>${esc(item.name)}</strong><time>${esc(item.commitmentDateDisplay || "Sin fecha compromiso")}</time><small class="status ${signal.tone}">${signal.label}</small></div>`;
-  }).join("") || '<div class="empty-state">Sin fechas compromiso.</div>';
+    const complete = expected > 0 && completed === expected;
+    return { item, completed, expected, value, complete };
+  }).sort((a, b) => Number(a.complete) - Number(b.complete)
+    || (a.item.endDate || "9999-12-31").localeCompare(b.item.endDate || "9999-12-31")
+    || (a.item.focusRank || a.item.order) - (b.item.focusRank || b.item.order));
+  $("#activity-progress").innerHTML = rows.length ? rows.map((row, index) => {
+    const { item, completed, expected, value, complete } = row;
+    const tone = complete ? "green" : (item.deadlineTone || "neutral");
+    const label = complete ? "Completa" : (item.deadlineLabel || "Pendiente");
+    return `<tr class="activity-focus-row ${tone}">
+      <td><span class="focus-rank">${index + 1}</span></td>
+      <td><span class="activity-name"><strong>${esc(item.name)}</strong><small>${esc(item.description || "Actividad vigente")}</small></span></td>
+      <td><time>${esc(item.commitmentDateDisplay || "Sin fecha")}</time></td>
+      <td><strong>${number(completed)} de ${number(expected)}</strong></td>
+      <td><div class="table-progress ${semaphore(value).tone}"><span><i style="--progress:${Math.min(value, 100)}%"></i></span><b>${percent(value)}</b></div></td>
+      <td><span class="status ${tone}">${esc(label)}</span></td>
+    </tr>`;
+  }).join("") : '<tr><td colspan="6"><div class="empty-state">No hay actividades para el filtro seleccionado.</div></td></tr>';
 }
 
 function filteredEvidence() {
@@ -221,7 +210,7 @@ function renderTeam() {
     return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}">
       <span class="rank-icon" aria-label="Posición ${index + 1}">${rank}</span>
       <img src="./${esc(dm.photo)}" alt="Fotografía de ${esc(dm.shortName)}" loading="lazy">
-      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.completed}/${dm.expected} aplican${dm.notApplicable ? ` · ${dm.notApplicable} N/A` : ""}</em></span>
+      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.completed} realizadas · ${dm.expected - dm.completed} pendientes</em></span>
       <span class="dm-result"><strong>${percent(dm.value)}</strong><small class="status ${signal.tone}">${signal.label}</small></span>
     </button>`;
   }).join("") || '<div class="empty-state">Sin gerentes para el filtro seleccionado.</div>';
@@ -236,11 +225,10 @@ function renderStores() {
     return `<tr>
       <td><span class="table-rank">${index + 1}</span></td><td><strong>${esc(store.ceco)}</strong></td><td>${esc(store.store)}</td><td>${esc(store.dm)}</td>
       <td><strong>${store.completed}/${store.expected}</strong></td>
-      <td>${store.notApplicable ? `<span class="status neutral">${store.notApplicable}</span>` : "—"}</td>
       <td><div class="table-progress ${signal.tone}"><span><i style="--progress:${Math.min(store.compliance, 100)}%"></i></span><b>${percent(store.compliance)}</b></div></td>
       <td><span class="status ${signal.tone}">${signal.label}</span></td>
     </tr>`;
-  }).join("") : '<tr><td colspan="8"><div class="empty-state">Sin tiendas para mostrar.</div></td></tr>';
+  }).join("") : '<tr><td colspan="7"><div class="empty-state">Sin tiendas para mostrar.</div></td></tr>';
 }
 
 function syncFilterUrl() {
@@ -256,13 +244,8 @@ function readFilterUrl() {
   state.filters = { dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "" };
 }
 
-function renderActiveScope() {
-  const item = metrics();
-  $("#active-scope").innerHTML = `<strong>Vista:</strong> ${esc(reportScope())} <span>·</span> ${esc(state.filters.activity || "Todas las actividades")} <span>·</span> ${number(item.completed)}/${number(item.expected)} aplican${item.notApplicable ? ` <span>·</span> ${number(item.notApplicable)} no aplica` : ""}`;
-}
-
 function renderAll() {
-  renderSummary(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores(); renderActiveScope(); syncFilterUrl();
+  renderSummary(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
 }
 
 function populateFilters() {
@@ -743,10 +726,6 @@ function bindEvents() {
   $("#export-modal-accept").addEventListener("click", acceptExportConfirmation);
   $("#export-modal-cancel").addEventListener("click", cancelExportConfirmation);
   $("#export-modal-close").addEventListener("click", closeExportModal);
-  $("#toggle-dates").addEventListener("click", () => {
-    const panel = $("#commitment-dates"); panel.hidden = !panel.hidden;
-    $("#toggle-dates").setAttribute("aria-expanded", String(!panel.hidden));
-  });
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-dm-focus]");
     if (!button) return;

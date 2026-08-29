@@ -168,7 +168,9 @@ def main() -> None:
             reordered_cms,
         )
         assert payload["summary"]["completedCompletions"] == 2
-        assert payload["activities"][0]["name"] == "Lay Out"
+        assert [item["focusRank"] for item in payload["activities"]] == list(range(1, 9))
+        pending_dates = [item["endDate"] for item in payload["activities"] if item["pendingStores"] and item["endDate"]]
+        assert pending_dates == sorted(pending_dates)
         stores = {store["ceco"]: store for store in payload["stores"]}
         assert stores["38333"]["activities"]["Programacion Hornos Merry - Focaccia"] is True
         assert stores["38115"]["activities"]["Fotografia - SM"] is True
