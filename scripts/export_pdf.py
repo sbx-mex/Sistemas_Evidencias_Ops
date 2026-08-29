@@ -109,8 +109,8 @@ def build_pdf(data: dict, output: Path) -> None:
         pdf.drawString(page_width - 90, page_height - 79, director.get("role", "Director Regional"))
 
         cards = [
-            ("REALIZADAS / APLICAN", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),
-            ("NO APLICA", number(summary.get("notApplicableCompletions", 0))),
+            ("AVANCE REALIZADO", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),
+            ("PENDIENTES", number(summary.get("pendingCompletions", 0))),
             ("% AVANCE", percent(summary.get("compliance", 0))),
         ]
         card_width = (page_width - 76) / 3
@@ -127,7 +127,7 @@ def build_pdf(data: dict, output: Path) -> None:
 
         table_top = page_height - 204
         columns = [28, 85, 480, 625, 700]
-        headers = ["RANKING", "DM", "REALIZADAS / APLICAN", "N/A", "% AVANCE"]
+        headers = ["RANKING", "DM", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE"]
         pdf.setFillColor(DARK)
         pdf.roundRect(28, table_top - 25, page_width - 56, 25, 6, stroke=0, fill=1)
         pdf.setFillColor(white)
@@ -157,7 +157,7 @@ def build_pdf(data: dict, output: Path) -> None:
             pdf.setFillColor(DARK)
             pdf.setFont("Helvetica-Bold", 10)
             pdf.drawString(501, y + 19, f"{number(item.get('completed', 0))} / {number(item.get('expected', 0))}")
-            pdf.drawString(646, y + 19, number(item.get("notApplicable", 0)))
+            pdf.drawString(646, y + 19, number(item.get("pending", 0)))
             pdf.setFillColor(signal(item.get("compliance", 0)))
             pdf.drawString(721, y + 19, percent(item.get("compliance", 0)))
             pdf.setFillColor(LINE)
@@ -177,7 +177,7 @@ def build_pdf(data: dict, output: Path) -> None:
 
     pdf.setTitle(f"Sistema de Evidencia OPS · {region}")
     pdf.setAuthor("Centro Norte")
-    pdf.setSubject("Realizadas / Aplican / No aplica / % Avance")
+    pdf.setSubject("Avance realizado / Pendientes / % Avance")
     pdf.save()
 
 

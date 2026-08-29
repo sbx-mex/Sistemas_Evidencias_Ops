@@ -387,7 +387,7 @@ async function renderPdfPages() {
       context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(profile.name, 1184, 162);
       context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1184, 181);
     }
-    const cards = [["REALIZADAS / APLICAN", `${number(current.completed)} / ${number(current.expected)}`], ["NO APLICA", number(current.notApplicable)], ["% AVANCE", percent(current.compliance)]];
+    const cards = [["AVANCE REALIZADO", `${number(current.completed)} / ${number(current.expected)}`], ["PENDIENTES", number(current.pending)], ["% AVANCE", percent(current.compliance)]];
     cards.forEach(([label, value], cardIndex) => {
       const x = 55 + cardIndex * 503;
       context.fillStyle = cardIndex === 2 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, 483, 82);
@@ -400,7 +400,7 @@ async function renderPdfPages() {
     const tableTop = 330;
     context.fillStyle = "#1e3932"; context.fillRect(55, tableTop, 1490, 55);
     context.fillStyle = "#ffffff"; context.font = "750 14px Segoe UI, sans-serif";
-    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["REALIZADAS / APLICAN", 960], ["N/A", 1260], ["% AVANCE", 1390]];
+    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["AVANCE REALIZADO", 960], ["PENDIENTES", 1260], ["% AVANCE", 1390]];
     headers.forEach(([label, x]) => context.fillText(label, x, tableTop + 34));
 
     pageRows.forEach((item, localIndex) => {
@@ -418,7 +418,7 @@ async function renderPdfPages() {
       context.fillStyle = "#1e3932"; context.font = `750 ${mode === "dms" ? 22 : 18}px Segoe UI, sans-serif`; context.fillText(fitText(context, item.label, 650), labelX, y + rowHeight / 2 - (mode === "dms" ? 4 : -6));
       if (mode === "dms") { context.fillStyle = "#687970"; context.font = "500 15px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, y + rowHeight / 2 + 22); }
       context.fillStyle = "#1e3932"; context.font = "800 20px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1005, y + rowHeight / 2 + 7);
-      context.fillText(number(item.notApplicable), 1280, y + rowHeight / 2 + 7);
+      context.fillText(number(item.pending), 1280, y + rowHeight / 2 + 7);
       context.fillStyle = signal.tone === "green" ? "#116444" : signal.tone === "amber" ? "#80520c" : "#922f24"; context.font = "850 20px Segoe UI, sans-serif";
       context.fillText(percent(item.value), 1410, y + rowHeight / 2 + 7);
     });
@@ -451,7 +451,7 @@ async function exportImage() {
     context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 55);
     context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 108);
     context.font = "600 22px Segoe UI, sans-serif"; context.fillText(`${reportScope()} · Corte ${cutStamp()}`, 800, 150);
-    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`REALIZADAS / APLICAN  ${number(current.completed)} / ${number(current.expected)}   |   NO APLICA  ${number(current.notApplicable)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
+    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`AVANCE REALIZADO  ${number(current.completed)} / ${number(current.expected)}   |   PENDIENTES  ${number(current.pending)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
     context.textAlign = "left";
     if (profilePhoto) {
       context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1217, 62, 86, 86); context.restore();
@@ -461,7 +461,7 @@ async function exportImage() {
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
     context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
-    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("REALIZADAS / APLICAN", 960, top + 45); context.fillText("N/A", 1270, top + 45); context.fillText("% AVANCE", 1400, top + 45);
+    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("AVANCE REALIZADO", 960, top + 45); context.fillText("PENDIENTES", 1270, top + 45); context.fillText("% AVANCE", 1400, top + 45);
     rows.forEach((item, index) => {
       const y = top + tableHeader + index * rowHeight; const signal = semaphore(item.value); const centerY = y + rowHeight / 2;
       context.fillStyle = index % 2 ? "#f4f7f5" : "#ffffff"; context.fillRect(0, y, width, rowHeight - 2);
@@ -476,7 +476,7 @@ async function exportImage() {
       context.fillStyle = "#1e3932"; context.font = `${mode === "dms" ? 700 : 650} ${mode === "dms" ? 27 : 23}px Segoe UI, sans-serif`; context.fillText(item.label, labelX, centerY - 4);
       context.fillStyle = "#65756d"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, centerY + 24);
       context.fillStyle = "#1e3932"; context.font = "700 28px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1000, centerY + 10);
-      context.fillText(number(item.notApplicable), 1290, centerY + 10);
+      context.fillText(number(item.pending), 1290, centerY + 10);
       context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#a86b0a" : "#a2352a"; context.font = "800 31px Segoe UI, sans-serif"; context.fillText(percent(item.value), 1410, centerY + 10);
     });
     const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
@@ -603,18 +603,17 @@ function buildExcelSpec() {
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
   const detailHeaders = mode === "dms"
-    ? ["Ranking", "DM", "Realizadas", "Aplican", "No aplica", "% Avance", "Estado"]
-    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Aplican", "No aplica", "% Avance"];
+    ? ["Ranking", "DM", "Realizadas", "Pendientes", "% Avance", "Estado"]
+    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Pendientes", "% Avance"];
   const activityStartColumn = 3;
   const activityEndColumn = activityStartColumn + activities.length - 1;
   const completedColumn = activityEndColumn + 1;
-  const totalColumn = completedColumn + 1;
-  const notApplicableColumn = totalColumn + 1;
-  const advanceColumn = notApplicableColumn + 1;
+  const pendingColumn = completedColumn + 1;
+  const advanceColumn = pendingColumn + 1;
   const storesByCeco = new Map(stores.map((store) => [store.ceco, store]));
   const matrixStores = rows.map((row) => storesByCeco.get(row.ceco)).filter(Boolean);
   const detailRows = mode === "dms" ? rows.map((row) => [
-    row.rank, row.label, row.completed, row.expected, row.notApplicable, row.value / 100, semaphore(row.value).label,
+    row.rank, row.label, row.completed, row.pending, row.value / 100, semaphore(row.value).label,
   ]) : matrixStores.map((store, index) => {
     const rowNumber = index + 5;
     const result = completionFor(store, activities.map((activity) => activity.name));
@@ -627,18 +626,17 @@ function buildExcelSpec() {
       store.store,
       ...activityValues,
       { formula: `SUM(${activityRange})`, cached: result.completed, style: 6 },
-      { formula: `COUNT(${activityRange})`, cached: result.expected, style: 6 },
-      { formula: `COUNTBLANK(${activityRange})`, cached: result.notApplicable, style: 6 },
-      { formula: `IFERROR(${spreadsheetColumn(completedColumn)}${rowNumber}/${spreadsheetColumn(totalColumn)}${rowNumber},0)`, cached: result.compliance / 100, style: 3 },
+      { formula: `COUNT(${activityRange})-SUM(${activityRange})`, cached: result.pending, style: 6 },
+      { formula: `IFERROR(SUM(${activityRange})/COUNT(${activityRange}),0)`, cached: result.compliance / 100, style: 3 },
     ];
   });
   const activityRows = activities.map((activity, index) => {
     const progress = stores.map((store) => completionFor(store, [activity.name]));
     const completed = progress.reduce((sum, row) => sum + row.completed, 0);
     const expected = progress.reduce((sum, row) => sum + row.expected, 0);
-    const notApplicable = progress.reduce((sum, row) => sum + row.notApplicable, 0);
+    const pending = expected - completed;
     const value = expected ? completed / expected : 0;
-    return [index + 1, activity.name, completed, expected, notApplicable, value, activity.commitmentDateDisplay || "Sin fecha"];
+    return [index + 1, activity.name, completed, pending, value, activity.commitmentDateDisplay || "Sin fecha"];
   });
   return {
     title: `Sistema de Evidencias OPS · ${scope}`,
@@ -649,31 +647,30 @@ function buildExcelSpec() {
           ["Sistema de Evidencias OPS", "", ""],
           [`${scope} · Corte ${cutStamp()}`, "", ""],
           [],
-          ["Indicador", "Valor", "Validación"],
-          ["Realizadas", item.completed, "Cumplimientos del filtro actual"],
-          ["Aplican", item.expected, `${item.stores} tiendas · ${item.activities} actividades`],
-          ["No aplica", item.notApplicable, "Excluidas únicamente por la regla de Hornos"],
-          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} realizadas / ${item.expected} aplican`],
+          ["Indicador", "Valor", "Lectura ejecutiva"],
+          ["Realizadas", item.completed, "Actividades concluidas en el filtro actual"],
+          ["Pendientes", item.pending, "Actividades que aún requieren ejecución"],
+          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} de ${item.expected} en la meta actual`],
         ],
-        widths: [24, 18, 46], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C8",
+        widths: [24, 18, 48], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C7",
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
-        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente · vacío = No aplica", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
-        widths: mode === "dms" ? [10, 34, 14, 12, 12, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 12, 12, 14],
+        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
+        widths: mode === "dms" ? [10, 34, 14, 14, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 14, 14],
         merges: mode === "dms"
-          ? ["A1:G1", "A2:G2"]
+          ? ["A1:F1", "A2:F2"]
           : [`A1:${spreadsheetColumn(advanceColumn)}1`, `A2:${spreadsheetColumn(advanceColumn)}2`, `A3:${spreadsheetColumn(advanceColumn)}3`],
         headerRows: [4],
-        percentColumns: [mode === "dms" ? 6 : advanceColumn],
-        countColumns: mode === "dms" ? [1, 3, 4, 5] : [...activities.map((_, index) => activityStartColumn + index), completedColumn, totalColumn, notApplicableColumn],
+        percentColumns: [mode === "dms" ? 5 : advanceColumn],
+        countColumns: mode === "dms" ? [1, 3, 4] : [...activities.map((_, index) => activityStartColumn + index), completedColumn, pendingColumn],
         freezeRow: 4,
-        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 7 : advanceColumn)}${4 + detailRows.length}`,
+        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 6 : advanceColumn)}${4 + detailRows.length}`,
       },
       {
         name: "Actividades",
-        rows: [["Avance por actividad", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Aplican", "No aplica", "% Avance", "Fecha compromiso"], ...activityRows],
-        widths: [10, 42, 14, 12, 12, 14, 20], merges: ["A1:G1", "A2:G2"], headerRows: [4], percentColumns: [6], freezeRow: 4, autoFilter: `A4:G${4 + activityRows.length}`,
+        rows: [["Avance por actividad", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "% Avance", "Fecha compromiso"], ...activityRows],
+        widths: [10, 44, 14, 14, 14, 20], merges: ["A1:F1", "A2:F2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:F${4 + activityRows.length}`,
       },
     ],
   };
