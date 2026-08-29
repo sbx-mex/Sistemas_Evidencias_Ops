@@ -2,15 +2,15 @@
   "schemaVersion": 10,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T21:12:14+00:00",
-  "lastUpdated": "2026-08-29T14:28:13",
-  "lastUpdatedDisplay": "29/08/2026 14:28",
+  "generatedAt": "2026-08-29T21:22:58+00:00",
+  "lastUpdated": "2026-08-29T15:22:03",
+  "lastUpdatedDisplay": "29/08/2026 15:22",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "JUNTÉMONOS MÁS",
     "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
-    "cutOffDisplay": "29/08/26 · 14:28 h",
+    "cutOffDisplay": "29/08/26 · 15:22 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -19,7 +19,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "9cb167e93e13c25041341d2e81a9d873d9a12ed2642b92fcd0beecb1b2040385",
+    "responsesSha256": "c74cffbf61b2611f475f0f871241c9a007a13969c0af14a1b1e13f2ab8b0b487",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -31,15 +31,15 @@
     "stores": 72,
     "activities": 10,
     "expectedCompletions": 720,
-    "completedCompletions": 8,
-    "compliance": 1.1,
-    "validResponses": 8,
+    "completedCompletions": 10,
+    "compliance": 1.4,
+    "validResponses": 10,
     "storesComplete": 0,
-    "pendingCompletions": 712,
+    "pendingCompletions": 710,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 8,
+    "responsesRead": 10,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [],
@@ -103,7 +103,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 8,
+    "evidenceLinksPublished": 10,
     "privacyMode": false
   },
   "calendar": {
@@ -125,11 +125,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 2,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 72,
-      "compliance": 0.0,
+      "pendingStores": 70,
+      "compliance": 2.8,
       "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
       "daysRemaining": 2,
@@ -350,6 +350,20 @@
       "rank": 1
     },
     {
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "shortName": "Yazmin Garcia",
+      "photo": "assets/dm/yazmin-garcia.webp",
+      "stores": 13,
+      "completed": 2,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 128,
+      "pendingStores": 13,
+      "compliance": 1.5,
+      "status": "Atención",
+      "rank": 2
+    },
+    {
       "dm": "Vanessa Carreño Rios",
       "shortName": "Vanessa Carreño",
       "photo": "assets/dm/vanessa-carreno.webp",
@@ -361,7 +375,7 @@
       "pendingStores": 13,
       "compliance": 0.8,
       "status": "Atención",
-      "rank": 2
+      "rank": 3
     },
     {
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -375,7 +389,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 3
+      "rank": 4
     },
     {
       "dm": "Veronica Garcia Ortega",
@@ -389,26 +403,12 @@
       "pendingStores": 11,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 4
+      "rank": 5
     },
     {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
       "photo": "assets/dm/yazmin-chabela.webp",
-      "stores": 13,
-      "completed": 0,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 130,
-      "pendingStores": 13,
-      "compliance": 0.0,
-      "status": "Atención",
-      "rank": 5
-    },
-    {
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "shortName": "Yazmin Garcia",
-      "photo": "assets/dm/yazmin-garcia.webp",
       "stores": 13,
       "completed": 0,
       "expected": 130,
@@ -1126,17 +1126,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38925",
-      "store": "Star Medica Lomas Verdes",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43130",
       "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -1150,17 +1139,6 @@
     {
       "ceco": "38115",
       "store": "Zona Azul",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38142",
-      "store": "Zona Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
       "expected": 10,
@@ -1184,6 +1162,28 @@
       "ceco": "43194",
       "store": "Atana Lindavista",
       "dm": "Vanessa Carreño Rios",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38142",
+      "store": "Zona Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 1,
       "expected": 10,
       "notApplicable": 0,
@@ -3669,11 +3669,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-08-29T15:14:30",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -3684,7 +3684,7 @@
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false
+        "Activacion PSL Sharpie": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3777,11 +3777,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-08-29T15:22:03",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -3792,7 +3792,7 @@
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false
+        "Activacion PSL Sharpie": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3809,6 +3809,48 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-72a6b4eaac6b8e35",
+      "timestamp": "2026-08-29T15:22:03",
+      "timestampDisplay": "29/08/2026 15:22",
+      "activity": "Activacion PSL Sharpie",
+      "ceco": "38142",
+      "store": "Zona Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "evidenceKey": "Activacion_PSL_Sharpie_38142",
+      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38142",
+      "evidenceFileName": "475806a8-ee33-4297-b735-bb82ecbeb249_Hector Ruben Estevez.jpeg",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/475806a8-ee33-4297-b735-bb82ecbeb249_Hector%20Ruben%20Estevez.jpeg"
+    },
+    {
+      "id": "respuesta-27882c8ca6ae85b1",
+      "timestamp": "2026-08-29T15:14:30",
+      "timestampDisplay": "29/08/2026 15:14",
+      "activity": "Activacion PSL Sharpie",
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "evidenceKey": "Activacion_PSL_Sharpie_38925",
+      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38925",
+      "evidenceFileName": "IMG_9898_Starbucks Star Medic.jpeg",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/IMG_9898_Starbucks%20Star%20Medic.jpeg"
+    },
     {
       "id": "respuesta-ac19bf105a85ca03",
       "timestamp": "2026-08-29T14:28:13",
