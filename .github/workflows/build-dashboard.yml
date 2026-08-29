@@ -50,7 +50,9 @@ jobs:
           cache: pip
 
       - name: Instalar dependencias
-        run: pip install --disable-pip-version-check -r requirements.txt
+        run: |
+          pip install --disable-pip-version-check -r requirements.txt
+          pip check
 
       - name: Validar los tres motores Excel
         run: python -X utf8 scripts/validate_sources.py
@@ -75,6 +77,7 @@ jobs:
           git diff --check
           python -X utf8 scripts/clean_obsolete.py --check
           python -X utf8 tests/validate_dynamic_forms_schema.py
+          python -X utf8 tests/validate_maintenance.py
           python -X utf8 tests/validate_project.py
           python -X utf8 scripts/audit_project.py
 
