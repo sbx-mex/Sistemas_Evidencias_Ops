@@ -18,8 +18,13 @@
   <header class="app-header">
     <a class="brand" href="#main" aria-label="Inicio Sistema de Evidencias OPS">
       <img src="./assets/icons/icon-64.webp" alt="" width="48" height="48">
-      <span><strong>Evidencias OPS</strong><small>Centro Norte</small></span>
+      <span><strong>Sistema de Evidencias OPS</strong><small>Diseñado por Jorge Alcantar Aguiar &amp; Enrique César Flores</small></span>
     </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="#resumen">Resumen</a>
+      <a href="#actividades">Actividades</a>
+      <a href="#tiendas">Tiendas</a>
+    </nav>
     <div class="header-actions">
       <span id="connection-status" class="connection"><i></i>Actualizado</span>
       <button id="install-button" class="button quiet" type="button" hidden>Instalar</button>
@@ -30,17 +35,27 @@
   </header>
 
   <main id="main" tabindex="-1">
-    <section class="hero">
+    <section class="hero" id="resumen">
       <div class="hero-copy">
         <p class="eyebrow">Seguimiento operativo</p>
-        <h1>Lo importante, en una sola vista.</h1>
-        <p>Revisa cumplimiento, responsables y tiendas que necesitan atención. Sin menús innecesarios.</p>
+        <h1>Revisa el avance y actúa.</h1>
+        <p>Filtra por gerente, tienda o actividad para identificar rápidamente qué está completo y qué sigue pendiente.</p>
       </div>
       <div class="hero-status">
         <span>Última actualización</span>
         <strong id="last-updated">—</strong>
         <small>Tomada de la hora de finalización del Forms</small>
       </div>
+    </section>
+
+    <section class="guide" id="guia" aria-labelledby="guide-title">
+      <div class="guide-intro">
+        <p class="eyebrow">Guía rápida</p>
+        <h2 id="guide-title">Registra correctamente tu evidencia</h2>
+        <p id="guide-intro">Las instrucciones se actualizan desde el mismo motor del proyecto.</p>
+      </div>
+      <ol id="guide-steps" class="guide-steps"></ol>
+      <div id="guide-note" class="guide-note"></div>
     </section>
 
     <section class="filters" aria-label="Filtros del dashboard">
@@ -58,7 +73,7 @@
       <div id="kpi-grid" class="kpi-grid"></div>
     </section>
 
-    <section class="content-grid">
+    <section class="content-grid" id="actividades">
       <article class="panel activities-panel">
         <header><div><p class="eyebrow">Actividades vigentes</p><h2>Avance</h2></div><span id="activity-context" class="tag">Centro Norte</span></header>
         <div id="activity-progress" class="progress-list"></div>
@@ -74,22 +89,20 @@
       <div id="dm-team" class="dm-team"></div>
     </section>
 
-    <section class="section-block" aria-labelledby="stores-title">
+    <section class="section-block" id="tiendas" aria-labelledby="stores-title">
       <header class="section-heading split"><div><p class="eyebrow">Detalle operativo</p><h2 id="stores-title">Tiendas</h2><p id="store-summary">—</p></div><button id="export-csv" class="button quiet" type="button">Descargar CSV</button></header>
       <div class="table-shell"><table><thead><tr><th>CeCo</th><th>Tienda</th><th>DM</th><th>Avance</th><th>Pendiente</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
     </section>
 
-    <section class="quality" id="quality-strip" aria-label="Calidad de los datos"></section>
+    <details class="data-health">
+      <summary>Estado de actualización y calidad de datos</summary>
+      <section class="quality" id="quality-strip" aria-label="Calidad de los datos"></section>
+    </details>
   </main>
 
   <footer>
-    <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong><small>Python + Forms + Directorio + CMS</small></span></div>
-    <div class="source-links" aria-label="Archivos que alimentan el proyecto">
-      <a href="./cms/Sistema%20de%20Evidencias%20OPS.xlsx" download>Respuestas Forms</a>
-      <a href="./cms/Centro%20Norte_Directorio.xlsx" download>Directorio</a>
-      <a href="./cms/Sistema_Evidencias_OPS_CMS.xlsx" download>CMS actividades y fechas</a>
-    </div>
-    <small>Un solo JSON público · datos personales protegidos</small>
+    <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong></span></div>
+    <small>Diseñado por Jorge Alcantar Aguiar &amp; Enrique César Flores</small>
   </footer>
 
   <script src="./app.js" defer></script>

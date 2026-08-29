@@ -460,7 +460,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -490,6 +490,16 @@ def build_payload(
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
         },
         "calendar": calendar,
+        "guide": {
+            "title": settings.get("guideTitle") or "Registra correctamente tu evidencia",
+            "intro": settings.get("guideIntro") or "Usa el celular de tienda configurado y registra cada actividad por separado.",
+            "steps": [
+                "Accede al Forms desde el celular de tienda con Microsoft Authenticator activo.",
+                "Selecciona la tienda y la actividad que realmente realizaste.",
+                "Envía una encuesta por cada actividad y adjunta una evidencia clara.",
+            ],
+            "note": settings.get("guideNote") or "Revisa esta página con frecuencia: las actividades y fechas se actualizan desde el CMS.",
+        },
         "activities": activity_stats,
         "dms": dm_stats,
         "attention": sorted(

@@ -1,7 +1,6 @@
 const state = { data: null, filters: { dm: "", store: "", activity: "" }, installPrompt: null };
 
 const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[char]);
@@ -77,11 +76,20 @@ function renderActivities() {
       ? `${item.startDate || "Abierta"} → ${item.endDate || "Sin cierre"}`
       : "Sin restricción de fecha";
     return `<div class="progress-item">
-      <div class="progress-title"><strong>${esc(item.name)}</strong><small>${esc(item.priority)} · ${esc(dates)}</small></div>
+      <div class="progress-title"><strong>${esc(item.name)}</strong><span>${esc(item.description || "Sin instrucciones adicionales.")}</span><small>${esc(item.priority)} · ${esc(dates)}</small></div>
       <div class="bar"><span style="--progress:${Math.min(value, 100)}%"></span></div>
       <div class="progress-number"><strong>${percent(value)}</strong><small>${completed}/${stores.length}</small></div>
     </div>`;
   }).join("") : '<div class="empty-state">No hay actividades vigentes.</div>';
+}
+
+function renderGuide() {
+  const guide = state.data.guide || {};
+  $("#guide-title").textContent = guide.title || "Registra correctamente tu evidencia";
+  $("#guide-intro").textContent = guide.intro || "Consulta los pasos antes de enviar tu registro.";
+  const steps = Array.isArray(guide.steps) ? guide.steps : [];
+  $("#guide-steps").innerHTML = steps.map((step, index) => `<li><span>${index + 1}</span><p>${esc(step)}</p></li>`).join("");
+  $("#guide-note").textContent = guide.note || "Las actividades pueden actualizarse; valida siempre la información vigente.";
 }
 
 function renderPriority() {
@@ -139,22 +147,8 @@ function renderQuality() {
   ].map(([value, label]) => `<span><strong>${number(value)}</strong>${label}</span>`).join("");
 }
 
-function bindDynamicActions() {
-  $$('[data-dm-focus]').forEach((button) => button.addEventListener("click", () => {
-    state.filters.dm = state.filters.dm === button.dataset.dmFocus ? "" : button.dataset.dmFocus;
-    state.filters.store = "";
-    populateFilters(); renderAll(); window.scrollTo({ top: 0, behavior: "smooth" });
-  }, { once: true }));
-  $$('[data-store-focus]').forEach((button) => button.addEventListener("click", () => {
-    const store = state.data.stores.find((item) => item.ceco === button.dataset.storeFocus);
-    if (!store) return;
-    state.filters.dm = store.dm; state.filters.store = store.ceco;
-    populateFilters(); renderAll(); window.scrollTo({ top: 0, behavior: "smooth" });
-  }, { once: true }));
-}
-
 function renderAll() {
-  renderSummary(); renderActivities(); renderPriority(); renderTeam(); renderStores(); renderQuality(); bindDynamicActions();
+  renderGuide(); renderSummary(); renderActivities(); renderPriority(); renderTeam(); renderStores(); renderQuality();
 }
 
 function populateFilters() {
@@ -184,6 +178,21 @@ function bindEvents() {
   $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; renderAll(); });
   $("#clear-filters").addEventListener("click", () => { state.filters = { dm: "", store: "", activity: "" }; populateFilters(); renderAll(); });
   $("#export-csv").addEventListener("click", exportCsv);
+  document.addEventListener("click", (event) => {
+    const dmButton = event.target.closest("[data-dm-focus]");
+    if (dmButton) {
+      state.filters.dm = state.filters.dm === dmButton.dataset.dmFocus ? "" : dmButton.dataset.dmFocus;
+      state.filters.store = ""; populateFilters(); renderAll();
+      document.querySelector("#resumen")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    const storeButton = event.target.closest("[data-store-focus]");
+    if (!storeButton) return;
+    const store = state.data.stores.find((item) => item.ceco === storeButton.dataset.storeFocus);
+    if (!store) return;
+    state.filters.dm = store.dm; state.filters.store = store.ceco;
+    populateFilters(); renderAll(); document.querySelector("#resumen")?.scrollIntoView({ behavior: "smooth" });
+  });
   $("#refresh-button").addEventListener("click", () => loadData(true));
   window.addEventListener("online", updateConnection); window.addEventListener("offline", updateConnection);
   window.addEventListener("beforeinstallprompt", (event) => { event.preventDefault(); state.installPrompt = event; $("#install-button").hidden = false; });

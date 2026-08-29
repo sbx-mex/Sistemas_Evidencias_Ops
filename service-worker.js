@@ -1,12 +1,10 @@
-const CACHE_NAME = "sistema-evidencias-ops-v3";
+const CACHE_NAME = "sistema-evidencias-ops-v4";
 const CORE = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
-  "./data/dashboard.json",
-  "./cms/Sistema_Evidencias_OPS_CMS.xlsx",
   "./assets/icons/icon-64.webp",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
