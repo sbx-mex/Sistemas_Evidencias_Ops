@@ -96,6 +96,31 @@ def compact_key(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", "", key_text(value))
 
 
+def activity_tokens(value: Any) -> set[str]:
+    """Palabras significativas para comparar encabezados humanos del Excel."""
+    return set(re.findall(r"[a-z0-9]+", key_text(value)))
+
+
+def activity_affinity(candidate: Any, activity: Any) -> float:
+    """Mide cercanía por escritura y palabras, sin depender de mayúsculas."""
+    candidate_key = compact_key(candidate)
+    activity_key = compact_key(activity)
+    if not candidate_key or not activity_key:
+        return 0.0
+    character_score = SequenceMatcher(None, candidate_key, activity_key).ratio()
+    candidate_words = activity_tokens(candidate)
+    activity_words = activity_tokens(activity)
+    if not candidate_words or not activity_words:
+        return character_score
+    overlap = len(candidate_words & activity_words)
+    jaccard = overlap / len(candidate_words | activity_words)
+    containment = overlap / min(len(candidate_words), len(activity_words))
+    word_score = (0.65 * containment + 0.35 * jaccard) if min(
+        len(candidate_words), len(activity_words)
+    ) >= 2 else 0.0
+    return max(character_score, word_score)
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as source:
@@ -250,20 +275,24 @@ def closest_activity_key(candidate: Any, activity_names: list[str] | None) -> tu
     actividades se parecen demasiado, falla de forma segura en vez de mezclar evidencia.
     """
     compact = compact_key(candidate)
-    keys = list(dict.fromkeys(compact_key(name) for name in (activity_names or []) if compact_key(name)))
-    if not compact or not keys:
+    catalog = list(dict.fromkeys(
+        (compact_key(name), clean_text(name))
+        for name in (activity_names or []) if compact_key(name)
+    ))
+    if not compact or not catalog:
         return None, None
+    keys = [key for key, _ in catalog]
     if compact in keys:
         return compact, "exact"
     ranked = sorted(
-        ((SequenceMatcher(None, compact, key).ratio(), key) for key in keys),
+        ((activity_affinity(candidate, name), key) for key, name in catalog),
         reverse=True,
     )
     best_score, best_key = ranked[0]
     second_score = ranked[1][0] if len(ranked) > 1 else 0.0
-    if best_score >= 0.80 and best_score - second_score >= 0.08:
-        return best_key, "similar"
-    if best_score >= 0.80:
+    if best_score >= 0.78 and best_score - second_score >= 0.08:
+        return best_key, "affinity"
+    if best_score >= 0.78:
         return None, "ambiguous"
     return None, None
 
@@ -286,7 +315,13 @@ def evidence_columns(headers: list[Any], activity_names: list[str] | None = None
     result = []
     for index, header in enumerate(headers):
         activity_key, match_type = evidence_header_activity(header, activity_names)
-        if key_text(header).startswith("evidencia") or activity_key or match_type == "ambiguous":
+        raw_header = clean_text(header)
+        is_question = "?" in raw_header or "¿" in raw_header
+        # Una pregunta Sí/No puede contener exactamente el nombre de la actividad,
+        # pero nunca debe confundirse con una columna para cargar archivos.
+        if not is_question and (
+            key_text(header).startswith("evidencia") or activity_key or match_type == "ambiguous"
+        ):
             result.append({
                 "index": index,
                 "header": clean_text(header),
@@ -922,8 +957,24 @@ def build_payload(
     valid_responses = sum(item["valid"] for item in submissions)
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
+    source_hashes = {
+        "responsesSha256": file_sha256(responses_path),
+        "directorySha256": file_sha256(directory_path),
+        "cmsSha256": file_sha256(cms_path),
+    }
+    version_inputs = dict(source_hashes)
+    for relative_path in (
+        "scripts/build_dashboard.py", "app.js", "styles.css", "service-worker.js",
+        "pdf-export.js", "xlsx-export.js", "index.html",
+    ):
+        version_inputs[relative_path] = file_sha256(ROOT / relative_path)
+    build_version = hashlib.sha256(
+        json.dumps(version_inputs, sort_keys=True).encode("utf-8")
+    ).hexdigest()[:16]
+
     return {
-        "schemaVersion": 10,
+        "schemaVersion": 11,
+        "buildVersion": build_version,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -943,12 +994,12 @@ def build_payload(
         },
         "sources": {
             "responses": responses_path.name,
-            "responsesSha256": file_sha256(responses_path),
+            "responsesSha256": source_hashes["responsesSha256"],
             "directory": directory_path.name,
-            "directorySha256": file_sha256(directory_path),
+            "directorySha256": source_hashes["directorySha256"],
             "directorySheet": directory_sheet,
             "cms": cms_path.name,
-            "cmsSha256": file_sha256(cms_path),
+            "cmsSha256": source_hashes["cmsSha256"],
         },
         "summary": {
             "dms": len(dm_stats),

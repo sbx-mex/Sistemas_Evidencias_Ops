@@ -88,10 +88,12 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 10:
+if data.get("schemaVersion") != 11:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
     fail("Identidad del proyecto incorrecta")
+if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
+    fail("La versión Python para invalidar caché es incorrecta")
 if data.get("sources", {}).get("directorySheet") != "72 T":
     fail("No se utilizó la hoja configurada del directorio")
 if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
@@ -153,7 +155,7 @@ if {row["evidenceUrl"] for row in published} != set(excel_links):
     fail("El vínculo publicado no coincide exactamente con el Excel")
 if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"] or forms_schema.get("applicabilityIssues"):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
-if any(match not in {"exact", "similar", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
+if any(match not in {"exact", "affinity", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
     fail("Un encabezado de evidencia no pudo relacionarse de forma segura con el CMS")
 for row in published:
     expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
@@ -242,7 +244,10 @@ for forbidden in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exc
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-for cache_control in ("sistema-evidencias-ops-v19", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX"):
+for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }'):
+    if cache_behavior not in js:
+        fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
+for cache_control in ("sistema-evidencias-ops-v20", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:

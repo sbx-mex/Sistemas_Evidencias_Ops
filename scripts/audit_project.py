@@ -83,7 +83,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v19", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v20", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if not all(token in workflow for token in ("set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch")):
     issues.append("El workflow no publica de forma idempotente")
@@ -92,12 +92,14 @@ if "git add -A -- tests/validate_horno_applicability.py" in workflow:
 if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 10:
-    issues.append("Contrato JSON distinto de la versión 10")
+if data.get("schemaVersion") != 11:
+    issues.append("Contrato JSON distinto de la versión 11")
+if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
+    issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
-if any(match not in {"exact", "similar", "generic"} for match in response_schema.get("evidenceHeaderMatch", {}).values()):
+if any(match not in {"exact", "affinity", "generic"} for match in response_schema.get("evidenceHeaderMatch", {}).values()):
     issues.append("Hay encabezados de evidencia sin coincidencia segura en el CMS")
 if response_schema.get("rowConflicts") or any(
     key in {"ambiguous-evidence", "ambiguous-matching-evidence", "mismatched-evidence-column", "multiple-evidence-columns"} and rows

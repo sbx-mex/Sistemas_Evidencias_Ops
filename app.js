@@ -743,12 +743,43 @@ function updateConnection() {
   $("#connection-status").innerHTML = `<i></i>${offline ? "Sin conexión" : "Actualizado"}`;
 }
 
+const BUILD_STORAGE_KEY = "sistema-evidencias-build-version";
+
+async function enforceBuildVersion(data) {
+  const version = String(data?.buildVersion || "");
+  if (!version) throw new Error("La publicación no incluye versión de actualización.");
+  let previous = "";
+  try {
+    previous = localStorage.getItem(BUILD_STORAGE_KEY) || "";
+    localStorage.setItem(BUILD_STORAGE_KEY, version);
+  } catch (_error) {
+    return false;
+  }
+  if (!previous || previous === version || sessionStorage.getItem(BUILD_STORAGE_KEY) === version) return false;
+  sessionStorage.setItem(BUILD_STORAGE_KEY, version);
+  if ("caches" in window) {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((key) => key.startsWith("sistema-evidencias-ops-")).map((key) => caches.delete(key)));
+  }
+  const registration = await navigator.serviceWorker?.getRegistration?.();
+  registration?.active?.postMessage({ type: "CLEAR_ALL_CACHES" });
+  await registration?.update();
+  const url = new URL(window.location.href);
+  url.searchParams.set("build", version);
+  window.location.replace(url.toString());
+  return true;
+}
+
 async function loadData(announce = false) {
   $("#refresh-button").disabled = true;
   try {
-    const response = await fetch(`./data/dashboard.json?v=${Date.now()}`, { cache: "no-store" });
+    const response = await fetch(`./data/dashboard.json?v=${Date.now()}`, {
+      cache: "no-store", headers: { "Cache-Control": "no-cache" },
+    });
     if (!response.ok) throw new Error(`No fue posible cargar los datos (${response.status}).`);
-    state.data = await response.json();
+    const latestData = await response.json();
+    if (await enforceBuildVersion(latestData)) return;
+    state.data = latestData;
     readFilterUrl();
     $("#last-updated").textContent = cutStamp();
     const director = state.data.report?.regionalDirector;

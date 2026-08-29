@@ -13,7 +13,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, load_cms, load_responses
+from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -155,9 +155,27 @@ def main() -> None:
         ]
         assert rows[0]["evidence"].endswith("horno.jpg")
         assert rows[1]["evidence"].endswith("foto.jpg")
-        assert schema["evidenceHeaderMatch"]["Evidencia_Programacion_Horno_Merry_Focaccia"] == "similar"
+        assert schema["evidenceHeaderMatch"]["Evidencia_Programacion_Horno_Merry_Focaccia"] == "affinity"
         assert schema["evidenceHeaderMatch"]["Fotografia SM"] == "exact"
         assert schema["evidenceIssues"] == {}
+
+        # Escenario 8b: mayúsculas inestables, acentos y un error menor conservan
+        # la actividad correcta sin depender de escritura exacta.
+        unstable = temp / "unstable_headers.xlsx"
+        start, finish = timestamps(10)
+        unstable_headers = BASE + ["CeCo", ACTIVITY, "Evidencia_ACtivacion_PSL_Sharpiee"]
+        save_book(unstable, unstable_headers, [[
+            10, start, finish, "", "Prueba", "38115", "Activacion PSL Sharpie", f"{allowed}/psl.jpg",
+        ]])
+        rows, schema = load_responses(unstable, ["Activacion PSL Sharpie", "Activacion PSL Verano"])
+        assert rows[0]["evidence"].endswith("psl.jpg")
+        assert rows[0]["evidenceSourceHeader"] == "Evidencia_ACtivacion_PSL_Sharpiee"
+        assert schema["evidenceHeaderMap"]["Evidencia_ACtivacion_PSL_Sharpiee"] == "activacionpslsharpie"
+        assert schema["evidenceHeaderMatch"]["Evidencia_ACtivacion_PSL_Sharpiee"] == "affinity"
+        exact_key, exact_type = evidence_header_activity(
+            "EVIDENCIA_ÁCTIVACION_PSL_SHARPIE", ["Activacion PSL Sharpie"]
+        )
+        assert exact_key == "activacionpslsharpie" and exact_type == "exact"
 
         # Escenario 9: cambiar el orden editorial del CMS sólo cambia la
         # presentación; el cumplimiento continúa cruzándose por nombre.

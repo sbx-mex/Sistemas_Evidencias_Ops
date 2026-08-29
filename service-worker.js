@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v19";
+const CACHE_NAME = "sistema-evidencias-ops-v20";
 const CORE = [
   "./",
   "./index.html",
@@ -56,6 +56,13 @@ self.addEventListener("message", (event) => {
       caches.keys().then((keys) => Promise.all(
         keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
+      ))
+    );
+  }
+  if (event.data?.type === "CLEAR_ALL_CACHES") {
+    event.waitUntil(
+      caches.keys().then((keys) => Promise.all(
+        keys.filter((key) => key.startsWith(CACHE_PREFIX)).map((key) => caches.delete(key))
       ))
     );
   }
