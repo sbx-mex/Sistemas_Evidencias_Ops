@@ -4,9 +4,9 @@
 |---|---|
 | `index.html` | Estructura del dashboard y navegación. |
 | `styles.css` | Diseño corporativo, responsive e impresión. |
-| `app.js` | Filtros, KPI, evidencias directas y exportación dinámica por alcance. |
+| `app.js` | Filtros, KPI, perfil del DM y exportación dinámica por alcance y actividad. |
 | `pdf-export.js` | Generador PDF multipágina y descarga directa desde el navegador. |
-| `xlsx-export.js` | Generador XLSX sin dependencias para la exportación filtrada en navegador. |
+| `xlsx-export.js` | Generador XLSX filtrado con títulos oscuros, fórmulas y estados por actividad. |
 | `service-worker.js` | Caché offline y actualización de datos. |
 | `manifest.webmanifest` | Instalación como aplicación. |
 | `cms/*.xlsx` | Fuentes de Forms y Directorio Centro Norte. |

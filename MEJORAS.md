@@ -8,10 +8,10 @@
 | 4 | Cierre explícito | La pantalla final solo se cierra con el botón superior **Cerrar**; no abre pestañas adicionales. |
 | 5 | Estabilidad de memoria | La URL temporal de cada exportación se libera al cerrar la confirmación. |
 | 6 | Avance congruente | El indicador principal utiliza `Realizadas / Total` y `% Avance`, calculado como realizadas entre total. |
-| 7 | PDF ejecutivo | El reporte está centrado, sin subtítulos innecesarios, sin pendientes y sin numeración de página. |
-| 8 | Excel ejecutivo | Los títulos conservan colores, los porcentajes son porcentajes y las cantidades son números. |
-| 9 | Tablas simplificadas | Ranking DM y Actividades eliminan columnas redundantes como CeCo o Pendientes según corresponda. |
-| 10 | Actualización segura | Caché PWA v14, limpieza por lista cerrada y diez controles de regresión protegen cada publicación. |
+| 7 | PDF ejecutivo por DM | El encabezado usa la fotografía y nombre del DM seleccionado; el reporte sigue sin pendientes ni numeración. |
+| 8 | Excel ejecutivo por DM | Tiendas muestra CeCo, nombre, una columna por actividad, Realizadas, Total y `% Avance` con fórmulas auditables. |
+| 9 | Contraste consistente | Cada pestaña usa título verde oscuro; `1` realizada y `0` pendiente tienen lectura visual inmediata. |
+| 10 | Actualización segura | Caché PWA v15, limpieza por lista cerrada y diez controles de regresión protegen cada publicación. |
 
 ## Control del motor Python
 

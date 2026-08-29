@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "data" / "dashboard.json"
 DEFAULT_OUTPUT = ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx"
 
-GREEN = "006241"
+GREEN = "003B2E"
 DARK = "1E3932"
 SOFT = "E9F4EF"
 CANVAS = "F6F8F7"

@@ -130,6 +130,8 @@ approve("03 · Python sincronizado con la última actualización")
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
 if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades"]:
     fail("El Excel Python no contiene las tres vistas ejecutivas")
+if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("003B2E") for sheet in static_excel.sheetnames):
+    fail("Los títulos del Excel Python no conservan el verde oscuro")
 expected_summary_formula = "=IFERROR(A6/C6,0)"
 if static_excel["Resumen"]["E6"].value != expected_summary_formula or static_excel["Resumen"]["A6"].number_format != "#,##0" or static_excel["Resumen"]["E6"].number_format != "0.0%" or static_excel["Resumen"]._charts:
     fail("El resumen Excel no conserva fórmula, formato numérico o limpieza visual")
@@ -141,8 +143,15 @@ with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
     subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     dynamic_book = load_workbook(dynamic_excel, data_only=False)
-    if dynamic_book.sheetnames != ["Resumen"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
+    dm_sheet = dynamic_book["Tiendas"]
+    if dynamic_book.sheetnames != ["Resumen", "Tiendas"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
         fail("El motor XLSX dinámico generó un libro inválido")
+    if [cell.value for cell in dm_sheet[4]] != ["CeCo", "Tienda", "Roll Out", "Rack FHW", "QR - Qualtrics", "Mandil Verde", "Realizadas", "Total", "% Avance"]:
+        fail("La hoja Tiendas no contiene el detalle por actividad")
+    if dm_sheet["G5"].value != "=SUM(C5:F5)" or dm_sheet["H5"].value != "=COUNT(C5:F5)" or dm_sheet["I5"].value != "=IFERROR(G5/H5,0)" or dm_sheet["I5"].number_format != "0.0%":
+        fail("Realizadas, Total o porcentaje del DM no son auditables")
+    if dm_sheet["A1"].fill.fgColor.rgb != "FF003B2E" or dm_sheet["C5"].fill.fgColor.rgb != "FF1E3932" or dm_sheet["D5"].fill.fgColor.rgb != "FFE9F4EF":
+        fail("El contraste del título o los estados 1/0 no es consistente")
 approve("04 · XLSX regional y dinámico con formatos congruentes")
 with tempfile.TemporaryDirectory() as temp_dir:
     direct_pdf = Path(temp_dir) / "directo.pdf"
@@ -168,7 +177,7 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "REALIZADAS / TOTAL", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "REALIZADAS / TOTAL", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
     if text not in js:
         if text not in html + css:
             fail(f"Funcionalidad faltante: {text}")
@@ -178,8 +187,8 @@ for forbidden in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exc
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-if "sistema-evidencias-ops-v14" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v14 incompleto")
+if "sistema-evidencias-ops-v15" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v15 incompleto")
 if "window.print" in js or "Tiendas realizadas" in js:
     fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
 if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
@@ -190,6 +199,9 @@ if "% PENDIENTE" in js + export_pdf_source or "PÁGINA ${pageIndex" in js or "P�
 excel_spec_source = js[js.index("function buildExcelSpec"):js.index("async function exportExcel")]
 if '"Pendientes"' in excel_spec_source:
     fail("La exportación Excel dinámica todavía incluye Pendientes")
+for required in ("SUM(${activityRange})", "COUNT(${activityRange})", "profile.photo", 'role: "DM"'):
+    if required not in js:
+        fail(f"Detalle DM incompleto en exportaciones: {required}")
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
 approve("08 · PWA, descarga directa y mensaje final simplificados")
@@ -200,7 +212,7 @@ if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("na
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
-approve("09 · Ranking, Director Regional e identidad ejecutiva")
+approve("09 · Ranking, fotografía DM e identidad ejecutiva")
 for text in ["python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")

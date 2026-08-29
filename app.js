@@ -82,6 +82,15 @@ function reportMeta() {
   };
 }
 
+function exportProfile() {
+  const director = reportMeta().regionalDirector || {
+    name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp",
+  };
+  const dmName = state.filters.dm || (state.filters.store ? filteredStores()[0]?.dm : "");
+  const dm = dmName ? state.data.dms.find((item) => item.dm === dmName) : null;
+  return dm ? { name: dm.shortName || dm.dm, role: "DM", photo: dm.photo } : director;
+}
+
 function renderSummary() {
   const item = metrics();
   const signal = semaphore(item.compliance);
@@ -262,6 +271,17 @@ function fileSafe(value) {
   return String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, "");
 }
 
+function spreadsheetColumn(column) {
+  let value = column;
+  let name = "";
+  while (value > 0) {
+    value -= 1;
+    name = String.fromCharCode(65 + (value % 26)) + name;
+    value = Math.floor(value / 26);
+  }
+  return name;
+}
+
 function reportScope() {
   return state.filters.store ? `Tienda · ${currentScope()}` : state.filters.dm ? `DM · ${state.filters.dm}` : `Región · ${state.data.region}`;
 }
@@ -323,9 +343,10 @@ async function renderPdfPages() {
   const current = metrics();
   const mode = exportMode();
   const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp" };
-  const sources = ["./assets/icons/icon-64.webp", `./${director.photo}`, ...rows.map((item) => item.photo ? `./${item.photo}` : "")];
+  const profile = exportProfile();
+  const sources = ["./assets/icons/icon-64.webp", `./${profile.photo}`, ...rows.map((item) => item.photo ? `./${item.photo}` : "")];
   const loaded = await Promise.all(sources.map((source) => source ? loadImage(source) : Promise.resolve(null)));
-  const [logo, directorPhoto, ...photos] = loaded;
+  const [logo, profilePhoto, ...photos] = loaded;
   const rowHeight = mode === "dms" ? 92 : 58;
   const rowsPerPage = mode === "dms" ? 6 : 11;
   const chunks = [];
@@ -344,10 +365,10 @@ async function renderPdfPages() {
     context.font = "650 20px Segoe UI, sans-serif"; context.fillText(fitText(context, `${reportScope()} · Corte ${cutStamp()}`, 850), 800, 132);
     context.textAlign = "left";
 
-    if (directorPhoto) {
-      context.save(); context.beginPath(); context.arc(1248, 92, 48, 0, Math.PI * 2); context.clip(); drawCover(context, directorPhoto, 1200, 44, 96, 96); context.restore();
-      context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(director.name, 1184, 162);
-      context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(director.role, 1184, 181);
+    if (profilePhoto) {
+      context.save(); context.beginPath(); context.arc(1248, 92, 48, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1200, 44, 96, 96); context.restore();
+      context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(profile.name, 1184, 162);
+      context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1184, 181);
     }
     const cards = [["REALIZADAS / TOTAL", `${number(current.completed)} / ${number(current.expected)}`], ["% AVANCE", percent(current.compliance)]];
     cards.forEach(([label, value], cardIndex) => {
@@ -399,13 +420,14 @@ async function exportImage() {
     const current = metrics();
     const mode = exportMode();
     const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp" };
+    const profile = exportProfile();
     const width = 1600; const headerHeight = 230; const tableHeader = 72; const rowHeight = mode === "dms" ? 148 : 108; const footerHeight = 110;
     const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = headerHeight + tableHeader + Math.max(rows.length, 1) * rowHeight + footerHeight;
     const context = canvas.getContext("2d");
     context.fillStyle = "#f6f8f7"; context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "#006241"; context.fillRect(0, 0, width, headerHeight);
-    const assets = await Promise.all([loadImage("./assets/icons/icon-64.webp"), loadImage(`./${director.photo}`), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
-    const [logo, directorPhoto, ...photos] = assets;
+    const assets = await Promise.all([loadImage("./assets/icons/icon-64.webp"), loadImage(`./${profile.photo}`), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
+    const [logo, profilePhoto, ...photos] = assets;
     if (logo) context.drawImage(logo, 72, 70, 78, 78);
     context.textAlign = "center";
     context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 55);
@@ -413,10 +435,10 @@ async function exportImage() {
     context.font = "600 22px Segoe UI, sans-serif"; context.fillText(`${reportScope()} · Corte ${cutStamp()}`, 800, 150);
     context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`REALIZADAS / TOTAL  ${number(current.completed)} / ${number(current.expected)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
     context.textAlign = "left";
-    if (directorPhoto) {
-      context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, directorPhoto, 1217, 62, 86, 86); context.restore();
-      context.fillStyle = "#ffffff"; context.font = "700 15px Segoe UI, sans-serif"; context.fillText(director.name, 1190, 169);
-      context.fillStyle = "#b9e1d0"; context.font = "600 13px Segoe UI, sans-serif"; context.fillText(director.role, 1190, 190);
+    if (profilePhoto) {
+      context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1217, 62, 86, 86); context.restore();
+      context.fillStyle = "#ffffff"; context.font = "700 15px Segoe UI, sans-serif"; context.fillText(profile.name, 1190, 169);
+      context.fillStyle = "#b9e1d0"; context.font = "600 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1190, 190);
     }
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
@@ -559,14 +581,34 @@ function buildExcelSpec() {
   const rows = exportRows();
   const mode = exportMode();
   const scope = reportScope();
-  const detailHeaders = mode === "dms"
-    ? ["Ranking", "DM", "Realizadas", "Total", "% Avance", "Estado"]
-    : ["Ranking", "Tienda", "CeCo", "Realizadas", "Total", "% Avance", "Estado"];
-  const detailRows = rows.map((row) => mode === "dms"
-    ? [row.rank, row.label, row.completed, row.expected, row.value / 100, semaphore(row.value).label]
-    : [row.rank, row.label, row.ceco, row.completed, row.expected, row.value / 100, semaphore(row.value).label]);
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
+  const detailHeaders = mode === "dms"
+    ? ["Ranking", "DM", "Realizadas", "Total", "% Avance", "Estado"]
+    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Total", "% Avance"];
+  const activityStartColumn = 3;
+  const activityEndColumn = activityStartColumn + activities.length - 1;
+  const completedColumn = activityEndColumn + 1;
+  const totalColumn = completedColumn + 1;
+  const advanceColumn = totalColumn + 1;
+  const storesByCeco = new Map(stores.map((store) => [store.ceco, store]));
+  const matrixStores = rows.map((row) => storesByCeco.get(row.ceco)).filter(Boolean);
+  const detailRows = mode === "dms" ? rows.map((row) => [
+    row.rank, row.label, row.completed, row.expected, row.value / 100, semaphore(row.value).label,
+  ]) : matrixStores.map((store, index) => {
+    const rowNumber = index + 5;
+    const result = completionFor(store, activities.map((activity) => activity.name));
+    const activityValues = activities.map((activity) => ({ value: store.activities[activity.name] ? 1 : 0, style: store.activities[activity.name] ? 7 : 8 }));
+    const activityRange = `${spreadsheetColumn(activityStartColumn)}${rowNumber}:${spreadsheetColumn(activityEndColumn)}${rowNumber}`;
+    return [
+      store.ceco,
+      store.store,
+      ...activityValues,
+      { formula: `SUM(${activityRange})`, cached: result.completed, style: 6 },
+      { formula: `COUNT(${activityRange})`, cached: result.expected, style: 6 },
+      { formula: `IFERROR(${spreadsheetColumn(completedColumn)}${rowNumber}/${spreadsheetColumn(totalColumn)}${rowNumber},0)`, cached: result.compliance / 100, style: 3 },
+    ];
+  });
   const activityRows = activities.map((activity, index) => {
     const completed = stores.filter((store) => store.activities[activity.name]).length;
     const value = stores.length ? completed / stores.length : 0;
@@ -590,11 +632,16 @@ function buildExcelSpec() {
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
-        rows: [[mode === "dms" ? "Ranking DM" : "Avance por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [], detailHeaders, ...detailRows],
-        widths: mode === "dms" ? [10, 34, 14, 12, 14, 16] : [10, 32, 13, 14, 12, 14, 16],
-        merges: mode === "dms" ? ["A1:F1", "A2:F2"] : ["A1:G1", "A2:G2"], headerRows: [4],
-        percentColumns: [mode === "dms" ? 5 : 6], countColumns: mode === "dms" ? [1, 3, 4] : [1, 4, 5], freezeRow: 4,
-        autoFilter: `A4:${mode === "dms" ? "F" : "G"}${4 + detailRows.length}`,
+        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
+        widths: mode === "dms" ? [10, 34, 14, 12, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 12, 14],
+        merges: mode === "dms"
+          ? ["A1:F1", "A2:F2"]
+          : [`A1:${spreadsheetColumn(advanceColumn)}1`, `A2:${spreadsheetColumn(advanceColumn)}2`, `A3:${spreadsheetColumn(advanceColumn)}3`],
+        headerRows: [4],
+        percentColumns: [mode === "dms" ? 5 : advanceColumn],
+        countColumns: mode === "dms" ? [1, 3, 4] : [...activities.map((_, index) => activityStartColumn + index), completedColumn, totalColumn],
+        freezeRow: 4,
+        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 6 : advanceColumn)}${4 + detailRows.length}`,
       },
       {
         name: "Actividades",
