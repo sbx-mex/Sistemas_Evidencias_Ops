@@ -5,7 +5,7 @@ import json
 import re
 from collections import Counter
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlsplit
 
 from PIL import Image
 
@@ -47,23 +47,29 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "evidence-grid", "Director Regional", "Jorge Alcantar", "Ranking DM", "Tiendas CN", "Fecha de corte", "filter-notice", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "toggle-dates"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "evidence-grid", "Nombre de archivo", "Link", "Director Regional", "Jorge Alcantar", "Ranking DM", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "toggle-dates"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("Tiendas sin iniciar", "semaphore", "renderFilterNotice", "renderEvidence", "regionalMetrics", "exportRows", "AVANCE REGIONAL", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
+for required in ("Tiendas sin iniciar", "semaphore", "renderEvidence", "evidenceFileName", "regionalMetrics", "exportRows", "AVANCE REGIONAL", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 5:
-    issues.append("Contrato JSON distinto de la versión 5")
+if data.get("schemaVersion") != 6:
+    issues.append("Contrato JSON distinto de la versión 6")
 report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
-if data.get("quality", {}).get("unsafeEvidenceRows") or any("evidenceUrl" in item for item in data.get("submissions", [])):
-    issues.append("La configuración pública expone o acepta evidencias inseguras")
+published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
+if data.get("quality", {}).get("unsafeEvidenceRows"):
+    issues.append("Se detectaron evidencias con vínculo inseguro")
+if any(not item.get("evidenceFileName") or not item.get("evidenceUrl") or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com" for item in published_evidence):
+    issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
+for obsolete in ('id="filter-notice"', 'id="activity-context"', 'id="evidence-title"', 'id="team-title"', 'id="stores-title"', 'id="store-summary"'):
+    if obsolete in html:
+        issues.append(f"El layout todavía contiene el bloque eliminado: {obsolete}")
 if any("commitmentDateDisplay" not in item for item in data.get("activities", [])):
     issues.append("Fechas compromiso no fueron preparadas por Python")
 if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
@@ -98,6 +104,7 @@ report = {
     "rankingSorted": not any("Ranking DM" in issue for issue in issues),
     "vanessaWhiteBackground": round(white_corner_ratio * 100, 1),
     "exportVisuals": 2,
+    "directEvidenceLinks": len(published_evidence),
     "xlsxFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file(),
     "issues": issues,
 }

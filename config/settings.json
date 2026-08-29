@@ -4,6 +4,6 @@
   "directorySheet": "72 T",
   "onlyOpenStores": true,
   "requireEvidence": true,
-  "publishEvidenceLinks": false,
+  "publishEvidenceLinks": true,
   "publishPersonalData": false
 }

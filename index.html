@@ -59,12 +59,6 @@
       </div>
     </section>
 
-    <aside id="filter-notice" class="filter-notice" aria-live="polite">
-      <span class="filter-notice-icon" aria-hidden="true">i</span>
-      <div><strong id="filter-notice-title">Vista regional activa</strong><p id="filter-notice-message">Las exportaciones mostrarán el ranking de todos los DM.</p></div>
-      <span id="filter-scope-count" class="tag">6 DM</span>
-    </aside>
-
     <section class="summary" aria-live="polite">
       <article class="main-score">
         <div class="score-ring" id="score-ring"><strong id="score-value">0%</strong><span>cumplimiento</span></div>
@@ -73,31 +67,25 @@
       <div id="kpi-grid" class="kpi-grid"></div>
     </section>
 
-    <section id="actividades">
+    <section id="actividades" aria-label="Actividades">
       <article class="panel activities-panel">
-        <header><div><p class="eyebrow">Semaforización por actividad</p><h2>Avance de actividades</h2></div><div class="panel-actions"><button id="toggle-dates" class="button compact" type="button" aria-expanded="false" aria-controls="commitment-dates">Actividad · Fecha compromiso</button><span id="activity-context" class="tag">Centro Norte</span></div></header>
+        <div class="activity-tools"><button id="toggle-dates" class="button compact" type="button" aria-expanded="false" aria-controls="commitment-dates">Actividad · Fecha compromiso</button></div>
         <div id="commitment-dates" class="commitment-dates" hidden></div>
         <div id="activity-progress" class="progress-list"></div>
       </article>
     </section>
 
-    <section class="section-block evidence-section" id="evidencias" aria-labelledby="evidence-title">
-      <header class="section-heading split">
-        <div><p class="eyebrow">Validación visual</p><h2 id="evidence-title">Evidencias</h2><p id="evidence-summary">—</p></div>
-        <button id="evidence-toggle" class="button compact" type="button" hidden>Ver todas</button>
-      </header>
-      <div class="evidence-head" aria-hidden="true"><span>Actividad</span><span>CeCo</span><span>Evidencia</span></div>
+    <section class="section-block evidence-section" id="evidencias" aria-label="Evidencias">
+      <button id="evidence-toggle" class="button compact" type="button" hidden>Ver todas</button>
+      <div class="evidence-head" aria-hidden="true"><span>Actividad</span><span>CeCo</span><span>Nombre de archivo</span><span>Link</span></div>
       <div id="evidence-grid" class="evidence-grid"></div>
-      <p class="security-note">Los vínculos sólo se habilitan cuando el CMS autoriza su publicación y el dominio HTTPS supera la validación de seguridad. SharePoint conserva el control final de acceso.</p>
     </section>
 
-    <section class="section-block" id="ranking" aria-labelledby="team-title">
-      <header class="section-heading"><h2 id="team-title">Ranking DM</h2><div class="legend"><span class="green">En meta</span><span class="amber">Seguimiento</span><span class="red">Atención</span></div></header>
+    <section class="section-block" id="ranking" aria-label="Ranking DM">
       <div id="dm-team" class="dm-team"></div>
     </section>
 
-    <section class="section-block" id="tiendas" aria-labelledby="stores-title">
-      <header class="section-heading split"><div><h2 id="stores-title">Tiendas CN</h2><p id="store-summary">—</p></div></header>
+    <section class="section-block" id="tiendas" aria-label="Tiendas Centro Norte">
       <div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>DM</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
     </section>
   </main>

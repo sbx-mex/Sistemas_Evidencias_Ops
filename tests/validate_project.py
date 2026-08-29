@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 from openpyxl import load_workbook
 
@@ -35,7 +36,8 @@ def fail(message: str) -> None:
 
 
 allowed_hosts = {"grupovips-my.sharepoint.com"}
-if not safe_evidence_url("https://grupovips-my.sharepoint.com/ruta/imagen.jpg#vista", allowed_hosts):
+safe_sample = "https://grupovips-my.sharepoint.com/ruta/imagen.jpg#vista"
+if safe_evidence_url(safe_sample, allowed_hosts) != safe_sample:
     fail("El enlace SharePoint autorizado fue rechazado")
 for unsafe in ("http://grupovips-my.sharepoint.com/imagen.jpg", "https://usuario@grupovips-my.sharepoint.com/imagen.jpg", "https://example.com/imagen.jpg"):
     if safe_evidence_url(unsafe, allowed_hosts):
@@ -54,7 +56,7 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 5:
+if data.get("schemaVersion") != 6:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
     fail("Identidad del proyecto incorrecta")
@@ -76,10 +78,27 @@ if sample.get("activities", {}).get("Roll Out") is not True:
     fail("Roll Out no quedó contabilizado")
 if len(data.get("dms", [])) != 6 or any(not item.get("photo", "").endswith(".webp") for item in data.get("dms", [])):
     fail("Las seis fotografías WebP no quedaron vinculadas")
-if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows") or not data.get("quality", {}).get("privacyMode"):
-    fail("Calidad o privacidad inicial incorrecta")
-if any("email" in row or "submittedBy" in row or "evidenceUrl" in row for row in data.get("submissions", [])):
-    fail("El JSON público expone información privada")
+if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
+    fail("Calidad inicial incorrecta")
+if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
+    fail("El JSON público expone correo o respondente")
+published = [row for row in data.get("submissions", []) if row.get("valid")]
+if len(published) != 2 or data.get("quality", {}).get("evidenceLinksPublished") != 2:
+    fail("Los dos vínculos de evidencia no fueron publicados")
+if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
+    fail("Nombre de archivo o vínculo directo inválido")
+forms_book = load_workbook(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", read_only=True, data_only=True)
+forms_sheet = forms_book[forms_book.sheetnames[0]]
+forms_rows = forms_sheet.iter_rows(values_only=True)
+forms_headers = list(next(forms_rows))
+evidence_column = forms_headers.index("Evidencia del avance")
+excel_links = [row[evidence_column].strip() for row in forms_rows if isinstance(row[evidence_column], str) and row[evidence_column].strip()]
+if {row["evidenceUrl"] for row in published} != set(excel_links):
+    fail("El vínculo publicado no coincide exactamente con el Excel")
+for row in published:
+    expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
+    if row["evidenceFileName"] != expected_name:
+        fail("El nombre de archivo no coincide con el vínculo del Excel")
 if not data.get("submissions") or data["submissions"][0].get("timestampDisplay") != data.get("lastUpdatedDisplay"):
     fail("La última actualización no coincide con la respuesta más reciente")
 if sample.get("ceco") != "38401" or not any(item.get("evidenceKey") == "Roll_Out_38401" for item in data.get("submissions", [])):
@@ -107,17 +126,17 @@ with tempfile.TemporaryDirectory() as temp_dir:
     if dynamic_book.sheetnames != ["Resumen"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
         fail("El motor XLSX dinámico generó un libro inválido")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "Actividad", "CeCo", "Evidencia", "Ranking DM", "Tiendas CN", "export-image", "export-pdf", "export-excel", "filter-notice", "export-modal", "Damos_Seguimiento.webp", "toggle-dates", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "Actividad", "CeCo", "Nombre de archivo", "Link", "Ranking DM", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "toggle-dates", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
-for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico"]:
+for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\""]:
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
-for text in ["renderSummary", "renderFilterNotice", "renderActivities", "renderEvidence", "regionalMetrics", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "semaphore", "Tiendas sin iniciar", "AVANCE REGIONAL", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "evidenceFileName", "regionalMetrics", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "semaphore", "Tiendas sin iniciar", "AVANCE REGIONAL", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
     if text not in js:
         fail(f"Funcionalidad faltante: {text}")
-if "sistema-evidencias-ops-v8" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v8 incompleto")
+if "sistema-evidencias-ops-v9" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v9 incompleto")
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
 if [item.get("rank") for item in data.get("dms", [])] != list(range(1, 7)):
@@ -134,6 +153,6 @@ for text in ["python scripts/build_dashboard.py", "python scripts/export_excel.p
 print("Validación aprobada · 10 mejoras y exportación dinámica")
 print("CMS Excel → Python → un JSON consolidado")
 print("72 tiendas · 7 actividades vigentes · 6 DM + 1 Director Regional")
-print("Roll_Out_38401 → Coacalco → Enrique Cesar · privacidad protegida")
+print("Roll_Out_38401 → Coacalco → Enrique Cesar · vínculo SharePoint validado")
 print("Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes")
 print("Excel: resumen rápido + detalle + actividades")

@@ -3,7 +3,7 @@
 | # | Mejora | Resultado |
 |---:|---|---|
 | 1 | Navegación visible | La sección activa queda marcada y el menú se conserva desplazable en móvil. |
-| 2 | Aviso del filtro | El usuario ve si exportará la región, un DM o una sola tienda. |
+| 2 | Menos es más | Se eliminaron avisos y encabezados repetidos sin alterar filtros ni exportaciones. |
 | 3 | Reporte regional dinámico | Con Todos los DM, imagen, PDF y Excel presentan el ranking de DMs. |
 | 4 | Reporte por DM | Al elegir un DM, las tiendas se ordenan de mayor a menor avance. |
 | 5 | Aviso antes de exportar | `Damos_Seguimiento.webp` confirma que el archivo se está preparando. |
@@ -11,7 +11,7 @@
 | 7 | Excel desde filtros | El XLSX dinámico contiene Resumen, ranking/tiendas y actividades. |
 | 8 | Excel con Python | `export_excel.py` crea un respaldo ejecutivo con fórmulas y gráfica nativa. |
 | 9 | Métricas completas | Los reportes incluyen realizados, total, pendientes, avance del filtro y regional. |
-| 10 | Certificación automatizada | PWA v8, imágenes, OOXML, fórmulas y flujo Python se validan antes de publicar. |
+| 10 | Evidencia directa validada | Python publica nombre real y link exacto sólo para HTTPS y dominio SharePoint autorizado. |
 
 ## Control del motor Python
 

@@ -98,34 +98,9 @@ function renderSummary() {
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
 
-function renderFilterNotice() {
-  const panel = $("#filter-notice");
-  const item = metrics();
-  const activity = state.filters.activity ? ` para “${state.filters.activity}”` : "";
-  if (state.filters.store) {
-    panel.dataset.scope = "store";
-    $("#filter-notice-title").textContent = `Vista de tienda · ${currentScope()}`;
-    $("#filter-notice-message").textContent = `Imagen, PDF y Excel mostrarán únicamente esta tienda${activity}.`;
-    $("#filter-scope-count").textContent = "1 tienda";
-    return;
-  }
-  if (state.filters.dm) {
-    panel.dataset.scope = "dm";
-    $("#filter-notice-title").textContent = `Vista DM · ${state.filters.dm}`;
-    $("#filter-notice-message").textContent = `Imagen, PDF y Excel desglosarán ${item.stores} tiendas de mayor a menor avance${activity}.`;
-    $("#filter-scope-count").textContent = `${item.stores} tiendas`;
-    return;
-  }
-  panel.dataset.scope = "region";
-  $("#filter-notice-title").textContent = `Vista regional · ${state.data.region}`;
-  $("#filter-notice-message").textContent = `Imagen, PDF y Excel mostrarán el ranking de ${item.dms} DM${activity}.`;
-  $("#filter-scope-count").textContent = `${item.dms} DM`;
-}
-
 function renderActivities() {
   const stores = filteredStores();
   const activities = state.data.activities.filter((item) => !state.filters.activity || item.name === state.filters.activity);
-  $("#activity-context").textContent = `${currentScope()} · ${activities.length} ${activities.length === 1 ? "actividad" : "actividades"}`;
   $("#activity-progress").innerHTML = activities.length ? activities.map((item) => {
     const completed = stores.filter((store) => store.activities[item.name]).length;
     const value = stores.length ? completed / stores.length * 100 : 0;
@@ -168,13 +143,13 @@ function filteredEvidence() {
 function renderEvidence() {
   const rows = filteredEvidence();
   const visible = state.showAllEvidence ? rows : rows.slice(0, 6);
-  const published = rows.filter((item) => item.evidenceLinkPublished && item.evidenceUrl).length;
-  $("#evidence-summary").textContent = `${rows.length} ${rows.length === 1 ? "registro" : "registros"} · ${published} con acceso habilitado`;
   $("#evidence-grid").innerHTML = visible.length ? visible.map((item) => `<article class="evidence-row">
-    <span><strong>${esc(item.activity)}</strong></span><span><strong>${esc(item.ceco)}</strong></span>
+    <span class="evidence-cell" data-label="Actividad"><strong>${esc(item.activity)}</strong></span>
+    <span class="evidence-cell" data-label="CeCo"><strong>${esc(item.ceco)}</strong></span>
+    <span class="evidence-cell evidence-filename" data-label="Nombre de archivo" title="${esc(item.evidenceFileName)}">${esc(item.evidenceFileName)}</span>
     ${item.evidenceLinkPublished && item.evidenceUrl
-      ? `<a class="evidence-link" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="Abrir evidencia ${esc(item.evidenceKey)}">${esc(item.evidenceKey)}</a>`
-      : `<span class="evidence-locked" title="El enlace privado no se publica en GitHub">🔒 ${esc(item.evidenceKey)}</span>`}
+      ? `<a class="evidence-link" data-label="Link" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" title="${esc(item.evidenceUrl)}" aria-label="Abrir ${esc(item.evidenceFileName)}">${esc(item.evidenceUrl)}</a>`
+      : `<span class="evidence-locked" data-label="Link">Link no disponible</span>`}
   </article>`).join("") : '<div class="empty-state">No hay evidencias para el alcance seleccionado.</div>';
   $("#evidence-toggle").hidden = rows.length <= 6;
   $("#evidence-toggle").textContent = state.showAllEvidence ? "Ver menos" : `Ver todas (${rows.length})`;
@@ -233,9 +208,6 @@ function renderStores() {
   const activities = selectedActivities();
   const rows = filteredStores().map((store) => ({ ...store, ...completionFor(store, activities) }))
     .sort((a, b) => b.compliance - a.compliance || b.completed - a.completed || a.store.localeCompare(b.store, "es-MX"));
-  const total = rows.reduce((sum, row) => sum + row.completed, 0);
-  const expected = rows.reduce((sum, row) => sum + row.expected, 0);
-  $("#store-summary").textContent = `${rows.length} tiendas · ${total}/${expected} actividades realizadas`;
   $("#store-table").innerHTML = rows.length ? rows.map((store, index) => {
     const signal = semaphore(store.compliance);
     return `<tr>
@@ -248,7 +220,7 @@ function renderStores() {
 }
 
 function renderAll() {
-  renderSummary(); renderFilterNotice(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores();
+  renderSummary(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores();
 }
 
 function populateFilters() {

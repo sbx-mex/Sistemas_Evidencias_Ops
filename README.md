@@ -23,7 +23,7 @@ El motor utiliza exclusivamente estos encabezados del Forms:
 4. `¿Confirmas que realizaste la actividad seleccionada?` → solo `Sí` puede validar.
 5. `Evidencia del avance` → valida HTTPS y dominio autorizado; genera una etiqueta `Actividad_CeCo`.
 
-El correo, nombre del respondente y vínculo privado de SharePoint no se publican en GitHub. El dashboard muestra la evidencia como `Roll_Out_38401` y deja el acceso protegido. Esto evita convertir una ruta personal de SharePoint en un dato público.
+El correo y el nombre del respondente no se publican. Por autorización operativa, el dashboard muestra el nombre real del archivo y el vínculo directo de SharePoint exactamente como viene en Forms, después de validar HTTPS y el dominio permitido.
 
 ## Actualización inmediata
 
@@ -54,9 +54,9 @@ En `Configuracion` se administran región, privacidad, dominios autorizados y Di
 
 - El tablero usa los encabezados cortos **Actividad**, **CeCo** y **Evidencia**.
 - Python sólo acepta `https://`, sin usuario/contraseña embebidos, puerto no estándar, fragmentos ni dominios fuera de `evidenceAllowedHosts`.
-- El nombre visible se forma como `Actividad_CeCo`; no expone el nombre original del archivo.
-- En un repositorio público, conserva `publishEvidenceLinks = No`.
-- Si el proyecto se mueve a un entorno autenticado y se autoriza la exposición de las rutas, cambia `publishEvidenceLinks = Si`. El botón abrirá SharePoint en una pestaña aislada con `noopener`, `noreferrer` y sin encabezado `Referer`. SharePoint seguirá determinando quién puede ver la imagen.
+- La tabla muestra **Actividad**, **CeCo**, **Nombre de archivo** y **Link**.
+- `publishEvidenceLinks = Si` publica únicamente los vínculos que superan la lista de dominios autorizados.
+- El vínculo se conserva tal como viene en el Excel y abre SharePoint en una pestaña aislada con `noopener`, `noreferrer` y sin encabezado `Referer`. SharePoint sigue determinando quién puede ver la imagen.
 
 ## Fotografías y liderazgo regional
 
@@ -65,7 +65,7 @@ La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía 
 ## 10 mejoras de navegación, visibilidad y exportación
 
 1. Navegación adaptable y sección activa visible, también en celular.
-2. Aviso de alcance que explica exactamente qué producirán los filtros.
+2. Layout minimalista sin avisos ni encabezados repetitivos entre secciones.
 3. Exportación regional dinámica: **Todos los DM** genera un ranking por DM.
 4. Exportación focalizada: un solo DM desglosa sus tiendas de mayor a menor avance.
 5. Pantalla previa **Le damos seguimiento** antes de preparar cada archivo.
@@ -73,7 +73,7 @@ La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía 
 7. Exportación XLSX dinámica con Resumen, ranking/tiendas y actividades.
 8. Generador Python de XLSX ejecutivo con fórmulas, formato y gráfica por DM.
 9. Imagen y PDF incluyen realizados, total, pendientes, avance filtrado y regional.
-10. PWA offline v8 y pruebas automáticas para archivos, Excel, imágenes y seguridad.
+10. PWA offline v9 y pruebas automáticas para archivos, Excel, imágenes y seguridad.
 
 ## Python como producto principal
 
@@ -106,7 +106,7 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 - **Resumen:** KPI, Director Regional, avance por actividad y ranking DM.
 - **Actividades:** catálogo administrable y cumplimiento individual.
 - **Tiendas:** cruce CeCo, avance, última respuesta y exportación CSV.
-- **Evidencias:** registros compactos `Actividad_CeCo`, filtrables y con acceso gobernado por el CMS.
+- **Evidencias:** nombre real del archivo y vínculo directo validado, filtrables por DM, tienda y actividad.
 - **Exportación:** imagen, PDF y Excel con alcance dinámico. Todos los DM exporta el ranking regional; un DM exporta sus tiendas ordenadas de mayor a menor avance.
 
 ## Fuente inicial validada

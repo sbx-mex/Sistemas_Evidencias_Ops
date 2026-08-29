@@ -4,7 +4,7 @@
 |---|---|
 | `index.html` | Estructura del dashboard y navegación. |
 | `styles.css` | Diseño corporativo, responsive e impresión. |
-| `app.js` | Filtros, KPI, avisos y exportación dinámica por alcance. |
+| `app.js` | Filtros, KPI, evidencias directas y exportación dinámica por alcance. |
 | `xlsx-export.js` | Generador XLSX sin dependencias para la exportación filtrada en navegador. |
 | `service-worker.js` | Caché offline y actualización de datos. |
 | `manifest.webmanifest` | Instalación como aplicación. |
@@ -15,7 +15,7 @@
 | `assets/director/jorge-alcantar.webp` | Fotografía del Director Regional. |
 | `assets/ui/Damos_Seguimiento.webp` | Aviso visual previo a la exportación. |
 | `assets/ui/Un_placer_haber_Ayudado.webp` | Confirmación visual posterior a la exportación. |
-| `config/settings.json` | Región, hoja y controles de privacidad. |
+| `config/settings.json` | Región, hoja y autorización de enlaces SharePoint. |
 | `scripts/build_dashboard.py` | Motor Python de cruce y cumplimiento. |
 | `scripts/export_excel.py` | Genera el XLSX ejecutivo con fórmulas y gráfica. |
 | `scripts/prepare_images.py` | Convierte fotografías a WebP corporativo. |

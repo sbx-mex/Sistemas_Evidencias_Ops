@@ -21,7 +21,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import unquote, urlsplit
 
 from openpyxl import load_workbook
 
@@ -71,7 +71,7 @@ def normalize_ceco(value: Any) -> str:
 
 
 def evidence_key(activity: str, ceco: str) -> str:
-    """Crea una etiqueta estable y legible, sin publicar el nombre del archivo."""
+    """Crea una etiqueta estable para identificar la actividad y el CeCo."""
     normalized = unicodedata.normalize("NFD", clean_text(activity))
     ascii_text = "".join(char for char in normalized if unicodedata.category(char) != "Mn")
     activity_token = re.sub(r"[^A-Za-z0-9]+", "_", ascii_text).strip("_") or "Evidencia"
@@ -79,8 +79,8 @@ def evidence_key(activity: str, ceco: str) -> str:
 
 
 def safe_evidence_url(value: Any, allowed_hosts: set[str]) -> str | None:
-    """Acepta sólo HTTPS sin credenciales y con host autorizado explícitamente."""
-    raw = clean_text(value)
+    """Valida HTTPS y dominio, conservando el vínculo exactamente como llegó."""
+    raw = str(value or "").strip()
     if not raw or len(raw) > 2048 or any(char in raw for char in ("\r", "\n", "\t")):
         return None
     try:
@@ -95,9 +95,17 @@ def safe_evidence_url(value: Any, allowed_hosts: set[str]) -> str | None:
             or parsed.port not in (None, 443)
         ):
             return None
-        return urlunsplit(("https", parsed.netloc, parsed.path, parsed.query, ""))
+        return raw
     except ValueError:
         return None
+
+
+def evidence_filename(url: str | None) -> str:
+    """Obtiene el nombre real del archivo desde el último segmento de la URL."""
+    if not url:
+        return "Sin archivo"
+    name = unquote(urlsplit(url).path.rsplit("/", 1)[-1]).strip()
+    return re.sub(r"[\r\n\t]", "", name) or "Sin archivo"
 
 
 def parse_datetime(value: Any) -> datetime | None:
@@ -433,6 +441,7 @@ def build_payload(
             "store": store["store"] if store else "CeCo sin cruce",
             "dm": store["dm"] if store else "Sin asignar",
             "evidenceKey": evidence_key(activity or "Evidencia", response["ceco"]),
+            "evidenceFileName": evidence_filename(evidence_url),
             "confirmed": response["confirmed"],
             "evidenceAvailable": evidence_available,
             "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
@@ -508,7 +517,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 5,
+        "schemaVersion": 6,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),

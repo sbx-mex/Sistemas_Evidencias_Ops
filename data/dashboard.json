@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T02:29:18-04:00",
+  "generatedAt": "2026-08-29T02:55:25-04:00",
   "lastUpdated": "2026-08-28T20:39:22",
   "lastUpdatedDisplay": "28/08/2026 20:39",
   "report": {
@@ -40,8 +40,8 @@
     "unknownCeCos": [],
     "duplicateValidResponses": 0,
     "unsafeEvidenceRows": [],
-    "evidenceLinksPublished": 0,
-    "privacyMode": true
+    "evidenceLinksPublished": 2,
+    "privacyMode": false
   },
   "calendar": {
     "active": 7,
@@ -2403,10 +2403,12 @@
       "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "evidenceKey": "QR_Qualtrics_38456",
+      "evidenceFileName": "17879710536332015001691892771562_Ramon Espinosa Macia.jpg",
       "confirmed": true,
       "evidenceAvailable": true,
-      "evidenceLinkPublished": false,
-      "valid": true
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Pregunta/17879710536332015001691892771562_Ramon%20Espinosa%20Macia.jpg"
     },
     {
       "id": "1",
@@ -2417,10 +2419,12 @@
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
       "evidenceKey": "Roll_Out_38401",
+      "evidenceFileName": "IMG-20260828-WA0115_Enrique Cesar Flores.jpg",
       "confirmed": true,
       "evidenceAvailable": true,
-      "evidenceLinkPublished": false,
-      "valid": true
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Pregunta/IMG-20260828-WA0115_Enrique%20Cesar%20Flores.jpg"
     }
   ]
 }
