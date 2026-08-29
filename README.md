@@ -8,10 +8,7 @@ PWA ejecutiva de Centro Norte para medir el cumplimiento de actividades registra
 Sistema de Evidencias OPS.xlsx
              +
 Centro Norte_Directorio.xlsx
-             +
-config/actividades.csv
-             +
-config/gerentes.csv + assets/dm/
+Sistema_Evidencias_OPS_CMS.xlsx + assets/dm/ + assets/director/
              ↓
 scripts/build_dashboard.py
              ↓
@@ -24,9 +21,9 @@ El motor utiliza exclusivamente estos encabezados del Forms:
 2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
 3. `CeCo` → cruce automático con nombre de tienda y DM.
 4. `¿Confirmas que realizaste la actividad seleccionada?` → solo `Sí` puede validar.
-5. `Evidencia del avance` → confirma que el registro contiene evidencia.
+5. `Evidencia del avance` → valida HTTPS y dominio autorizado; genera una etiqueta `Actividad_CeCo`.
 
-El correo, nombre del respondente y vínculo privado de SharePoint no se publican en el JSON inicial.
+El correo, nombre del respondente y vínculo privado de SharePoint no se publican en GitHub. El dashboard muestra la evidencia como `Roll_Out_38401` y deja el acceso protegido. Esto evita convertir una ruta personal de SharePoint en un dato público.
 
 ## Actualización inmediata
 
@@ -41,20 +38,28 @@ python tests/validate_project.py
 python scripts/audit_project.py
 ```
 
-## Agregar o retirar actividades
+## CMS maestro
 
-Edita `config/actividades.csv`:
+Edita `cms/Sistema_Evidencias_OPS_CMS.xlsx`:
 
 - `Orden`: posición visual.
 - `Actividad`: debe coincidir con la opción configurada en Forms.
-- `Activo`: `Si` publica la actividad; `No` la oculta del cumplimiento esperado.
+- `Activo`: `Si` publica la actividad; `No` la retira del cumplimiento esperado.
 - `Descripción`: contexto que verá el usuario en el dashboard.
 
-Si aparece en las respuestas una actividad nueva que aún no está en el CSV, Python la integra como **Detectada en Forms** para evitar pérdida de información.
+En `Configuracion` se administran región, privacidad, dominios autorizados y Director Regional. Si aparece una actividad nueva en Forms, Python la integra como detectada para evitar pérdida de información.
 
-## Fotografías de Gerentes de Distrito
+## Evidencias y alcance seguro
 
-Edita `config/gerentes.csv` para relacionar el nombre exacto del directorio con su nombre corto y fotografía. Las imágenes se almacenan en `assets/dm/`; Python detiene la generación si una fotografía configurada no existe, evitando tarjetas rotas.
+- El tablero usa los encabezados cortos **Actividad**, **CeCo** y **Evidencia**.
+- Python sólo acepta `https://`, sin usuario/contraseña embebidos, puerto no estándar, fragmentos ni dominios fuera de `evidenceAllowedHosts`.
+- El nombre visible se forma como `Actividad_CeCo`; no expone el nombre original del archivo.
+- En un repositorio público, conserva `publishEvidenceLinks = No`.
+- Si el proyecto se mueve a un entorno autenticado y se autoriza la exposición de las rutas, cambia `publishEvidenceLinks = Si`. El botón abrirá SharePoint en una pestaña aislada con `noopener`, `noreferrer` y sin encabezado `Referer`. SharePoint seguirá determinando quién puede ver la imagen.
+
+## Fotografías y liderazgo regional
+
+La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía en `assets/dm/`. La hoja `Configuracion` publica a **Jorge Alcantar** como **Director Regional** mediante `assets/director/jorge-alcantar.webp`. Python detiene la generación si falta una imagen configurada.
 
 ## 10 mejoras de facilidad visual
 
@@ -67,11 +72,11 @@ Edita `config/gerentes.csv` para relacionar el nombre exacto del directorio con 
 7. Filtros persistentes por DM, tienda/CeCo y actividad.
 8. Ranking DM enriquecido con avatar y acceso rápido.
 9. Cola de atención priorizada generada por Python para las tiendas pendientes.
-10. PWA offline v2 que conserva dashboard y fotografías del equipo.
+10. PWA offline v7 que conserva dashboard, liderazgo y fotografías del equipo.
 
 ## Python como producto principal
 
-`scripts/build_dashboard.py` no es un complemento: es el motor del proyecto. Valida encabezados, normaliza CeCo, cruza tienda y DM, comprueba fotografías, deduplica respuestas, protege datos personales, calcula cumplimiento, crea el semáforo ejecutivo y genera `data/dashboard.json`. La interfaz solo presenta el resultado certificado por este proceso.
+`scripts/build_dashboard.py` es el motor del proyecto. Valida encabezados, normaliza CeCo, verifica evidencia segura, cruza tienda y DM, comprueba fotografías, deduplica respuestas, protege datos personales y genera `data/dashboard.json`. La prueba ya no congela una hora fija: compara el JSON publicado contra una reconstrucción completa desde el Excel.
 
 ## Regla de cumplimiento
 
@@ -79,7 +84,7 @@ Una combinación tienda–actividad cuenta una sola vez cuando:
 
 - el CeCo contiene exactamente cinco dígitos y existe en el directorio;
 - la respuesta de confirmación es `Sí`;
-- existe vínculo de evidencia;
+- existe vínculo HTTPS en un dominio autorizado;
 - la actividad está activa o fue detectada en el Forms.
 
 Envíos repetidos se conservan como registros, pero el cumplimiento se deduplica por `CeCo + Actividad`, utilizando el más reciente.
@@ -95,15 +100,16 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 ## Vistas
 
-- **Resumen:** KPI, avance por actividad, ranking DM y atención inmediata.
+- **Resumen:** KPI, Director Regional, avance por actividad y ranking DM.
 - **Actividades:** catálogo administrable y cumplimiento individual.
 - **Tiendas:** cruce CeCo, avance, última respuesta y exportación CSV.
-- **Evidencias:** registros válidos y controles de calidad.
+- **Evidencias:** registros compactos `Actividad_CeCo`, filtrables y con acceso gobernado por el CMS.
+- **Exportación:** imagen y PDF con porcentaje de avance regional, incluso al consultar un alcance filtrado.
 
 ## Fuente inicial validada
 
 - 72 tiendas abiertas de la hoja `72 T`, alineadas con las seis fotografías proporcionadas.
 - 7 actividades activas.
-- Última actualización: `28/08/2026 20:32`.
+- Última actualización: `28/08/2026 20:39`.
 - CeCo `38401` cruzado como `Coacalco` y asignado a `Enrique Cesar Flores`.
-- 1 respuesta válida y 0 CeCo sin cruce.
+- 2 respuestas válidas y 0 CeCo sin cruce.

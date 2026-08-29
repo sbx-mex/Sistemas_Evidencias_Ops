@@ -1,4 +1,4 @@
-const state = { data: null, filters: { dm: "", store: "", activity: "" }, installPrompt: null };
+const state = { data: null, filters: { dm: "", store: "", activity: "" }, showAllEvidence: false, installPrompt: null };
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -40,6 +40,13 @@ function metrics() {
     completedStores: storeProgress.filter((item) => item.completed > 0).length,
     notStartedStores: storeProgress.filter((item) => item.completed === 0).length,
   };
+}
+
+function regionalMetrics() {
+  const activities = state.data.activities.map((item) => item.name);
+  const expected = state.data.stores.length * activities.length;
+  const completed = state.data.stores.reduce((sum, store) => sum + completionFor(store, activities).completed, 0);
+  return { completed, expected, compliance: expected ? completed / expected * 100 : 0 };
 }
 
 function currentScope() {
@@ -126,6 +133,29 @@ function renderCommitments() {
   }).join("") || '<div class="empty-state">Sin fechas compromiso.</div>';
 }
 
+function filteredEvidence() {
+  return state.data.submissions.filter((item) =>
+    item.valid && item.evidenceAvailable &&
+    (!state.filters.dm || item.dm === state.filters.dm) &&
+    (!state.filters.store || item.ceco === state.filters.store) &&
+    (!state.filters.activity || item.activity === state.filters.activity));
+}
+
+function renderEvidence() {
+  const rows = filteredEvidence();
+  const visible = state.showAllEvidence ? rows : rows.slice(0, 6);
+  const published = rows.filter((item) => item.evidenceLinkPublished && item.evidenceUrl).length;
+  $("#evidence-summary").textContent = `${rows.length} ${rows.length === 1 ? "registro" : "registros"} · ${published} con acceso habilitado`;
+  $("#evidence-grid").innerHTML = visible.length ? visible.map((item) => `<article class="evidence-row">
+    <span><strong>${esc(item.activity)}</strong></span><span><strong>${esc(item.ceco)}</strong></span>
+    ${item.evidenceLinkPublished && item.evidenceUrl
+      ? `<a class="evidence-link" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="Abrir evidencia ${esc(item.evidenceKey)}">${esc(item.evidenceKey)}</a>`
+      : `<span class="evidence-locked" title="El enlace privado no se publica en GitHub">🔒 ${esc(item.evidenceKey)}</span>`}
+  </article>`).join("") : '<div class="empty-state">No hay evidencias para el alcance seleccionado.</div>';
+  $("#evidence-toggle").hidden = rows.length <= 6;
+  $("#evidence-toggle").textContent = state.showAllEvidence ? "Ver menos" : `Ver todas (${rows.length})`;
+}
+
 function dmRanking() {
   const stores = filteredStores();
   const activities = selectedActivities();
@@ -172,7 +202,7 @@ function renderStores() {
 }
 
 function renderAll() {
-  renderSummary(); renderActivities(); renderCommitments(); renderTeam(); renderStores();
+  renderSummary(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores();
 }
 
 function populateFilters() {
@@ -198,16 +228,18 @@ function reportScope() {
 function renderReportSheet() {
   const rows = dmRanking();
   const meta = reportMeta();
+  const regional = regionalMetrics();
+  const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
   $("#report-sheet").innerHTML = `<header class="report-header">
     <img src="./assets/icons/icon-64.webp" alt="" width="68" height="68">
     <div><small>${esc(meta.motto)}</small><h1>${esc(meta.title)}</h1><p>${esc(meta.subtitle)} · ${esc(reportScope())}</p></div>
-    <div class="report-cut"><span>Fecha de corte</span><strong>${esc(cutStamp())}</strong></div>
+    <div class="report-cut"><span>Fecha de corte</span><strong>${esc(cutStamp())}</strong><span>Avance regional</span><b>${percent(regional.compliance)}</b></div>
   </header>
   <table class="report-table"><thead><tr><th>DM</th><th>Actividades realizadas</th><th>Actividades totales</th><th>% Avance</th></tr></thead><tbody>${rows.map((dm) => {
     const signal = semaphore(dm.value);
     return `<tr><td><div class="report-dm"><img src="./${esc(dm.photo)}" alt=""><strong>${esc(dm.shortName)}</strong></div></td><td>${dm.completed}</td><td>${dm.expected}</td><td><span class="status ${signal.tone}">${percent(dm.value)}</span></td></tr>`;
   }).join("")}</tbody></table>
-  <footer class="report-footer"><strong>${esc(meta.motto)}</strong><span>${esc(meta.credits)}</span></footer>`;
+  <footer class="report-footer"><strong>${esc(meta.motto)}</strong><span>${esc(director.role)} · ${esc(director.name)}</span><span>${esc(meta.credits)}</span></footer>`;
 }
 
 function exportPdf() {
@@ -236,6 +268,8 @@ function drawCover(context, image, x, y, width, height) {
 async function exportImage() {
   const rows = dmRanking();
   const meta = reportMeta();
+  const regional = regionalMetrics();
+  const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional" };
   const width = 1600; const headerHeight = 210; const tableHeader = 72; const rowHeight = 148; const footerHeight = 110;
   const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = headerHeight + tableHeader + rows.length * rowHeight + footerHeight;
   const context = canvas.getContext("2d");
@@ -246,8 +280,10 @@ async function exportImage() {
   context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 180, 58);
   context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 180, 108);
   context.font = "400 23px Segoe UI, sans-serif"; context.fillText(`${meta.subtitle} · ${reportScope()}`, 180, 148);
-  context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("FECHA DE CORTE", 1525, 82);
-  context.fillStyle = "#ffffff"; context.font = "700 30px Segoe UI, sans-serif"; context.fillText(cutStamp(), 1525, 122); context.textAlign = "left";
+  context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("FECHA DE CORTE", 1525, 55);
+  context.fillStyle = "#ffffff"; context.font = "700 27px Segoe UI, sans-serif"; context.fillText(cutStamp(), 1525, 88);
+  context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText("AVANCE REGIONAL", 1525, 135);
+  context.fillStyle = "#ffffff"; context.font = "800 40px Segoe UI, sans-serif"; context.fillText(percent(regional.compliance), 1525, 180); context.textAlign = "left";
   const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
   context.fillStyle = "#42564d"; context.font = "700 20px Segoe UI, sans-serif";
   context.fillText("DM", 190, top + 45); context.fillText("ACTIVIDADES REALIZADAS", 820, top + 45); context.fillText("ACTIVIDADES TOTALES", 1110, top + 45); context.fillText("% AVANCE", 1390, top + 45);
@@ -264,14 +300,16 @@ async function exportImage() {
   const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
   context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
   context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 72, footerY + 79);
+  context.textAlign = "right"; context.fillStyle = "#ffffff"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`${director.role} · ${director.name}`, 1525, footerY + 64); context.textAlign = "left";
   const link = document.createElement("a"); link.href = canvas.toDataURL("image/png"); link.download = `Sistema_Evidencia_OPS_${fileSafe(reportScope())}_Corte_${cutDate().replaceAll("/", "-")}.png`; link.click();
 }
 
 function bindEvents() {
-  $("#filter-dm").addEventListener("change", (event) => { state.filters.dm = event.target.value; state.filters.store = ""; populateFilters(); renderAll(); });
-  $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; renderAll(); });
-  $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; renderAll(); });
-  $("#clear-filters").addEventListener("click", () => { state.filters = { dm: "", store: "", activity: "" }; populateFilters(); renderAll(); });
+  $("#filter-dm").addEventListener("change", (event) => { state.filters.dm = event.target.value; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
+  $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
+  $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; state.showAllEvidence = false; renderAll(); });
+  $("#clear-filters").addEventListener("click", () => { state.filters = { dm: "", store: "", activity: "" }; state.showAllEvidence = false; populateFilters(); renderAll(); });
+  $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
   $("#export-image").addEventListener("click", exportImage);
   $("#export-pdf").addEventListener("click", exportPdf);
   $("#toggle-dates").addEventListener("click", () => {
@@ -282,7 +320,7 @@ function bindEvents() {
     const button = event.target.closest("[data-dm-focus]");
     if (!button) return;
     state.filters.dm = state.filters.dm === button.dataset.dmFocus ? "" : button.dataset.dmFocus;
-    state.filters.store = ""; populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
+    state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
   });
   $("#refresh-button").addEventListener("click", () => loadData(true));
   window.addEventListener("online", updateConnection); window.addEventListener("offline", updateConnection);
@@ -302,6 +340,13 @@ async function loadData(announce = false) {
     if (!response.ok) throw new Error(`No fue posible cargar los datos (${response.status}).`);
     state.data = await response.json();
     $("#last-updated").textContent = cutStamp();
+    const director = state.data.report?.regionalDirector;
+    if (director) {
+      $("#director-name").textContent = director.name;
+      $("#director-role").textContent = director.role;
+      $("#director-photo").src = `./${director.photo}`;
+      $("#director-photo").alt = `${director.name}, ${director.role}`;
+    }
     populateFilters(); renderAll(); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
   } catch (error) {

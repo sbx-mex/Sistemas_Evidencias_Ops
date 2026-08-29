@@ -47,20 +47,23 @@ for forbidden in ("Gerente de Distrito</small>", "ordenadas de mayor a menor"):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Ranking DM", "Tiendas CN", "Fecha de corte", "export-image", "export-pdf", "toggle-dates"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "evidence-grid", "Director Regional", "Jorge Alcantar", "Ranking DM", "Tiendas CN", "Fecha de corte", "export-image", "export-pdf", "toggle-dates"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("Tiendas sin iniciar", "semaphore", "exportImage", "exportPdf", "renderReportSheet", "completedStores", "notStartedStores"):
+for required in ("Tiendas sin iniciar", "semaphore", "renderEvidence", "regionalMetrics", "AVANCE REGIONAL", "exportImage", "exportPdf", "renderReportSheet", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 4:
-    issues.append("Contrato JSON distinto de la versión 4")
+if data.get("schemaVersion") != 5:
+    issues.append("Contrato JSON distinto de la versión 5")
 report_meta = data.get("report", {})
-if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", ""):
+director = report_meta.get("regionalDirector", {})
+if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
+if data.get("quality", {}).get("unsafeEvidenceRows") or any("evidenceUrl" in item for item in data.get("submissions", [])):
+    issues.append("La configuración pública expone o acepta evidencias inseguras")
 if any("commitmentDateDisplay" not in item for item in data.get("activities", [])):
     issues.append("Fechas compromiso no fueron preparadas por Python")
 if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):

@@ -1,4 +1,4 @@
-const CACHE_NAME = "sistema-evidencias-ops-v6";
+const CACHE_NAME = "sistema-evidencias-ops-v7";
 const CORE = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const CORE = [
   "./assets/icons/icon-64.webp",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
+  "./assets/director/jorge-alcantar.webp",
   "./assets/dm/enrique-cesar.webp",
   "./assets/dm/nancy-carolina.webp",
   "./assets/dm/vanessa-carreno.webp",

@@ -21,6 +21,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 from openpyxl import load_workbook
 
@@ -67,6 +68,36 @@ def normalize_ceco(value: Any) -> str:
     text = clean_text(value).replace(".0", "")
     digits = re.sub(r"\D", "", text)
     return digits if len(digits) == 5 else ""
+
+
+def evidence_key(activity: str, ceco: str) -> str:
+    """Crea una etiqueta estable y legible, sin publicar el nombre del archivo."""
+    normalized = unicodedata.normalize("NFD", clean_text(activity))
+    ascii_text = "".join(char for char in normalized if unicodedata.category(char) != "Mn")
+    activity_token = re.sub(r"[^A-Za-z0-9]+", "_", ascii_text).strip("_") or "Evidencia"
+    return f"{activity_token}_{ceco or 'CeCo_invalido'}"
+
+
+def safe_evidence_url(value: Any, allowed_hosts: set[str]) -> str | None:
+    """Acepta sólo HTTPS sin credenciales y con host autorizado explícitamente."""
+    raw = clean_text(value)
+    if not raw or len(raw) > 2048 or any(char in raw for char in ("\r", "\n", "\t")):
+        return None
+    try:
+        parsed = urlsplit(raw)
+        host = (parsed.hostname or "").casefold().rstrip(".")
+        if (
+            parsed.scheme.casefold() != "https"
+            or not host
+            or host not in allowed_hosts
+            or parsed.username
+            or parsed.password
+            or parsed.port not in (None, 443)
+        ):
+            return None
+        return urlunsplit(("https", parsed.netloc, parsed.path, parsed.query, ""))
+    except ValueError:
+        return None
 
 
 def parse_datetime(value: Any) -> datetime | None:
@@ -333,6 +364,14 @@ def build_payload(
 ) -> dict[str, Any]:
     activities, managers, cms_settings, calendar = load_cms(cms_path)
     settings = load_settings(settings_path, cms_settings)
+    allowed_hosts = {
+        host.strip().casefold().rstrip(".")
+        for host in clean_text(settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")).split(",")
+        if host.strip()
+    }
+    regional_director_photo = clean_text(settings.get("regionalDirectorPhoto", "assets/director/jorge-alcantar.webp"))
+    if regional_director_photo and not (ROOT / regional_director_photo).is_file():
+        raise ValueError(f"No existe la fotografía del Director Regional: {regional_director_photo}")
     stores, directory_sheet = load_directory(directory_path, settings)
     responses = load_responses(responses_path)
 
@@ -362,12 +401,16 @@ def build_payload(
     latest_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
     unknown_cecos = set()
     invalid_rows = []
+    unsafe_evidence_rows = []
     latest_update = None
 
     for response in responses:
         store = stores.get(response["ceco"])
         activity = canonical_activity.get(key_text(response["activity"]), response["activity"])
-        evidence_available = bool(re.match(r"^https?://", response["evidence"], flags=re.I))
+        evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
+        evidence_available = evidence_url is not None
+        if response["evidence"] and not evidence_available:
+            unsafe_evidence_rows.append(response["row"])
         valid = bool(
             store
             and activity
@@ -389,12 +432,14 @@ def build_payload(
             "ceco": response["ceco"] or "Inválido",
             "store": store["store"] if store else "CeCo sin cruce",
             "dm": store["dm"] if store else "Sin asignar",
+            "evidenceKey": evidence_key(activity or "Evidencia", response["ceco"]),
             "confirmed": response["confirmed"],
             "evidenceAvailable": evidence_available,
+            "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
             "valid": valid,
         }
-        if settings.get("publishEvidenceLinks") and evidence_available:
-            public["evidenceUrl"] = response["evidence"]
+        if settings.get("publishEvidenceLinks") and evidence_url:
+            public["evidenceUrl"] = evidence_url
         if settings.get("publishPersonalData"):
             public["submittedBy"] = response["name"]
             public["email"] = response["email"]
@@ -463,7 +508,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 4,
+        "schemaVersion": 5,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -475,6 +520,11 @@ def build_payload(
             "motto": "JUNTÉMONOS MÁS",
             "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
             "cutOffDisplay": latest_update.strftime("%d/%m/%y · %H:%M h") if latest_update else "Sin datos",
+            "regionalDirector": {
+                "name": clean_text(settings.get("regionalDirectorName", "Jorge Alcantar")),
+                "role": "Director Regional",
+                "photo": regional_director_photo,
+            },
         },
         "sources": {
             "responses": responses_path.name,
@@ -498,6 +548,8 @@ def build_payload(
             "invalidRows": invalid_rows,
             "unknownCeCos": sorted(unknown_cecos),
             "duplicateValidResponses": max(valid_responses - completed_total, 0),
+            "unsafeEvidenceRows": unsafe_evidence_rows,
+            "evidenceLinksPublished": sum(bool(item.get("evidenceUrl")) for item in submissions),
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
         },
         "calendar": calendar,

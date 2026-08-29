@@ -1,16 +1,21 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T05:12:48+00:00",
-  "lastUpdated": "2026-08-28T20:32:52",
-  "lastUpdatedDisplay": "28/08/2026 20:32",
+  "generatedAt": "2026-08-29T02:08:43-04:00",
+  "lastUpdated": "2026-08-28T20:39:22",
+  "lastUpdatedDisplay": "28/08/2026 20:39",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "JUNTÉMONOS MÁS",
     "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
-    "cutOffDisplay": "28/08/26 · 20:32 h"
+    "cutOffDisplay": "28/08/26 · 20:39 h",
+    "regionalDirector": {
+      "name": "Jorge Alcantar",
+      "role": "Director Regional",
+      "photo": "assets/director/jorge-alcantar.webp"
+    }
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
@@ -23,17 +28,19 @@
     "stores": 72,
     "activities": 7,
     "expectedCompletions": 504,
-    "completedCompletions": 1,
-    "compliance": 0.2,
-    "validResponses": 1,
+    "completedCompletions": 2,
+    "compliance": 0.4,
+    "validResponses": 2,
     "storesComplete": 0,
-    "pendingCompletions": 503
+    "pendingCompletions": 502
   },
   "quality": {
-    "responsesRead": 1,
+    "responsesRead": 2,
     "invalidRows": [],
     "unknownCeCos": [],
     "duplicateValidResponses": 0,
+    "unsafeEvidenceRows": [],
+    "evidenceLinksPublished": 0,
     "privacyMode": true
   },
   "calendar": {
@@ -95,9 +102,9 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
-      "completedStores": 0,
-      "pendingStores": 72,
-      "compliance": 0.0
+      "completedStores": 1,
+      "pendingStores": 71,
+      "compliance": 1.4
     },
     {
       "name": "Max & Min",
@@ -148,11 +155,11 @@
       "shortName": "Enrique Cesar",
       "photo": "assets/dm/enrique-cesar.webp",
       "stores": 10,
-      "completed": 1,
+      "completed": 2,
       "expected": 70,
-      "pending": 69,
+      "pending": 68,
       "pendingStores": 10,
-      "compliance": 1.4,
+      "compliance": 2.9,
       "status": "Atención",
       "rank": 1
     },
@@ -276,16 +283,6 @@
     {
       "ceco": "38515",
       "store": "Patio Ecatepec",
-      "dm": "Enrique Cesar Flores",
-      "completed": 0,
-      "expected": 7,
-      "pending": 7,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38456",
-      "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
@@ -942,6 +939,16 @@
       "pending": 6,
       "compliance": 14.3,
       "status": "Atención"
+    },
+    {
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "completed": 1,
+      "expected": 7,
+      "pending": 6,
+      "compliance": 14.3,
+      "status": "Atención"
     }
   ],
   "stores": [
@@ -1091,15 +1098,15 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 14.3,
+      "lastUpdate": "2026-08-28T20:39:22",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
         "Rack FHW": false,
-        "QR - Qualtrics": false,
+        "QR - Qualtrics": true,
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false
@@ -2388,6 +2395,20 @@
   ],
   "submissions": [
     {
+      "id": "2",
+      "timestamp": "2026-08-28T20:39:22",
+      "timestampDisplay": "28/08/2026 20:39",
+      "activity": "QR - Qualtrics",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "evidenceKey": "QR_Qualtrics_38456",
+      "confirmed": true,
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": false,
+      "valid": true
+    },
+    {
       "id": "1",
       "timestamp": "2026-08-28T20:32:52",
       "timestampDisplay": "28/08/2026 20:32",
@@ -2395,8 +2416,10 @@
       "ceco": "38401",
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
+      "evidenceKey": "Roll_Out_38401",
       "confirmed": true,
       "evidenceAvailable": true,
+      "evidenceLinkPublished": false,
       "valid": true
     }
   ]
