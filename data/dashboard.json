@@ -1,9 +1,9 @@
 {
   "schemaVersion": 11,
-  "buildVersion": "e0b70d485e814281",
+  "buildVersion": "7cb97887ed148fa6",
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T18:39:05-03:00",
+  "generatedAt": "2026-08-29T21:49:00+00:00",
   "lastUpdated": "2026-08-29T15:22:03",
   "lastUpdatedDisplay": "29/08/2026 15:22",
   "report": {
@@ -20,7 +20,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "1685af37dc0928f2d69ec1c5e506dc26377a22e8adbbfb7cbb82f35a22bc5a82",
+    "responsesSha256": "898b0c826779967777e8e7272745bcd8527033f340441e530c805540956f894b",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -32,15 +32,15 @@
     "stores": 72,
     "activities": 10,
     "expectedCompletions": 720,
-    "completedCompletions": 10,
-    "compliance": 1.4,
-    "validResponses": 10,
+    "completedCompletions": 9,
+    "compliance": 1.2,
+    "validResponses": 9,
     "storesComplete": 0,
-    "pendingCompletions": 710,
+    "pendingCompletions": 711,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 10,
+    "responsesRead": 9,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [],
@@ -72,7 +72,7 @@
         "Evidencia_Mandil Verde",
         "Evidencia_Lay_Out",
         "Evidencia_Community_Board",
-        "Evidencia_Activacion_PSL_Sharpie"
+        "Evidencia_ACtivacion_PSL_Sharpie"
       ],
       "evidenceHeaderMap": {
         "Evidencia_RollOut": "rollout",
@@ -84,7 +84,7 @@
         "Evidencia_Mandil Verde": "mandilverde",
         "Evidencia_Lay_Out": "layout",
         "Evidencia_Community_Board": "communityboard",
-        "Evidencia_Activacion_PSL_Sharpie": "activacionpslsharpie"
+        "Evidencia_ACtivacion_PSL_Sharpie": "activacionpslsharpie"
       },
       "evidenceHeaderMatch": {
         "Evidencia_RollOut": "exact",
@@ -96,7 +96,7 @@
         "Evidencia_Mandil Verde": "exact",
         "Evidencia_Lay_Out": "exact",
         "Evidencia_Community_Board": "exact",
-        "Evidencia_Activacion_PSL_Sharpie": "exact"
+        "Evidencia_ACtivacion_PSL_Sharpie": "exact"
       },
       "rowConflicts": [],
       "evidenceIssues": {},
@@ -104,7 +104,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 10,
+    "evidenceLinksPublished": 9,
     "privacyMode": false
   },
   "calendar": {
@@ -236,11 +236,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 2,
+      "completedStores": 1,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 70,
-      "compliance": 2.8,
+      "pendingStores": 71,
+      "compliance": 1.4,
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
@@ -341,12 +341,12 @@
       "shortName": "Enrique Cesar",
       "photo": "assets/dm/enrique-cesar.webp",
       "stores": 10,
-      "completed": 7,
+      "completed": 6,
       "expected": 100,
       "notApplicable": 0,
-      "pending": 93,
+      "pending": 94,
       "pendingStores": 10,
-      "compliance": 7.0,
+      "compliance": 6.0,
       "status": "Atención",
       "rank": 1
     },
@@ -1207,12 +1207,12 @@
       "ceco": "38862",
       "store": "San Miguel Izcalli",
       "dm": "Enrique Cesar Flores",
-      "completed": 4,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "pending": 6,
-      "compliance": 40.0,
-      "status": "Seguimiento"
+      "pending": 7,
+      "compliance": 30.0,
+      "status": "Atención"
     }
   ],
   "stores": [
@@ -1546,15 +1546,15 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 40.0,
+      "compliance": 30.0,
       "lastUpdate": "2026-08-29T14:28:13",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": true,
+        "Rack FHW": false,
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
@@ -3821,7 +3821,7 @@
       "evidenceKey": "Activacion_PSL_Sharpie_38142",
       "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38142",
       "evidenceFileName": "475806a8-ee33-4297-b735-bb82ecbeb249_Hector Ruben Estevez.jpeg",
-      "evidenceSourceHeader": "Evidencia_Activacion_PSL_Sharpie",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": false,
@@ -3842,7 +3842,7 @@
       "evidenceKey": "Activacion_PSL_Sharpie_38925",
       "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38925",
       "evidenceFileName": "IMG_9898_Starbucks Star Medic.jpeg",
-      "evidenceSourceHeader": "Evidencia_Activacion_PSL_Sharpie",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": false,
@@ -3914,27 +3914,6 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/image_Starbucks%20Galerias%20P.jpg"
-    },
-    {
-      "id": "respuesta-d49f59078eb62707",
-      "timestamp": "2026-08-29T14:04:38",
-      "timestampDisplay": "29/08/2026 14:04",
-      "activity": "Rack FHW",
-      "ceco": "38862",
-      "store": "San Miguel Izcalli",
-      "dm": "Enrique Cesar Flores",
-      "evidenceKey": "Rack_FHW_38862",
-      "evidenceLinkLabel": "Link_Rack_FHW_38862",
-      "evidenceFileName": "17880338415158301924124629037929_Starbucks San Miguel.jpg",
-      "evidenceSourceHeader": "Evidencia_Rack_FHW",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/17880338415158301924124629037929_Starbucks%20San%20Miguel.jpg"
     },
     {
       "id": "respuesta-0a3b6a6809a63cd3",
