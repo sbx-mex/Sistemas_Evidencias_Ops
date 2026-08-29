@@ -92,6 +92,8 @@ if data.get("schemaVersion") != 10:
 response_schema = data.get("quality", {}).get("responseSchema", {})
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
+if any(match not in {"exact", "similar", "generic"} for match in response_schema.get("evidenceHeaderMatch", {}).values()):
+    issues.append("Hay encabezados de evidencia sin coincidencia segura en el CMS")
 if response_schema.get("rowConflicts") or any(
     key in {"ambiguous-evidence", "ambiguous-matching-evidence", "mismatched-evidence-column", "multiple-evidence-columns"} and rows
     for key, rows in response_schema.get("evidenceIssues", {}).items()

@@ -13,6 +13,7 @@ deduplica cumplimiento por tienda/actividad y publica únicamente el JSON mínim
 from __future__ import annotations
 
 import argparse
+from difflib import SequenceMatcher
 import hashlib
 import json
 import re
@@ -126,6 +127,12 @@ def evidence_key(activity: str, ceco: str) -> str:
     return f"{activity_token}_{ceco or 'CeCo_invalido'}"
 
 
+def stable_response_id(*values: Any) -> str:
+    """Identificador técnico estable; no depende de la columna Id de Forms."""
+    raw = "|".join(clean_text(value) for value in values)
+    return "respuesta-" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+
+
 def safe_evidence_url(value: Any, allowed_hosts: set[str]) -> str | None:
     """Valida HTTPS y dominio, conservando el vínculo exactamente como llegó."""
     raw = str(value or "").strip()
@@ -198,26 +205,55 @@ def matching_columns(headers: list[Any], aliases: tuple[str, ...]) -> list[int]:
     return result
 
 
-def evidence_header_activity(header: Any) -> str | None:
-    """Obtiene la actividad codificada en Evidencia_<Actividad>; None = genérica."""
+def closest_activity_key(candidate: Any, activity_names: list[str] | None) -> tuple[str | None, str | None]:
+    """Relaciona un encabezado con el nombre CMS sin depender de posición.
+
+    Acepta coincidencia exacta o una única coincidencia aproximada clara. Si dos
+    actividades se parecen demasiado, falla de forma segura en vez de mezclar evidencia.
+    """
+    compact = compact_key(candidate)
+    keys = list(dict.fromkeys(compact_key(name) for name in (activity_names or []) if compact_key(name)))
+    if not compact or not keys:
+        return None, None
+    if compact in keys:
+        return compact, "exact"
+    ranked = sorted(
+        ((SequenceMatcher(None, compact, key).ratio(), key) for key in keys),
+        reverse=True,
+    )
+    best_score, best_key = ranked[0]
+    second_score = ranked[1][0] if len(ranked) > 1 else 0.0
+    if best_score >= 0.80 and best_score - second_score >= 0.08:
+        return best_key, "similar"
+    if best_score >= 0.80:
+        return None, "ambiguous"
+    return None, None
+
+
+def evidence_header_activity(header: Any, activity_names: list[str] | None = None) -> tuple[str | None, str | None]:
+    """Obtiene la actividad de Evidencia_<Actividad> o del nombre de actividad."""
     raw = key_text(header)
-    if not raw.startswith("evidencia"):
-        return None
-    if raw in {key_text(item) for item in EVIDENCE_HEADERS} or raw.startswith("evidencia del avance (pregunta"):
-        return None
-    suffix = re.sub(r"^evidencia(?:\s+del\s+avance)?", "", raw, count=1)
-    suffix = re.sub(r"\b(?:pregunta\s+no\s+anonima|respuesta\s+necesaria|cargar\s+archivo)\b", "", suffix)
-    return compact_key(suffix) or None
+    if raw.startswith("evidencia"):
+        if raw in {key_text(item) for item in EVIDENCE_HEADERS} or raw.startswith("evidencia del avance (pregunta"):
+            return None, "generic"
+        suffix = re.sub(r"^evidencia(?:\s+del\s+avance)?", "", raw, count=1)
+        suffix = re.sub(r"\b(?:pregunta\s+no\s+anonima|respuesta\s+necesaria|cargar\s+archivo)\b", "", suffix)
+        matched, match_type = closest_activity_key(suffix, activity_names)
+        return (matched or compact_key(suffix) or None), (match_type or "unverified")
+    matched, match_type = closest_activity_key(raw, activity_names)
+    return matched, match_type
 
 
-def evidence_columns(headers: list[Any]) -> list[dict[str, Any]]:
+def evidence_columns(headers: list[Any], activity_names: list[str] | None = None) -> list[dict[str, Any]]:
     result = []
     for index, header in enumerate(headers):
-        if key_text(header).startswith("evidencia"):
+        activity_key, match_type = evidence_header_activity(header, activity_names)
+        if key_text(header).startswith("evidencia") or activity_key or match_type == "ambiguous":
             result.append({
                 "index": index,
                 "header": clean_text(header),
-                "activityKey": evidence_header_activity(header),
+                "activityKey": activity_key,
+                "matchType": match_type,
             })
     return result
 
@@ -246,6 +282,9 @@ def resolve_evidence_value(
             populated.append({**column, "value": value})
     if not populated:
         return "", "", None
+
+    if any(item.get("matchType") == "ambiguous" for item in populated):
+        return "", "", "ambiguous-evidence-header"
 
     activity_key = compact_key(activity)
     exact = [item for item in populated if item["activityKey"] == activity_key]
@@ -432,7 +471,7 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
     return stores, requested
 
 
-def find_response_source(workbook) -> tuple[Any, int, list[Any]]:
+def find_response_source(workbook, activity_names: list[str] | None = None) -> tuple[Any, int, list[Any]]:
     """Localiza hoja y fila de encabezados aunque Forms agregue portada o filas previas."""
     candidates = []
     for sheet_index, ws in enumerate(workbook.worksheets):
@@ -441,7 +480,7 @@ def find_response_source(workbook) -> tuple[Any, int, list[Any]]:
             headers = list(row)
             activity_columns = matching_columns(headers, RESPONSE_FIELDS["activity"])
             ceco_columns = matching_columns(headers, RESPONSE_FIELDS["ceco"])
-            evidence_group = evidence_columns(headers)
+            evidence_group = evidence_columns(headers, activity_names)
             if activity_columns and ceco_columns and evidence_group:
                 score = len(evidence_group) * 100 + sum(
                     bool(matching_columns(headers, aliases)) for aliases in RESPONSE_FIELDS.values()
@@ -453,7 +492,7 @@ def find_response_source(workbook) -> tuple[Any, int, list[Any]]:
     return ws, header_row, headers
 
 
-def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Lee exportaciones Forms antiguas, anchas o normalizadas por filas.
 
     Soporta una sola columna genérica de evidencia, múltiples columnas
@@ -461,14 +500,14 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """
     validate_xlsx(path, "la exportación de Forms")
     workbook = load_workbook(path, read_only=True, data_only=True)
-    ws, header_row, headers = find_response_source(workbook)
+    ws, header_row, headers = find_response_source(workbook, activity_names)
     rows = ws.iter_rows(min_row=header_row + 1, values_only=True)
     column_groups = {field: matching_columns(headers, aliases) for field, aliases in RESPONSE_FIELDS.items()}
     missing = [RESPONSE_FIELDS[field][0] for field in REQUIRED_RESPONSE_FIELDS if not column_groups[field]]
     if missing:
         raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
     confirmation_columns = matching_columns(headers, CONFIRMATION_HEADERS)
-    evidence_group = evidence_columns(headers)
+    evidence_group = evidence_columns(headers, activity_names)
     if not evidence_group:
         raise ValueError("No se encontró ninguna columna de evidencia")
 
@@ -498,9 +537,12 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         # cambia aplicabilidad ni cumplimiento. La evidencia sigue siendo obligatoria
         # cuando así lo define el CMS.
         confirmed = bool(values["activity"])
+        response_id = stable_response_id(
+            values["started"], values["finished"], values["ceco"], values["activity"], evidence
+        )
         responses.append({
             "row": row_number,
-            "id": values["id"] or str(row_number - 1),
+            "id": response_id,
             "started": parse_datetime(values["started"]),
             "finished": finished,
             "email": values["email"],
@@ -525,6 +567,10 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         "evidenceHeaders": [item["header"] for item in evidence_group],
         "evidenceHeaderMap": {
             item["header"]: item["activityKey"] or "generic"
+            for item in evidence_group
+        },
+        "evidenceHeaderMatch": {
+            item["header"]: item.get("matchType") or "none"
             for item in evidence_group
         },
         "rowConflicts": conflicts,
@@ -554,7 +600,7 @@ def build_payload(
     if regional_director_photo and not (ROOT / regional_director_photo).is_file():
         raise ValueError(f"No existe la fotografía del Director Regional: {regional_director_photo}")
     stores, directory_sheet = load_directory(directory_path, settings)
-    responses, response_schema = load_responses(responses_path)
+    responses, response_schema = load_responses(responses_path, [item["name"] for item in activities])
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
     configured = {key_text(item["name"]): item for item in activities}

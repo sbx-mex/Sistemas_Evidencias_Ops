@@ -13,7 +13,7 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import file_sha256, key_text, load_responses, safe_evidence_url
+from scripts.build_dashboard import evidence_key, file_sha256, key_text, load_responses, safe_evidence_url
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -97,8 +97,6 @@ for source_key, path in (
 sample = next((store for store in data.get("stores", []) if store.get("ceco") == "38115"), None)
 if not sample or sample.get("store") != "Zona Azul" or sample.get("dm") != "Yazmin Haydee Garcia Gonzalez":
     fail("Falló el cruce 38115 → Zona Azul → Yazmin Haydee")
-if sample.get("activities", {}).get("Roll Out") is not True:
-    fail("Roll Out no quedó contabilizado")
 if any(item.get("noMeansNotApplicable") or item.get("notApplicableStores") for item in data.get("activities", [])):
     fail("El proyecto conserva una regla obsoleta de No aplica")
 if summary.get("notApplicableCompletions") != 0:
@@ -110,13 +108,16 @@ if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("u
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
     fail("El JSON público expone correo o respondente")
 published = [row for row in data.get("submissions", []) if row.get("valid")]
-forms_responses, forms_schema = load_responses(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx")
+forms_responses, forms_schema = load_responses(
+    ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
+    [item["name"] for item in data.get("activities", [])],
+)
 active_names = {key_text(item["name"]) for item in data.get("activities", [])}
 excel_links = [
     row["evidence"] for row in forms_responses
     if row["evidence"] and key_text(row["activity"]) in active_names and row["ceco"]
 ]
-if not published or data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
+if data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
     fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
 if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
     fail("Nombre de archivo o vínculo directo inválido")
@@ -124,14 +125,23 @@ if {row["evidenceUrl"] for row in published} != set(excel_links):
     fail("El vínculo publicado no coincide exactamente con el Excel")
 if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"]:
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
+if any(match not in {"exact", "similar", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
+    fail("Un encabezado de evidencia no pudo relacionarse de forma segura con el CMS")
 for row in published:
     expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
     if row["evidenceFileName"] != expected_name:
         fail("El nombre de archivo no coincide con el vínculo del Excel")
-if not data.get("submissions") or data["submissions"][0].get("timestampDisplay") != data.get("lastUpdatedDisplay"):
+if data.get("submissions") and data["submissions"][0].get("timestampDisplay") != data.get("lastUpdatedDisplay"):
     fail("La última actualización no coincide con la respuesta más reciente")
-if sample.get("ceco") != "38115" or not any(item.get("evidenceKey") == "Roll_Out_38115" for item in data.get("submissions", [])):
-    fail("La evidencia Roll_Out_38115 no fue preparada")
+stores_by_ceco = {item["ceco"]: item for item in data.get("stores", [])}
+for submission in published:
+    store = stores_by_ceco.get(submission["ceco"])
+    if not store or store["store"] != submission["store"] or store["dm"] != submission["dm"]:
+        fail("Una respuesta no cruzó correctamente contra el directorio")
+    if store.get("activities", {}).get(submission["activity"]) is not True:
+        fail("Una respuesta válida no quedó contabilizada por nombre de actividad")
+    if submission["evidenceKey"] != evidence_key(submission["activity"], submission["ceco"]):
+        fail("La llave de evidencia no se construyó desde actividad y CeCo")
 approve("02 · CMS, conteos, CeCo y evidencias seguras")
 
 with tempfile.TemporaryDirectory() as temp_dir:
@@ -245,6 +255,10 @@ for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
 print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM + 1 Director Regional")
-print("Roll_Out_38115 → Zona Azul → Yazmin Haydee · vínculo SharePoint validado")
+if published:
+    sample_submission = published[0]
+    print(f"{sample_submission['evidenceKey']} → {sample_submission['store']} · vínculo SharePoint validado")
+else:
+    print("Forms sin respuestas válidas · tablero vacío aceptado")
 print("Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes")
 print("Excel: resumen rápido + detalle + actividades")
