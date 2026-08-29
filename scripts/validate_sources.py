@@ -10,24 +10,20 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from build_dashboard import (
-    DEFAULT_CMS,
-    DEFAULT_DIRECTORY,
-    DEFAULT_RESPONSES,
-    DEFAULT_SETTINGS,
-    build_payload,
-    clean_text,
-    file_sha256,
-    find_directory_header,
-    find_header,
-    is_no,
-    is_yes,
-    key_text,
-    load_cms,
-    load_settings,
-    normalize_ceco,
-    validate_xlsx,
-)
+try:
+    from .build_dashboard import (
+        DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
+        build_payload, clean_text, file_sha256, find_directory_header,
+        find_header, is_no, is_yes, key_text, load_cms, load_settings,
+        normalize_ceco, parse_date, validate_xlsx,
+    )
+except ImportError:  # Ejecución directa: python scripts/validate_sources.py
+    from build_dashboard import (
+        DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
+        build_payload, clean_text, file_sha256, find_directory_header,
+        find_header, is_no, is_yes, key_text, load_cms, load_settings,
+        normalize_ceco, parse_date, validate_xlsx,
+    )
 
 CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion"}
 CMS_CONFIG_KEYS = {
@@ -41,13 +37,8 @@ def duplicates(values: list[str]) -> list[str]:
     return sorted(value for value, count in Counter(values).items() if count > 1)
 
 
-def assert_boolean(value: object, label: str) -> None:
-    if not (is_yes(value) or is_no(value)):
-        raise ValueError(f"{label} debe ser Sí o No: {clean_text(value) or '(vacío)'}")
-
-
 def validate_cms_engine(path: Path) -> dict[str, int]:
-    """Audita estructura, unicidad, catálogos y fórmulas del CMS editable."""
+    """Audita encabezados y filas activas sin bloquear borradores ni celdas auxiliares."""
     validate_xlsx(path, "el CMS maestro")
     workbook = load_workbook(path, read_only=False, data_only=False)
     missing_sheets = CMS_SHEETS.difference(workbook.sheetnames)
@@ -62,25 +53,48 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     names: list[str] = []
     orders: list[str] = []
     activity_rows = 0
+    drafts = 0
+    fallback_orders = 0
+    manual_statuses = 0
+    custom_priorities = 0
+    safe_defaults = 0
+    invalid_dates = 0
+    corrected_date_ranges = 0
     for row_number in range(header_row + 1, ws.max_row + 1):
         name = clean_text(ws.cell(row_number, cols["actividad"] + 1).value)
         if not name:
             continue
+        active_value = ws.cell(row_number, cols["activo"] + 1).value
+        if not is_yes(active_value):
+            drafts += 1
+            continue
         activity_rows += 1
         names.append(key_text(name))
         order = clean_text(ws.cell(row_number, cols["orden"] + 1).value)
-        orders.append(order)
-        assert_boolean(ws.cell(row_number, cols["activo"] + 1).value, f"Activo de {name}")
-        assert_boolean(
-            ws.cell(row_number, cols["evidencia requerida"] + 1).value,
-            f"Evidencia requerida de {name}",
-        )
+        try:
+            orders.append(str(int(float(order))))
+        except (TypeError, ValueError):
+            fallback_orders += 1
+        evidence_value = ws.cell(row_number, cols["evidencia requerida"] + 1).value
+        if not (is_yes(evidence_value) or is_no(evidence_value)):
+            safe_defaults += 1
         priority = key_text(ws.cell(row_number, cols["prioridad"] + 1).value)
-        if priority not in {"alta", "media", "baja"}:
-            raise ValueError(f"Prioridad CMS inválida para {name}")
+        if priority and priority not in {"alta", "media", "baja"}:
+            custom_priorities += 1
+        parsed_dates = []
+        for field in ("fecha inicio", "fecha limite"):
+            value = ws.cell(row_number, cols[field] + 1).value
+            try:
+                parsed_dates.append(parse_date(value))
+            except ValueError:
+                parsed_dates.append(None)
+                invalid_dates += 1
+        if parsed_dates[0] and parsed_dates[1] and parsed_dates[1] < parsed_dates[0]:
+            corrected_date_ranges += 1
         formula = ws.cell(row_number, cols["estado fecha"] + 1).value
         if not isinstance(formula, str) or not formula.startswith("="):
-            raise ValueError(f"Estado fecha debe ser fórmula en Actividades!I{row_number}: {name}")
+            # Python recalcula el estado por fechas; esta celda es informativa.
+            manual_statuses += 1
     if duplicates(names):
         raise ValueError("Actividades CMS duplicadas: " + ", ".join(duplicates(names)))
     if duplicates(orders):
@@ -91,29 +105,40 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     managers: list[str] = []
     for row_number in range(manager_header + 1, manager_ws.max_row + 1):
         dm = clean_text(manager_ws.cell(row_number, manager_cols["dm"] + 1).value)
-        if not dm:
+        if not dm or not is_yes(manager_ws.cell(row_number, manager_cols["activo"] + 1).value):
             continue
         managers.append(key_text(dm))
-        assert_boolean(manager_ws.cell(row_number, manager_cols["activo"] + 1).value, f"Activo de {dm}")
     if duplicates(managers):
         raise ValueError("Gerentes CMS duplicados: " + ", ".join(duplicates(managers)))
 
     config_ws = workbook["Configuracion"]
     config_header, config_cols = find_header(config_ws, {"clave", "valor"})
-    config_keys = [
-        clean_text(config_ws.cell(row, config_cols["clave"] + 1).value)
-        for row in range(config_header + 1, config_ws.max_row + 1)
-        if clean_text(config_ws.cell(row, config_cols["clave"] + 1).value)
-    ]
+    config_keys: list[str] = []
+    config_defaults = 0
+    boolean_keys = {"onlyOpenStores", "requireEvidence", "publishEvidenceLinks", "publishPersonalData"}
+    for row in range(config_header + 1, config_ws.max_row + 1):
+        key = clean_text(config_ws.cell(row, config_cols["clave"] + 1).value)
+        if not key:
+            continue
+        config_keys.append(key)
+        value = config_ws.cell(row, config_cols["valor"] + 1).value
+        if not clean_text(value) or (key in boolean_keys and not (is_yes(value) or is_no(value))):
+            config_defaults += 1
     missing_keys = CMS_CONFIG_KEYS.difference(config_keys)
-    if missing_keys or duplicates(config_keys):
-        raise ValueError(
-            "Configuración CMS inválida · faltan: "
-            + (", ".join(sorted(missing_keys)) or "ninguna")
-            + " · duplicadas: "
-            + (", ".join(duplicates(config_keys)) or "ninguna")
-        )
-    return {"activities": activity_rows, "managers": len(managers), "settings": len(config_keys)}
+    if duplicates(config_keys):
+        raise ValueError("Claves CMS duplicadas: " + ", ".join(duplicates(config_keys)))
+    return {
+        "activities": activity_rows,
+        "managers": len(managers),
+        "settings": len(config_keys),
+        "drafts": drafts,
+        "fallbackOrders": fallback_orders,
+        "manualStatuses": manual_statuses,
+        "customPriorities": custom_priorities,
+        "invalidDates": invalid_dates,
+        "correctedDateRanges": corrected_date_ranges,
+        "safeDefaults": safe_defaults + config_defaults + len(missing_keys),
+    }
 
 
 def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -> dict[str, int | str]:
@@ -194,6 +219,16 @@ def main() -> None:
         f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['settings']} parámetros · "
         f"Directorio {directory_audit['stores']} tiendas en {directory_audit['sheet']} · "
         f"{directory_audit['hiddenSheets']} hoja histórica fuera del cálculo"
+    )
+    print(
+        "Tolerancia CMS · "
+        f"{cms_audit['drafts']} borradores ignorados · "
+        f"{cms_audit['fallbackOrders']} órdenes con respaldo · "
+        f"{cms_audit['manualStatuses']} estados informativos · "
+        f"{cms_audit['customPriorities']} prioridades personalizadas · "
+        f"{cms_audit['invalidDates']} fechas con respaldo · "
+        f"{cms_audit['correctedDateRanges']} rangos corregidos · "
+        f"{cms_audit['safeDefaults']} valores protegidos por defecto"
     )
     for label, path in (("Forms", args.responses), ("Directorio", args.directory), ("CMS", args.cms)):
         print(f"{label}: {path.name} · SHA256 {file_sha256(path)[:12]}")

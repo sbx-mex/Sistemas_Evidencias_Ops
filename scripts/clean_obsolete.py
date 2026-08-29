@@ -25,29 +25,32 @@ TRANSIENT_FILE_NAMES = {".DS_Store", "Thumbs.db"}
 TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
 
 
-def transient_files() -> list[str]:
+def transient_files(root: Path = ROOT) -> list[str]:
     """Detecta sólo residuos técnicos conocidos y nunca recorre el contenido de .git."""
     found = []
-    for path in ROOT.rglob("*"):
+    generated_directories = {root / "data", root / "exports"}
+    for path in root.rglob("*"):
         if ".git" in path.parts or not (path.is_file() or path.is_symlink()):
             continue
         if (
             path.name in TRANSIENT_FILE_NAMES
             or path.suffix.casefold() in TRANSIENT_SUFFIXES
             or path.name.endswith(".inspect.ndjson")
+            or (path.parent in generated_directories and path.name.endswith(".tmp"))
+            or (path.parent == root / "cms" and path.name.startswith("~$") and path.suffix.casefold() == ".xlsx")
         ):
-            found.append(path.relative_to(ROOT).as_posix())
+            found.append(path.relative_to(root).as_posix())
     return sorted(found)
 
 
-def existing_obsolete_files() -> list[str]:
+def existing_obsolete_files(root: Path = ROOT) -> list[str]:
     """Devuelve rutas heredadas exactas y residuos técnicos controlados."""
     exact = [
         relative
         for relative in OBSOLETE_FILES
-        if (ROOT / relative).is_file() or (ROOT / relative).is_symlink()
+        if (root / relative).is_file() or (root / relative).is_symlink()
     ]
-    return sorted(set(exact + transient_files()))
+    return sorted(set(exact + transient_files(root)))
 
 
 def main() -> None:

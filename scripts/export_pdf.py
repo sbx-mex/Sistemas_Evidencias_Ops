@@ -15,6 +15,11 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen import canvas
 
+try:
+    from .io_utils import atomic_output_path
+except ImportError:  # Ejecución directa: python scripts/export_pdf.py
+    from io_utils import atomic_output_path
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "data" / "dashboard.json"
 DEFAULT_OUTPUT = ROOT / "exports" / "Resumen_Evidencias_OPS.pdf"
@@ -187,10 +192,8 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
     data = json.loads(args.data.read_text(encoding="utf-8"))
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    temporary_output = args.output.with_suffix(args.output.suffix + ".tmp")
-    build_pdf(data, temporary_output)
-    temporary_output.replace(args.output)
+    with atomic_output_path(args.output) as temporary_output:
+        build_pdf(data, temporary_output)
     print(f"PDF generado: {args.output.relative_to(ROOT) if args.output.is_relative_to(ROOT) else args.output}")
 
 

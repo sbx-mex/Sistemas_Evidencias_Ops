@@ -26,7 +26,7 @@ REQUIRED = [
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
     "assets/director/jorge-alcantar.webp",
     "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
-    "tests/validate_dynamic_forms_schema.py",
+    "tests/validate_dynamic_forms_schema.py", "tests/validate_maintenance.py", "scripts/io_utils.py",
 ]
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
     "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
@@ -60,6 +60,10 @@ for relative in REQUIRED:
 obsolete_present = [relative for relative in OBSOLETE_FILES if (ROOT / relative).exists()]
 if obsolete_present:
     fail("Persisten archivos obsoletos: " + ", ".join(obsolete_present))
+public_docs = "\n".join((ROOT / name).read_text(encoding="utf-8") for name in ("ARCHIVOS.md", "MEJORAS.md"))
+obsolete_references = [relative for relative in OBSOLETE_FILES if relative in public_docs]
+if obsolete_references:
+    fail("La documentación conserva rutas obsoletas: " + ", ".join(obsolete_references))
 mojibake_codepoints = {0x00C2, 0x00C3, 0x00E2}
 encoding_issues = []
 for source in ROOT.rglob("*"):
@@ -275,7 +279,7 @@ if '"Aplican"' in js[js.index("function renderSummary"):js.index("function rende
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
 approve("09 · Ranking, fotografía DM e identidad ejecutiva")
-for text in ["python -X utf8 scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python -X utf8 scripts/build_dashboard.py", "python -X utf8 scripts/export_excel.py", "python -X utf8 scripts/export_pdf.py", "python -X utf8 scripts/clean_obsolete.py --check", "python -X utf8 tests/validate_dynamic_forms_schema.py", "python -X utf8 tests/validate_project.py", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+for text in ["pip check", "python -X utf8 scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python -X utf8 scripts/build_dashboard.py", "python -X utf8 scripts/export_excel.py", "python -X utf8 scripts/export_pdf.py", "python -X utf8 scripts/clean_obsolete.py --check", "python -X utf8 tests/validate_dynamic_forms_schema.py", "python -X utf8 tests/validate_maintenance.py", "python -X utf8 tests/validate_project.py", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
 for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:

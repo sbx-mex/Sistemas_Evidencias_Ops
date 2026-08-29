@@ -1,16 +1,19 @@
-# 10 mejoras implementadas
+# 5 mejoras de calidad y mantenimiento
 
 | # | Mejora | Resultado |
 |---:|---|---|
-| 1 | Denominador aplicable | Solo Hornos excluye del ideal las tiendas cuya respuesta más reciente es `No`. |
-| 2 | Cálculo unificado | Región, DM, tienda y actividad consumen la misma aplicabilidad. |
-| 3 | Caso 10 → 8 | Una prueba automática valida 10 tiendas, 2 N/A y cumplimiento ideal de 8/8. |
-| 4 | Vista compartible | DM, tienda y actividad se conservan en la URL. |
-| 5 | Alcance visible | La barra de filtros resume vista, actividad, aplicables y N/A. |
-| 6 | Navegación activa | El menú identifica la sección visible durante el desplazamiento. |
-| 7 | Regreso rápido | El botón flotante **Arriba** facilita volver a filtros y exportaciones. |
-| 8 | Exportación clara | Imagen y PDF muestran `Realizadas / Aplican`, `No aplica` y `% Avance`. |
-| 9 | Excel auditable | `1` es realizada, `0` pendiente y vacío N/A; `SUM`, `COUNT` y `COUNTBLANK` validan el resultado. |
-| 10 | Publicación limpia | Caché PWA v16, lista cerrada de obsoletos y controles automáticos evitan archivos desactualizados. |
+| 1 | CMS tolerante | El motor localiza encabezados aunque cambien de posición e ignora notas, estilos y celdas auxiliares. |
+| 2 | Borradores seguros | Una fila con `Activo` vacío o `No` no se publica y tampoco bloquea el dashboard, aunque aún tenga datos incompletos. |
+| 3 | Valores protegidos | Orden, evidencia, configuración y fechas inválidas usan respaldos seguros; la actividad permanece visible sin romper el proceso. |
+| 4 | Escritura atómica | JSON, XLSX y PDF se reemplazan únicamente después de terminar correctamente; un fallo conserva la última versión válida. |
+| 5 | Mantenimiento preventivo | El workflow valida dependencias, UTF-8, los tres Excel, residuos obsoletos y escenarios de edición del CMS. |
 
-La regla está en `config/settings.json` mediante `notApplicableOnNoActivities`. Actualmente contiene solo `Programacion Hornos Merry - Focaccia`.
+## Regla de edición del CMS
+
+- No cambies los nombres de los encabezados ni elimines las hojas `Actividades`, `Gerentes` y `Configuracion`.
+- Puedes actualizar las celdas de contenido sin depender del número de fila o columna.
+- Para preparar una actividad nueva, captura la fila y deja `Activo` vacío o en `No`.
+- La actividad entra al cálculo únicamente cuando `Activo` cambia a `Sí`.
+- Si una celda de configuración queda vacía o incompleta, se conserva el valor seguro de `config/settings.json`.
+
+La prueba `tests/validate_maintenance.py` reproduce estos escenarios antes de cada publicación.

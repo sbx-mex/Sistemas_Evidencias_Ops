@@ -27,6 +27,11 @@ from urllib.parse import unquote, urlsplit
 
 from openpyxl import load_workbook
 
+try:
+    from .io_utils import atomic_write_text
+except ImportError:  # Ejecución directa: python scripts/build_dashboard.py
+    from io_utils import atomic_write_text
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
 DEFAULT_DIRECTORY = ROOT / "cms" / "Centro Norte_Directorio.xlsx"
@@ -440,25 +445,47 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         if not key:
             continue
         value = row[config_cols["valor"]]
-        cms_settings[key] = is_yes(value) if key in boolean_keys else clean_text(value)
+        text_value = clean_text(value)
+        if not text_value:
+            # Una celda borrada conserva el respaldo de config/settings.json.
+            continue
+        if key in boolean_keys:
+            if not (is_yes(value) or is_no(value)):
+                # Una edición incompleta no desactiva funciones por accidente.
+                continue
+            cms_settings[key] = is_yes(value)
+        else:
+            cms_settings[key] = text_value
 
     activity_ws = workbook["Actividades"]
     header_row, cols = find_header(activity_ws, {"orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo"})
     activities = []
     calendar = {"active": 0, "scheduled": 0, "expired": 0, "inactive": 0}
-    for row in activity_ws.iter_rows(min_row=header_row + 1, values_only=True):
+    for row_number, row in enumerate(
+        activity_ws.iter_rows(min_row=header_row + 1, values_only=True),
+        header_row + 1,
+    ):
         name = clean_text(row[cols["actividad"]])
         if not name:
             continue
-        active = is_yes(row[cols["activo"]])
-        start = parse_date(row[cols["fecha inicio"]])
-        end = parse_date(row[cols["fecha limite"]])
-        if start and end and end < start:
-            raise ValueError(f"La fecha límite de {name} es anterior a la fecha de inicio")
-        status = date_status(start, end)
+        active_value = row[cols["activo"]]
+        active = is_yes(active_value)
         if not active:
+            # Filas nuevas, borradores o actividades marcadas No no bloquean el CMS.
             calendar["inactive"] += 1
             continue
+        try:
+            start = parse_date(row[cols["fecha inicio"]])
+        except ValueError:
+            start = None
+        try:
+            end = parse_date(row[cols["fecha limite"]])
+        except ValueError:
+            end = None
+        if start and end and end < start:
+            # Mantiene visible la actividad y evita publicar una fecha contradictoria.
+            end = None
+        status = date_status(start, end)
         if status == "Programada":
             calendar["scheduled"] += 1
         elif status == "Vencida":
@@ -466,16 +493,26 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         calendar["active"] += 1
         evidence_col = cols.get("evidencia requerida")
         priority_col = cols.get("prioridad")
+        evidence_value = row[evidence_col] if evidence_col is not None else None
+        priority = clean_text(row[priority_col]) if priority_col is not None else ""
+        try:
+            order = int(float(row[cols["orden"]]))
+        except (TypeError, ValueError):
+            order = row_number
         activities.append({
             "name": name,
             "description": clean_text(row[cols["descripcion"]]),
-            "order": int(float(row[cols["orden"]] or 999)),
+            "order": order,
             "startDate": start.isoformat() if start else None,
             "endDate": end.isoformat() if end else None,
             "commitmentDateDisplay": end.strftime("%d/%m/%y") if end else "Sin fecha compromiso",
             "dateStatus": status,
-            "requireEvidence": is_yes(row[evidence_col]) if evidence_col is not None else True,
-            "priority": clean_text(row[priority_col]) if priority_col is not None else "Media",
+            "requireEvidence": (
+                is_yes(evidence_value)
+                if is_yes(evidence_value) or is_no(evidence_value)
+                else True
+            ),
+            "priority": priority or "Media",
             "autoDetected": False,
         })
 
@@ -974,10 +1011,10 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
     payload = build_payload(args.responses, args.directory, args.settings, args.cms)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    temporary_output = args.output.with_suffix(args.output.suffix + ".tmp")
-    temporary_output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    temporary_output.replace(args.output)
+    atomic_write_text(
+        args.output,
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+    )
     summary = payload["summary"]
     print(
         f"Dashboard generado: {summary['stores']} tiendas · {summary['activities']} actividades · "

@@ -12,6 +12,11 @@ from openpyxl.formatting.rule import DataBarRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
+try:
+    from .io_utils import atomic_output_path
+except ImportError:  # Ejecución directa: python scripts/export_excel.py
+    from io_utils import atomic_output_path
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "data" / "dashboard.json"
 DEFAULT_OUTPUT = ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx"
@@ -202,10 +207,8 @@ def main() -> None:
     args = parser.parse_args()
     data = json.loads(args.data.read_text(encoding="utf-8"))
     workbook = build_workbook(data)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    temporary_output = args.output.with_suffix(args.output.suffix + ".tmp")
-    workbook.save(temporary_output)
-    temporary_output.replace(args.output)
+    with atomic_output_path(args.output) as temporary_output:
+        workbook.save(temporary_output)
     print(f"Excel generado: {args.output.relative_to(ROOT) if args.output.is_relative_to(ROOT) else args.output}")
     print(f"Resumen: {data['summary']['dms']} DM · {data['summary']['stores']} tiendas · {data['summary']['compliance']}% regional")
 
