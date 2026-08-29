@@ -24,7 +24,12 @@ OBSOLETE_FILES = (
 
 
 def existing_obsolete_files() -> list[str]:
-    return [relative for relative in OBSOLETE_FILES if (ROOT / relative).is_file()]
+    """Devuelve sólo rutas exactas existentes; acepta archivos o enlaces obsoletos."""
+    return [
+        relative
+        for relative in OBSOLETE_FILES
+        if (ROOT / relative).is_file() or (ROOT / relative).is_symlink()
+    ]
 
 
 def main() -> None:

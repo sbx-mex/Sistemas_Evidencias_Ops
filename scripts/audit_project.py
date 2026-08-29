@@ -21,6 +21,7 @@ oversized = []
 issues = []
 obsolete_files = existing_obsolete_files()
 texts = {source.name: source.read_text(encoding="utf-8") for source in TEXT_FILES}
+workflow = (ROOT / ".github" / "workflows" / "build-dashboard.yml").read_text(encoding="utf-8")
 
 for source in TEXT_FILES:
     for reference in re.findall(r"(?:src|href)[=:]\s*[\"'](\./[^\"'#?]+)", texts[source.name]):
@@ -84,6 +85,10 @@ for source_key, source_path, label in (
 
 if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v18", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
+if not all(token in workflow for token in ("set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch")):
+    issues.append("El workflow no publica de forma idempotente")
+if "git add -A -- tests/validate_horno_applicability.py" in workflow:
+    issues.append("El workflow conserva un pathspec directo obsoleto")
 if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])

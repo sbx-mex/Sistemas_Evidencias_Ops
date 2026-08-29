@@ -243,9 +243,14 @@ if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("na
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
 approve("09 · Ranking, fotografía DM e identidad ejecutiva")
-for text in ["python scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_dynamic_forms_schema.py", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+for text in ["python scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_dynamic_forms_schema.py", "python tests/validate_project.py", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
+for text in ["set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:
+    if text not in workflow:
+        fail(f"Publicación no idempotente: falta {text}")
+if "git add -A -- tests/validate_horno_applicability.py" in workflow:
+    fail("El workflow conserva el pathspec directo que falla si el archivo no existe")
 approve("10 · Workflow completo: limpiar, generar, validar y publicar")
 
 if len(passed) != 10:
