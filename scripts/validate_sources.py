@@ -35,6 +35,7 @@ def main() -> None:
     blocking_issues = {
         "conflictosFilas": schema.get("rowConflicts", []),
         "conflictosEvidencia": conflicting_evidence,
+        "conflictosAplicabilidad": schema.get("applicabilityIssues", {}),
         "cecosDesconocidos": quality.get("unknownCeCos", []),
         "vinculosInseguros": quality.get("unsafeEvidenceRows", []),
     }

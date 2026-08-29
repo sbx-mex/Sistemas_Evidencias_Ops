@@ -13,7 +13,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import build_payload, load_responses
+from scripts.build_dashboard import build_payload, load_cms, load_responses
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -42,7 +42,7 @@ def main() -> None:
         # Escenario 1: exportación ancha, columnas reordenadas y una por actividad.
         wide = temp / "wide.xlsx"
         start, finish = timestamps(1)
-        wide_headers = BASE + ["CeCo", ACTIVITY, "Columna futura", "Evidencia_Lay_Out", "Evidencia_RollOut"]
+        wide_headers = BASE + ["CeCo", ACTIVITY, "¿Comentario operativo?", "Evidencia_Lay_Out", "Evidencia_RollOut"]
         save_book(wide, wide_headers, [[1, start, finish, "", "Prueba", "38115", "Roll Out", "x", "", f"{allowed}/rollout.jpg"]])
         rows, schema = load_responses(wide)
         assert rows[0]["evidence"].endswith("rollout.jpg")
@@ -101,7 +101,8 @@ def main() -> None:
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
-        assert payload["summary"]["activities"] == 8
+        cms_activities, _, _, _ = load_cms(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
+        assert payload["summary"]["activities"] == len(cms_activities)
         assert payload["submissions"] == []
         assert payload["quality"]["hiddenActivities"] == ["Nueva Actividad Forms"]
         assert payload["quality"]["hiddenActivityRows"] == [2]
@@ -168,14 +169,81 @@ def main() -> None:
             reordered_cms,
         )
         assert payload["summary"]["completedCompletions"] == 2
-        assert [item["focusRank"] for item in payload["activities"]] == list(range(1, 9))
+        assert [item["focusRank"] for item in payload["activities"]] == list(range(1, len(payload["activities"]) + 1))
         pending_dates = [item["endDate"] for item in payload["activities"] if item["pendingStores"] and item["endDate"]]
         assert pending_dates == sorted(pending_dates)
         stores = {store["ceco"]: store for store in payload["stores"]}
         assert stores["38333"]["activities"]["Programacion Hornos Merry - Focaccia"] is True
         assert stores["38115"]["activities"]["Fotografia - SM"] is True
 
-        # Escenario 10: un archivo renombrado como XLSX se rechaza antes de procesarse.
+        # Escenario 10: preguntas Sí/No duplicadas, reordenadas y con texto adicional.
+        # La respuesta se asocia a la actividad elegida en la misma fila.
+        conditional = temp / "conditional.xlsx"
+        conditional_headers = BASE + [
+            "CeCo", ACTIVITY,
+            "¿ Tienes Horno Merry Chef ?", "¿Tienes Horno Merry Chef? (2)",
+            "¿Cuentas con Community Board?",
+            "Evidencia_Programacion_Hornos_Merry_Focaccia", "Evidencia_Community_Board",
+        ]
+        enrique_cecos = ["38333", "38339", "38368", "38401", "38456", "38515", "38604", "38862", "38894", "43193"]
+        conditional_rows = []
+        for index, ceco in enumerate(enrique_cecos):
+            start, finish = timestamps(20 + index)
+            if index < 8:
+                conditional_rows.append([
+                    20 + index, start, finish, "", "Prueba", ceco,
+                    "Programacion Hornos Merry - Focaccia", "Sí, contamos con horno", "", "",
+                    f"{allowed}/horno-{index}.jpg", "",
+                ])
+            else:
+                conditional_rows.append([
+                    20 + index, start, finish, "", "Prueba", ceco,
+                    "Programacion Hornos Merry - Focaccia", "No contamos con Horno Merry Chef", "No", "",
+                    "", "",
+                ])
+        start, finish = timestamps(40)
+        conditional_rows.append([
+            40, start, finish, "", "Prueba", "38115", "Community Board", "", "", "Sí",
+            "", f"{allowed}/community.jpg",
+        ])
+        start, finish = timestamps(41)
+        conditional_rows.append([
+            41, start, finish, "", "Prueba", "38119", "Community Board", "", "", "No aplica en esta tienda",
+            "", "",
+        ])
+        save_book(conditional, conditional_headers, conditional_rows)
+        payload = build_payload(
+            conditional,
+            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        activity_map = {item["name"]: item for item in payload["activities"]}
+        horno = activity_map["Programacion Hornos Merry - Focaccia"]
+        community = activity_map["Community Board"]
+        assert horno["completedStores"] == 8 and horno["notApplicableStores"] == 2
+        assert community["completedStores"] == 1 and community["notApplicableStores"] == 1
+        enrique = next(item for item in payload["dms"] if item["dm"] == "Enrique Cesar Flores")
+        assert enrique["completed"] == 8 and enrique["expected"] == 88
+        assert payload["summary"]["notApplicableCompletions"] == 3
+        assert payload["quality"]["responseSchema"]["applicabilityIssues"] == {}
+        assert len(payload["quality"]["responseSchema"]["applicabilityHeaders"]) == 3
+        stores = {store["ceco"]: store for store in payload["stores"]}
+        assert stores["38894"]["applicableActivities"][horno["name"]] is False
+        assert stores["38119"]["applicableActivities"][community["name"]] is False
+
+        # Escenario 11: respuestas contradictorias se rechazan sin alterar conteos.
+        conflicting = temp / "conflicting.xlsx"
+        start, finish = timestamps(42)
+        save_book(conflicting, conditional_headers, [[
+            42, start, finish, "", "Prueba", "38333", "Programacion Hornos Merry - Focaccia",
+            "Sí", "No", "", f"{allowed}/conflicto.jpg", "",
+        ]])
+        rows, schema = load_responses(conflicting, [item["name"] for item in cms_activities])
+        assert rows[0]["confirmed"] is False and rows[0]["applicabilityConflict"] is True
+        assert schema["applicabilityIssues"]["conflicting-applicability-answers"] == [2]
+
+        # Escenario 12: un archivo renombrado como XLSX se rechaza antes de procesarse.
         damaged = temp / "damaged.xlsx"
         damaged.write_bytes(b"archivo incompleto")
         try:
@@ -185,7 +253,7 @@ def main() -> None:
         else:
             raise AssertionError("El XLSX dañado no fue rechazado")
 
-        # Escenario 11: Forms puede quedar sólo con encabezados después de limpiar filas.
+        # Escenario 13: Forms puede quedar sólo con encabezados después de limpiar filas.
         empty = temp / "empty.xlsx"
         save_book(empty, ["CeCo", ACTIVITY, "Evidencia_RollOut"], [])
         payload = build_payload(

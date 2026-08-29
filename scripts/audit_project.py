@@ -104,11 +104,19 @@ if response_schema.get("rowConflicts") or any(
     for key, rows in response_schema.get("evidenceIssues", {}).items()
 ):
     issues.append("El Excel Forms contiene columnas o evidencias ambiguas")
-if data.get("summary", {}).get("notApplicableCompletions") or any(
-    item.get("noMeansNotApplicable") or item.get("notApplicableStores")
-    for item in data.get("activities", [])
-):
-    issues.append("Persisten reglas obsoletas de No aplica")
+if any(rows for rows in response_schema.get("applicabilityIssues", {}).values()):
+    issues.append("El Excel Forms contiene respuestas Sí/No contradictorias")
+stores = data.get("stores", [])
+activity_names = [item.get("name") for item in data.get("activities", [])]
+calculated_exclusions = 0
+for store in stores:
+    applicability = store.get("applicableActivities", {})
+    expected = sum(applicability.get(name, True) is not False for name in activity_names)
+    calculated_exclusions += len(activity_names) - expected
+    if store.get("expected") != expected or store.get("notApplicable") != len(activity_names) - expected:
+        issues.append(f"Aplicabilidad inconsistente en CeCo {store.get('ceco')}")
+if data.get("summary", {}).get("notApplicableCompletions") != calculated_exclusions:
+    issues.append("La resta implícita de actividades no coincide con las respuestas Sí/No")
 report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":

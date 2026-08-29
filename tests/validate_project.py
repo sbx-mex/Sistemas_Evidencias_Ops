@@ -97,10 +97,19 @@ for source_key, path in (
 sample = next((store for store in data.get("stores", []) if store.get("ceco") == "38115"), None)
 if not sample or sample.get("store") != "Zona Azul" or sample.get("dm") != "Yazmin Haydee Garcia Gonzalez":
     fail("Falló el cruce 38115 → Zona Azul → Yazmin Haydee")
-if any(item.get("noMeansNotApplicable") or item.get("notApplicableStores") for item in data.get("activities", [])):
-    fail("El proyecto conserva una regla obsoleta de No aplica")
-if summary.get("notApplicableCompletions") != 0:
-    fail("Todas las actividades vigentes deben aplicar a todas las tiendas")
+activity_names = [item["name"] for item in data.get("activities", [])]
+calculated_exclusions = 0
+for store in data.get("stores", []):
+    applicability = store.get("applicableActivities", {})
+    expected = sum(applicability.get(name, True) is not False for name in activity_names)
+    excluded = len(activity_names) - expected
+    calculated_exclusions += excluded
+    if store.get("expected") != expected or store.get("notApplicable") != excluded:
+        fail(f"Aplicabilidad inconsistente para CeCo {store.get('ceco')}")
+    if any(store.get("activities", {}).get(name) and applicability.get(name, True) is False for name in activity_names):
+        fail(f"CeCo {store.get('ceco')} contabiliza una actividad excluida")
+if summary.get("notApplicableCompletions") != calculated_exclusions:
+    fail("La resta implícita de actividades no coincide con las respuestas Sí/No")
 if len(data.get("dms", [])) != 6 or any(not item.get("photo", "").endswith(".webp") for item in data.get("dms", [])):
     fail("Las seis fotografías WebP no quedaron vinculadas")
 if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
@@ -123,7 +132,7 @@ if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get(
     fail("Nombre de archivo o vínculo directo inválido")
 if {row["evidenceUrl"] for row in published} != set(excel_links):
     fail("El vínculo publicado no coincide exactamente con el Excel")
-if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"]:
+if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"] or forms_schema.get("applicabilityIssues"):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
 if any(match not in {"exact", "similar", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
     fail("Un encabezado de evidencia no pudo relacionarse de forma segura con el CMS")

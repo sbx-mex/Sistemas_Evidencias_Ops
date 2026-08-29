@@ -50,6 +50,10 @@ CONFIRMATION_HEADERS = (
     "Confirmacion",
 )
 EVIDENCE_HEADERS = ("Evidencia", "Evidencia del avance")
+APPLICABILITY_HEADER_HINTS = (
+    "aplica", "aplican", "tienes", "tiene", "cuentas con", "cuenta con",
+    "dispones", "dispone", "participa", "participan",
+)
 REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 
@@ -100,6 +104,16 @@ def is_yes(value: Any) -> bool:
 
 def is_no(value: Any) -> bool:
     return key_text(value) in {"no", "false", "0"}
+
+
+def boolean_answer(value: Any) -> bool | None:
+    """Interpreta respuestas Sí/No, incluso cuando Forms agrega una aclaración."""
+    normalized = key_text(value)
+    if normalized in {"true", "1"} or re.match(r"^(?:si|yes)\b", normalized):
+        return True
+    if normalized in {"false", "0"} or re.match(r"^no\b", normalized):
+        return False
+    return None
 
 
 def setting_list(value: Any) -> list[str]:
@@ -256,6 +270,50 @@ def evidence_columns(headers: list[Any], activity_names: list[str] | None = None
                 "matchType": match_type,
             })
     return result
+
+
+def applicability_columns(
+    headers: list[Any],
+    excluded_indices: set[int],
+) -> list[dict[str, Any]]:
+    """Localiza preguntas operativas Sí/No sin depender de su posición."""
+    result = []
+    for index, header in enumerate(headers):
+        if index in excluded_indices:
+            continue
+        raw = clean_text(header)
+        normalized = key_text(header)
+        if not raw:
+            continue
+        is_question = "?" in raw or "¿" in raw
+        has_hint = any(hint in normalized for hint in APPLICABILITY_HEADER_HINTS)
+        if is_question or has_hint:
+            result.append({"index": index, "header": raw})
+    return result
+
+
+def resolve_applicability_answer(
+    row: tuple[Any, ...],
+    columns: list[dict[str, Any]],
+) -> tuple[bool | None, list[str], str | None]:
+    """Consolida Sí/No duplicados; otras preguntas se ignoran de forma segura."""
+    answers: list[tuple[bool, str]] = []
+    for column in columns:
+        index = column["index"]
+        value = clean_text(row[index]) if index < len(row) else ""
+        if not value:
+            continue
+        answer = boolean_answer(value)
+        if answer is None:
+            continue
+        answers.append((answer, column["header"]))
+    if not answers:
+        return None, [], None
+    unique = {answer for answer, _ in answers}
+    sources = list(dict.fromkeys(header for _, header in answers))
+    if len(unique) > 1:
+        return None, sources, "conflicting-applicability-answers"
+    return answers[0][0], sources, None
 
 
 def coalesce_row_value(row: tuple[Any, ...], indices: list[int]) -> tuple[str, bool]:
@@ -526,10 +584,15 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
     evidence_group = evidence_columns(headers, activity_names)
     if not evidence_group:
         raise ValueError("No se encontró ninguna columna de evidencia")
+    excluded_indices = {
+        index for indices in column_groups.values() for index in indices
+    } | set(confirmation_columns) | {item["index"] for item in evidence_group}
+    applicability_group = applicability_columns(headers, excluded_indices)
 
     responses = []
     conflicts = []
     evidence_issues: dict[str, list[int]] = defaultdict(list)
+    applicability_issues: dict[str, list[int]] = defaultdict(list)
     for row_number, row in enumerate(rows, header_row + 1):
         if not any(value not in (None, "") for value in row):
             continue
@@ -547,6 +610,12 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         evidence, evidence_source, evidence_issue = resolve_evidence_value(row, evidence_group, values["activity"])
         if evidence_issue:
             evidence_issues[evidence_issue].append(row_number)
+        applicability, applicability_sources, applicability_issue = resolve_applicability_answer(
+            row, applicability_group
+        )
+        if applicability_issue:
+            applicability_issues[applicability_issue].append(row_number)
+            row_has_conflict = True
         finished = parse_datetime(values["finished"])
         # Registrar una actividad en Forms equivale a confirmarla. La respuesta de
         # confirmación puede permanecer en exportaciones históricas, pero nunca
@@ -567,7 +636,10 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "ceco": normalize_ceco(values["ceco"]),
             "confirmedAnswer": "Sí" if values["activity"] else "",
             "confirmed": confirmed and not row_has_conflict,
-            "explicitNo": False,
+            "applicabilityAnswer": "Sí" if applicability is True else ("No" if applicability is False else ""),
+            "applicabilitySourceHeaders": applicability_sources,
+            "applicabilityConflict": applicability_issue is not None,
+            "explicitNo": applicability is False and not applicability_issue,
             "evidence": evidence,
             "evidenceSourceHeader": evidence_source,
             "schemaConflict": row_has_conflict,
@@ -580,6 +652,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         "activityHeaders": [clean_text(headers[index]) for index in column_groups["activity"]],
         "cecoHeaders": [clean_text(headers[index]) for index in column_groups["ceco"]],
         "confirmationHeaders": [clean_text(headers[index]) for index in confirmation_columns],
+        "applicabilityHeaders": [item["header"] for item in applicability_group],
         "evidenceHeaders": [item["header"] for item in evidence_group],
         "evidenceHeaderMap": {
             item["header"]: item["activityKey"] or "generic"
@@ -591,6 +664,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         },
         "rowConflicts": conflicts,
         "evidenceIssues": dict(evidence_issues),
+        "applicabilityIssues": dict(applicability_issues),
     }
     return responses, schema
 
@@ -620,14 +694,13 @@ def build_payload(
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
     configured = {key_text(item["name"]): item for item in activities}
-    for item in activities:
-        item["noMeansNotApplicable"] = False
     activity_names = [item["name"] for item in activities]
     canonical_activity = {key_text(item["name"]): item["name"] for item in activities}
     evidence_rules = {key_text(item["name"]): item.get("requireEvidence", True) for item in activities}
 
     submissions = []
-    latest_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
+    latest_state_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
+    conditional_activities: set[str] = set()
     unknown_cecos = set()
     invalid_rows = []
     unsafe_evidence_rows = []
@@ -653,13 +726,16 @@ def build_payload(
         activity = canonical_activity[activity_key]
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
-        not_applicable = False
+        not_applicable = bool(response["explicitNo"] and store and not response["applicabilityConflict"])
+        if response["applicabilityAnswer"]:
+            conditional_activities.add(activity)
         if response["evidence"] and not evidence_available:
             unsafe_evidence_rows.append(response["row"])
         valid = bool(
             store
             and activity
             and response["confirmed"]
+            and not not_applicable
             and (evidence_available or not evidence_rules.get(key_text(activity), settings.get("requireEvidence", True)))
         )
         if not valid and not not_applicable:
@@ -681,7 +757,7 @@ def build_payload(
             "confirmed": response["confirmed"],
             "answer": response["confirmedAnswer"],
             "notApplicable": not_applicable,
-            "status": "No aplica" if not_applicable else ("Realizada" if valid else "Pendiente"),
+            "status": "Realizada" if valid else "Pendiente",
             "evidenceAvailable": evidence_available,
             "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
             "valid": valid,
@@ -693,13 +769,24 @@ def build_payload(
             public["email"] = response["email"]
         submissions.append(public)
 
-        if valid:
+        if store and activity and not response["applicabilityConflict"] and (
+            valid or response["applicabilityAnswer"]
+        ):
             pair = (response["ceco"], activity)
-            current = latest_by_pair.get(pair)
-            if current is None or (response["finished"] or datetime.min) > (current["finished"] or datetime.min):
-                latest_by_pair[pair] = response
+            state = {**response, "valid": valid, "notApplicable": not_applicable}
+            current = latest_state_by_pair.get(pair)
+            current_sort = ((current or {}).get("finished") or datetime.min, (current or {}).get("row", 0))
+            state_sort = (response["finished"] or datetime.min, response["row"])
+            if current is None or state_sort > current_sort:
+                latest_state_by_pair[pair] = state
 
-    not_applicable_pairs: set[tuple[str, str]] = set()
+    not_applicable_pairs = {
+        pair for pair, state in latest_state_by_pair.items() if state["notApplicable"]
+    }
+    latest_by_pair = {
+        pair: state for pair, state in latest_state_by_pair.items()
+        if state["valid"] and not state["notApplicable"]
+    }
     completion_pairs = set(latest_by_pair)
     store_rows = []
     for ceco, store in sorted(stores.items(), key=lambda item: (key_text(item[1]["dm"]), key_text(item[1]["store"]))):
@@ -728,6 +815,7 @@ def build_payload(
         pending = applicable - completed
         activity_stats.append({
             **item,
+            "conditionalApplicability": item["name"] in conditional_activities,
             "completedStores": completed,
             "applicableStores": applicable,
             "notApplicableStores": not_applicable,
