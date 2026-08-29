@@ -130,9 +130,13 @@ approve("03 · Python sincronizado con la última actualización")
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
 if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades"]:
     fail("El Excel Python no contiene las tres vistas ejecutivas")
-expected_summary_formula = "=IFERROR((C6-A6)/C6,0)"
+expected_summary_formula = "=IFERROR(A6/C6,0)"
 if static_excel["Resumen"]["E6"].value != expected_summary_formula or static_excel["Resumen"]["A6"].number_format != "#,##0" or static_excel["Resumen"]["E6"].number_format != "0.0%" or static_excel["Resumen"]._charts:
     fail("El resumen Excel no conserva fórmula, formato numérico o limpieza visual")
+for sheet_name, header_row in (("Resumen", 9), ("Tiendas", 4), ("Actividades", 4)):
+    headers = [cell.value for cell in static_excel[sheet_name][header_row]]
+    if "Pendientes" in headers:
+        fail(f"La hoja {sheet_name} todavía incluye la columna Pendientes")
 with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
     subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
@@ -164,17 +168,25 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Aceptar y descargar", "Ver archivo", "Cerrar exportación", "export-close", "REALIZADAS / TOTAL", "% PENDIENTE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "configureExportAction", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Aceptar y descargar", "Descargar Excel", "Abrir PDF", "Ver imagen", "Cerrar exportación", "export-close", "REALIZADAS / TOTAL", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
     if text not in js:
         if text not in html + css:
             fail(f"Funcionalidad faltante: {text}")
+if ">Ver archivo<" in html or "link.download = filename" not in js:
+    fail("La acción final no diferencia apertura directa y descarga con nombre dinámico")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-if "sistema-evidencias-ops-v12" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v12 incompleto")
+if "sistema-evidencias-ops-v13" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v13 incompleto")
 if "window.print" in js or "Tiendas realizadas" in js:
     fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
 if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
     fail("El PDF aún conserva el subtítulo regional eliminado")
+export_pdf_source = (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8")
+if "% PENDIENTE" in js + export_pdf_source or "PÁGINA ${pageIndex" in js or "Página {page_index" in export_pdf_source:
+    fail("La exportación conserva porcentaje pendiente o numeración de página")
+excel_spec_source = js[js.index("function buildExcelSpec"):js.index("async function exportExcel")]
+if '"Pendientes"' in excel_spec_source:
+    fail("La exportación Excel dinámica todavía incluye Pendientes")
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
 approve("08 · PWA, descarga directa y mensaje final simplificados")

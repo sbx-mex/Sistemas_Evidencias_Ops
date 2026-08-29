@@ -66,10 +66,6 @@ def signal(value: float):
     return RED
 
 
-def pending_percent(completed: int | float, expected: int | float) -> float:
-    return max(0.0, 100 - (completed / expected * 100)) if expected else 0.0
-
-
 def build_pdf(data: dict, output: Path) -> None:
     page_width, page_height = landscape(A4)
     pdf = canvas.Canvas(str(output), pagesize=(page_width, page_height), pageCompression=1)
@@ -114,7 +110,7 @@ def build_pdf(data: dict, output: Path) -> None:
 
         cards = [
             ("REALIZADAS / TOTAL", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),
-            ("% PENDIENTE", percent(pending_percent(summary.get("completedCompletions", 0), summary.get("expectedCompletions", 0)))),
+            ("% AVANCE", percent(summary.get("compliance", 0))),
         ]
         card_width = (page_width - 66) / 2
         for index, (label, value) in enumerate(cards):
@@ -130,7 +126,7 @@ def build_pdf(data: dict, output: Path) -> None:
 
         table_top = page_height - 204
         columns = [28, 85, 500, 665]
-        headers = ["RANKING", "DM", "REALIZADAS / TOTAL", "% PENDIENTE"]
+        headers = ["RANKING", "DM", "REALIZADAS / TOTAL", "% AVANCE"]
         pdf.setFillColor(DARK)
         pdf.roundRect(28, table_top - 25, page_width - 56, 25, 6, stroke=0, fill=1)
         pdf.setFillColor(white)
@@ -161,7 +157,7 @@ def build_pdf(data: dict, output: Path) -> None:
             pdf.setFont("Helvetica-Bold", 10)
             pdf.drawString(521, y + 19, f"{number(item.get('completed', 0))} / {number(item.get('expected', 0))}")
             pdf.setFillColor(signal(item.get("compliance", 0)))
-            pdf.drawString(686, y + 19, percent(pending_percent(item.get("completed", 0), item.get("expected", 0))))
+            pdf.drawString(686, y + 19, percent(item.get("compliance", 0)))
             pdf.setFillColor(LINE)
             pdf.rect(758, y + 16, 50, 6, stroke=0, fill=1)
             pdf.setFillColor(signal(item.get("compliance", 0)))
@@ -174,13 +170,12 @@ def build_pdf(data: dict, output: Path) -> None:
         pdf.drawString(40, 35, report.get("motto", "JUNTÉMONOS MÁS"))
         pdf.setFillColor(HexColor("#CCE0D7"))
         pdf.setFont("Helvetica", 6.5)
-        pdf.drawCentredString(page_width / 2, 35, f"Página {page_index + 1} de {total_pages}")
         pdf.drawRightString(page_width - 40, 35, report.get("credits", ""))
         pdf.showPage()
 
     pdf.setTitle(f"Sistema de Evidencia OPS · {region}")
     pdf.setAuthor("Centro Norte")
-    pdf.setSubject("Realizadas / Total / % Pendiente")
+    pdf.setSubject("Realizadas / Total / % Avance")
     pdf.save()
 
 

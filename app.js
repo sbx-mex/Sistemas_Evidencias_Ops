@@ -349,10 +349,7 @@ async function renderPdfPages() {
       context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(director.name, 1184, 162);
       context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(director.role, 1184, 181);
     }
-    context.textAlign = "right"; context.fillStyle = "#b9e1d0"; context.font = "750 15px Segoe UI, sans-serif"; context.fillText(`PÁGINA ${pageIndex + 1} DE ${chunks.length}`, 1540, 139); context.textAlign = "left";
-
-    const pendingRate = current.expected ? (current.pending / current.expected) * 100 : 0;
-    const cards = [["REALIZADAS / TOTAL", `${number(current.completed)} / ${number(current.expected)}`], ["% PENDIENTE", percent(pendingRate)]];
+    const cards = [["REALIZADAS / TOTAL", `${number(current.completed)} / ${number(current.expected)}`], ["% AVANCE", percent(current.compliance)]];
     cards.forEach(([label, value], cardIndex) => {
       const x = 55 + cardIndex * 755;
       context.fillStyle = cardIndex === 1 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, 735, 82);
@@ -365,7 +362,7 @@ async function renderPdfPages() {
     const tableTop = 330;
     context.fillStyle = "#1e3932"; context.fillRect(55, tableTop, 1490, 55);
     context.fillStyle = "#ffffff"; context.font = "750 14px Segoe UI, sans-serif";
-    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["REALIZADAS / TOTAL", 1040], ["% PENDIENTE", 1370]];
+    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["REALIZADAS / TOTAL", 1040], ["% AVANCE", 1390]];
     headers.forEach(([label, x]) => context.fillText(label, x, tableTop + 34));
 
     pageRows.forEach((item, localIndex) => {
@@ -384,7 +381,7 @@ async function renderPdfPages() {
       if (mode === "dms") { context.fillStyle = "#687970"; context.font = "500 15px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, y + rowHeight / 2 + 22); }
       context.fillStyle = "#1e3932"; context.font = "800 20px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1090, y + rowHeight / 2 + 7);
       context.fillStyle = signal.tone === "green" ? "#116444" : signal.tone === "amber" ? "#80520c" : "#922f24"; context.font = "850 20px Segoe UI, sans-serif";
-      context.fillText(percent(item.expected ? (item.pending / item.expected) * 100 : 0), 1410, y + rowHeight / 2 + 7);
+      context.fillText(percent(item.value), 1410, y + rowHeight / 2 + 7);
     });
 
     context.fillStyle = "#1e3932"; context.fillRect(55, 1055, 1490, 50);
@@ -414,7 +411,7 @@ async function exportImage() {
     context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 55);
     context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 108);
     context.font = "600 22px Segoe UI, sans-serif"; context.fillText(`${reportScope()} · Corte ${cutStamp()}`, 800, 150);
-    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`REALIZADAS / TOTAL  ${number(current.completed)} / ${number(current.expected)}   |   % PENDIENTE  ${percent(current.expected ? (current.pending / current.expected) * 100 : 0)}`, 800, 188);
+    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`REALIZADAS / TOTAL  ${number(current.completed)} / ${number(current.expected)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
     context.textAlign = "left";
     if (directorPhoto) {
       context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, directorPhoto, 1217, 62, 86, 86); context.restore();
@@ -424,7 +421,7 @@ async function exportImage() {
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
     context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
-    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("REALIZADAS / TOTAL", 1050, top + 45); context.fillText("% PENDIENTE", 1375, top + 45);
+    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("REALIZADAS / TOTAL", 1050, top + 45); context.fillText("% AVANCE", 1400, top + 45);
     rows.forEach((item, index) => {
       const y = top + tableHeader + index * rowHeight; const signal = semaphore(item.value); const centerY = y + rowHeight / 2;
       context.fillStyle = index % 2 ? "#f4f7f5" : "#ffffff"; context.fillRect(0, y, width, rowHeight - 2);
@@ -439,7 +436,7 @@ async function exportImage() {
       context.fillStyle = "#1e3932"; context.font = `${mode === "dms" ? 700 : 650} ${mode === "dms" ? 27 : 23}px Segoe UI, sans-serif`; context.fillText(item.label, labelX, centerY - 4);
       context.fillStyle = "#65756d"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, centerY + 24);
       context.fillStyle = "#1e3932"; context.font = "700 28px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1110, centerY + 10);
-      context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#a86b0a" : "#a2352a"; context.font = "800 31px Segoe UI, sans-serif"; context.fillText(percent(item.expected ? (item.pending / item.expected) * 100 : 0), 1410, centerY + 10);
+      context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#a86b0a" : "#a2352a"; context.font = "800 31px Segoe UI, sans-serif"; context.fillText(percent(item.value), 1410, centerY + 10);
     });
     const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
     context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
@@ -506,6 +503,26 @@ function cancelExportConfirmation() {
   if (state.exportDecision) state.exportDecision(false);
 }
 
+function configureExportAction(filename, url) {
+  const link = $("#export-modal-open");
+  const extension = filename.split(".").pop().toLowerCase();
+  link.href = url || "#";
+  link.removeAttribute("download");
+  link.removeAttribute("target");
+  link.removeAttribute("rel");
+  if (extension === "xlsx") {
+    link.textContent = "Descargar Excel";
+    link.download = filename;
+    return "El Excel se descargó con su nombre correcto. Puedes descargarlo nuevamente.";
+  }
+  link.textContent = extension === "pdf" ? "Abrir PDF" : "Ver imagen";
+  link.target = "_blank";
+  link.rel = "noopener";
+  return extension === "pdf"
+    ? "El PDF se descargó. También puedes abrirlo directamente."
+    : "La imagen se descargó. También puedes verla directamente.";
+}
+
 function finishExport(filename, url = "") {
   const modal = $("#export-modal");
   modal.hidden = false;
@@ -514,14 +531,13 @@ function finishExport(filename, url = "") {
   $("#export-modal-image").alt = "Un placer haber ayudado";
   $("#export-modal-kicker").textContent = "Descarga exitosa";
   $("#export-modal-title").textContent = "Archivo listo";
-  $("#export-modal-message").textContent = `Se descargó automáticamente. Puedes abrirlo con “Ver archivo”: ${filename}`;
-  $("#export-modal-summary").innerHTML = "";
+  $("#export-modal-message").textContent = configureExportAction(filename, url);
+  $("#export-modal-summary").innerHTML = `<div><span>Archivo</span><strong>${esc(filename)}</strong></div>`;
   $("#export-progress").hidden = true;
   $("#export-modal-accept").hidden = true;
   $("#export-modal-cancel").hidden = true;
   if (state.exportUrl && state.exportUrl !== url) URL.revokeObjectURL(state.exportUrl);
   state.exportUrl = url;
-  $("#export-modal-open").href = url || "#";
   $("#export-modal-open").hidden = !url;
   $("#export-modal-close").hidden = false;
   state.exporting = false;
@@ -560,17 +576,17 @@ function buildExcelSpec() {
   const mode = exportMode();
   const scope = reportScope();
   const detailHeaders = mode === "dms"
-    ? ["Ranking", "DM", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"]
-    : ["Ranking", "Tienda", "CeCo", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"];
+    ? ["Ranking", "DM", "Realizadas", "Total", "% Avance", "Estado"]
+    : ["Ranking", "Tienda", "CeCo", "Realizadas", "Total", "% Avance", "Estado"];
   const detailRows = rows.map((row) => mode === "dms"
-    ? [row.rank, row.label, row.completed, row.expected, row.pending, row.value / 100, semaphore(row.value).label]
-    : [row.rank, row.label, row.ceco, row.completed, row.expected, row.pending, row.value / 100, semaphore(row.value).label]);
+    ? [row.rank, row.label, row.completed, row.expected, row.value / 100, semaphore(row.value).label]
+    : [row.rank, row.label, row.ceco, row.completed, row.expected, row.value / 100, semaphore(row.value).label]);
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
   const activityRows = activities.map((activity, index) => {
     const completed = stores.filter((store) => store.activities[activity.name]).length;
     const value = stores.length ? completed / stores.length : 0;
-    return [index + 1, activity.name, completed, stores.length - completed, stores.length, value, activity.commitmentDateDisplay || "Sin fecha"];
+    return [index + 1, activity.name, completed, stores.length, value, activity.commitmentDateDisplay || "Sin fecha"];
   });
   return {
     title: `Sistema de Evidencias OPS · ${scope}`,
@@ -584,22 +600,22 @@ function buildExcelSpec() {
           ["Indicador", "Valor", "Validación"],
           ["Realizadas", item.completed, "Cumplimientos del filtro actual"],
           ["Total", item.expected, `${item.stores} tiendas · ${item.activities} actividades`],
-          ["% Pendiente", { value: item.expected ? item.pending / item.expected : 0, style: 3 }, `${item.pending} pendientes`],
+          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} realizadas / ${item.expected} total`],
         ],
         widths: [24, 18, 46], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C7",
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
-        rows: [[mode === "dms" ? "Ranking por DM" : "Avance por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [], detailHeaders, ...detailRows],
-        widths: mode === "dms" ? [10, 34, 14, 12, 14, 14, 16] : [10, 32, 13, 14, 12, 14, 14, 16],
-        merges: mode === "dms" ? ["A1:G1", "A2:G2"] : ["A1:H1", "A2:H2"], headerRows: [4],
-        percentColumns: [mode === "dms" ? 6 : 7], countColumns: mode === "dms" ? [1, 3, 4, 5] : [1, 4, 5, 6], freezeRow: 4,
-        autoFilter: `A4:${mode === "dms" ? "G" : "H"}${4 + detailRows.length}`,
+        rows: [[mode === "dms" ? "Ranking DM" : "Avance por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [], detailHeaders, ...detailRows],
+        widths: mode === "dms" ? [10, 34, 14, 12, 14, 16] : [10, 32, 13, 14, 12, 14, 16],
+        merges: mode === "dms" ? ["A1:F1", "A2:F2"] : ["A1:G1", "A2:G2"], headerRows: [4],
+        percentColumns: [mode === "dms" ? 5 : 6], countColumns: mode === "dms" ? [1, 3, 4] : [1, 4, 5], freezeRow: 4,
+        autoFilter: `A4:${mode === "dms" ? "F" : "G"}${4 + detailRows.length}`,
       },
       {
         name: "Actividades",
-        rows: [["Avance por actividad", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "Total", "% Avance", "Fecha compromiso"], ...activityRows],
-        widths: [10, 42, 14, 14, 12, 14, 20], merges: ["A1:G1", "A2:G2"], headerRows: [4], percentColumns: [6], freezeRow: 4, autoFilter: `A4:G${4 + activityRows.length}`,
+        rows: [["Avance por actividad", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Total", "% Avance", "Fecha compromiso"], ...activityRows],
+        widths: [10, 42, 14, 12, 14, 20], merges: ["A1:F1", "A2:F2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:F${4 + activityRows.length}`,
       },
     ],
   };
