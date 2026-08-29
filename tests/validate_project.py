@@ -13,12 +13,12 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import load_responses, safe_evidence_url
+from scripts.build_dashboard import file_sha256, key_text, load_responses, safe_evidence_url
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
     "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
-    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
+    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/validate_sources.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
     "scripts/audit_project.py", "config/settings.json", "INSTRUCCION_FORMS.md", "MEJORAS.md",
     "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
@@ -26,7 +26,7 @@ REQUIRED = [
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
     "assets/director/jorge-alcantar.webp",
     "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
-    "tests/validate_horno_applicability.py", "tests/validate_dynamic_forms_schema.py",
+    "tests/validate_dynamic_forms_schema.py",
 ]
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
     "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
@@ -69,7 +69,7 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 9:
+if data.get("schemaVersion") != 10:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
     fail("Identidad del proyecto incorrecta")
@@ -79,21 +79,30 @@ if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
     fail("Python no está leyendo el Excel CMS")
 if not re.fullmatch(r"\d{2}/\d{2}/\d{4} \d{2}:\d{2}", data.get("lastUpdatedDisplay", "")):
     fail("Última actualización incorrecta")
-if data.get("summary", {}).get("dms") != 6 or data.get("summary", {}).get("stores") != 72 or data.get("summary", {}).get("activities") != 8:
-    fail("Conteos iniciales incorrectos")
-if data.get("calendar", {}).get("active") != 8:
+summary = data.get("summary", {})
+if not data.get("dms") or not data.get("stores") or not data.get("activities"):
+    fail("El dashboard quedó sin alcance operativo")
+if summary.get("dms") != len(data["dms"]) or summary.get("stores") != len(data["stores"]) or summary.get("activities") != len(data["activities"]):
+    fail("Los conteos no coinciden con el alcance generado")
+if data.get("calendar", {}).get("active") != len(data["activities"]):
     fail("Las actividades vigentes del CMS no fueron calculadas")
+for source_key, path in (
+    ("responsesSha256", ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"),
+    ("directorySha256", ROOT / "cms" / "Centro Norte_Directorio.xlsx"),
+    ("cmsSha256", ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"),
+):
+    if data.get("sources", {}).get(source_key) != file_sha256(path):
+        fail(f"La huella de la fuente {source_key} no coincide")
 
 sample = next((store for store in data.get("stores", []) if store.get("ceco") == "38115"), None)
 if not sample or sample.get("store") != "Zona Azul" or sample.get("dm") != "Yazmin Haydee Garcia Gonzalez":
     fail("Falló el cruce 38115 → Zona Azul → Yazmin Haydee")
 if sample.get("activities", {}).get("Roll Out") is not True:
     fail("Roll Out no quedó contabilizado")
-horno = next((item for item in data.get("activities", []) if item.get("name") == "Programacion Hornos Merry - Focaccia"), None)
-if not horno or horno.get("noMeansNotApplicable") is not True or horno.get("notApplicableStores") != 0:
-    fail("La regla exclusiva de aplicabilidad para Hornos no quedó configurada")
-if any(item.get("noMeansNotApplicable") for item in data.get("activities", []) if item is not horno):
-    fail("La regla No aplica se extendió a una actividad distinta de Hornos")
+if any(item.get("noMeansNotApplicable") or item.get("notApplicableStores") for item in data.get("activities", [])):
+    fail("El proyecto conserva una regla obsoleta de No aplica")
+if summary.get("notApplicableCompletions") != 0:
+    fail("Todas las actividades vigentes deben aplicar a todas las tiendas")
 if len(data.get("dms", [])) != 6 or any(not item.get("photo", "").endswith(".webp") for item in data.get("dms", [])):
     fail("Las seis fotografías WebP no quedaron vinculadas")
 if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
@@ -101,15 +110,19 @@ if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("u
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
     fail("El JSON público expone correo o respondente")
 published = [row for row in data.get("submissions", []) if row.get("valid")]
-if len(published) != 7 or data.get("quality", {}).get("evidenceLinksPublished") != 7:
-    fail("Los siete vínculos de evidencia no fueron publicados")
+forms_responses, forms_schema = load_responses(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx")
+active_names = {key_text(item["name"]) for item in data.get("activities", [])}
+excel_links = [
+    row["evidence"] for row in forms_responses
+    if row["evidence"] and key_text(row["activity"]) in active_names and row["ceco"]
+]
+if not published or data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
+    fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
 if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
     fail("Nombre de archivo o vínculo directo inválido")
-forms_responses, forms_schema = load_responses(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx")
-excel_links = [row["evidence"] for row in forms_responses if row["evidence"]]
 if {row["evidenceUrl"] for row in published} != set(excel_links):
     fail("El vínculo publicado no coincide exactamente con el Excel")
-if len(forms_schema["evidenceHeaders"]) != 8 or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"]:
+if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"]:
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
 for row in published:
     expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
@@ -191,8 +204,11 @@ for forbidden in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exc
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-if "sistema-evidencias-ops-v17" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v17 incompleto")
+for cache_control in ("sistema-evidencias-ops-v18", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX"):
+    if cache_control not in sw:
+        fail(f"Actualización PWA incompleta: {cache_control}")
+if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("El Excel CMS no debe publicarse en la caché web")
 if "window.print" in js or "Tiendas realizadas" in js:
     fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
 if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
@@ -209,7 +225,7 @@ for required in ("SUM(${activityRange})", "COUNT(${activityRange})", "COUNTBLANK
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
 approve("08 · PWA, descarga directa y mensaje final simplificados")
-if [item.get("rank") for item in data.get("dms", [])] != list(range(1, 7)):
+if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.get("dms", [])) + 1)):
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
 if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or any("commitmentDateDisplay" not in item for item in data.get("activities", [])):
@@ -217,7 +233,7 @@ if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("na
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
 approve("09 · Ranking, fotografía DM e identidad ejecutiva")
-for text in ["python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_dynamic_forms_schema.py", "python tests/validate_horno_applicability.py", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+for text in ["python scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_dynamic_forms_schema.py", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
 approve("10 · Workflow completo: limpiar, generar, validar y publicar")
@@ -228,7 +244,7 @@ print("Validación aprobada · 10/10 controles")
 for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
-print("72 tiendas · 8 actividades vigentes · 6 DM + 1 Director Regional")
+print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM + 1 Director Regional")
 print("Roll_Out_38115 → Zona Azul → Yazmin Haydee · vínculo SharePoint validado")
 print("Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes")
 print("Excel: resumen rápido + detalle + actividades")

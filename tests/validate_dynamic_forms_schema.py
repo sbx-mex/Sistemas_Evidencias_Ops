@@ -51,15 +51,16 @@ def main() -> None:
 
         # Escenario 2: formato largo; Forms agrega nuevas respuestas hacia abajo.
         long_book = temp / "long.xlsx"
-        long_headers = BASE + ["CeCo", ACTIVITY, "Evidencia del avance"]
+        long_headers = BASE + ["CeCo", ACTIVITY, "¿Confirmas que realizaste la actividad seleccionada?", "Evidencia del avance"]
         start1, finish1 = timestamps(2)
         start2, finish2 = timestamps(3)
         save_book(long_book, long_headers, [
-            [2, start1, finish1, "", "Prueba", "38115", "Roll Out", f"{allowed}/uno.jpg"],
-            [3, start2, finish2, "", "Prueba", "38149", "Lay Out", f"{allowed}/dos.jpg"],
+            [2, start1, finish1, "", "Prueba", "38115", "Roll Out", "No", f"{allowed}/uno.jpg"],
+            [3, start2, finish2, "", "Prueba", "38149", "Lay Out", "Sí", f"{allowed}/dos.jpg"],
         ])
         rows, schema = load_responses(long_book)
         assert len(rows) == 2 and all(row["confirmed"] for row in rows)
+        assert all(row["explicitNo"] is False and row["confirmedAnswer"] == "Sí" for row in rows)
         assert schema["evidenceHeaderMap"] == {"Evidencia del avance": "generic"}
 
         # Escenario 3: encabezados base duplicados; se toma el único valor poblado.
@@ -77,7 +78,7 @@ def main() -> None:
         ambiguous_headers = BASE + ["CeCo", ACTIVITY, "Evidencia_QR_Qualtrics", "Evidencia_Lay_Out"]
         save_book(ambiguous, ambiguous_headers, [[5, start, finish, "", "Prueba", "38115", "Roll Out", f"{allowed}/qr.jpg", f"{allowed}/layout.jpg"]])
         rows, schema = load_responses(ambiguous)
-        assert rows[0]["evidence"] == "" and rows[0]["confirmed"] is False
+        assert rows[0]["evidence"] == "" and rows[0]["confirmed"] is True
         assert schema["evidenceIssues"]["ambiguous-evidence"] == [2]
 
         # Escenario 5: una sola evidencia en la columna incorrecta tampoco se reasigna.
@@ -86,7 +87,7 @@ def main() -> None:
         mismatched_headers = BASE + ["CeCo", ACTIVITY, "Evidencia_QR_Qualtrics"]
         save_book(mismatched, mismatched_headers, [[6, start, finish, "", "Prueba", "38115", "Roll Out", f"{allowed}/qr.jpg"]])
         rows, schema = load_responses(mismatched)
-        assert rows[0]["evidence"] == "" and rows[0]["confirmed"] is False
+        assert rows[0]["evidence"] == "" and rows[0]["confirmed"] is True
         assert schema["evidenceIssues"]["mismatched-evidence-column"] == [2]
 
         # Escenario 6: una actividad nueva queda en historia, pero no se publica hasta activarla en CMS.
@@ -105,7 +106,35 @@ def main() -> None:
         assert payload["quality"]["hiddenActivities"] == ["Nueva Actividad Forms"]
         assert payload["quality"]["hiddenActivityRows"] == [2]
 
-    print("Forms dinámico aprobado · cruce estricto por actividad · CMS controla visibilidad")
+        # Escenario 7: portada previa, encabezado desplazado y campos personales ausentes.
+        shifted = temp / "shifted.xlsx"
+        workbook = Workbook()
+        cover = workbook.active
+        cover.title = "Instrucciones"
+        cover["A1"] = "Exportación Microsoft Forms"
+        data_sheet = workbook.create_sheet("Respuestas")
+        data_sheet.append(["Sistema de Evidencias OPS"])
+        data_sheet.append([])
+        shifted_headers = ["CeCo", ACTIVITY, "Evidencia_Rack_FHW", "Nueva columna"]
+        data_sheet.append(shifted_headers)
+        data_sheet.append(["38590", "Rack FHW", f"{allowed}/rack.jpg", "futuro"])
+        workbook.save(shifted)
+        rows, schema = load_responses(shifted)
+        assert schema["sheet"] == "Respuestas" and schema["headerRow"] == 3
+        assert rows[0]["ceco"] == "38590" and rows[0]["confirmed"] is True
+        assert rows[0]["email"] == "" and rows[0]["name"] == ""
+
+        # Escenario 8: un archivo renombrado como XLSX se rechaza antes de procesarse.
+        damaged = temp / "damaged.xlsx"
+        damaged.write_bytes(b"archivo incompleto")
+        try:
+            load_responses(damaged)
+        except ValueError as error:
+            assert "dañado" in str(error)
+        else:
+            raise AssertionError("El XLSX dañado no fue rechazado")
+
+    print("Forms dinámico aprobado · encabezados desplazables · cruce estricto · CMS controla visibilidad")
 
 
 if __name__ == "__main__":

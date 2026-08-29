@@ -13,9 +13,11 @@ deduplica cumplimiento por tienda/actividad y publica únicamente el JSON mínim
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import unicodedata
+import zipfile
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -47,6 +49,8 @@ CONFIRMATION_HEADERS = (
     "Confirmacion",
 )
 EVIDENCE_HEADERS = ("Evidencia", "Evidencia del avance")
+REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
+REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 
 
 def clean_text(value: Any) -> str:
@@ -61,6 +65,32 @@ def key_text(value: Any) -> str:
 def compact_key(value: Any) -> str:
     """Clave tolerante a espacios, guiones, &, acentos y cambios de mayúsculas."""
     return re.sub(r"[^a-z0-9]+", "", key_text(value))
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for block in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def validate_xlsx(path: Path, label: str) -> None:
+    """Rechaza libros incompletos/corruptos antes de que openpyxl los procese."""
+    if not path.is_file():
+        raise ValueError(f"No existe {label}: {path}")
+    if path.suffix.casefold() != ".xlsx":
+        raise ValueError(f"{label} debe ser un archivo .xlsx: {path.name}")
+    try:
+        with zipfile.ZipFile(path) as archive:
+            bad_member = archive.testzip()
+            missing = REQUIRED_XLSX_MEMBERS.difference(archive.namelist())
+    except zipfile.BadZipFile as exc:
+        raise ValueError(f"{label} no es un XLSX válido o está dañado: {path.name}") from exc
+    if bad_member:
+        raise ValueError(f"{label} contiene un componente dañado: {bad_member}")
+    if missing:
+        raise ValueError(f"{label} está incompleto: faltan {', '.join(sorted(missing))}")
 
 
 def is_yes(value: Any) -> bool:
@@ -278,6 +308,7 @@ def find_header(ws, required: set[str]) -> tuple[int, dict[str, int]]:
 
 def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]], dict[str, Any], dict[str, int]]:
     """Lee actividades, fechas, gerentes y configuración desde un solo Excel CMS."""
+    validate_xlsx(path, "el CMS maestro")
     workbook = load_workbook(path, read_only=True, data_only=False)
     required_sheets = {"Actividades", "Gerentes", "Configuracion"}
     missing = required_sheets.difference(workbook.sheetnames)
@@ -367,6 +398,7 @@ def find_directory_header(ws) -> tuple[int, list[Any]]:
 
 
 def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str]:
+    validate_xlsx(path, "el directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)
     requested = settings.get("directorySheet")
     if requested not in workbook.sheetnames:
@@ -400,18 +432,39 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
     return stores, requested
 
 
+def find_response_source(workbook) -> tuple[Any, int, list[Any]]:
+    """Localiza hoja y fila de encabezados aunque Forms agregue portada o filas previas."""
+    candidates = []
+    for sheet_index, ws in enumerate(workbook.worksheets):
+        scan_limit = min(max(ws.max_row, 1), 25)
+        for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=scan_limit, values_only=True), 1):
+            headers = list(row)
+            activity_columns = matching_columns(headers, RESPONSE_FIELDS["activity"])
+            ceco_columns = matching_columns(headers, RESPONSE_FIELDS["ceco"])
+            evidence_group = evidence_columns(headers)
+            if activity_columns and ceco_columns and evidence_group:
+                score = len(evidence_group) * 100 + sum(
+                    bool(matching_columns(headers, aliases)) for aliases in RESPONSE_FIELDS.values()
+                )
+                candidates.append((score, -sheet_index, -row_number, ws, row_number, headers))
+    if not candidates:
+        raise ValueError("No se encontró una tabla Forms con Actividad, CeCo y Evidencia")
+    _, _, _, ws, header_row, headers = max(candidates, key=lambda item: item[:3])
+    return ws, header_row, headers
+
+
 def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Lee exportaciones Forms antiguas, anchas o normalizadas por filas.
 
     Soporta una sola columna genérica de evidencia, múltiples columnas
     Evidencia_<Actividad>, encabezados duplicados y columnas reordenadas.
     """
+    validate_xlsx(path, "la exportación de Forms")
     workbook = load_workbook(path, read_only=True, data_only=True)
-    ws = workbook[workbook.sheetnames[0]]
-    rows = ws.iter_rows(values_only=True)
-    headers = list(next(rows, ()))
+    ws, header_row, headers = find_response_source(workbook)
+    rows = ws.iter_rows(min_row=header_row + 1, values_only=True)
     column_groups = {field: matching_columns(headers, aliases) for field, aliases in RESPONSE_FIELDS.items()}
-    missing = [aliases[0] for field, aliases in RESPONSE_FIELDS.items() if not column_groups[field]]
+    missing = [RESPONSE_FIELDS[field][0] for field in REQUIRED_RESPONSE_FIELDS if not column_groups[field]]
     if missing:
         raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
     confirmation_columns = matching_columns(headers, CONFIRMATION_HEADERS)
@@ -422,7 +475,7 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     responses = []
     conflicts = []
     evidence_issues: dict[str, list[int]] = defaultdict(list)
-    for row_number, row in enumerate(rows, 2):
+    for row_number, row in enumerate(rows, header_row + 1):
         if not any(value not in (None, "") for value in row):
             continue
         values: dict[str, str] = {}
@@ -440,8 +493,11 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         if evidence_issue:
             evidence_issues[evidence_issue].append(row_number)
         finished = parse_datetime(values["finished"])
-        explicit_no = is_no(confirmation)
-        confirmed = is_yes(confirmation) or (not confirmation and bool(evidence))
+        # Registrar una actividad en Forms equivale a confirmarla. La respuesta de
+        # confirmación puede permanecer en exportaciones históricas, pero nunca
+        # cambia aplicabilidad ni cumplimiento. La evidencia sigue siendo obligatoria
+        # cuando así lo define el CMS.
+        confirmed = bool(values["activity"])
         responses.append({
             "row": row_number,
             "id": values["id"] or str(row_number - 1),
@@ -451,9 +507,9 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
             "name": values["name"],
             "activity": values["activity"],
             "ceco": normalize_ceco(values["ceco"]),
-            "confirmedAnswer": confirmation or ("Evidencia cargada" if evidence else ""),
+            "confirmedAnswer": "Sí" if values["activity"] else "",
             "confirmed": confirmed and not row_has_conflict,
-            "explicitNo": explicit_no and not row_has_conflict,
+            "explicitNo": False,
             "evidence": evidence,
             "evidenceSourceHeader": evidence_source,
             "schemaConflict": row_has_conflict,
@@ -461,6 +517,7 @@ def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         })
     schema = {
         "sheet": ws.title,
+        "headerRow": header_row,
         "columns": len(headers),
         "activityHeaders": [clean_text(headers[index]) for index in column_groups["activity"]],
         "cecoHeaders": [clean_text(headers[index]) for index in column_groups["ceco"]],
@@ -501,18 +558,14 @@ def build_payload(
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
     configured = {key_text(item["name"]): item for item in activities}
-    no_means_na_keys = {
-        key_text(name) for name in setting_list(settings.get("notApplicableOnNoActivities"))
-    }
     for item in activities:
-        item["noMeansNotApplicable"] = key_text(item["name"]) in no_means_na_keys
+        item["noMeansNotApplicable"] = False
     activity_names = [item["name"] for item in activities]
     canonical_activity = {key_text(item["name"]): item["name"] for item in activities}
     evidence_rules = {key_text(item["name"]): item.get("requireEvidence", True) for item in activities}
 
     submissions = []
     latest_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
-    latest_decision_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
     unknown_cecos = set()
     invalid_rows = []
     unsafe_evidence_rows = []
@@ -538,8 +591,7 @@ def build_payload(
         activity = canonical_activity[activity_key]
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
-        no_means_not_applicable = key_text(activity) in no_means_na_keys
-        not_applicable = bool(store and activity and no_means_not_applicable and response["explicitNo"])
+        not_applicable = False
         if response["evidence"] and not evidence_available:
             unsafe_evidence_rows.append(response["row"])
         valid = bool(
@@ -579,22 +631,14 @@ def build_payload(
             public["email"] = response["email"]
         submissions.append(public)
 
-        if store and activity and no_means_not_applicable and (response["confirmed"] or response["explicitNo"]):
-            pair = (response["ceco"], activity)
-            current = latest_decision_by_pair.get(pair)
-            if current is None or (response["finished"] or datetime.min) > (current["finished"] or datetime.min):
-                latest_decision_by_pair[pair] = response
-
         if valid:
             pair = (response["ceco"], activity)
             current = latest_by_pair.get(pair)
             if current is None or (response["finished"] or datetime.min) > (current["finished"] or datetime.min):
                 latest_by_pair[pair] = response
 
-    not_applicable_pairs = {
-        pair for pair, response in latest_decision_by_pair.items() if response["explicitNo"]
-    }
-    completion_pairs = set(latest_by_pair).difference(not_applicable_pairs)
+    not_applicable_pairs: set[tuple[str, str]] = set()
+    completion_pairs = set(latest_by_pair)
     store_rows = []
     for ceco, store in sorted(stores.items(), key=lambda item: (key_text(item[1]["dm"]), key_text(item[1]["store"]))):
         status = {activity: (ceco, activity) in completion_pairs for activity in activity_names}
@@ -663,7 +707,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 9,
+        "schemaVersion": 10,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -683,9 +727,12 @@ def build_payload(
         },
         "sources": {
             "responses": responses_path.name,
+            "responsesSha256": file_sha256(responses_path),
             "directory": directory_path.name,
+            "directorySha256": file_sha256(directory_path),
             "directorySheet": directory_sheet,
             "cms": cms_path.name,
+            "cmsSha256": file_sha256(cms_path),
         },
         "summary": {
             "dms": len(dm_stats),
@@ -749,7 +796,9 @@ def main() -> None:
     args = parser.parse_args()
     payload = build_payload(args.responses, args.directory, args.settings, args.cms)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary_output = args.output.with_suffix(args.output.suffix + ".tmp")
+    temporary_output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary_output.replace(args.output)
     summary = payload["summary"]
     print(
         f"Dashboard generado: {summary['stores']} tiendas · {summary['activities']} actividades · "

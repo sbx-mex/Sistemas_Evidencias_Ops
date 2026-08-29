@@ -188,7 +188,9 @@ def main() -> None:
     args = parser.parse_args()
     data = json.loads(args.data.read_text(encoding="utf-8"))
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    build_pdf(data, args.output)
+    temporary_output = args.output.with_suffix(args.output.suffix + ".tmp")
+    build_pdf(data, temporary_output)
+    temporary_output.replace(args.output)
     print(f"PDF generado: {args.output.relative_to(ROOT) if args.output.is_relative_to(ROOT) else args.output}")
 
 

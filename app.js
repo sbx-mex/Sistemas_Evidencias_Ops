@@ -753,7 +753,7 @@ function bindEvents() {
     state.filters.dm = state.filters.dm === button.dataset.dmFocus ? "" : button.dataset.dmFocus;
     state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
   });
-  $("#refresh-button").addEventListener("click", () => loadData(true));
+  $("#refresh-button").addEventListener("click", refreshApplicationData);
   $("#back-to-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   window.addEventListener("scroll", () => { $("#back-to-top").hidden = window.scrollY < 520; }, { passive: true });
   window.addEventListener("online", updateConnection); window.addEventListener("offline", updateConnection);
@@ -789,5 +789,28 @@ async function loadData(announce = false) {
   } finally { $("#refresh-button").disabled = false; }
 }
 
+async function refreshApplicationData() {
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    const registration = await navigator.serviceWorker.getRegistration();
+    await registration?.update();
+    registration?.waiting?.postMessage({ type: "SKIP_WAITING" });
+    registration?.active?.postMessage({ type: "CLEAR_OLD_CACHES" });
+  }
+  await loadData(true);
+}
+
+async function registerLatestServiceWorker() {
+  if (!("serviceWorker" in navigator) || location.protocol === "file:") return;
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (refreshing || !navigator.serviceWorker.controller) return;
+    refreshing = true;
+    window.location.reload();
+  });
+  const registration = await navigator.serviceWorker.register("./service-worker.js", { updateViaCache: "none" });
+  await registration.update();
+  registration.waiting?.postMessage({ type: "SKIP_WAITING" });
+}
+
 bindEvents(); updateConnection(); loadData();
-if ("serviceWorker" in navigator && location.protocol !== "file:") window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
+window.addEventListener("load", () => registerLatestServiceWorker().catch(() => {}));

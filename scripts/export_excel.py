@@ -203,7 +203,9 @@ def main() -> None:
     data = json.loads(args.data.read_text(encoding="utf-8"))
     workbook = build_workbook(data)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    workbook.save(args.output)
+    temporary_output = args.output.with_suffix(args.output.suffix + ".tmp")
+    workbook.save(temporary_output)
+    temporary_output.replace(args.output)
     print(f"Excel generado: {args.output.relative_to(ROOT) if args.output.is_relative_to(ROOT) else args.output}")
     print(f"Resumen: {data['summary']['dms']} DM · {data['summary']['stores']} tiendas · {data['summary']['compliance']}% regional")
 

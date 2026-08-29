@@ -19,6 +19,7 @@ OBSOLETE_FILES = (
     "assets/dm/yazmin-chabela.jpeg",
     "assets/dm/yazmin-garcia.jpeg",
     "assets/icons/icon.svg",
+    "tests/validate_horno_applicability.py",
 )
 
 

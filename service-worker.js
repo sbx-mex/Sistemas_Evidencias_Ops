@@ -1,4 +1,5 @@
-const CACHE_NAME = "sistema-evidencias-ops-v17";
+const CACHE_PREFIX = "sistema-evidencias-ops-";
+const CACHE_NAME = "sistema-evidencias-ops-v18";
 const CORE = [
   "./",
   "./index.html",
@@ -23,38 +24,59 @@ const CORE = [
   "./assets/dm/yazmin-garcia.webp"
 ];
 
+async function precacheLatest() {
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.all(CORE.map(async (path) => {
+    const request = new Request(path, { cache: "reload" });
+    const response = await fetch(request);
+    if (!response.ok) throw new Error(`No se pudo preparar ${path}: ${response.status}`);
+    await cache.put(path, response);
+  }));
+}
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE)).then(() => self.skipWaiting()));
+  event.waitUntil(precacheLatest().then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))).then(() => self.clients.claim()));
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
+  );
 });
 
-function networkFirst(request) {
-  return fetch(request).then((response) => {
-    if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
-    return response;
-  }).catch(() => caches.match(request));
-}
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
+  if (event.data?.type === "CLEAR_OLD_CACHES") {
+    event.waitUntil(
+      caches.keys().then((keys) => Promise.all(
+        keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      ))
+    );
+  }
+});
 
-function staleWhileRevalidate(request) {
-  return caches.match(request).then((cached) => {
-    const update = fetch(request).then((response) => {
-      if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
-      return response;
-    }).catch(() => cached);
-    return cached || update;
-  });
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const response = await fetch(request, { cache: "no-store" });
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request, { ignoreSearch: true });
+    if (cached) return cached;
+    throw error;
+  }
 }
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-  if (event.request.mode === "navigate" || url.pathname.endsWith("/data/dashboard.json")) {
-    event.respondWith(networkFirst(event.request));
-    return;
-  }
-  event.respondWith(staleWhileRevalidate(event.request));
+  event.respondWith(networkFirst(event.request));
 });

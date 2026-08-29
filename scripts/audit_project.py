@@ -9,6 +9,7 @@ from urllib.parse import unquote, urlsplit
 
 from PIL import Image
 
+from build_dashboard import file_sha256, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,9 +67,28 @@ for obsolete in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exce
         issues.append(f"La confirmación conserva una acción obsoleta: {obsolete}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
+source_fingerprints = {}
+for source_key, source_path, label in (
+    ("responsesSha256", ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", "Forms"),
+    ("directorySha256", ROOT / "cms" / "Centro Norte_Directorio.xlsx", "Directorio"),
+    ("cmsSha256", ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", "CMS"),
+):
+    try:
+        validate_xlsx(source_path, label)
+        source_fingerprints[source_key] = file_sha256(source_path)
+    except ValueError as error:
+        issues.append(str(error))
+        continue
+    if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
+        issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
+
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v18", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim")):
+    issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
+if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
+    issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 9:
-    issues.append("Contrato JSON distinto de la versión 9")
+if data.get("schemaVersion") != 10:
+    issues.append("Contrato JSON distinto de la versión 10")
 response_schema = data.get("quality", {}).get("responseSchema", {})
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
@@ -77,6 +97,11 @@ if response_schema.get("rowConflicts") or any(
     for key, rows in response_schema.get("evidenceIssues", {}).items()
 ):
     issues.append("El Excel Forms contiene columnas o evidencias ambiguas")
+if data.get("summary", {}).get("notApplicableCompletions") or any(
+    item.get("noMeansNotApplicable") or item.get("notApplicableStores")
+    for item in data.get("activities", [])
+):
+    issues.append("Persisten reglas obsoletas de No aplica")
 report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":
@@ -134,6 +159,7 @@ report = {
     "vanessaWhiteBackground": round(white_corner_ratio * 100, 1),
     "exportVisuals": 2,
     "directEvidenceLinks": len(published_evidence),
+    "sourceFingerprints": {key: value[:12] for key, value in source_fingerprints.items()},
     "xlsxFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file(),
     "pdfFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file(),
     "obsoleteFiles": obsolete_files,
