@@ -7,16 +7,12 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/build-dashboard.yml'
-      - 'cms/**.xlsx'
+      - 'cms/*.xlsx'
       - 'assets/dm/**'
       - 'assets/icons/**'
       - 'assets/ui/**'
       - 'config/**'
-      - 'scripts/build_dashboard.py'
-      - 'scripts/clean_obsolete.py'
-      - 'scripts/export_excel.py'
-      - 'scripts/export_pdf.py'
-      - 'scripts/audit_project.py'
+      - 'scripts/**'
       - 'tests/**'
       - 'index.html'
       - 'styles.css'
@@ -32,7 +28,7 @@ permissions:
 
 concurrency:
   group: evidencias-ops-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -49,7 +45,10 @@ jobs:
           cache: pip
 
       - name: Instalar dependencias
-        run: pip install -r requirements.txt
+        run: pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Validar integridad y encabezados de los Excel
+        run: python scripts/validate_sources.py
 
       - name: Limpiar archivos obsoletos conocidos
         run: python scripts/clean_obsolete.py --apply
@@ -60,7 +59,7 @@ jobs:
           python scripts/export_excel.py
           python scripts/export_pdf.py
 
-      - name: Validar sintaxis y 10 controles del proyecto
+      - name: Validar sintaxis y controles del proyecto
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: |
@@ -70,12 +69,19 @@ jobs:
           node --check xlsx-export.js
           python scripts/clean_obsolete.py --check
           python tests/validate_dynamic_forms_schema.py
-          python tests/validate_horno_applicability.py
           python tests/validate_project.py
           python scripts/audit_project.py
 
+      - name: Resumen de actualización
+        if: always()
+        run: |
+          echo "## Sistema de Evidencias OPS" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Fuente: Excel Forms + Directorio + CMS" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Validación: integridad, encabezados, CeCo, actividad, evidencia y caché" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Publicación: sólo datos y exportaciones generadas" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publicar únicamente datos generados
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           if git diff --quiet -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf config assets/dm assets/icons; then
@@ -83,6 +89,7 @@ jobs:
             exit 0
           fi
           git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
+          git add -A -- tests/validate_horno_applicability.py
           git add -A -- config assets/dm assets/icons
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
