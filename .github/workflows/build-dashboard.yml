@@ -69,6 +69,7 @@ jobs:
           node --check pdf-export.js
           node --check xlsx-export.js
           python scripts/clean_obsolete.py --check
+          python tests/validate_dynamic_forms_schema.py
           python tests/validate_horno_applicability.py
           python tests/validate_project.py
           python scripts/audit_project.py
