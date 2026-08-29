@@ -15,6 +15,7 @@ const number = (value) => Number(value || 0).toLocaleString("es-MX");
 
 const ROUTES = {
   resumen: ["Resumen ejecutivo", "Seguimiento de cumplimiento operativo"],
+  equipo: ["Equipo DM", "Responsables y avance por portafolio"],
   actividades: ["Actividades", "Catálogo dinámico del Forms"],
   tiendas: ["Tiendas", "Cumplimiento por CeCo y DM"],
   evidencias: ["Evidencias", "Registros confirmados desde Forms"],
@@ -92,16 +93,30 @@ function statusBadge(value, expected) {
 function renderKpis() {
   const metrics = currentMetrics();
   const cards = [
-    ["Cumplimiento", percent(metrics.compliance), `${number(metrics.completed)} de ${number(metrics.expected)} combinaciones tienda–actividad`, "compliance"],
-    ["Tiendas con avance completo", number(metrics.storesComplete), `${number(metrics.stores)} tiendas dentro de la vista`, "stores"],
-    ["Actividades visibles", number(metrics.activities), state.filters.activity ? "Actividad seleccionada en el filtro" : "Controladas desde el CMS", "activities"],
-    ["Respuestas válidas", number(metrics.validResponses), "Confirmación Sí + CeCo reconocido + evidencia", "responses"],
+    ["Avance total", percent(metrics.compliance), `${number(metrics.completed)} de ${number(metrics.expected)} cumplimientos`, "compliance"],
+    ["Tiendas completas", number(metrics.storesComplete), `${number(metrics.stores - metrics.storesComplete)} requieren seguimiento`, "stores"],
+    ["Actividades", number(metrics.activities), state.filters.activity ? "Una actividad seleccionada" : "Catálogo activo del CMS", "activities"],
+    ["Evidencias válidas", number(metrics.validResponses), "Sí + CeCo + evidencia", "responses"],
   ];
   $("#kpi-grid").innerHTML = cards.map(([label, value, detail, icon]) => `
     <article class="kpi-card">
       <span class="kpi-label">${esc(label)}</span><span class="kpi-icon">${KPI_ICONS[icon]}</span>
       <strong>${esc(value)}</strong><small>${esc(detail)}</small>
     </article>`).join("");
+}
+
+function renderExecutivePulse() {
+  const metrics = currentMetrics();
+  const pending = Math.max(metrics.expected - metrics.completed, 0);
+  const scope = state.filters.store
+    ? filteredStores()[0]?.store || "Tienda"
+    : state.filters.dm || state.data.region;
+  $("#pulse-value").textContent = percent(metrics.compliance);
+  $("#pulse-ring").style.setProperty("--pulse", `${Math.min(metrics.compliance, 100) * 3.6}deg`);
+  $("#pulse-title").textContent = scope;
+  $("#pulse-message").textContent = pending
+    ? `${number(pending)} actividades pendientes. Prioriza las tiendas sin registro y valida la evidencia más reciente.`
+    : "El alcance seleccionado está completo. Mantén la validación de evidencias al día.";
 }
 
 function renderActivityProgress() {
@@ -133,11 +148,33 @@ function renderDmRanking() {
     const expected = stores.length * activities.length;
     return { dm, stores: stores.length, completed, expected, compliance: expected ? completed / expected * 100 : 0 };
   }).sort((a, b) => b.compliance - a.compliance || a.dm.localeCompare(b.dm, "es-MX"));
-  $("#dm-ranking").innerHTML = rows.length ? rows.map((item, index) => `
-    <div class="ranking-item"><span class="ranking-position">${index + 1}</span>
+  $("#dm-ranking").innerHTML = rows.length ? rows.map((item, index) => {
+    const profile = state.data.dms.find((dm) => dm.dm === item.dm) || {};
+    return `
+    <button class="ranking-item ranking-button" type="button" data-dm-focus="${esc(item.dm)}"><span class="ranking-position">${index + 1}</span>
+      ${profile.photo ? `<img class="ranking-photo" src="./${esc(profile.photo)}" alt="">` : '<span class="ranking-photo fallback" aria-hidden="true">DM</span>'}
       <div class="ranking-copy"><strong>${esc(item.dm)}</strong><small>${item.stores} tiendas · ${item.completed}/${item.expected}</small></div>
       <strong>${percent(item.compliance)}</strong>
-    </div>`).join("") : '<div class="empty-state">Sin información para mostrar.</div>';
+    </button>`;
+  }).join("") : '<div class="empty-state">Sin información para mostrar.</div>';
+}
+
+function renderDmTeam() {
+  const visible = state.data.dms.filter((item) => !state.filters.dm || item.dm === state.filters.dm);
+  $("#dm-team").innerHTML = visible.length ? visible.map((item) => `
+    <article class="dm-card">
+      <div class="dm-photo-wrap">
+        ${item.photo ? `<img src="./${esc(item.photo)}" alt="Fotografía de ${esc(item.shortName)}" loading="lazy">` : '<div class="dm-photo-placeholder">DM</div>'}
+        <span class="dm-status ${item.compliance === 100 ? "complete" : item.compliance > 0 ? "progress" : "empty"}">${esc(item.status)}</span>
+      </div>
+      <div class="dm-card-body">
+        <p class="eyebrow">Gerente de Distrito</p><h3>${esc(item.shortName)}</h3><small>${esc(item.dm)}</small>
+        <div class="dm-score"><strong>${percent(item.compliance)}</strong><span>${item.completed}/${item.expected} cumplimientos</span></div>
+        <div class="track"><span style="--progress:${Math.min(item.compliance, 100)}%"></span></div>
+        <div class="dm-facts"><span><strong>${item.stores}</strong> tiendas</span><span><strong>${item.pending}</strong> pendientes</span></div>
+        <button class="button secondary" type="button" data-dm-focus="${esc(item.dm)}" data-target="tiendas">Ver portafolio</button>
+      </div>
+    </article>`).join("") : '<div class="empty-state">No hay Gerentes de Distrito para la selección actual.</div>';
 }
 
 function renderPriorityStores() {
@@ -203,6 +240,7 @@ function renderEvidenceTable() {
 }
 
 function renderAll() {
+  renderExecutivePulse();
   renderKpis();
   renderActivityProgress();
   renderDmRanking();
@@ -210,6 +248,18 @@ function renderAll() {
   renderActivityCards();
   renderStoreTable();
   renderEvidenceTable();
+  renderDmTeam();
+  bindDynamicActions();
+}
+
+function bindDynamicActions() {
+  $$('[data-dm-focus]').forEach((button) => button.addEventListener('click', () => {
+    state.filters.dm = button.dataset.dmFocus;
+    state.filters.store = "";
+    populateFilters();
+    renderAll();
+    if (button.dataset.target) location.hash = button.dataset.target;
+  }, { once: true }));
 }
 
 function populateFilters() {

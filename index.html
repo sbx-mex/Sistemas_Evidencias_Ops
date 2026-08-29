@@ -24,6 +24,7 @@
     </div>
     <nav class="side-nav">
       <a href="#resumen" data-route="resumen" class="is-active"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-3H4zM14 7h6V4h-6z"/></svg><span>Resumen</span></a>
+      <a href="#equipo" data-route="equipo"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Equipo DM</span></a>
       <a href="#actividades" data-route="actividades"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9l1.5 1.5L12 8M8 15l1.5 1.5L12 14M14 9h2M14 15h2"/></svg><span>Actividades</span></a>
       <a href="#tiendas" data-route="tiendas"><svg viewBox="0 0 24 24"><path d="M4 10h16M6 10v10h12V10M3 10l2-6h14l2 6M9 20v-5h6v5"/></svg><span>Tiendas</span></a>
       <a href="#evidencias" data-route="evidencias"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h.01M4 16l5-4 3 3 2-2 6 5"/></svg><span>Evidencias</span></a>
@@ -73,6 +74,11 @@
     </section>
 
     <section class="view" data-view="resumen">
+      <article class="executive-pulse" aria-label="Lectura ejecutiva">
+        <div class="pulse-ring" id="pulse-ring"><strong id="pulse-value">0%</strong><span>cumplimiento</span></div>
+        <div class="pulse-copy"><p class="eyebrow">Lectura en 10 segundos</p><h2 id="pulse-title">Avance regional</h2><p id="pulse-message">Calculando el estado de la operación…</p></div>
+        <div class="pulse-actions"><span class="signal signal-good">Completo 100%</span><span class="signal signal-progress">En avance 1–99%</span><span class="signal signal-empty">Por iniciar 0%</span></div>
+      </article>
       <div class="kpi-grid" id="kpi-grid" aria-live="polite"></div>
       <div class="dashboard-grid">
         <article class="panel panel-wide">
@@ -88,6 +94,11 @@
         <div class="panel-heading"><div><p class="eyebrow">Atención inmediata</p><h2>Tiendas con actividad pendiente</h2></div><button class="text-button" type="button" data-go="tiendas">Ver todas</button></div>
         <div id="priority-stores" class="priority-grid"></div>
       </article>
+    </section>
+
+    <section class="view" data-view="equipo" hidden>
+      <div class="page-heading"><div><p class="eyebrow">Responsables del seguimiento</p><h2>Equipo de Gerentes de Distrito</h2><p>Selecciona una tarjeta para enfocar todo el dashboard en ese portafolio. Las fotografías y nombres se administran desde <code>config/gerentes.csv</code>.</p></div></div>
+      <div id="dm-team" class="dm-team-grid"></div>
     </section>
 
     <section class="view" data-view="actividades" hidden>

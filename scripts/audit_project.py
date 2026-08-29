@@ -14,6 +14,8 @@ oversized = []
 for source in TEXT_FILES:
     text = source.read_text(encoding="utf-8")
     for reference in re.findall(r"(?:src|href)[=:]\s*[\"'](\./[^\"'#?]+)", text):
+        if "${" in reference:
+            continue
         target = ROOT / reference.removeprefix("./")
         if not target.exists():
             missing.append({"source": source.name, "target": reference})

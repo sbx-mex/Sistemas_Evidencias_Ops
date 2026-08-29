@@ -2,23 +2,25 @@
   "schemaVersion": 1,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-28T22:50:54-04:00",
+  "generatedAt": "2026-08-28T23:00:06-04:00",
   "lastUpdated": "2026-08-28T20:32:52",
   "lastUpdatedDisplay": "28/08/2026 20:32",
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
     "directory": "Centro Norte_Directorio.xlsx",
-    "directorySheet": "93 T (2)",
-    "activities": "actividades.csv"
+    "directorySheet": "72 T",
+    "activities": "actividades.csv",
+    "managers": "gerentes.csv"
   },
   "summary": {
-    "stores": 94,
+    "stores": 72,
     "activities": 7,
-    "expectedCompletions": 658,
+    "expectedCompletions": 504,
     "completedCompletions": 1,
     "compliance": 0.2,
     "validResponses": 1,
-    "storesComplete": 0
+    "storesComplete": 0,
+    "pendingCompletions": 503
   },
   "quality": {
     "responsesRead": 1,
@@ -34,8 +36,8 @@
       "order": 1,
       "autoDetected": false,
       "completedStores": 1,
-      "pendingStores": 93,
-      "compliance": 1.1
+      "pendingStores": 71,
+      "compliance": 1.4
     },
     {
       "name": "Programacion Hornos Merry - Focaccia",
@@ -43,7 +45,7 @@
       "order": 2,
       "autoDetected": false,
       "completedStores": 0,
-      "pendingStores": 94,
+      "pendingStores": 72,
       "compliance": 0.0
     },
     {
@@ -52,7 +54,7 @@
       "order": 3,
       "autoDetected": false,
       "completedStores": 0,
-      "pendingStores": 94,
+      "pendingStores": 72,
       "compliance": 0.0
     },
     {
@@ -61,7 +63,7 @@
       "order": 4,
       "autoDetected": false,
       "completedStores": 0,
-      "pendingStores": 94,
+      "pendingStores": 72,
       "compliance": 0.0
     },
     {
@@ -70,7 +72,7 @@
       "order": 5,
       "autoDetected": false,
       "completedStores": 0,
-      "pendingStores": 94,
+      "pendingStores": 72,
       "compliance": 0.0
     },
     {
@@ -79,7 +81,7 @@
       "order": 6,
       "autoDetected": false,
       "completedStores": 0,
-      "pendingStores": 94,
+      "pendingStores": 72,
       "compliance": 0.0
     },
     {
@@ -88,666 +90,811 @@
       "order": 7,
       "autoDetected": false,
       "completedStores": 0,
-      "pendingStores": 94,
+      "pendingStores": 72,
       "compliance": 0.0
     }
   ],
   "dms": [
     {
-      "dm": "David Carrasco Hernandez",
-      "stores": 13,
-      "completed": 0,
-      "expected": 91,
-      "compliance": 0.0
-    },
-    {
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "stores": 15,
-      "completed": 0,
-      "expected": 105,
-      "compliance": 0.0
-    },
-    {
-      "dm": "Monica Selene Morales Ibarra",
-      "stores": 12,
+      "dm": "Enrique Cesar Flores",
+      "shortName": "Enrique Cesar",
+      "photo": "assets/dm/enrique-cesar.jpeg",
+      "stores": 10,
       "completed": 1,
-      "expected": 84,
-      "compliance": 1.2
+      "expected": 70,
+      "pending": 69,
+      "pendingStores": 10,
+      "compliance": 1.4,
+      "status": "En avance"
     },
     {
       "dm": "Nancy Carolina Rodriguez Medina",
-      "stores": 13,
-      "completed": 0,
-      "expected": 91,
-      "compliance": 0.0
-    },
-    {
-      "dm": "Ursula Hernandez Labra",
+      "shortName": "Nancy Carolina",
+      "photo": "assets/dm/nancy-carolina.jpeg",
       "stores": 12,
       "completed": 0,
       "expected": 84,
-      "compliance": 0.0
+      "pending": 84,
+      "pendingStores": 12,
+      "compliance": 0.0,
+      "status": "Por iniciar"
     },
     {
       "dm": "Vanessa Carreño Rios",
-      "stores": 15,
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.jpeg",
+      "stores": 13,
       "completed": 0,
-      "expected": 105,
-      "compliance": 0.0
+      "expected": 91,
+      "pending": 91,
+      "pendingStores": 13,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "dm": "Veronica Garcia Ortega",
+      "shortName": "Veronica Garcia",
+      "photo": "assets/dm/veronica-garcia.jpeg",
+      "stores": 11,
+      "completed": 0,
+      "expected": 77,
+      "pending": 77,
+      "pendingStores": 11,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "dm": "Yazmin Chabela Guadarrama",
+      "shortName": "Yazmin Chabela",
+      "photo": "assets/dm/yazmin-chabela.jpeg",
+      "stores": 13,
+      "completed": 0,
+      "expected": 91,
+      "pending": 91,
+      "pendingStores": 13,
+      "compliance": 0.0,
+      "status": "Por iniciar"
     },
     {
       "dm": "Yazmin Haydee Garcia Gonzalez",
-      "stores": 14,
+      "shortName": "Yazmin Garcia",
+      "photo": "assets/dm/yazmin-garcia.jpeg",
+      "stores": 13,
       "completed": 0,
-      "expected": 98,
-      "compliance": 0.0
+      "expected": 91,
+      "pending": 91,
+      "pendingStores": 13,
+      "compliance": 0.0,
+      "status": "Por iniciar"
     }
   ],
-  "stores": [
+  "attention": [
     {
-      "ceco": "43083",
-      "store": "AIFA Llegadas Internacional AMB",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38604",
+      "store": "Cosmopol",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38910",
-      "store": "AIFA Llegadas Nacional AMB",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "43193",
+      "store": "Cosmopol N1",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "43082",
-      "store": "AIFA Salidas PTA 1",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38911",
-      "store": "AIFA SUE Nacional",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38790",
-      "store": "Carretera Mexico Pachuca",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38368",
+      "store": "Luna Park",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38908",
-      "store": "Carretera Pachuca Mexico",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38515",
+      "store": "Patio Ecatepec",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38636",
-      "store": "Ciudad Lazaro Cardenas",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38893",
-      "store": "Explanada Pachuca",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38339",
+      "store": "San Marcos",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38357",
-      "store": "Galerias Pachuca",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38793",
-      "store": "Galerias Pachuca PA",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38186",
+      "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38939",
-      "store": "Pachuca DT II",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38230",
+      "store": "ITEMS Edo de Mexico",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38358",
-      "store": "Pachuca San Javier DT",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38661",
+      "store": "Jinetes",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "43064",
-      "store": "Santa catarina DT AP",
-      "dm": "David Carrasco Hernandez",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38695",
-      "store": "Cetram 4 Caminos",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38197",
-      "store": "Echegaray",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38770",
-      "store": "Gustavo Baz 29",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
       "ceco": "38674",
       "store": "Mundo E",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
       "ceco": "38845",
       "store": "Mundo E II",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38561",
-      "store": "Parque Toreo",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38792",
+      "store": "Pasaje Tlanepantla",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38590",
-      "store": "Parque Toreo II",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38136",
+      "store": "Punta Norte",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38427",
-      "store": "Plaza Satelite",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38460",
+      "store": "Santa Monica",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38859",
-      "store": "Plaza Satelite II N1",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "43152",
-      "store": "Samara Satélite",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38117",
-      "store": "Satelite",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38475",
-      "store": "Satelite Centro Civico",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
       "ceco": "38442",
       "store": "Sor Juana",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
       "ceco": "38606",
       "store": "TlalnepantlaCarso",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38374",
+      "store": "Valle Dorado",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "43194",
+      "store": "Atana Lindavista",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38527",
+      "store": "Camarones",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38837",
+      "store": "Centenario Azcapotzalco",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38205",
+      "store": "Lindavista",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38207",
+      "store": "Lindavista II",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "43111",
+      "store": "Montevideo Insurgentes",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "43195",
+      "store": "Parque Jadin kiosko",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38546",
+      "store": "Patio Claveria",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38677",
+      "store": "Patio la Raza",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "43132",
+      "store": "Plaza Vista Norte",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38411",
+      "store": "Torres Lindavista",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38651",
+      "store": "Via Vallejo",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38930",
+      "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38529",
+      "store": "Bosques de Aragon",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38903",
+      "store": "Encuentro Oceania",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38995",
+      "store": "Encuentro Oceania II",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38937",
+      "store": "Parque Tepeyac Piso 1",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38965",
+      "store": "Parque Tepeyac Piso 2",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38924",
+      "store": "Plaza Aeropuerto",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38719",
+      "store": "Plaza Fortuna",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38811",
+      "store": "Plaza Tepeyac",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38992",
+      "store": "Tapo Puerta Oriente",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38197",
+      "store": "Echegaray",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38458",
+      "store": "El Rosario",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38770",
+      "store": "Gustavo Baz 29",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38561",
+      "store": "Parque Toreo",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38590",
+      "store": "Parque Toreo II",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38176",
+      "store": "Periferico Satélite DT",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38427",
+      "store": "Plaza Satelite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38117",
+      "store": "Satelite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38475",
+      "store": "Satelite Centro Civico",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
     },
     {
       "ceco": "38656",
       "store": "Viveros de la Loma",
-      "dm": "Maria Jazmin Carrillo Garcia",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38375",
-      "store": "Americas Ecatepec",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "43043",
+      "store": "Atizapan",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
     },
     {
-      "ceco": "38567",
-      "store": "Aragon II",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
+      "ceco": "38149",
+      "store": "Bellavista",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
       "expected": 7,
+      "pending": 7,
       "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38394",
+      "store": "Centro Comercial Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38535",
+      "store": "City Center Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38507",
+      "store": "Espacio Vista del Valle",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38363",
+      "store": "Galerias Atizapan",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38119",
+      "store": "Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38270",
+      "store": "Lomas Verdes II",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38266",
+      "store": "San Mateo",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "43130",
+      "store": "Town Center Nicolás Romero",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38115",
+      "store": "Zona Azul",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
+    },
+    {
+      "ceco": "38142",
+      "store": "Zona Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 0,
+      "expected": 7,
+      "pending": 7,
+      "compliance": 0.0,
+      "status": "Por iniciar"
     },
     {
       "ceco": "38401",
       "store": "Coacalco",
-      "dm": "Monica Selene Morales Ibarra",
+      "dm": "Enrique Cesar Flores",
+      "completed": 1,
+      "expected": 7,
+      "pending": 6,
+      "compliance": 14.3,
+      "status": "En avance"
+    }
+  ],
+  "stores": [
+    {
+      "ceco": "38401",
+      "store": "Coacalco",
+      "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 1,
@@ -767,7 +914,7 @@
     {
       "ceco": "38604",
       "store": "Cosmopol",
-      "dm": "Monica Selene Morales Ibarra",
+      "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
@@ -785,169 +932,9 @@
       }
     },
     {
-      "ceco": "43034",
-      "store": "Macroplaza Tecamac",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38716",
-      "store": "Multiplaza Bosques",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38718",
-      "store": "Paseo Ventura",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38515",
-      "store": "Patio Ecatepec",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38429",
-      "store": "Plaza Aragon",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38456",
-      "store": "Plaza las Flores",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38678",
-      "store": "Power Center las Americas",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38996",
-      "store": "Valle de Aragon",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38186",
-      "store": "Arboledas",
-      "dm": "Nancy Carolina Rodriguez Medina",
+      "ceco": "43193",
+      "store": "Cosmopol N1",
+      "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
@@ -967,6 +954,146 @@
     {
       "ceco": "38894",
       "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38368",
+      "store": "Luna Park",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38515",
+      "store": "Patio Ecatepec",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38339",
+      "store": "San Marcos",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38186",
+      "store": "Arboledas",
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
@@ -1005,26 +1132,6 @@
       }
     },
     {
-      "ceco": "38333",
-      "store": "Izcalli Mega",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
       "ceco": "38661",
       "store": "Jinetes",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -1045,8 +1152,28 @@
       }
     },
     {
-      "ceco": "38368",
-      "store": "Luna Park",
+      "ceco": "38674",
+      "store": "Mundo E",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38845",
+      "store": "Mundo E II",
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
@@ -1105,48 +1232,48 @@
       }
     },
     {
-      "ceco": "38339",
-      "store": "San Marcos",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38862",
-      "store": "San Miguel Izcalli",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
       "ceco": "38460",
       "store": "Santa Monica",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38442",
+      "store": "Sor Juana",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
@@ -1205,229 +1332,9 @@
       }
     },
     {
-      "ceco": "38419",
-      "store": "Balbuena",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38930",
-      "store": "Blvd. Aeropuerto dt",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38529",
-      "store": "Bosques de Aragon",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38431",
-      "store": "Eduardo Molina",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38903",
-      "store": "Encuentro Oceania",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38995",
-      "store": "Encuentro Oceania II",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38937",
-      "store": "Parque Tepeyac",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38965",
-      "store": "Parque Tepeyac II",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38924",
-      "store": "Plaza Aeropuerto",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38811",
-      "store": "Plaza Tepeyac",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38992",
-      "store": "Tapo Puerta Oriente",
-      "dm": "Ursula Hernandez Labra",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38226",
-      "store": "Via kiosko 515",
-      "dm": "Ursula Hernandez Labra",
+      "ceco": "43194",
+      "store": "Atana Lindavista",
+      "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
@@ -1467,66 +1374,6 @@
     {
       "ceco": "38837",
       "store": "Centenario Azcapotzalco",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38458",
-      "store": "El Rosario",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38483",
-      "store": "Forum Buenavista",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38554",
-      "store": "Forum Buenavista II",
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
@@ -1625,6 +1472,26 @@
       }
     },
     {
+      "ceco": "43195",
+      "store": "Parque Jadin kiosko",
+      "dm": "Vanessa Carreño Rios",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
       "ceco": "38546",
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
@@ -1647,26 +1514,6 @@
     {
       "ceco": "38677",
       "store": "Patio la Raza",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
-      "ceco": "38719",
-      "store": "Plaza Fortuna",
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
@@ -1728,6 +1575,486 @@
       "ceco": "38651",
       "store": "Via Vallejo",
       "dm": "Vanessa Carreño Rios",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38930",
+      "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38529",
+      "store": "Bosques de Aragon",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38903",
+      "store": "Encuentro Oceania",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38995",
+      "store": "Encuentro Oceania II",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38937",
+      "store": "Parque Tepeyac Piso 1",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38965",
+      "store": "Parque Tepeyac Piso 2",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38924",
+      "store": "Plaza Aeropuerto",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38719",
+      "store": "Plaza Fortuna",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38811",
+      "store": "Plaza Tepeyac",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38992",
+      "store": "Tapo Puerta Oriente",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38197",
+      "store": "Echegaray",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38458",
+      "store": "El Rosario",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38770",
+      "store": "Gustavo Baz 29",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38561",
+      "store": "Parque Toreo",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38590",
+      "store": "Parque Toreo II",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38176",
+      "store": "Periferico Satélite DT",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38427",
+      "store": "Plaza Satelite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38117",
+      "store": "Satelite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38475",
+      "store": "Satelite Centro Civico",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "status": "Abierta",
+      "completed": 0,
+      "expected": 7,
+      "compliance": 0.0,
+      "lastUpdate": null,
+      "activities": {
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
+        "QR - Qualtrics": false,
+        "Max & Min": false,
+        "Fotografia - SM": false,
+        "Mandil Verde": false
+      }
+    },
+    {
+      "ceco": "38656",
+      "store": "Viveros de la Loma",
+      "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
@@ -1905,26 +2232,6 @@
       }
     },
     {
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "region": "Centro Norte",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 7,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "QR - Qualtrics": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false
-      }
-    },
-    {
       "ceco": "38266",
       "store": "San Mateo",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -2033,7 +2340,7 @@
       "activity": "Roll Out",
       "ceco": "38401",
       "store": "Coacalco",
-      "dm": "Monica Selene Morales Ibarra",
+      "dm": "Enrique Cesar Flores",
       "confirmed": true,
       "evidenceAvailable": true,
       "valid": true

@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
 DEFAULT_DIRECTORY = ROOT / "cms" / "Centro Norte_Directorio.xlsx"
 DEFAULT_ACTIVITIES = ROOT / "config" / "actividades.csv"
+DEFAULT_MANAGERS = ROOT / "config" / "gerentes.csv"
 DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
 DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
 
@@ -117,6 +118,35 @@ def load_activities(path: Path) -> list[dict[str, Any]]:
     return sorted(activities, key=lambda item: (item["order"], key_text(item["name"])))
 
 
+def load_managers(path: Path) -> dict[str, dict[str, str]]:
+    """Carga el catálogo visual de DM y valida que sus fotografías existan."""
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    managers: dict[str, dict[str, str]] = {}
+    for row in rows:
+        dm = clean_text(row.get("DM"))
+        if not dm or not is_yes(row.get("Activo")):
+            continue
+        photo = clean_text(row.get("Foto"))
+        if photo and not (ROOT / photo).is_file():
+            raise ValueError(f"No existe la fotografía configurada para {dm}: {photo}")
+        managers[key_text(dm)] = {
+            "shortName": clean_text(row.get("Nombre corto")) or dm,
+            "photo": photo,
+        }
+    return managers
+
+
+def status_label(compliance: float) -> str:
+    if compliance >= 100:
+        return "Completo"
+    if compliance >= 60:
+        return "En ritmo"
+    if compliance > 0:
+        return "En avance"
+    return "Por iniciar"
+
+
 def find_directory_header(ws) -> tuple[int, list[Any]]:
     for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=min(ws.max_row, 12), values_only=True), 1):
         keys = {key_text(value) for value in row if clean_text(value)}
@@ -194,11 +224,13 @@ def build_payload(
     directory_path: Path,
     activities_path: Path,
     settings_path: Path,
+    managers_path: Path = DEFAULT_MANAGERS,
 ) -> dict[str, Any]:
     settings = load_settings(settings_path)
     stores, directory_sheet = load_directory(directory_path, settings)
     responses = load_responses(responses_path)
     activities = load_activities(activities_path)
+    managers = load_managers(managers_path)
 
     configured = {key_text(item["name"]): item for item in activities}
     for response in responses:
@@ -296,12 +328,20 @@ def build_payload(
     for dm, dm_stores in sorted(dm_groups.items(), key=lambda item: key_text(item[0])):
         completed = sum(store["completed"] for store in dm_stores)
         expected = sum(store["expected"] for store in dm_stores)
+        compliance = round(completed / expected * 100, 1) if expected else 0
+        profile = managers.get(key_text(dm), {})
+        pending_stores = sum(store["completed"] < store["expected"] for store in dm_stores)
         dm_stats.append({
             "dm": dm,
+            "shortName": profile.get("shortName", dm),
+            "photo": profile.get("photo", ""),
             "stores": len(dm_stores),
             "completed": completed,
             "expected": expected,
-            "compliance": round(completed / expected * 100, 1) if expected else 0,
+            "pending": expected - completed,
+            "pendingStores": pending_stores,
+            "compliance": compliance,
+            "status": status_label(compliance),
         })
 
     expected_total = len(stores) * len(activity_names)
@@ -321,6 +361,7 @@ def build_payload(
             "directory": directory_path.name,
             "directorySheet": directory_sheet,
             "activities": activities_path.name,
+            "managers": managers_path.name,
         },
         "summary": {
             "stores": len(stores),
@@ -330,6 +371,7 @@ def build_payload(
             "compliance": round(completed_total / expected_total * 100, 1) if expected_total else 0,
             "validResponses": valid_responses,
             "storesComplete": stores_complete,
+            "pendingCompletions": expected_total - completed_total,
         },
         "quality": {
             "responsesRead": len(responses),
@@ -340,6 +382,23 @@ def build_payload(
         },
         "activities": activity_stats,
         "dms": dm_stats,
+        "attention": sorted(
+            [
+                {
+                    "ceco": store["ceco"],
+                    "store": store["store"],
+                    "dm": store["dm"],
+                    "completed": store["completed"],
+                    "expected": store["expected"],
+                    "pending": store["expected"] - store["completed"],
+                    "compliance": store["compliance"],
+                    "status": status_label(store["compliance"]),
+                }
+                for store in store_rows
+                if store["completed"] < store["expected"]
+            ],
+            key=lambda item: (item["compliance"], key_text(item["dm"]), key_text(item["store"])),
+        ),
         "stores": store_rows,
         "submissions": sorted(submissions, key=lambda item: item["timestamp"] or "", reverse=True),
     }
@@ -351,9 +410,10 @@ def main() -> None:
     parser.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
     parser.add_argument("--activities", type=Path, default=DEFAULT_ACTIVITIES)
     parser.add_argument("--settings", type=Path, default=DEFAULT_SETTINGS)
+    parser.add_argument("--managers", type=Path, default=DEFAULT_MANAGERS)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    payload = build_payload(args.responses, args.directory, args.activities, args.settings)
+    payload = build_payload(args.responses, args.directory, args.activities, args.settings, args.managers)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = payload["summary"]

@@ -10,6 +10,8 @@ Sistema de Evidencias OPS.xlsx
 Centro Norte_Directorio.xlsx
              +
 config/actividades.csv
+             +
+config/gerentes.csv + assets/dm/
              ↓
 scripts/build_dashboard.py
              ↓
@@ -50,6 +52,27 @@ Edita `config/actividades.csv`:
 
 Si aparece en las respuestas una actividad nueva que aún no está en el CSV, Python la integra como **Detectada en Forms** para evitar pérdida de información.
 
+## Fotografías de Gerentes de Distrito
+
+Edita `config/gerentes.csv` para relacionar el nombre exacto del directorio con su nombre corto y fotografía. Las imágenes se almacenan en `assets/dm/`; Python detiene la generación si una fotografía configurada no existe, evitando tarjetas rotas.
+
+## 10 mejoras de facilidad visual
+
+1. Nueva vista **Equipo DM** con fotografía por Gerente de Distrito.
+2. Tarjetas DM con tiendas, avance, pendientes y estado en una sola lectura.
+3. Selección directa del portafolio al tocar la tarjeta o el ranking.
+4. Medidor circular de cumplimiento para lectura ejecutiva en 10 segundos.
+5. Mensaje automático de prioridad generado según los pendientes.
+6. Semáforo visual: Completo, En avance y Por iniciar.
+7. Filtros persistentes por DM, tienda/CeCo y actividad.
+8. Ranking DM enriquecido con avatar y acceso rápido.
+9. Cola de atención priorizada generada por Python para las tiendas pendientes.
+10. PWA offline v2 que conserva dashboard y fotografías del equipo.
+
+## Python como producto principal
+
+`scripts/build_dashboard.py` no es un complemento: es el motor del proyecto. Valida encabezados, normaliza CeCo, cruza tienda y DM, comprueba fotografías, deduplica respuestas, protege datos personales, calcula cumplimiento, crea el semáforo ejecutivo y genera `data/dashboard.json`. La interfaz solo presenta el resultado certificado por este proceso.
+
 ## Regla de cumplimiento
 
 Una combinación tienda–actividad cuenta una sola vez cuando:
@@ -79,8 +102,8 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 ## Fuente inicial validada
 
-- 94 tiendas abiertas de la hoja `93 T (2)`.
+- 72 tiendas abiertas de la hoja `72 T`, alineadas con las seis fotografías proporcionadas.
 - 7 actividades activas.
 - Última actualización: `28/08/2026 20:32`.
-- CeCo `38401` cruzado como `Coacalco` y asignado al DM del directorio seleccionado.
+- CeCo `38401` cruzado como `Coacalco` y asignado a `Enrique Cesar Flores`.
 - 1 respuesta válida y 0 CeCo sin cruce.
