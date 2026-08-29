@@ -1,4 +1,11 @@
-const state = { data: null, filters: { dm: "", store: "", activity: "" }, showAllEvidence: false, exporting: false, installPrompt: null };
+const state = {
+  data: null,
+  filters: { dm: "", store: "", activity: "" },
+  evidenceFilters: { dm: "", store: "", activity: "" },
+  showAllEvidence: false,
+  exporting: false,
+  installPrompt: null,
+};
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -135,21 +142,21 @@ function renderCommitments() {
 function filteredEvidence() {
   return state.data.submissions.filter((item) =>
     item.valid && item.evidenceAvailable &&
-    (!state.filters.dm || item.dm === state.filters.dm) &&
-    (!state.filters.store || item.ceco === state.filters.store) &&
-    (!state.filters.activity || item.activity === state.filters.activity));
+    (!state.evidenceFilters.dm || item.dm === state.evidenceFilters.dm) &&
+    (!state.evidenceFilters.store || item.ceco === state.evidenceFilters.store) &&
+    (!state.evidenceFilters.activity || item.activity === state.evidenceFilters.activity));
 }
 
 function renderEvidence() {
   const rows = filteredEvidence();
   const visible = state.showAllEvidence ? rows : rows.slice(0, 6);
+  $("#evidence-count").textContent = `${rows.length} ${rows.length === 1 ? "archivo" : "archivos"}`;
   $("#evidence-grid").innerHTML = visible.length ? visible.map((item) => `<article class="evidence-row">
     <span class="evidence-cell" data-label="Actividad"><strong>${esc(item.activity)}</strong></span>
-    <span class="evidence-cell" data-label="CeCo"><strong>${esc(item.ceco)}</strong></span>
-    <span class="evidence-cell evidence-filename" data-label="Nombre de archivo" title="${esc(item.evidenceFileName)}">${esc(item.evidenceFileName)}</span>
+    <span class="evidence-cell evidence-store" data-label="Tienda"><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></span>
     ${item.evidenceLinkPublished && item.evidenceUrl
-      ? `<a class="evidence-link" data-label="Link" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" title="${esc(item.evidenceUrl)}" aria-label="Abrir ${esc(item.evidenceFileName)}">${esc(item.evidenceUrl)}</a>`
-      : `<span class="evidence-locked" data-label="Link">Link no disponible</span>`}
+      ? `<a class="evidence-link" data-label="Link del archivo" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" title="${esc(item.evidenceFileName)}" aria-label="Abrir ${esc(item.evidenceFileName)}">${esc(item.evidenceLinkLabel)}</a>`
+      : `<span class="evidence-locked" data-label="Link del archivo">Link no disponible</span>`}
   </article>`).join("") : '<div class="empty-state">No hay evidencias para el alcance seleccionado.</div>';
   $("#evidence-toggle").hidden = rows.length <= 6;
   $("#evidence-toggle").textContent = state.showAllEvidence ? "Ver menos" : `Ver todas (${rows.length})`;
@@ -233,6 +240,27 @@ function populateFilters() {
   $("#filter-store").value = state.filters.store;
   $("#filter-activity").innerHTML = '<option value="">Todas las actividades</option>' + state.data.activities.map((item) => `<option value="${esc(item.name)}">${esc(item.name)}</option>`).join("");
   $("#filter-activity").value = state.filters.activity;
+}
+
+function populateEvidenceFilters() {
+  const source = state.data.submissions.filter((item) => item.valid && item.evidenceAvailable);
+  const dms = [...new Set(source.map((item) => item.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
+  $("#evidence-filter-dm").innerHTML = '<option value="">Todos los DM</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
+  if (!dms.includes(state.evidenceFilters.dm)) state.evidenceFilters.dm = "";
+  $("#evidence-filter-dm").value = state.evidenceFilters.dm;
+
+  const activities = [...new Set(source.map((item) => item.activity))].sort((a, b) => a.localeCompare(b, "es-MX"));
+  $("#evidence-filter-activity").innerHTML = '<option value="">Todas las actividades</option>' + activities.map((activity) => `<option value="${esc(activity)}">${esc(activity)}</option>`).join("");
+  if (!activities.includes(state.evidenceFilters.activity)) state.evidenceFilters.activity = "";
+  $("#evidence-filter-activity").value = state.evidenceFilters.activity;
+
+  const stores = source.filter((item) => !state.evidenceFilters.dm || item.dm === state.evidenceFilters.dm)
+    .map((item) => ({ ceco: item.ceco, store: item.store }))
+    .filter((item, index, rows) => rows.findIndex((row) => row.ceco === item.ceco) === index)
+    .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
+  $("#evidence-filter-store").innerHTML = '<option value="">Todas las tiendas</option>' + stores.map((item) => `<option value="${esc(item.ceco)}">${esc(item.ceco)} · ${esc(item.store)}</option>`).join("");
+  if (!stores.some((item) => item.ceco === state.evidenceFilters.store)) state.evidenceFilters.store = "";
+  $("#evidence-filter-store").value = state.evidenceFilters.store;
 }
 
 function fileSafe(value) {
@@ -474,7 +502,11 @@ function initNavigation() {
   const links = [...document.querySelectorAll(".main-nav a")];
   const sections = links.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
   const setCurrent = (id) => links.forEach((link) => link.setAttribute("aria-current", link.getAttribute("href") === `#${id}` ? "page" : "false"));
-  links.forEach((link) => link.addEventListener("click", () => setCurrent(link.getAttribute("href").slice(1))));
+  links.forEach((link) => link.addEventListener("click", () => {
+    const id = link.getAttribute("href").slice(1);
+    setCurrent(id);
+    if (id === "evidencias") $("#evidence-details").open = true;
+  }));
   if (!("IntersectionObserver" in window)) return;
   const observer = new IntersectionObserver((entries) => {
     const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -489,6 +521,12 @@ function bindEvents() {
   $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#clear-filters").addEventListener("click", () => { state.filters = { dm: "", store: "", activity: "" }; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
+  $("#evidence-filter-dm").addEventListener("change", (event) => {
+    state.evidenceFilters.dm = event.target.value; state.evidenceFilters.store = ""; state.showAllEvidence = false;
+    populateEvidenceFilters(); renderEvidence();
+  });
+  $("#evidence-filter-activity").addEventListener("change", (event) => { state.evidenceFilters.activity = event.target.value; state.showAllEvidence = false; renderEvidence(); });
+  $("#evidence-filter-store").addEventListener("change", (event) => { state.evidenceFilters.store = event.target.value; state.showAllEvidence = false; renderEvidence(); });
   $("#export-image").addEventListener("click", exportImage);
   $("#export-pdf").addEventListener("click", exportPdf);
   $("#export-excel").addEventListener("click", exportExcel);
@@ -530,7 +568,7 @@ async function loadData(announce = false) {
       $("#director-photo").src = `./${director.photo}`;
       $("#director-photo").alt = `${director.name}, ${director.role}`;
     }
-    populateFilters(); renderAll(); $("#error-banner").hidden = true;
+    populateFilters(); populateEvidenceFilters(); renderAll(); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
   } catch (error) {
     $("#error-banner").textContent = `${error.message} Ejecuta python scripts/build_dashboard.py.`; $("#error-banner").hidden = false;

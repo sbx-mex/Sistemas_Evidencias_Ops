@@ -18,10 +18,10 @@
   <header class="app-header">
     <nav class="main-nav" aria-label="Navegación principal">
       <a href="#resumen" aria-current="page">Resumen</a>
-      <a href="#actividades">Actividades</a>
-      <a href="#evidencias">Evidencias</a>
       <a href="#ranking">Ranking DM</a>
+      <a href="#actividades">Actividades</a>
       <a href="#tiendas">Tiendas</a>
+      <a href="#evidencias">Evidencias</a>
     </nav>
     <div class="header-actions">
       <span id="connection-status" class="connection"><i></i>Actualizado</span>
@@ -33,7 +33,7 @@
   </header>
 
   <main id="main" tabindex="-1">
-    <section class="hero" id="resumen">
+    <section class="hero">
       <div class="hero-copy">
         <h1>Sistema de Evidencia OPS</h1>
         <p>Dashboard de Avance de Actividades</p>
@@ -43,7 +43,7 @@
           <img id="director-photo" src="./assets/director/jorge-alcantar.webp" alt="Jorge Alcantar, Director Regional" width="58" height="70">
           <span><small id="director-role">Director Regional</small><strong id="director-name">Jorge Alcantar</strong></span>
         </div>
-        <div class="cut-chip"><span>Fecha de corte</span><strong id="last-updated">—</strong><small>Última hora del dato actualizado</small></div>
+        <div class="cut-chip"><span>Fecha de corte</span><strong id="last-updated">—</strong></div>
       </div>
     </section>
 
@@ -59,15 +59,24 @@
       </div>
     </section>
 
-    <section class="summary" aria-live="polite">
-      <article class="main-score">
-        <div class="score-ring" id="score-ring"><strong id="score-value">0%</strong><span>cumplimiento</span></div>
-        <div><p class="eyebrow">Vista actual</p><h2 id="score-title">Centro Norte</h2><p id="score-message">Calculando seguimiento…</p></div>
-      </article>
-      <div id="kpi-grid" class="kpi-grid"></div>
+    <section id="resumen" class="dashboard-section" aria-labelledby="summary-heading">
+      <header class="section-title"><div><h2 id="summary-heading">Resumen</h2><p>Lectura rápida del avance seleccionado.</p></div></header>
+      <div class="summary" aria-live="polite">
+        <article class="main-score">
+          <div class="score-ring" id="score-ring"><strong id="score-value">0%</strong><span>cumplimiento</span></div>
+          <div><p class="eyebrow">Vista actual</p><h3 id="score-title">Centro Norte</h3><p id="score-message">Calculando seguimiento…</p></div>
+        </article>
+        <div id="kpi-grid" class="kpi-grid"></div>
+      </div>
     </section>
 
-    <section id="actividades" aria-label="Actividades">
+    <section id="ranking" class="dashboard-section" aria-labelledby="ranking-heading">
+      <header class="section-title"><div><h2 id="ranking-heading">Ranking DM</h2><p>Comparativo regional de mayor a menor avance.</p></div></header>
+      <div class="section-block"><div id="dm-team" class="dm-team"></div></div>
+    </section>
+
+    <section id="actividades" class="dashboard-section" aria-labelledby="activities-heading">
+      <header class="section-title"><div><h2 id="activities-heading">Actividades</h2><p>Cumplimiento y fechas compromiso.</p></div></header>
       <article class="panel activities-panel">
         <div class="activity-tools"><button id="toggle-dates" class="button compact" type="button" aria-expanded="false" aria-controls="commitment-dates">Actividad · Fecha compromiso</button></div>
         <div id="commitment-dates" class="commitment-dates" hidden></div>
@@ -75,18 +84,26 @@
       </article>
     </section>
 
-    <section class="section-block evidence-section" id="evidencias" aria-label="Evidencias">
-      <button id="evidence-toggle" class="button compact" type="button" hidden>Ver todas</button>
-      <div class="evidence-head" aria-hidden="true"><span>Actividad</span><span>CeCo</span><span>Nombre de archivo</span><span>Link</span></div>
-      <div id="evidence-grid" class="evidence-grid"></div>
+    <section id="tiendas" class="dashboard-section" aria-labelledby="stores-heading">
+      <header class="section-title"><div><h2 id="stores-heading">Tiendas</h2><p>Detalle operativo ordenado por avance.</p></div></header>
+      <div class="section-block"><div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>DM</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div></div>
     </section>
 
-    <section class="section-block" id="ranking" aria-label="Ranking DM">
-      <div id="dm-team" class="dm-team"></div>
-    </section>
-
-    <section class="section-block" id="tiendas" aria-label="Tiendas Centro Norte">
-      <div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>DM</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
+    <section id="evidencias" class="dashboard-section evidence-section" aria-labelledby="evidence-heading">
+      <header class="section-title"><div><h2 id="evidence-heading">Evidencias</h2><p>Consulta de soporte; permanece oculta hasta que la necesites.</p></div></header>
+      <details id="evidence-details" class="evidence-disclosure">
+        <summary><span>Consultar evidencias</span><small id="evidence-count">—</small></summary>
+        <div class="evidence-content">
+          <div class="evidence-filters" aria-label="Filtros de evidencias">
+            <label><span>DM</span><select id="evidence-filter-dm"><option value="">Todos</option></select></label>
+            <label><span>Actividad</span><select id="evidence-filter-activity"><option value="">Todas</option></select></label>
+            <label><span>Tienda</span><select id="evidence-filter-store"><option value="">Todas</option></select></label>
+          </div>
+          <button id="evidence-toggle" class="button compact" type="button" hidden>Ver todas</button>
+          <div class="evidence-head" aria-hidden="true"><span>Actividad</span><span>Tienda</span><span>Link del archivo</span></div>
+          <div id="evidence-grid" class="evidence-grid"></div>
+        </div>
+      </details>
     </section>
   </main>
 

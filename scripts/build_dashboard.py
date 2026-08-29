@@ -432,6 +432,7 @@ def build_payload(
         if response["finished"] and (latest_update is None or response["finished"] > latest_update):
             latest_update = response["finished"]
 
+        key = evidence_key(activity or "Evidencia", response["ceco"])
         public = {
             "id": response["id"],
             "timestamp": iso_or_none(response["finished"]),
@@ -440,7 +441,8 @@ def build_payload(
             "ceco": response["ceco"] or "Inválido",
             "store": store["store"] if store else "CeCo sin cruce",
             "dm": store["dm"] if store else "Sin asignar",
-            "evidenceKey": evidence_key(activity or "Evidencia", response["ceco"]),
+            "evidenceKey": key,
+            "evidenceLinkLabel": f"Link_{key}",
             "evidenceFileName": evidence_filename(evidence_url),
             "confirmed": response["confirmed"],
             "evidenceAvailable": evidence_available,
@@ -517,7 +519,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 6,
+        "schemaVersion": 7,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),

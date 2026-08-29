@@ -56,7 +56,7 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 6:
+if data.get("schemaVersion") != 7:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
     fail("Identidad del proyecto incorrecta")
@@ -85,7 +85,7 @@ if any("email" in row or "submittedBy" in row for row in data.get("submissions",
 published = [row for row in data.get("submissions", []) if row.get("valid")]
 if len(published) != 2 or data.get("quality", {}).get("evidenceLinksPublished") != 2:
     fail("Los dos vínculos de evidencia no fueron publicados")
-if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
+if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
     fail("Nombre de archivo o vínculo directo inválido")
 forms_book = load_workbook(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", read_only=True, data_only=True)
 forms_sheet = forms_book[forms_book.sheetnames[0]]
@@ -126,17 +126,23 @@ with tempfile.TemporaryDirectory() as temp_dir:
     if dynamic_book.sheetnames != ["Resumen"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
         fail("El motor XLSX dinámico generó un libro inválido")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Evidencias", "Actividad", "CeCo", "Nombre de archivo", "Link", "Ranking DM", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "toggle-dates", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "toggle-dates", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
+nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
+section_order = [html.index(f'id="{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
+if nav_order != sorted(nav_order) or section_order != sorted(section_order):
+    fail("Orden de navegación o secciones incorrecto")
+if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
+    fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
 for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\""]:
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "evidenceFileName", "regionalMetrics", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "semaphore", "Tiendas sin iniciar", "AVANCE REGIONAL", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "regionalMetrics", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderReportSheet", "semaphore", "Tiendas sin iniciar", "AVANCE REGIONAL", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
     if text not in js:
         fail(f"Funcionalidad faltante: {text}")
-if "sistema-evidencias-ops-v9" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v9 incompleto")
+if "sistema-evidencias-ops-v10" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v10 incompleto")
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
 if [item.get("rank") for item in data.get("dms", [])] != list(range(1, 7)):

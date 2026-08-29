@@ -54,7 +54,7 @@ En `Configuracion` se administran región, privacidad, dominios autorizados y Di
 
 - El tablero usa los encabezados cortos **Actividad**, **CeCo** y **Evidencia**.
 - Python sólo acepta `https://`, sin usuario/contraseña embebidos, puerto no estándar, fragmentos ni dominios fuera de `evidenceAllowedHosts`.
-- La tabla muestra **Actividad**, **CeCo**, **Nombre de archivo** y **Link**.
+- El soporte de evidencias muestra **Actividad**, **Tienda** y **Link del archivo**. El texto visible usa `Link_Actividad_CeCo`; el hipervínculo conserva la URL exacta del Excel y el nombre original queda disponible como descripción accesible.
 - `publishEvidenceLinks = Si` publica únicamente los vínculos que superan la lista de dominios autorizados.
 - El vínculo se conserva tal como viene en el Excel y abre SharePoint en una pestaña aislada con `noopener`, `noreferrer` y sin encabezado `Referer`. SharePoint sigue determinando quién puede ver la imagen.
 
@@ -65,7 +65,7 @@ La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía 
 ## 10 mejoras de navegación, visibilidad y exportación
 
 1. Navegación adaptable y sección activa visible, también en celular.
-2. Layout minimalista sin avisos ni encabezados repetitivos entre secciones.
+2. Navegación y contenido comparten el orden Resumen, Ranking DM, Actividades, Tiendas y Evidencias.
 3. Exportación regional dinámica: **Todos los DM** genera un ranking por DM.
 4. Exportación focalizada: un solo DM desglosa sus tiendas de mayor a menor avance.
 5. Pantalla previa **Le damos seguimiento** antes de preparar cada archivo.
@@ -73,7 +73,7 @@ La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía 
 7. Exportación XLSX dinámica con Resumen, ranking/tiendas y actividades.
 8. Generador Python de XLSX ejecutivo con fórmulas, formato y gráfica por DM.
 9. Imagen y PDF incluyen realizados, total, pendientes, avance filtrado y regional.
-10. PWA offline v9 y pruebas automáticas para archivos, Excel, imágenes y seguridad.
+10. PWA offline v10 y pruebas automáticas para archivos, Excel, imágenes y seguridad.
 
 ## Python como producto principal
 
@@ -103,10 +103,11 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 ## Vistas
 
-- **Resumen:** KPI, Director Regional, avance por actividad y ranking DM.
-- **Actividades:** catálogo administrable y cumplimiento individual.
-- **Tiendas:** cruce CeCo, avance, última respuesta y exportación CSV.
-- **Evidencias:** nombre real del archivo y vínculo directo validado, filtrables por DM, tienda y actividad.
+- **Resumen:** KPI y lectura rápida del alcance seleccionado.
+- **Ranking DM:** comparativo regional de mayor a menor avance.
+- **Actividades:** catálogo administrable, cumplimiento y fechas compromiso.
+- **Tiendas:** cruce CeCo y avance operativo por tienda.
+- **Evidencias:** soporte plegable al final, con filtros propios por DM, actividad y tienda.
 - **Exportación:** imagen, PDF y Excel con alcance dinámico. Todos los DM exporta el ranking regional; un DM exporta sus tiendas ordenadas de mayor a menor avance.
 
 ## Fuente inicial validada
