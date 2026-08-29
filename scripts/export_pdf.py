@@ -66,6 +66,10 @@ def signal(value: float):
     return RED
 
 
+def pending_percent(completed: int | float, expected: int | float) -> float:
+    return max(0.0, 100 - (completed / expected * 100)) if expected else 0.0
+
+
 def build_pdf(data: dict, output: Path) -> None:
     page_width, page_height = landscape(A4)
     pdf = canvas.Canvas(str(output), pagesize=(page_width, page_height), pageCompression=1)
@@ -86,58 +90,47 @@ def build_pdf(data: dict, output: Path) -> None:
         pdf.setFillColor(GREEN)
         pdf.rect(0, page_height - 126, page_width, 126, stroke=0, fill=1)
         if logo:
-            pdf.drawImage(logo, 30, page_height - 96, 52, 52, mask="auto")
+            pdf.drawImage(logo, 30, page_height - 94, 52, 52, mask="auto")
         pdf.setFillColor(HexColor("#A9DBC5"))
         pdf.setFont("Helvetica-Bold", 8)
-        pdf.drawString(96, page_height - 30, report.get("motto", "JUNTÉMONOS MÁS"))
+        pdf.drawCentredString(page_width / 2, page_height - 27, report.get("motto", "JUNTÉMONOS MÁS"))
         pdf.setFillColor(white)
         pdf.setFont("Helvetica-Bold", 21)
-        pdf.drawString(96, page_height - 58, report.get("title", "Sistema de Evidencia OPS"))
-        pdf.setFont("Helvetica", 10)
-        pdf.drawString(96, page_height - 77, f"{report.get('subtitle', 'Dashboard de Avance de Actividades')} · Regional · {region}")
+        pdf.drawCentredString(page_width / 2, page_height - 57, report.get("title", "Sistema de Evidencia OPS"))
+        pdf.setFont("Helvetica-Bold", 9)
+        pdf.drawCentredString(page_width / 2, page_height - 78, f"{region} · Corte {report.get('cutOffDisplay', data.get('lastUpdatedDisplay', 'Sin datos'))}")
         pdf.setFillColor(HexColor("#B9E1D0"))
-        pdf.setFont("Helvetica-Bold", 8)
-        pdf.drawString(96, page_height - 97, "Todas las actividades · Ranking regional de mayor a menor avance")
 
         if director_photo:
             pdf.setFillColor(white)
-            pdf.roundRect(page_width - 224, page_height - 107, 54, 69, 8, stroke=0, fill=1)
-            pdf.drawImage(director_photo, page_width - 221, page_height - 104, 48, 63, mask="auto")
+            pdf.roundRect(page_width - 145, page_height - 103, 48, 61, 8, stroke=0, fill=1)
+            pdf.drawImage(director_photo, page_width - 142, page_height - 100, 42, 55, mask="auto")
         pdf.setFillColor(white)
         pdf.setFont("Helvetica-Bold", 8)
-        pdf.drawString(page_width - 163, page_height - 58, director.get("name", "Jorge Alcantar"))
+        pdf.drawString(page_width - 90, page_height - 65, director.get("name", "Jorge Alcantar"))
         pdf.setFillColor(HexColor("#B9E1D0"))
         pdf.setFont("Helvetica", 7)
-        pdf.drawString(page_width - 163, page_height - 72, director.get("role", "Director Regional"))
-        pdf.setFont("Helvetica-Bold", 7)
-        pdf.drawRightString(page_width - 28, page_height - 34, "FECHA DE CORTE")
-        pdf.setFillColor(white)
-        pdf.setFont("Helvetica-Bold", 11)
-        pdf.drawRightString(page_width - 28, page_height - 50, report.get("cutOffDisplay", data.get("lastUpdatedDisplay", "Sin datos")))
-        pdf.setFillColor(HexColor("#B9E1D0"))
-        pdf.setFont("Helvetica-Bold", 7)
-        pdf.drawRightString(page_width - 28, page_height - 80, f"PÁGINA {page_index + 1} DE {total_pages}")
+        pdf.drawString(page_width - 90, page_height - 79, director.get("role", "Director Regional"))
 
         cards = [
-            ("REALIZADAS", summary.get("completedCompletions", 0)),
-            ("TOTAL", summary.get("expectedCompletions", 0)),
-            ("% AVANCE", percent(summary.get("compliance", 0))),
+            ("REALIZADAS / TOTAL", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),
+            ("% PENDIENTE", percent(pending_percent(summary.get("completedCompletions", 0), summary.get("expectedCompletions", 0)))),
         ]
-        card_width = (page_width - 76) / 3
+        card_width = (page_width - 66) / 2
         for index, (label, value) in enumerate(cards):
             x = 28 + index * (card_width + 10)
-            pdf.setFillColor(SOFT if index == 2 else white)
+            pdf.setFillColor(SOFT if index == 1 else white)
             pdf.roundRect(x, page_height - 184, card_width, 44, 7, stroke=0, fill=1)
             pdf.setFillColor(MUTED)
             pdf.setFont("Helvetica-Bold", 7)
-            pdf.drawString(x + 12, page_height - 157, label)
+            pdf.drawCentredString(x + card_width / 2, page_height - 157, label)
             pdf.setFillColor(DARK)
             pdf.setFont("Helvetica-Bold", 15)
-            pdf.drawRightString(x + card_width - 12, page_height - 171, str(value))
+            pdf.drawCentredString(x + card_width / 2, page_height - 174, str(value))
 
         table_top = page_height - 204
-        columns = [28, 85, 420, 520, 600, 676]
-        headers = ["RANKING", "DM", "REALIZADAS", "TOTAL", "PENDIENTES", "% AVANCE"]
+        columns = [28, 85, 500, 665]
+        headers = ["RANKING", "DM", "REALIZADAS / TOTAL", "% PENDIENTE"]
         pdf.setFillColor(DARK)
         pdf.roundRect(28, table_top - 25, page_width - 56, 25, 6, stroke=0, fill=1)
         pdf.setFillColor(white)
@@ -166,11 +159,9 @@ def build_pdf(data: dict, output: Path) -> None:
             pdf.drawString(140, y + 12, f"{number(item.get('stores', 0))} tiendas")
             pdf.setFillColor(DARK)
             pdf.setFont("Helvetica-Bold", 10)
-            pdf.drawString(441, y + 19, number(item.get("completed", 0)))
-            pdf.drawString(541, y + 19, number(item.get("expected", 0)))
-            pdf.drawString(621, y + 19, number(item.get("pending", 0)))
+            pdf.drawString(521, y + 19, f"{number(item.get('completed', 0))} / {number(item.get('expected', 0))}")
             pdf.setFillColor(signal(item.get("compliance", 0)))
-            pdf.drawString(697, y + 19, percent(item.get("compliance", 0)))
+            pdf.drawString(686, y + 19, percent(pending_percent(item.get("completed", 0), item.get("expected", 0))))
             pdf.setFillColor(LINE)
             pdf.rect(758, y + 16, 50, 6, stroke=0, fill=1)
             pdf.setFillColor(signal(item.get("compliance", 0)))
@@ -183,12 +174,13 @@ def build_pdf(data: dict, output: Path) -> None:
         pdf.drawString(40, 35, report.get("motto", "JUNTÉMONOS MÁS"))
         pdf.setFillColor(HexColor("#CCE0D7"))
         pdf.setFont("Helvetica", 6.5)
+        pdf.drawCentredString(page_width / 2, 35, f"Página {page_index + 1} de {total_pages}")
         pdf.drawRightString(page_width - 40, 35, report.get("credits", ""))
         pdf.showPage()
 
-    pdf.setTitle(f"Sistema de Evidencia OPS · Regional · {region}")
+    pdf.setTitle(f"Sistema de Evidencia OPS · {region}")
     pdf.setAuthor("Centro Norte")
-    pdf.setSubject("Realizadas / Total / % Avance")
+    pdf.setSubject("Realizadas / Total / % Pendiente")
     pdf.save()
 
 

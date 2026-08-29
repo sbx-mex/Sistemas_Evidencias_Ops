@@ -10,14 +10,13 @@
 | `service-worker.js` | Caché offline y actualización de datos. |
 | `manifest.webmanifest` | Instalación como aplicación. |
 | `cms/*.xlsx` | Fuentes de Forms y Directorio Centro Norte. |
-| `config/actividades.csv` | CMS de actividades expuestas. |
-| `config/gerentes.csv` | CMS de nombres, fotos y estado visual de los DM. |
 | `assets/dm/*.webp` | Fotografías optimizadas para las tarjetas DM. |
 | `assets/director/jorge-alcantar.webp` | Fotografía del Director Regional. |
 | `assets/ui/Damos_Seguimiento.webp` | Aviso visual previo a la exportación. |
 | `assets/ui/Un_placer_haber_Ayudado.webp` | Confirmación visual posterior a la exportación. |
 | `config/settings.json` | Región, hoja y autorización de enlaces SharePoint. |
 | `scripts/build_dashboard.py` | Motor Python de cruce y cumplimiento. |
+| `scripts/clean_obsolete.py` | Limpieza segura mediante una lista cerrada de duplicados heredados. |
 | `scripts/export_excel.py` | Genera el XLSX ejecutivo con fórmulas y formatos numéricos congruentes. |
 | `scripts/export_pdf.py` | Genera el respaldo PDF regional con fotografía del Director Regional. |
 | `scripts/prepare_images.py` | Convierte fotografías a WebP corporativo. |

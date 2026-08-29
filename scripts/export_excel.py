@@ -33,12 +33,12 @@ def style_title(ws, end_column: int, title: str, subtitle: str) -> None:
     ws["A1"] = title
     ws["A1"].font = Font(name="Aptos Display", size=20, bold=True, color=WHITE)
     ws["A1"].fill = PatternFill("solid", fgColor=GREEN)
-    ws["A1"].alignment = Alignment(vertical="center")
+    ws["A1"].alignment = Alignment(horizontal="center", vertical="center")
     ws.merge_cells(f"A3:{end}3")
     ws["A3"] = subtitle
     ws["A3"].font = Font(name="Aptos", size=10, italic=True, color=DARK)
     ws["A3"].fill = PatternFill("solid", fgColor=SOFT)
-    ws["A3"].alignment = Alignment(vertical="center")
+    ws["A3"].alignment = Alignment(horizontal="center", vertical="center")
     ws.row_dimensions[1].height = 24
     ws.row_dimensions[2].height = 12
     ws.row_dimensions[3].height = 22
@@ -103,22 +103,23 @@ def build_workbook(data: dict) -> Workbook:
     cut = data.get("lastUpdatedDisplay", "Sin datos")
     region = data.get("region", "Centro Norte")
 
-    style_title(summary, 8, "Sistema de Evidencias OPS", f"Resumen ejecutivo · Región {region} · Corte {cut}")
+    style_title(summary, 8, "Sistema de Evidencias OPS", f"{region} · Corte {cut}")
     summary.append([])
-    summary.append(["Realizadas", None, "Total", None, "% Avance", None, "Pendientes", None])
-    summary.append([source.get("completedCompletions", 0), None, source.get("expectedCompletions", 0), None, None, None, source.get("pendingCompletions", 0), None])
-    summary.merge_cells("A5:B5"); summary.merge_cells("C5:D5"); summary.merge_cells("E5:F5"); summary.merge_cells("G5:H5")
-    summary.merge_cells("A6:B7"); summary.merge_cells("C6:D7"); summary.merge_cells("E6:F7"); summary.merge_cells("G6:H7")
-    for label_cell in ("A5", "C5", "E5", "G5"):
+    summary.append(["Realizadas", None, "Total", None, "% Pendiente", None, None, None])
+    summary.append([source.get("completedCompletions", 0), None, source.get("expectedCompletions", 0), None, None, None, None, None])
+    summary.merge_cells("A5:B5"); summary.merge_cells("C5:D5"); summary.merge_cells("E5:H5")
+    summary.merge_cells("A6:B7"); summary.merge_cells("C6:D7"); summary.merge_cells("E6:H7")
+    for label_cell in ("A5", "C5", "E5"):
         summary[label_cell].fill = PatternFill("solid", fgColor=DARK)
         summary[label_cell].font = Font(name="Aptos", size=9, bold=True, color=WHITE)
         summary[label_cell].alignment = Alignment(horizontal="center", vertical="center")
-    for value_cell in ("A6", "C6", "E6", "G6"):
+    for value_cell in ("A6", "C6", "E6"):
         summary[value_cell].fill = PatternFill("solid", fgColor=SOFT)
         summary[value_cell].font = Font(name="Aptos Display", size=18, bold=True, color=GREEN)
         summary[value_cell].alignment = Alignment(horizontal="center", vertical="center")
-    for value_cell in ("A6", "C6", "G6"):
+    for value_cell in ("A6", "C6"):
         summary[value_cell].number_format = "#,##0"
+    summary["E6"] = "=IFERROR((C6-A6)/C6,0)"
     summary["E6"].number_format = "0.0%"
 
     headers = ["Ranking", "DM", "Tiendas", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"]
@@ -130,7 +131,6 @@ def build_workbook(data: dict) -> Workbook:
         values = [rank, item.get("shortName"), item.get("stores", 0), item.get("completed", 0), item.get("expected", 0), item.get("pending", 0), f"=IFERROR(D{row}/E{row},0)", status(item.get("compliance", 0))]
         for column, value in enumerate(values, 1):
             summary.cell(row=row, column=column, value=value)
-    summary["E6"] = f"=IFERROR(SUM(D10:D{summary.max_row})/SUM(E10:E{summary.max_row}),0)"
     style_header(summary, 9, 1, 8)
     style_table(summary, 10, summary.max_row, 8)
     summary.freeze_panes = "A10"
@@ -147,7 +147,7 @@ def build_workbook(data: dict) -> Workbook:
     summary.page_setup.orientation = "landscape"
     summary.page_setup.fitToWidth = 1
 
-    style_title(stores_sheet, 9, "Detalle de tiendas", f"Ordenado de mayor a menor avance · Región {region} · Corte {cut}")
+    style_title(stores_sheet, 9, "Avance por tienda", f"{region} · Corte {cut}")
     stores_headers = ["Ranking", "CeCo", "Tienda", "DM", "Realizadas", "Total", "Pendientes", "% Avance", "Estado"]
     stores_sheet.append(stores_headers)
     stores = sorted(data.get("stores", []), key=lambda item: (-item.get("compliance", 0), item.get("store", "")))
@@ -170,7 +170,7 @@ def build_workbook(data: dict) -> Workbook:
     stores_sheet.page_setup.orientation = "landscape"
     stores_sheet.page_setup.fitToWidth = 1
 
-    style_title(activities_sheet, 7, "Avance por actividad", f"Lectura operativa · Región {region} · Corte {cut}")
+    style_title(activities_sheet, 7, "Avance por actividad", f"{region} · Corte {cut}")
     activity_headers = ["Orden", "Actividad", "Realizadas", "Pendientes", "Total", "% Avance", "Fecha compromiso"]
     activities_sheet.append(activity_headers)
     activities = sorted(data.get("activities", []), key=lambda item: (item.get("order", 999), item.get("name", "")))

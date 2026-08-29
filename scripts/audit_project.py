@@ -9,6 +9,8 @@ from urllib.parse import unquote, urlsplit
 
 from PIL import Image
 
+from clean_obsolete import existing_obsolete_files
+
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_FILES = [ROOT / "index.html", ROOT / "styles.css", ROOT / "app.js", ROOT / "pdf-export.js", ROOT / "xlsx-export.js", ROOT / "service-worker.js", ROOT / "manifest.webmanifest"]
 MAX_FILE_BYTES = 20 * 1024 * 1024
@@ -16,6 +18,7 @@ MAX_FILE_BYTES = 20 * 1024 * 1024
 missing = []
 oversized = []
 issues = []
+obsolete_files = existing_obsolete_files()
 texts = {source.name: source.read_text(encoding="utf-8") for source in TEXT_FILES}
 
 for source in TEXT_FILES:
@@ -39,6 +42,8 @@ if duplicate_ids:
     issues.append("IDs HTML repetidos: " + ", ".join(duplicate_ids))
 if missing_dom_targets:
     issues.append("Controles JavaScript sin destino HTML: " + ", ".join(missing_dom_targets))
+if obsolete_files:
+    issues.append("Archivos obsoletos conocidos: " + ", ".join(obsolete_files))
 
 for forbidden in ("Guía rápida", "guide-steps", "Atención prioritaria", "priority-stores", "Estado de actualización y calidad de datos", "quality-strip", "De mayor a menor avance", "Detalle dinámico"):
     if forbidden in html:
@@ -117,6 +122,7 @@ report = {
     "directEvidenceLinks": len(published_evidence),
     "xlsxFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file(),
     "pdfFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file(),
+    "obsoleteFiles": obsolete_files,
     "issues": issues,
 }
 print(json.dumps(report, ensure_ascii=False, indent=2))

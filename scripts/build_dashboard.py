@@ -13,7 +13,6 @@ deduplica cumplimiento por tienda/actividad y publica únicamente el JSON mínim
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import re
 import unicodedata
@@ -28,8 +27,6 @@ from openpyxl import load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
 DEFAULT_DIRECTORY = ROOT / "cms" / "Centro Norte_Directorio.xlsx"
-DEFAULT_ACTIVITIES = ROOT / "config" / "actividades.csv"
-DEFAULT_MANAGERS = ROOT / "config" / "gerentes.csv"
 DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
 DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
@@ -244,44 +241,6 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             "photo": photo,
         }
     return sorted(activities, key=lambda item: (item["order"], key_text(item["name"]))), managers, cms_settings, calendar
-
-
-def load_activities(path: Path) -> list[dict[str, Any]]:
-    with path.open(encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    activities = []
-    seen = set()
-    for row in rows:
-        name = clean_text(row.get("Actividad"))
-        if not name or not is_yes(row.get("Activo")) or key_text(name) in seen:
-            continue
-        seen.add(key_text(name))
-        activities.append({
-            "name": name,
-            "description": clean_text(row.get("Descripción")),
-            "order": int(float(row.get("Orden") or 999)),
-            "autoDetected": False,
-        })
-    return sorted(activities, key=lambda item: (item["order"], key_text(item["name"])))
-
-
-def load_managers(path: Path) -> dict[str, dict[str, str]]:
-    """Carga el catálogo visual de DM y valida que sus fotografías existan."""
-    with path.open(encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    managers: dict[str, dict[str, str]] = {}
-    for row in rows:
-        dm = clean_text(row.get("DM"))
-        if not dm or not is_yes(row.get("Activo")):
-            continue
-        photo = clean_text(row.get("Foto"))
-        if photo and not (ROOT / photo).is_file():
-            raise ValueError(f"No existe la fotografía configurada para {dm}: {photo}")
-        managers[key_text(dm)] = {
-            "shortName": clean_text(row.get("Nombre corto")) or dm,
-            "photo": photo,
-        }
-    return managers
 
 
 def status_label(compliance: float) -> str:

@@ -14,10 +14,11 @@ from openpyxl import load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import safe_evidence_url
+from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
     "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
-    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
+    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
     "scripts/audit_project.py", "config/settings.json",
     "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
@@ -35,6 +36,13 @@ def fail(message: str) -> None:
     raise AssertionError(message)
 
 
+passed: list[str] = []
+
+
+def approve(name: str) -> None:
+    passed.append(name)
+
+
 allowed_hosts = {"grupovips-my.sharepoint.com"}
 safe_sample = "https://grupovips-my.sharepoint.com/ruta/imagen.jpg#vista"
 if safe_evidence_url(safe_sample, allowed_hosts) != safe_sample:
@@ -47,6 +55,10 @@ for unsafe in ("http://grupovips-my.sharepoint.com/imagen.jpg", "https://usuario
 for relative in REQUIRED:
     if not (ROOT / relative).is_file():
         fail(f"Falta archivo requerido: {relative}")
+obsolete_present = [relative for relative in OBSOLETE_FILES if (ROOT / relative).exists()]
+if obsolete_present:
+    fail("Persisten archivos obsoletos: " + ", ".join(obsolete_present))
+approve("01 · Archivos requeridos y limpieza de obsoletos")
 
 data = json.loads((ROOT / "data/dashboard.json").read_text(encoding="utf-8"))
 manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
@@ -103,6 +115,7 @@ if not data.get("submissions") or data["submissions"][0].get("timestampDisplay")
     fail("La última actualización no coincide con la respuesta más reciente")
 if sample.get("ceco") != "38401" or not any(item.get("evidenceKey") == "Roll_Out_38401" for item in data.get("submissions", [])):
     fail("La evidencia Roll_Out_38401 no fue preparada")
+approve("02 · CMS, conteos, CeCo y evidencias seguras")
 
 with tempfile.TemporaryDirectory() as temp_dir:
     generated = Path(temp_dir) / "dashboard.json"
@@ -112,11 +125,12 @@ for payload in (data, fresh):
     payload.pop("generatedAt", None)
 if data != fresh:
     fail("data/dashboard.json está desincronizado")
+approve("03 · Python sincronizado con la última actualización")
 
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
 if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades"]:
     fail("El Excel Python no contiene las tres vistas ejecutivas")
-expected_summary_formula = f"=IFERROR(SUM(D10:D{static_excel['Resumen'].max_row})/SUM(E10:E{static_excel['Resumen'].max_row}),0)"
+expected_summary_formula = "=IFERROR((C6-A6)/C6,0)"
 if static_excel["Resumen"]["E6"].value != expected_summary_formula or static_excel["Resumen"]["A6"].number_format != "#,##0" or static_excel["Resumen"]["E6"].number_format != "0.0%" or static_excel["Resumen"]._charts:
     fail("El resumen Excel no conserva fórmula, formato numérico o limpieza visual")
 with tempfile.TemporaryDirectory() as temp_dir:
@@ -125,6 +139,7 @@ with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_book = load_workbook(dynamic_excel, data_only=False)
     if dynamic_book.sheetnames != ["Resumen"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
         fail("El motor XLSX dinámico generó un libro inválido")
+approve("04 · XLSX regional y dinámico con formatos congruentes")
 with tempfile.TemporaryDirectory() as temp_dir:
     direct_pdf = Path(temp_dir) / "directo.pdf"
     subprocess.run(["node", str(ROOT / "tests" / "build_direct_pdf.js"), str(direct_pdf)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
@@ -134,6 +149,7 @@ with tempfile.TemporaryDirectory() as temp_dir:
 regional_pdf = (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").read_bytes()
 if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
+approve("05 · PDF regional Python y descarga directa válidos")
 
 for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "toggle-dates", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
@@ -147,15 +163,21 @@ if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="e
 for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\""]:
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Aceptar y descargar", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
+approve("06 · Navegación lineal y sin bloques obsoletos")
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Aceptar y descargar", "Ver archivo", "Cerrar exportación", "export-close", "REALIZADAS / TOTAL", "% PENDIENTE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker"]:
     if text not in js:
-        fail(f"Funcionalidad faltante: {text}")
-if "sistema-evidencias-ops-v11" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
-    fail("Caché PWA v11 incompleto")
+        if text not in html + css:
+            fail(f"Funcionalidad faltante: {text}")
+approve("07 · Filtros, confirmación y exportaciones del alcance actual")
+if "sistema-evidencias-ops-v12" not in sw or "pdf-export.js" not in sw or "xlsx-export.js" not in sw or "Damos_Seguimiento.webp" not in sw or "Resumen_Evidencias_OPS.xlsx" not in sw or "Resumen_Evidencias_OPS.pdf" not in sw or "assets/director/jorge-alcantar.webp" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("Caché PWA v12 incompleto")
 if "window.print" in js or "Tiendas realizadas" in js:
     fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
+if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
+    fail("El PDF aún conserva el subtítulo regional eliminado")
 if "guide" in data:
     fail("La guía eliminada todavía se publica en el JSON")
+approve("08 · PWA, descarga directa y mensaje final simplificados")
 if [item.get("rank") for item in data.get("dms", [])] != list(range(1, 7)):
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
@@ -163,11 +185,17 @@ if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("na
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
-for text in ["python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+approve("09 · Ranking, Director Regional e identidad ejecutiva")
+for text in ["python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_project.py", "git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
+approve("10 · Workflow completo: limpiar, generar, validar y publicar")
 
-print("Validación aprobada · 10 mejoras y exportación dinámica")
+if len(passed) != 10:
+    fail(f"Se esperaban 10 validaciones y se ejecutaron {len(passed)}")
+print("Validación aprobada · 10/10 controles")
+for check in passed:
+    print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
 print("72 tiendas · 7 actividades vigentes · 6 DM + 1 Director Regional")
 print("Roll_Out_38401 → Coacalco → Enrique Cesar · vínculo SharePoint validado")

@@ -16,3 +16,5 @@
 ## Control del motor Python
 
 Los comandos `python scripts/build_dashboard.py`, `python scripts/export_excel.py` y `python scripts/export_pdf.py` reconstruyen los datos y los respaldos ejecutivos. `python tests/validate_project.py` valida encabezados, directorio, fotografías, dominio de evidencia, archivos estáticos, generadores dinámicos y flujo de publicación antes de exponer información incompleta.
+
+El workflow ejecuta diez controles identificables y `python scripts/clean_obsolete.py --apply` elimina únicamente los CSV heredados, JPEG duplicados y el SVG sin referencias. La lista es cerrada para evitar eliminaciones accidentales.
