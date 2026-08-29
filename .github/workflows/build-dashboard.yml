@@ -84,13 +84,20 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
-          if git diff --quiet -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf config assets/dm assets/icons; then
+          set -euo pipefail
+          git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
+          git add -A -- config assets/dm assets/icons
+
+          obsolete_test="tests/validate_horno_applicability.py"
+          if git ls-files --error-unmatch "$obsolete_test" >/dev/null 2>&1 || test -e "$obsolete_test"; then
+            git add -A -- "$obsolete_test"
+          fi
+
+          if git diff --cached --quiet; then
             echo "Los datos, exportaciones y limpieza ya están actualizados."
             exit 0
           fi
-          git add data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
-          git add -A -- tests/validate_horno_applicability.py
-          git add -A -- config assets/dm assets/icons
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "data: actualizar evidencias OPS"
