@@ -2,7 +2,7 @@
   "schemaVersion": 10,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T18:41:23+00:00",
+  "generatedAt": "2026-08-29T19:05:48+00:00",
   "lastUpdated": "2026-08-29T12:13:32",
   "lastUpdatedDisplay": "29/08/2026 12:13",
   "report": {
@@ -24,18 +24,18 @@
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "6b17febac6a3798111d7fe2175460c970b70afd0cb4e94621af79c99f19fe8db"
+    "cmsSha256": "67b3d398ccb656c4a89592fed41230e343552fb79973e2b19fdd84724e2b82a8"
   },
   "summary": {
     "dms": 6,
     "stores": 72,
-    "activities": 8,
-    "expectedCompletions": 576,
+    "activities": 9,
+    "expectedCompletions": 648,
     "completedCompletions": 2,
     "compliance": 0.3,
     "validResponses": 2,
     "storesComplete": 0,
-    "pendingCompletions": 574,
+    "pendingCompletions": 646,
     "notApplicableCompletions": 0
   },
   "quality": {
@@ -57,6 +57,7 @@
         "CeCo"
       ],
       "confirmationHeaders": [],
+      "applicabilityHeaders": [],
       "evidenceHeaders": [
         "Evidencia_RollOut",
         "Evidencia_Programacion_Hornos_Merry_Focaccia",
@@ -88,7 +89,8 @@
         "Evidencia_Lay_Out": "exact"
       },
       "rowConflicts": [],
-      "evidenceIssues": {}
+      "evidenceIssues": {},
+      "applicabilityIssues": {}
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
@@ -96,7 +98,7 @@
     "privacyMode": false
   },
   "calendar": {
-    "active": 8,
+    "active": 9,
     "scheduled": 0,
     "expired": 0,
     "inactive": 0
@@ -113,7 +115,7 @@
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 2,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -126,7 +128,7 @@
     },
     {
       "name": "Programacion Hornos Merry - Focaccia",
-      "description": "Validación de programación y ejecución.",
+      "description": "Validación de programación|Hornos Turbo Chef no se Considera",
       "order": 2,
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
@@ -135,7 +137,7 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -157,7 +159,7 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -167,6 +169,28 @@
       "deadlineTone": "amber",
       "daysRemaining": 5,
       "focusRank": 3
+    },
+    {
+      "name": "Community Board",
+      "description": "Valida Actualizacion de Tiendas que aplique",
+      "order": 9,
+      "startDate": "2026-08-28",
+      "endDate": "2026-09-03",
+      "commitmentDateDisplay": "03/09/26",
+      "dateStatus": "Vigente",
+      "requireEvidence": true,
+      "priority": "Alta",
+      "autoDetected": false,
+      "conditionalApplicability": false,
+      "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
+      "pendingStores": 72,
+      "compliance": 0.0,
+      "deadlineLabel": "Vence en 5 días",
+      "deadlineTone": "amber",
+      "daysRemaining": 5,
+      "focusRank": 4
     },
     {
       "name": "Rack FHW",
@@ -179,7 +203,7 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -188,7 +212,7 @@
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 4
+      "focusRank": 5
     },
     {
       "name": "Max & Min",
@@ -201,7 +225,7 @@
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -210,7 +234,7 @@
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 5
+      "focusRank": 6
     },
     {
       "name": "Fotografia - SM",
@@ -223,7 +247,7 @@
       "requireEvidence": true,
       "priority": "Baja",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -232,7 +256,7 @@
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 6
+      "focusRank": 7
     },
     {
       "name": "Lay Out",
@@ -245,7 +269,7 @@
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -254,7 +278,7 @@
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 7
+      "focusRank": 8
     },
     {
       "name": "Mandil Verde",
@@ -267,7 +291,7 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
-      "noMeansNotApplicable": false,
+      "conditionalApplicability": false,
       "completedStores": 0,
       "applicableStores": 72,
       "notApplicableStores": 0,
@@ -276,7 +300,7 @@
       "deadlineLabel": "En 15 días",
       "deadlineTone": "green",
       "daysRemaining": 15,
-      "focusRank": 8
+      "focusRank": 9
     }
   ],
   "dms": [
@@ -286,11 +310,11 @@
       "photo": "assets/dm/enrique-cesar.webp",
       "stores": 10,
       "completed": 2,
-      "expected": 80,
+      "expected": 90,
       "notApplicable": 0,
-      "pending": 78,
+      "pending": 88,
       "pendingStores": 10,
-      "compliance": 2.5,
+      "compliance": 2.2,
       "status": "Atención",
       "rank": 1
     },
@@ -300,9 +324,9 @@
       "photo": "assets/dm/nancy-carolina.webp",
       "stores": 12,
       "completed": 0,
-      "expected": 96,
+      "expected": 108,
       "notApplicable": 0,
-      "pending": 96,
+      "pending": 108,
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
@@ -314,9 +338,9 @@
       "photo": "assets/dm/vanessa-carreno.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 104,
+      "expected": 117,
       "notApplicable": 0,
-      "pending": 104,
+      "pending": 117,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -328,9 +352,9 @@
       "photo": "assets/dm/veronica-garcia.webp",
       "stores": 11,
       "completed": 0,
-      "expected": 88,
+      "expected": 99,
       "notApplicable": 0,
-      "pending": 88,
+      "pending": 99,
       "pendingStores": 11,
       "compliance": 0.0,
       "status": "Atención",
@@ -342,9 +366,9 @@
       "photo": "assets/dm/yazmin-chabela.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 104,
+      "expected": 117,
       "notApplicable": 0,
-      "pending": 104,
+      "pending": 117,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -356,9 +380,9 @@
       "photo": "assets/dm/yazmin-garcia.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 104,
+      "expected": 117,
       "notApplicable": 0,
-      "pending": 104,
+      "pending": 117,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -371,9 +395,9 @@
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -382,9 +406,9 @@
       "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -393,9 +417,9 @@
       "store": "Cosmopol N1",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -404,9 +428,9 @@
       "store": "Luna Park",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -415,9 +439,9 @@
       "store": "Patio Ecatepec",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -426,9 +450,9 @@
       "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -437,9 +461,9 @@
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -448,9 +472,9 @@
       "store": "San Miguel Izcalli",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -459,9 +483,9 @@
       "store": "Arboledas",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -470,9 +494,9 @@
       "store": "ITEMS Edo de Mexico",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -481,9 +505,9 @@
       "store": "Jinetes",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -492,9 +516,9 @@
       "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -503,9 +527,9 @@
       "store": "Mundo E II",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -514,9 +538,9 @@
       "store": "Pasaje Tlanepantla",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -525,9 +549,9 @@
       "store": "Punta Norte",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -536,9 +560,9 @@
       "store": "Santa Monica",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -547,9 +571,9 @@
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -558,9 +582,9 @@
       "store": "TlalnepantlaCarso",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -569,9 +593,9 @@
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -580,9 +604,9 @@
       "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -591,9 +615,9 @@
       "store": "Atana Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -602,9 +626,9 @@
       "store": "Camarones",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -613,9 +637,9 @@
       "store": "Centenario Azcapotzalco",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -624,9 +648,9 @@
       "store": "Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -635,9 +659,9 @@
       "store": "Lindavista II",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -646,9 +670,9 @@
       "store": "Montevideo DT",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -657,9 +681,9 @@
       "store": "Montevideo Insurgentes",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -668,9 +692,9 @@
       "store": "Parque Jadin kiosko",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -679,9 +703,9 @@
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -690,9 +714,9 @@
       "store": "Patio la Raza",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -701,9 +725,9 @@
       "store": "Plaza Vista Norte",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -712,9 +736,9 @@
       "store": "Torres Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -723,9 +747,9 @@
       "store": "Via Vallejo",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -734,9 +758,9 @@
       "store": "Blvd. Aeropuerto dt",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -745,9 +769,9 @@
       "store": "Bosques de Aragon",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -756,9 +780,9 @@
       "store": "Eduardo Molina",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -767,9 +791,9 @@
       "store": "Encuentro Oceania",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -778,9 +802,9 @@
       "store": "Encuentro Oceania II",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -789,9 +813,9 @@
       "store": "Parque Tepeyac Piso 1",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -800,9 +824,9 @@
       "store": "Parque Tepeyac Piso 2",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -811,9 +835,9 @@
       "store": "Plaza Aeropuerto",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -822,9 +846,9 @@
       "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -833,9 +857,9 @@
       "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -844,9 +868,9 @@
       "store": "Tapo Puerta Oriente",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -855,9 +879,9 @@
       "store": "Cetram 4 Caminos",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -866,9 +890,9 @@
       "store": "Echegaray",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -877,9 +901,9 @@
       "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -888,9 +912,9 @@
       "store": "Gustavo Baz 29",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -899,9 +923,9 @@
       "store": "Parque Toreo",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -910,9 +934,9 @@
       "store": "Parque Toreo II",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -921,9 +945,9 @@
       "store": "Periferico Satélite DT",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -932,9 +956,9 @@
       "store": "Plaza Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -943,9 +967,9 @@
       "store": "Plaza Satelite II N1",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -954,9 +978,9 @@
       "store": "Samara Satélite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -965,9 +989,9 @@
       "store": "Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -976,9 +1000,9 @@
       "store": "Satelite Centro Civico",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -987,9 +1011,9 @@
       "store": "Viveros de la Loma",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -998,9 +1022,9 @@
       "store": "Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1009,9 +1033,9 @@
       "store": "Bellavista",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1020,9 +1044,9 @@
       "store": "Centro Comercial Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1031,9 +1055,9 @@
       "store": "City Center Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1042,9 +1066,9 @@
       "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1053,9 +1077,9 @@
       "store": "Galerias Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1064,9 +1088,9 @@
       "store": "Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1075,9 +1099,9 @@
       "store": "Lomas Verdes II",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1086,9 +1110,9 @@
       "store": "San Mateo",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1097,9 +1121,9 @@
       "store": "Star Medica Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1108,9 +1132,9 @@
       "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1119,9 +1143,9 @@
       "store": "Zona Azul",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1130,9 +1154,9 @@
       "store": "Zona Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 8,
+      "pending": 9,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1141,10 +1165,10 @@
       "store": "Galerias Perinorte",
       "dm": "Enrique Cesar Flores",
       "completed": 1,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 7,
-      "compliance": 12.5,
+      "pending": 8,
+      "compliance": 11.1,
       "status": "Atención"
     },
     {
@@ -1152,10 +1176,10 @@
       "store": "Izcalli Mega",
       "dm": "Enrique Cesar Flores",
       "completed": 1,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "pending": 7,
-      "compliance": 12.5,
+      "pending": 8,
+      "compliance": 11.1,
       "status": "Atención"
     }
   ],
@@ -1167,7 +1191,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1179,7 +1203,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1189,7 +1214,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1199,7 +1225,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1211,7 +1237,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1221,7 +1248,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1231,7 +1259,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1243,7 +1271,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1253,7 +1282,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1263,9 +1293,9 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 1,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "compliance": 12.5,
+      "compliance": 11.1,
       "lastUpdate": "2026-08-29T12:13:32",
       "activities": {
         "Roll Out": true,
@@ -1275,7 +1305,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1285,7 +1316,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1295,9 +1327,9 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 1,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
-      "compliance": 12.5,
+      "compliance": 11.1,
       "lastUpdate": "2026-08-29T11:28:18",
       "activities": {
         "Roll Out": true,
@@ -1307,7 +1339,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1317,7 +1350,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1327,7 +1361,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1339,7 +1373,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1349,7 +1384,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1359,7 +1395,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1371,7 +1407,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1381,7 +1418,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1391,7 +1429,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1403,7 +1441,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1413,7 +1452,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1423,7 +1463,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1435,7 +1475,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1445,7 +1486,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1455,7 +1497,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1467,7 +1509,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1477,7 +1520,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1487,7 +1531,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1499,7 +1543,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1509,7 +1554,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1519,7 +1565,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1531,7 +1577,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1541,7 +1588,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1551,7 +1599,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1563,7 +1611,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1573,7 +1622,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1583,7 +1633,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1595,7 +1645,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1605,7 +1656,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1615,7 +1667,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1627,7 +1679,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1637,7 +1690,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1647,7 +1701,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1659,7 +1713,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1669,7 +1724,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1679,7 +1735,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1691,7 +1747,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1701,7 +1758,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1711,7 +1769,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1723,7 +1781,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1733,7 +1792,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1743,7 +1803,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1755,7 +1815,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1765,7 +1826,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1775,7 +1837,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1787,7 +1849,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1797,7 +1860,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1807,7 +1871,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1819,7 +1883,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1829,7 +1894,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1839,7 +1905,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1851,7 +1917,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1861,7 +1928,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1871,7 +1939,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1883,7 +1951,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1893,7 +1962,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1903,7 +1973,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1915,7 +1985,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1925,7 +1996,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1935,7 +2007,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1947,7 +2019,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1957,7 +2030,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1967,7 +2041,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1979,7 +2053,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1989,7 +2064,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -1999,7 +2075,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2011,7 +2087,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2021,7 +2098,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2031,7 +2109,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2043,7 +2121,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2053,7 +2132,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2063,7 +2143,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2075,7 +2155,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2085,7 +2166,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2095,7 +2177,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2107,7 +2189,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2117,7 +2200,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2127,7 +2211,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2139,7 +2223,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2149,7 +2234,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2159,7 +2245,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2171,7 +2257,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2181,7 +2268,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2191,7 +2279,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2203,7 +2291,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2213,7 +2302,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2223,7 +2313,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2235,7 +2325,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2245,7 +2336,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2255,7 +2347,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2267,7 +2359,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2277,7 +2370,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2287,7 +2381,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2299,7 +2393,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2309,7 +2404,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2319,7 +2415,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2331,7 +2427,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2341,7 +2438,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2351,7 +2449,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2363,7 +2461,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2373,7 +2472,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2383,7 +2483,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2395,7 +2495,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2405,7 +2506,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2415,7 +2517,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2427,7 +2529,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2437,7 +2540,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2447,7 +2551,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2459,7 +2563,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2469,7 +2574,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2479,7 +2585,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2491,7 +2597,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2501,7 +2608,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2511,7 +2619,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2523,7 +2631,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2533,7 +2642,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2543,7 +2653,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2555,7 +2665,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2565,7 +2676,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2575,7 +2687,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2587,7 +2699,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2597,7 +2710,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2607,7 +2721,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2619,7 +2733,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2629,7 +2744,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2639,7 +2755,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2651,7 +2767,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2661,7 +2778,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2671,7 +2789,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2683,7 +2801,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2693,7 +2812,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2703,7 +2823,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2715,7 +2835,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2725,7 +2846,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2735,7 +2857,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2747,7 +2869,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2757,7 +2880,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2767,7 +2891,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2779,7 +2903,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2789,7 +2914,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2799,7 +2925,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2811,7 +2937,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2821,7 +2948,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2831,7 +2959,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2843,7 +2971,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2853,7 +2982,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2863,7 +2993,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2875,7 +3005,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2885,7 +3016,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2895,7 +3027,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2907,7 +3039,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2917,7 +3050,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2927,7 +3061,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2939,7 +3073,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2949,7 +3084,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2959,7 +3095,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2971,7 +3107,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2981,7 +3118,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -2991,7 +3129,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3003,7 +3141,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3013,7 +3152,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3023,7 +3163,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3035,7 +3175,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3045,7 +3186,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3055,7 +3197,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3067,7 +3209,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3077,7 +3220,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3087,7 +3231,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3099,7 +3243,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3109,7 +3254,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3119,7 +3265,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3131,7 +3277,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3141,7 +3288,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3151,7 +3299,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3163,7 +3311,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3173,7 +3322,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3183,7 +3333,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3195,7 +3345,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3205,7 +3356,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3215,7 +3367,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3227,7 +3379,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3237,7 +3390,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3247,7 +3401,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3259,7 +3413,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3269,7 +3424,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3279,7 +3435,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3291,7 +3447,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3301,7 +3458,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3311,7 +3469,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3323,7 +3481,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3333,7 +3492,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3343,7 +3503,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3355,7 +3515,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3365,7 +3526,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3375,7 +3537,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3387,7 +3549,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3397,7 +3560,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3407,7 +3571,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3419,7 +3583,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3429,7 +3594,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     },
     {
@@ -3439,7 +3605,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 8,
+      "expected": 9,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3451,7 +3617,8 @@
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
-        "Lay Out": false
+        "Lay Out": false,
+        "Community Board": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3461,7 +3628,8 @@
         "Max & Min": true,
         "Fotografia - SM": true,
         "Mandil Verde": true,
-        "Lay Out": true
+        "Lay Out": true,
+        "Community Board": true
       }
     }
   ],
