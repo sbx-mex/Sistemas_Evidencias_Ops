@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#006241">
+  <meta name="description" content="Dashboard de cumplimiento y seguimiento de actividades operativas de Centro Norte.">
+  <title>Sistema de Evidencias OPS</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir al contenido</a>
+  <div id="offline-banner" class="offline-banner" hidden>Sin conexión · se muestra la última información disponible.</div>
+  <div id="error-banner" class="error-banner" role="alert" hidden></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6zM9 3v5h6V3M9 12h6M9 16h4"/></svg>
+      </span>
+      <div><strong>Sistema de Evidencias</strong><span>OPS · Centro Norte</span></div>
+    </div>
+    <nav class="side-nav">
+      <a href="#resumen" data-route="resumen" class="is-active"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-3H4zM14 7h6V4h-6z"/></svg><span>Resumen</span></a>
+      <a href="#actividades" data-route="actividades"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 9l1.5 1.5L12 8M8 15l1.5 1.5L12 14M14 9h2M14 15h2"/></svg><span>Actividades</span></a>
+      <a href="#tiendas" data-route="tiendas"><svg viewBox="0 0 24 24"><path d="M4 10h16M6 10v10h12V10M3 10l2-6h14l2 6M9 20v-5h6v5"/></svg><span>Tiendas</span></a>
+      <a href="#evidencias" data-route="evidencias"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h.01M4 16l5-4 3 3 2-2 6 5"/></svg><span>Evidencias</span></a>
+    </nav>
+    <div class="sidebar-note">
+      <span>Motor de datos</span>
+      <strong>Forms + Directorio</strong>
+      <small>Actualización controlada por Python</small>
+    </div>
+  </aside>
+
+  <div id="scrim" class="scrim" hidden></div>
+
+  <header class="topbar">
+    <button id="menu-button" class="icon-button menu-button" type="button" aria-label="Abrir navegación" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <div class="topbar-title"><strong id="route-title">Resumen ejecutivo</strong><span id="route-subtitle">Seguimiento de cumplimiento operativo</span></div>
+    <div class="topbar-actions">
+      <span id="connection-status" class="status-pill"><i></i>Datos vigentes</span>
+      <button id="install-button" class="button secondary" type="button" hidden>Instalar PWA</button>
+      <button id="refresh-button" class="icon-button" type="button" aria-label="Actualizar información">
+        <svg viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Centro Norte · Seguimiento operativo</p>
+        <h1 id="hero-title">Sistema de Evidencias OPS</h1>
+        <p>Visualiza el avance de cada actividad registrada en Forms y da seguimiento por DM, tienda y CeCo.</p>
+      </div>
+      <div class="update-card">
+        <span>Última actualización</span>
+        <strong id="last-updated">—</strong>
+        <small>Hora de finalización del último registro</small>
+      </div>
+    </section>
+
+    <section class="filters" aria-label="Filtros del dashboard">
+      <label><span>DM</span><select id="filter-dm"><option value="">Todos los DM</option></select></label>
+      <label><span>Tienda / CeCo</span><select id="filter-store"><option value="">Todas las tiendas</option></select></label>
+      <label><span>Actividad</span><select id="filter-activity"><option value="">Todas las actividades</option></select></label>
+      <button id="clear-filters" class="button ghost" type="button">Limpiar filtros</button>
+    </section>
+
+    <section class="view" data-view="resumen">
+      <div class="kpi-grid" id="kpi-grid" aria-live="polite"></div>
+      <div class="dashboard-grid">
+        <article class="panel panel-wide">
+          <div class="panel-heading"><div><p class="eyebrow">Avance por actividad</p><h2>Cumplimiento operativo</h2></div><span id="activity-context" class="context-label">Centro Norte</span></div>
+          <div id="activity-progress" class="progress-list"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-heading"><div><p class="eyebrow">Portafolio</p><h2>Avance por DM</h2></div></div>
+          <div id="dm-ranking" class="ranking-list"></div>
+        </article>
+      </div>
+      <article class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">Atención inmediata</p><h2>Tiendas con actividad pendiente</h2></div><button class="text-button" type="button" data-go="tiendas">Ver todas</button></div>
+        <div id="priority-stores" class="priority-grid"></div>
+      </article>
+    </section>
+
+    <section class="view" data-view="actividades" hidden>
+      <div class="page-heading"><div><p class="eyebrow">Pregunta 1 del Forms</p><h2>Actividades expuestas</h2><p>El catálogo se controla desde <code>config/actividades.csv</code>; puedes agregar, ordenar u ocultar actividades sin modificar la PWA.</p></div></div>
+      <div id="activity-cards" class="activity-grid"></div>
+    </section>
+
+    <section class="view" data-view="tiendas" hidden>
+      <div class="page-heading"><div><p class="eyebrow">Cruce automático CeCo</p><h2>Seguimiento por tienda</h2><p>Nombre de tienda y DM se asignan desde <strong>Centro Norte_Directorio.xlsx</strong>.</p></div><button id="export-csv" class="button secondary" type="button">Exportar vista CSV</button></div>
+      <article class="panel table-panel">
+        <div class="table-summary"><strong id="store-count">0 tiendas</strong><span id="store-summary">—</span></div>
+        <div class="table-scroll"><table><thead><tr><th>CeCo</th><th>Tienda</th><th>DM</th><th>Cumplimiento</th><th>Realizadas</th><th>Último registro</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="view" data-view="evidencias" hidden>
+      <div class="page-heading"><div><p class="eyebrow">Preguntas 3 y 4 del Forms</p><h2>Registros y evidencias</h2><p>Solo los registros confirmados con evidencia se consideran válidos para cumplimiento.</p></div></div>
+      <div class="quality-strip" id="quality-strip"></div>
+      <article class="panel table-panel">
+        <div class="table-summary"><strong id="submission-count">0 registros</strong><span>Ordenados por hora de finalización</span></div>
+        <div class="table-scroll"><table><thead><tr><th>Actualización</th><th>Actividad</th><th>CeCo</th><th>Tienda</th><th>DM</th><th>Evidencia</th><th>Validación</th></tr></thead><tbody id="submission-table"></tbody></table></div>
+      </article>
+    </section>
+  </main>
+
+  <footer><span>Sistema de Evidencias OPS</span><span>Centro Norte · PWA de seguimiento</span></footer>
+  <script src="./app.js" defer></script>
+</body>
+</html>

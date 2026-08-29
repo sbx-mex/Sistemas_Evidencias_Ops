@@ -1,0 +1,368 @@
+#!/usr/bin/env python3
+"""Construye el dashboard estático desde Forms + Directorio Centro Norte.
+
+Fuentes editoriales:
+  - cms/Sistema de Evidencias OPS.xlsx
+  - cms/Centro Norte_Directorio.xlsx
+  - config/actividades.csv
+
+El navegador nunca procesa los Excel. Este motor valida encabezados, cruza CeCo,
+deduplica cumplimiento por tienda/actividad y publica únicamente el JSON mínimo.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import re
+import unicodedata
+from collections import defaultdict
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+from openpyxl import load_workbook
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
+DEFAULT_DIRECTORY = ROOT / "cms" / "Centro Norte_Directorio.xlsx"
+DEFAULT_ACTIVITIES = ROOT / "config" / "actividades.csv"
+DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
+DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
+
+RESPONSE_FIELDS = {
+    "id": ("Id",),
+    "started": ("Hora de inicio",),
+    "finished": ("Hora de finalización", "Hora de finalizacion"),
+    "email": ("Correo electrónico", "Correo electronico"),
+    "name": ("Nombre",),
+    "activity": ("Selecciona la actividad que deseas registrar",),
+    "ceco": ("CeCo",),
+    "confirmed": ("¿Confirmas que realizaste la actividad seleccionada?",),
+    "evidence": ("Evidencia del avance",),
+}
+
+
+def clean_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "").strip())
+
+
+def key_text(value: Any) -> str:
+    text = unicodedata.normalize("NFD", clean_text(value).casefold())
+    return "".join(char for char in text if unicodedata.category(char) != "Mn")
+
+
+def is_yes(value: Any) -> bool:
+    return key_text(value) in {"si", "true", "1", "yes"}
+
+
+def normalize_ceco(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, (int, float)):
+        value = str(int(value))
+    text = clean_text(value).replace(".0", "")
+    digits = re.sub(r"\D", "", text)
+    return digits if len(digits) == 5 else ""
+
+
+def parse_datetime(value: Any) -> datetime | None:
+    if isinstance(value, datetime):
+        return value
+    text = clean_text(value)
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
+        try:
+            return datetime.strptime(text, fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def resolve_columns(headers: list[Any], contract: dict[str, tuple[str, ...]]) -> dict[str, int]:
+    normalized = {key_text(value): index for index, value in enumerate(headers) if clean_text(value)}
+    result: dict[str, int] = {}
+    missing = []
+    for field, aliases in contract.items():
+        match = next((normalized[key_text(alias)] for alias in aliases if key_text(alias) in normalized), None)
+        if match is None:
+            missing.append(aliases[0])
+        else:
+            result[field] = match
+    if missing:
+        raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
+    return result
+
+
+def load_settings(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_activities(path: Path) -> list[dict[str, Any]]:
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    activities = []
+    seen = set()
+    for row in rows:
+        name = clean_text(row.get("Actividad"))
+        if not name or not is_yes(row.get("Activo")) or key_text(name) in seen:
+            continue
+        seen.add(key_text(name))
+        activities.append({
+            "name": name,
+            "description": clean_text(row.get("Descripción")),
+            "order": int(float(row.get("Orden") or 999)),
+            "autoDetected": False,
+        })
+    return sorted(activities, key=lambda item: (item["order"], key_text(item["name"])))
+
+
+def find_directory_header(ws) -> tuple[int, list[Any]]:
+    for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=min(ws.max_row, 12), values_only=True), 1):
+        keys = {key_text(value) for value in row if clean_text(value)}
+        if {"cc", "cc nombre", "dm"}.issubset(keys):
+            return row_number, list(row)
+    raise ValueError(f"No se encontró encabezado CC / CC Nombre / DM en {ws.title}")
+
+
+def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str]:
+    workbook = load_workbook(path, read_only=True, data_only=True)
+    requested = settings.get("directorySheet")
+    if requested not in workbook.sheetnames:
+        requested = max(workbook.sheetnames, key=lambda name: workbook[name].max_row)
+    ws = workbook[requested]
+    header_row, headers = find_directory_header(ws)
+    normalized = {key_text(value): index for index, value in enumerate(headers) if clean_text(value)}
+    required = ("cc", "cc nombre", "region", "estatus", "dm")
+    missing = [field for field in required if field not in normalized]
+    if missing:
+        raise ValueError("Directorio incompleto: " + ", ".join(missing))
+
+    stores: dict[str, dict[str, str]] = {}
+    for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
+        ceco = normalize_ceco(row[normalized["cc"]])
+        if not ceco:
+            continue
+        region = clean_text(row[normalized["region"]])
+        status = clean_text(row[normalized["estatus"]])
+        if settings.get("region") and key_text(region) != key_text(settings["region"]):
+            continue
+        if settings.get("onlyOpenStores") and key_text(status) not in {"abierta", "abierto", "activa", "activo"}:
+            continue
+        stores[ceco] = {
+            "ceco": ceco,
+            "store": clean_text(row[normalized["cc nombre"]]) or f"Tienda {ceco}",
+            "dm": clean_text(row[normalized["dm"]]) or "Sin DM",
+            "region": region,
+            "status": status,
+        }
+    return stores, requested
+
+
+def load_responses(path: Path) -> list[dict[str, Any]]:
+    workbook = load_workbook(path, read_only=True, data_only=True)
+    ws = workbook[workbook.sheetnames[0]]
+    rows = ws.iter_rows(values_only=True)
+    headers = list(next(rows, ()))
+    columns = resolve_columns(headers, RESPONSE_FIELDS)
+    responses = []
+    for row_number, row in enumerate(rows, 2):
+        if not any(value not in (None, "") for value in row):
+            continue
+        finished = parse_datetime(row[columns["finished"]])
+        responses.append({
+            "row": row_number,
+            "id": clean_text(row[columns["id"]]) or str(row_number - 1),
+            "started": parse_datetime(row[columns["started"]]),
+            "finished": finished,
+            "email": clean_text(row[columns["email"]]),
+            "name": clean_text(row[columns["name"]]),
+            "activity": clean_text(row[columns["activity"]]),
+            "ceco": normalize_ceco(row[columns["ceco"]]),
+            "confirmed": is_yes(row[columns["confirmed"]]),
+            "evidence": clean_text(row[columns["evidence"]]),
+        })
+    return responses
+
+
+def iso_or_none(value: datetime | None) -> str | None:
+    return value.isoformat(timespec="seconds") if value else None
+
+
+def build_payload(
+    responses_path: Path,
+    directory_path: Path,
+    activities_path: Path,
+    settings_path: Path,
+) -> dict[str, Any]:
+    settings = load_settings(settings_path)
+    stores, directory_sheet = load_directory(directory_path, settings)
+    responses = load_responses(responses_path)
+    activities = load_activities(activities_path)
+
+    configured = {key_text(item["name"]): item for item in activities}
+    for response in responses:
+        activity_key = key_text(response["activity"])
+        if activity_key and activity_key not in configured:
+            item = {
+                "name": response["activity"],
+                "description": "Actividad detectada automáticamente en las respuestas del Forms.",
+                "order": 900 + len(configured),
+                "autoDetected": True,
+            }
+            activities.append(item)
+            configured[activity_key] = item
+    activities.sort(key=lambda item: (item["order"], key_text(item["name"])))
+    activity_names = [item["name"] for item in activities]
+    canonical_activity = {key_text(item["name"]): item["name"] for item in activities}
+
+    submissions = []
+    latest_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
+    unknown_cecos = set()
+    invalid_rows = []
+    latest_update = None
+
+    for response in responses:
+        store = stores.get(response["ceco"])
+        activity = canonical_activity.get(key_text(response["activity"]), response["activity"])
+        evidence_available = bool(re.match(r"^https?://", response["evidence"], flags=re.I))
+        valid = bool(
+            store
+            and activity
+            and response["confirmed"]
+            and (evidence_available or not settings.get("requireEvidence", True))
+        )
+        if response["ceco"] and not store:
+            unknown_cecos.add(response["ceco"])
+        if not valid:
+            invalid_rows.append(response["row"])
+        if response["finished"] and (latest_update is None or response["finished"] > latest_update):
+            latest_update = response["finished"]
+
+        public = {
+            "id": response["id"],
+            "timestamp": iso_or_none(response["finished"]),
+            "timestampDisplay": response["finished"].strftime("%d/%m/%Y %H:%M") if response["finished"] else "Sin fecha",
+            "activity": activity or "Sin actividad",
+            "ceco": response["ceco"] or "Inválido",
+            "store": store["store"] if store else "CeCo sin cruce",
+            "dm": store["dm"] if store else "Sin asignar",
+            "confirmed": response["confirmed"],
+            "evidenceAvailable": evidence_available,
+            "valid": valid,
+        }
+        if settings.get("publishEvidenceLinks") and evidence_available:
+            public["evidenceUrl"] = response["evidence"]
+        if settings.get("publishPersonalData"):
+            public["submittedBy"] = response["name"]
+            public["email"] = response["email"]
+        submissions.append(public)
+
+        if valid:
+            pair = (response["ceco"], activity)
+            current = latest_by_pair.get(pair)
+            if current is None or (response["finished"] or datetime.min) > (current["finished"] or datetime.min):
+                latest_by_pair[pair] = response
+
+    completion_pairs = set(latest_by_pair)
+    store_rows = []
+    for ceco, store in sorted(stores.items(), key=lambda item: (key_text(item[1]["dm"]), key_text(item[1]["store"]))):
+        status = {activity: (ceco, activity) in completion_pairs for activity in activity_names}
+        completed = sum(status.values())
+        timestamps = [item["finished"] for (pair_ceco, _), item in latest_by_pair.items() if pair_ceco == ceco and item["finished"]]
+        store_rows.append({
+            **store,
+            "completed": completed,
+            "expected": len(activity_names),
+            "compliance": round(completed / len(activity_names) * 100, 1) if activity_names else 0,
+            "lastUpdate": iso_or_none(max(timestamps)) if timestamps else None,
+            "activities": status,
+        })
+
+    activity_stats = []
+    for item in activities:
+        completed = sum((ceco, item["name"]) in completion_pairs for ceco in stores)
+        activity_stats.append({
+            **item,
+            "completedStores": completed,
+            "pendingStores": len(stores) - completed,
+            "compliance": round(completed / len(stores) * 100, 1) if stores else 0,
+        })
+
+    dm_groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for store in store_rows:
+        dm_groups[store["dm"]].append(store)
+    dm_stats = []
+    for dm, dm_stores in sorted(dm_groups.items(), key=lambda item: key_text(item[0])):
+        completed = sum(store["completed"] for store in dm_stores)
+        expected = sum(store["expected"] for store in dm_stores)
+        dm_stats.append({
+            "dm": dm,
+            "stores": len(dm_stores),
+            "completed": completed,
+            "expected": expected,
+            "compliance": round(completed / expected * 100, 1) if expected else 0,
+        })
+
+    expected_total = len(stores) * len(activity_names)
+    completed_total = len(completion_pairs)
+    valid_responses = sum(item["valid"] for item in submissions)
+    stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
+
+    return {
+        "schemaVersion": 1,
+        "project": settings.get("projectName", "Sistema de Evidencias OPS"),
+        "region": settings.get("region", "Centro Norte"),
+        "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "lastUpdated": iso_or_none(latest_update),
+        "lastUpdatedDisplay": latest_update.strftime("%d/%m/%Y %H:%M") if latest_update else "Sin respuestas",
+        "sources": {
+            "responses": responses_path.name,
+            "directory": directory_path.name,
+            "directorySheet": directory_sheet,
+            "activities": activities_path.name,
+        },
+        "summary": {
+            "stores": len(stores),
+            "activities": len(activity_names),
+            "expectedCompletions": expected_total,
+            "completedCompletions": completed_total,
+            "compliance": round(completed_total / expected_total * 100, 1) if expected_total else 0,
+            "validResponses": valid_responses,
+            "storesComplete": stores_complete,
+        },
+        "quality": {
+            "responsesRead": len(responses),
+            "invalidRows": invalid_rows,
+            "unknownCeCos": sorted(unknown_cecos),
+            "duplicateValidResponses": max(valid_responses - completed_total, 0),
+            "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
+        },
+        "activities": activity_stats,
+        "dms": dm_stats,
+        "stores": store_rows,
+        "submissions": sorted(submissions, key=lambda item: item["timestamp"] or "", reverse=True),
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Genera data/dashboard.json desde los Excel del proyecto.")
+    parser.add_argument("--responses", type=Path, default=DEFAULT_RESPONSES)
+    parser.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
+    parser.add_argument("--activities", type=Path, default=DEFAULT_ACTIVITIES)
+    parser.add_argument("--settings", type=Path, default=DEFAULT_SETTINGS)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    args = parser.parse_args()
+    payload = build_payload(args.responses, args.directory, args.activities, args.settings)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    summary = payload["summary"]
+    print(
+        f"Dashboard generado: {summary['stores']} tiendas · {summary['activities']} actividades · "
+        f"{summary['completedCompletions']}/{summary['expectedCompletions']} cumplimientos"
+    )
+    print(f"Última actualización Forms: {payload['lastUpdatedDisplay']}")
+
+
+if __name__ == "__main__":
+    main()

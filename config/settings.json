@@ -1,0 +1,9 @@
+{
+  "projectName": "Sistema de Evidencias OPS",
+  "region": "Centro Norte",
+  "directorySheet": "93 T (2)",
+  "onlyOpenStores": true,
+  "requireEvidence": true,
+  "publishEvidenceLinks": false,
+  "publishPersonalData": false
+}
