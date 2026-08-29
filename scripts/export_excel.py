@@ -103,12 +103,12 @@ def build_workbook(data: dict) -> Workbook:
     cut = data.get("lastUpdatedDisplay", "Sin datos")
     region = data.get("region", "Centro Norte")
 
-    style_title(summary, 8, "Sistema de Evidencias OPS", f"{region} · Corte {cut}")
+    style_title(summary, 7, "Sistema de Evidencias OPS", f"{region} · Corte {cut}")
     summary.append([])
     summary.append(["Realizadas", None, "Pendientes", None, "% Avance", None, None, None])
     summary.append([source.get("completedCompletions", 0), None, source.get("pendingCompletions", 0), None, None, None, None])
-    summary.merge_cells("A5:B5"); summary.merge_cells("C5:D5"); summary.merge_cells("E5:H5")
-    summary.merge_cells("A6:B7"); summary.merge_cells("C6:D7"); summary.merge_cells("E6:H7")
+    summary.merge_cells("A5:B5"); summary.merge_cells("C5:D5"); summary.merge_cells("E5:G5")
+    summary.merge_cells("A6:B7"); summary.merge_cells("C6:D7"); summary.merge_cells("E6:G7")
     for label_cell in ("A5", "C5", "E5"):
         summary[label_cell].fill = PatternFill("solid", fgColor=DARK)
         summary[label_cell].font = Font(name="Aptos", size=9, bold=True, color=WHITE)
