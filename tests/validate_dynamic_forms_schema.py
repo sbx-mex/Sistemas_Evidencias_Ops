@@ -232,7 +232,59 @@ def main() -> None:
         assert stores["38894"]["applicableActivities"][horno["name"]] is False
         assert stores["38119"]["applicableActivities"][community["name"]] is False
 
-        # Escenario 11: respuestas contradictorias se rechazan sin alterar conteos.
+        # Escenario 11: se reproduce el orden exacto del Excel Forms vigente.
+        # Si Microsoft inserta o mueve columnas, el registro se arma por encabezado.
+        actual = temp / "actual-order.xlsx"
+        actual_source = load_workbook(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", read_only=True)
+        actual_headers = [cell.value for cell in next(actual_source["Sheet1"].iter_rows(min_row=1, max_row=1))]
+        actual_positions = {str(header).strip(): index for index, header in enumerate(actual_headers) if header}
+
+        def actual_row(values: dict[str, object]) -> list[object]:
+            row: list[object] = [""] * len(actual_headers)
+            for header, value in values.items():
+                row[actual_positions[header]] = value
+            return row
+
+        actual_rows = []
+        for index, ceco in enumerate(enrique_cecos):
+            start, finish = timestamps(50 + index)
+            values = {
+                "Id": 50 + index,
+                "Hora de inicio": start,
+                "Hora de finalización": finish,
+                "CeCo": ceco,
+                ACTIVITY: "Programacion Hornos Merry - Focaccia",
+                "¿ Tienes Horno Merry Chef ?": "Sí" if index < 8 else "No",
+            }
+            if index < 8:
+                values["Evidencia_Programacion_Hornos_Merry_Focaccia"] = f"{allowed}/actual-horno-{index}.jpg"
+            actual_rows.append(actual_row(values))
+        start, finish = timestamps(70)
+        actual_rows.append(actual_row({
+            "Id": 70, "Hora de inicio": start, "Hora de finalización": finish,
+            "CeCo": "38115", ACTIVITY: "Community Board",
+            "¿Cuentas con Community Board?": "Sí",
+            "Evidencia_Community_Board": f"{allowed}/actual-community.jpg",
+        }))
+        start, finish = timestamps(71)
+        actual_rows.append(actual_row({
+            "Id": 71, "Hora de inicio": start, "Hora de finalización": finish,
+            "CeCo": "38119", ACTIVITY: "Community Board",
+            "¿Cuentas con Community Board?": "No",
+        }))
+        save_book(actual, actual_headers, actual_rows)
+        payload = build_payload(
+            actual,
+            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        activity_map = {item["name"]: item for item in payload["activities"]}
+        assert (activity_map["Programacion Hornos Merry - Focaccia"]["completedStores"], activity_map["Programacion Hornos Merry - Focaccia"]["notApplicableStores"]) == (8, 2)
+        assert (activity_map["Community Board"]["completedStores"], activity_map["Community Board"]["notApplicableStores"]) == (1, 1)
+        assert payload["quality"]["responseSchema"]["applicabilityIssues"] == {}
+
+        # Escenario 12: respuestas contradictorias se rechazan sin alterar conteos.
         conflicting = temp / "conflicting.xlsx"
         start, finish = timestamps(42)
         save_book(conflicting, conditional_headers, [[
@@ -243,7 +295,7 @@ def main() -> None:
         assert rows[0]["confirmed"] is False and rows[0]["applicabilityConflict"] is True
         assert schema["applicabilityIssues"]["conflicting-applicability-answers"] == [2]
 
-        # Escenario 12: un archivo renombrado como XLSX se rechaza antes de procesarse.
+        # Escenario 13: un archivo renombrado como XLSX se rechaza antes de procesarse.
         damaged = temp / "damaged.xlsx"
         damaged.write_bytes(b"archivo incompleto")
         try:
@@ -253,7 +305,7 @@ def main() -> None:
         else:
             raise AssertionError("El XLSX dañado no fue rechazado")
 
-        # Escenario 13: Forms puede quedar sólo con encabezados después de limpiar filas.
+        # Escenario 14: Forms puede quedar sólo con encabezados después de limpiar filas.
         empty = temp / "empty.xlsx"
         save_book(empty, ["CeCo", ACTIVITY, "Evidencia_RollOut"], [])
         payload = build_payload(
@@ -266,7 +318,7 @@ def main() -> None:
         assert payload["summary"]["completedCompletions"] == 0
         assert payload["submissions"] == []
 
-    print("Forms dinámico aprobado · encabezados desplazables · cruce estricto · CMS controla visibilidad")
+    print("Forms dinámico aprobado · orden real · Sí/No implícito · CMS controla visibilidad")
 
 
 if __name__ == "__main__":
