@@ -474,7 +474,6 @@ async function beginExport(format) {
   $("#export-modal-accept").textContent = "Aceptar y descargar";
   $("#export-modal-accept").hidden = false;
   $("#export-modal-cancel").hidden = false;
-  $("#export-modal-open").hidden = true;
   $("#export-modal-close").hidden = true;
   modal.hidden = false;
   document.body.style.overflow = "hidden";
@@ -503,42 +502,26 @@ function cancelExportConfirmation() {
   if (state.exportDecision) state.exportDecision(false);
 }
 
-function configureExportAction(filename, url) {
-  const link = $("#export-modal-open");
-  const extension = filename.split(".").pop().toLowerCase();
-  link.href = url || "#";
-  link.removeAttribute("download");
-  link.removeAttribute("target");
-  link.removeAttribute("rel");
-  if (extension === "xlsx") {
-    link.textContent = "Descargar Excel";
-    link.download = filename;
-    return "El Excel se descargó con su nombre correcto. Puedes descargarlo nuevamente.";
-  }
-  link.textContent = extension === "pdf" ? "Abrir PDF" : "Ver imagen";
-  link.target = "_blank";
-  link.rel = "noopener";
-  return extension === "pdf"
-    ? "El PDF se descargó. También puedes abrirlo directamente."
-    : "La imagen se descargó. También puedes verla directamente.";
-}
-
 function finishExport(filename, url = "") {
   const modal = $("#export-modal");
+  const extension = filename.split(".").pop().toLowerCase();
+  const formatLabel = extension === "xlsx" ? "Excel" : extension === "pdf" ? "PDF" : "imagen";
   modal.hidden = false;
   modal.querySelector(".export-card").classList.add("complete");
   $("#export-modal-image").src = "./assets/ui/Un_placer_haber_Ayudado.webp";
   $("#export-modal-image").alt = "Un placer haber ayudado";
-  $("#export-modal-kicker").textContent = "Descarga exitosa";
-  $("#export-modal-title").textContent = "Archivo listo";
-  $("#export-modal-message").textContent = configureExportAction(filename, url);
-  $("#export-modal-summary").innerHTML = `<div><span>Archivo</span><strong>${esc(filename)}</strong></div>`;
+  $("#export-modal-kicker").textContent = "Descarga completada";
+  $("#export-modal-title").textContent = "Valida tu archivo";
+  $("#export-modal-message").textContent = `Tu archivo ${formatLabel} ya se descargó. Abre tu carpeta Descargas y confirma el nombre antes de cerrar.`;
+  $("#export-modal-summary").innerHTML = [
+    ["Ubicación", "Carpeta Descargas"],
+    ["Archivo", filename],
+  ].map(([label, value]) => `<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("");
   $("#export-progress").hidden = true;
   $("#export-modal-accept").hidden = true;
   $("#export-modal-cancel").hidden = true;
   if (state.exportUrl && state.exportUrl !== url) URL.revokeObjectURL(state.exportUrl);
   state.exportUrl = url;
-  $("#export-modal-open").hidden = !url;
   $("#export-modal-close").hidden = false;
   state.exporting = false;
   setExportButtonsDisabled(false);
@@ -557,7 +540,6 @@ function failExport(error) {
   $("#export-progress").hidden = true;
   $("#export-modal-accept").hidden = true;
   $("#export-modal-cancel").hidden = true;
-  $("#export-modal-open").hidden = true;
   $("#export-modal-close").hidden = false;
   state.exporting = false;
   setExportButtonsDisabled(false);
@@ -565,6 +547,8 @@ function failExport(error) {
 
 function closeExportModal() {
   if (state.exporting) return;
+  if (state.exportUrl) URL.revokeObjectURL(state.exportUrl);
+  state.exportUrl = "";
   $("#export-modal").hidden = true;
   document.body.style.overflow = "";
   $("#export-image").focus();
@@ -668,7 +652,6 @@ function bindEvents() {
   $("#export-modal-accept").addEventListener("click", acceptExportConfirmation);
   $("#export-modal-cancel").addEventListener("click", cancelExportConfirmation);
   $("#export-modal-close").addEventListener("click", closeExportModal);
-  $("#export-modal").addEventListener("click", (event) => { if (event.target === event.currentTarget) closeExportModal(); });
   $("#toggle-dates").addEventListener("click", () => {
     const panel = $("#commitment-dates"); panel.hidden = !panel.hidden;
     $("#toggle-dates").setAttribute("aria-expanded", String(!panel.hidden));

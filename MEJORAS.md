@@ -2,16 +2,16 @@
 
 | # | Mejora | Resultado |
 |---:|---|---|
-| 1 | Navegación visible | La sección activa queda marcada y el menú se conserva desplazable en móvil. |
-| 2 | Navegación confiable | Menú, títulos y contenido siguen el mismo orden operativo. |
-| 3 | Reporte regional dinámico | Con Todos los DM, imagen, PDF y Excel presentan el ranking de DMs. |
-| 4 | Reporte por DM | Al elegir un DM, las tiendas se ordenan de mayor a menor avance. |
-| 5 | Confirmación antes de exportar | `Damos_Seguimiento.webp` muestra alcance, actividad y `Realizadas / Total / %` antes de aceptar. |
-| 6 | Descarga directa y vínculo final | El PDF evita el diálogo de impresión; `Un_placer_haber_Ayudado.webp` confirma y permite abrir el archivo. |
-| 7 | Excel desde filtros | El XLSX dinámico contiene Resumen, ranking/tiendas y actividades; Ranking DM no incluye CeCo. |
-| 8 | Exportaciones con Python | `export_excel.py` y `export_pdf.py` crean respaldos regionales congruentes. |
-| 9 | Métricas completas | Todas las exportaciones muestran realizadas, total y porcentaje del filtro actual. |
-| 10 | Evidencia escalable | El soporte queda plegado, tiene filtros propios y muestra `Link_Actividad_CeCo`. |
+| 1 | Descarga automática | Imagen, PDF y Excel se descargan inmediatamente después de aceptar. |
+| 2 | Validación intuitiva | El mensaje final indica revisar el archivo en la carpeta **Descargas**. |
+| 3 | Nombre dinámico | La confirmación muestra el nombre generado según región, DM, actividad y corte. |
+| 4 | Cierre explícito | La pantalla final solo se cierra con el botón superior **Cerrar**; no abre pestañas adicionales. |
+| 5 | Estabilidad de memoria | La URL temporal de cada exportación se libera al cerrar la confirmación. |
+| 6 | Avance congruente | El indicador principal utiliza `Realizadas / Total` y `% Avance`, calculado como realizadas entre total. |
+| 7 | PDF ejecutivo | El reporte está centrado, sin subtítulos innecesarios, sin pendientes y sin numeración de página. |
+| 8 | Excel ejecutivo | Los títulos conservan colores, los porcentajes son porcentajes y las cantidades son números. |
+| 9 | Tablas simplificadas | Ranking DM y Actividades eliminan columnas redundantes como CeCo o Pendientes según corresponda. |
+| 10 | Actualización segura | Caché PWA v14, limpieza por lista cerrada y diez controles de regresión protegen cada publicación. |
 
 ## Control del motor Python
 

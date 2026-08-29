@@ -58,6 +58,12 @@ for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades
 for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
+for required in ("Valida tu archivo", "Carpeta Descargas", "URL.revokeObjectURL(state.exportUrl)"):
+    if required not in js:
+        issues.append(f"Falta confirmación segura de descarga: {required}")
+for obsolete in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Excel", "event.target === event.currentTarget"):
+    if obsolete in html + js + texts["styles.css"]:
+        issues.append(f"La confirmación conserva una acción obsoleta: {obsolete}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 ranking = data.get("dms", [])
