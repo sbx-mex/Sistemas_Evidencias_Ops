@@ -223,7 +223,7 @@ for forbidden in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exc
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-for cache_control in ("sistema-evidencias-ops-v18", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX"):
+for cache_control in ("sistema-evidencias-ops-v19", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
