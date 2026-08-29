@@ -2,15 +2,15 @@
   "schemaVersion": 10,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T20:10:39+00:00",
-  "lastUpdated": "2026-08-29T12:13:32",
-  "lastUpdatedDisplay": "29/08/2026 12:13",
+  "generatedAt": "2026-08-29T21:12:14+00:00",
+  "lastUpdated": "2026-08-29T14:28:13",
+  "lastUpdatedDisplay": "29/08/2026 14:28",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "JUNTÉMONOS MÁS",
     "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
-    "cutOffDisplay": "29/08/26 · 12:13 h",
+    "cutOffDisplay": "29/08/26 · 14:28 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -19,27 +19,27 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "f37b19e6503ae8204195eb4e9f2a2df68e40572088efa7f553a96980df1f8260",
+    "responsesSha256": "9cb167e93e13c25041341d2e81a9d873d9a12ed2642b92fcd0beecb1b2040385",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "67b3d398ccb656c4a89592fed41230e343552fb79973e2b19fdd84724e2b82a8"
+    "cmsSha256": "6fa04530d09e555f7bc11d1d8f1c450c26edbcac02732945f1e1685dc13fbbe3"
   },
   "summary": {
     "dms": 6,
     "stores": 72,
-    "activities": 9,
-    "expectedCompletions": 648,
-    "completedCompletions": 2,
-    "compliance": 0.3,
-    "validResponses": 2,
+    "activities": 10,
+    "expectedCompletions": 720,
+    "completedCompletions": 8,
+    "compliance": 1.1,
+    "validResponses": 8,
     "storesComplete": 0,
-    "pendingCompletions": 646,
+    "pendingCompletions": 712,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 2,
+    "responsesRead": 8,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [],
@@ -49,7 +49,7 @@
     "responseSchema": {
       "sheet": "Sheet1",
       "headerRow": 1,
-      "columns": 18,
+      "columns": 19,
       "activityHeaders": [
         "Selecciona la actividad que deseas registrar"
       ],
@@ -70,7 +70,8 @@
         "Evidencia_Fotografia_SM",
         "Evidencia_Mandil Verde",
         "Evidencia_Lay_Out",
-        "Evidencia_Community_Board"
+        "Evidencia_Community_Board",
+        "Evidencia_ACtivacion_PSL_Sharpie"
       ],
       "evidenceHeaderMap": {
         "Evidencia_RollOut": "rollout",
@@ -81,7 +82,8 @@
         "Evidencia_Fotografia_SM": "fotografiasm",
         "Evidencia_Mandil Verde": "mandilverde",
         "Evidencia_Lay_Out": "layout",
-        "Evidencia_Community_Board": "communityboard"
+        "Evidencia_Community_Board": "communityboard",
+        "Evidencia_ACtivacion_PSL_Sharpie": "activacionpslsharpie"
       },
       "evidenceHeaderMatch": {
         "Evidencia_RollOut": "exact",
@@ -92,7 +94,8 @@
         "Evidencia_Fotografia_SM": "exact",
         "Evidencia_Mandil Verde": "exact",
         "Evidencia_Lay_Out": "exact",
-        "Evidencia_Community_Board": "exact"
+        "Evidencia_Community_Board": "exact",
+        "Evidencia_ACtivacion_PSL_Sharpie": "exact"
       },
       "rowConflicts": [],
       "evidenceIssues": {},
@@ -100,19 +103,41 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 2,
+    "evidenceLinksPublished": 8,
     "privacyMode": false
   },
   "calendar": {
-    "active": 9,
+    "active": 10,
     "scheduled": 0,
     "expired": 0,
     "inactive": 0
   },
   "activities": [
     {
+      "name": "Activacion PSL Sharpie",
+      "description": "Enfoque al Menos 2 Sharpies Naranja en Tienda",
+      "order": 10,
+      "startDate": "2026-08-28",
+      "endDate": "2026-08-31",
+      "commitmentDateDisplay": "31/08/26",
+      "dateStatus": "Vigente",
+      "requireEvidence": true,
+      "priority": "Alta",
+      "autoDetected": false,
+      "conditionalApplicability": false,
+      "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
+      "pendingStores": 72,
+      "compliance": 0.0,
+      "deadlineLabel": "Vence en 2 días",
+      "deadlineTone": "amber",
+      "daysRemaining": 2,
+      "focusRank": 1
+    },
+    {
       "name": "Roll Out",
-      "description": "Seguimiento del despliegue o implementación operativa.",
+      "description": "Validacion Roll Out",
       "order": 1,
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
@@ -122,19 +147,19 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 2,
+      "completedStores": 4,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 70,
-      "compliance": 2.8,
+      "pendingStores": 68,
+      "compliance": 5.6,
       "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
       "daysRemaining": 5,
-      "focusRank": 1
+      "focusRank": 2
     },
     {
       "name": "Programacion Hornos Merry - Focaccia",
-      "description": "Validación de programación|Hornos Turbo Chef no se Considera",
+      "description": "Programacion MerryChef",
       "order": 2,
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
@@ -152,11 +177,11 @@
       "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
       "daysRemaining": 5,
-      "focusRank": 2
+      "focusRank": 3
     },
     {
       "name": "QR - Qualtrics",
-      "description": "Colocacion de Materiales Customer Experience",
+      "description": "Colocacion de Materiales Stickers",
       "order": 4,
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
@@ -174,7 +199,7 @@
       "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
       "daysRemaining": 5,
-      "focusRank": 3
+      "focusRank": 4
     },
     {
       "name": "Community Board",
@@ -196,7 +221,7 @@
       "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
       "daysRemaining": 5,
-      "focusRank": 4
+      "focusRank": 5
     },
     {
       "name": "Rack FHW",
@@ -210,19 +235,19 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 2,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 72,
-      "compliance": 0.0,
+      "pendingStores": 70,
+      "compliance": 2.8,
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 5
+      "focusRank": 6
     },
     {
       "name": "Max & Min",
-      "description": "Validación del estándar Max & Min | Acomodo de Back",
+      "description": "Estándar Max & Min | Acomodo de Back",
       "order": 5,
       "startDate": "2026-08-28",
       "endDate": "2026-09-06",
@@ -240,7 +265,7 @@
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 6
+      "focusRank": 7
     },
     {
       "name": "Fotografia - SM",
@@ -262,7 +287,7 @@
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 7
+      "focusRank": 8
     },
     {
       "name": "Lay Out",
@@ -276,15 +301,15 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 1,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 72,
-      "compliance": 0.0,
+      "pendingStores": 71,
+      "compliance": 1.4,
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
-      "focusRank": 8
+      "focusRank": 9
     },
     {
       "name": "Mandil Verde",
@@ -298,15 +323,15 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 1,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 72,
-      "compliance": 0.0,
+      "pendingStores": 71,
+      "compliance": 1.4,
       "deadlineLabel": "En 15 días",
       "deadlineTone": "green",
       "daysRemaining": 15,
-      "focusRank": 9
+      "focusRank": 10
     }
   ],
   "dms": [
@@ -315,14 +340,28 @@
       "shortName": "Enrique Cesar",
       "photo": "assets/dm/enrique-cesar.webp",
       "stores": 10,
-      "completed": 2,
-      "expected": 90,
+      "completed": 7,
+      "expected": 100,
       "notApplicable": 0,
-      "pending": 88,
+      "pending": 93,
       "pendingStores": 10,
-      "compliance": 2.2,
+      "compliance": 7.0,
       "status": "Atención",
       "rank": 1
+    },
+    {
+      "dm": "Vanessa Carreño Rios",
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.webp",
+      "stores": 13,
+      "completed": 1,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 129,
+      "pendingStores": 13,
+      "compliance": 0.8,
+      "status": "Atención",
+      "rank": 2
     },
     {
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -330,24 +369,10 @@
       "photo": "assets/dm/nancy-carolina.webp",
       "stores": 12,
       "completed": 0,
-      "expected": 108,
+      "expected": 120,
       "notApplicable": 0,
-      "pending": 108,
+      "pending": 120,
       "pendingStores": 12,
-      "compliance": 0.0,
-      "status": "Atención",
-      "rank": 2
-    },
-    {
-      "dm": "Vanessa Carreño Rios",
-      "shortName": "Vanessa Carreño",
-      "photo": "assets/dm/vanessa-carreno.webp",
-      "stores": 13,
-      "completed": 0,
-      "expected": 117,
-      "notApplicable": 0,
-      "pending": 117,
-      "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 3
@@ -358,9 +383,9 @@
       "photo": "assets/dm/veronica-garcia.webp",
       "stores": 11,
       "completed": 0,
-      "expected": 99,
+      "expected": 110,
       "notApplicable": 0,
-      "pending": 99,
+      "pending": 110,
       "pendingStores": 11,
       "compliance": 0.0,
       "status": "Atención",
@@ -372,9 +397,9 @@
       "photo": "assets/dm/yazmin-chabela.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 117,
+      "expected": 130,
       "notApplicable": 0,
-      "pending": 117,
+      "pending": 130,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -386,9 +411,9 @@
       "photo": "assets/dm/yazmin-garcia.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 117,
+      "expected": 130,
       "notApplicable": 0,
-      "pending": 117,
+      "pending": 130,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -401,9 +426,9 @@
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -412,9 +437,9 @@
       "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -423,9 +448,9 @@
       "store": "Cosmopol N1",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -434,9 +459,9 @@
       "store": "Luna Park",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -445,9 +470,9 @@
       "store": "Patio Ecatepec",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -456,9 +481,9 @@
       "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -467,20 +492,9 @@
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38862",
-      "store": "San Miguel Izcalli",
-      "dm": "Enrique Cesar Flores",
-      "completed": 0,
-      "expected": 9,
-      "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -489,9 +503,9 @@
       "store": "Arboledas",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -500,9 +514,9 @@
       "store": "ITEMS Edo de Mexico",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -511,9 +525,9 @@
       "store": "Jinetes",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -522,9 +536,9 @@
       "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -533,9 +547,9 @@
       "store": "Mundo E II",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -544,9 +558,9 @@
       "store": "Pasaje Tlanepantla",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -555,9 +569,9 @@
       "store": "Punta Norte",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -566,9 +580,9 @@
       "store": "Santa Monica",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -577,9 +591,9 @@
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -588,9 +602,9 @@
       "store": "TlalnepantlaCarso",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -599,9 +613,9 @@
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -610,20 +624,9 @@
       "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "43194",
-      "store": "Atana Lindavista",
-      "dm": "Vanessa Carreño Rios",
-      "completed": 0,
-      "expected": 9,
-      "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -632,9 +635,9 @@
       "store": "Camarones",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -643,9 +646,9 @@
       "store": "Centenario Azcapotzalco",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -654,9 +657,9 @@
       "store": "Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -665,9 +668,9 @@
       "store": "Lindavista II",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -676,9 +679,9 @@
       "store": "Montevideo DT",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -687,9 +690,9 @@
       "store": "Montevideo Insurgentes",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -698,9 +701,9 @@
       "store": "Parque Jadin kiosko",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -709,9 +712,9 @@
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -720,9 +723,9 @@
       "store": "Patio la Raza",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -731,9 +734,9 @@
       "store": "Plaza Vista Norte",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -742,9 +745,9 @@
       "store": "Torres Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -753,9 +756,9 @@
       "store": "Via Vallejo",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -764,9 +767,9 @@
       "store": "Blvd. Aeropuerto dt",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -775,9 +778,9 @@
       "store": "Bosques de Aragon",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -786,9 +789,9 @@
       "store": "Eduardo Molina",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -797,9 +800,9 @@
       "store": "Encuentro Oceania",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -808,9 +811,9 @@
       "store": "Encuentro Oceania II",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -819,9 +822,9 @@
       "store": "Parque Tepeyac Piso 1",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -830,9 +833,9 @@
       "store": "Parque Tepeyac Piso 2",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -841,9 +844,9 @@
       "store": "Plaza Aeropuerto",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -852,9 +855,9 @@
       "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -863,9 +866,9 @@
       "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -874,9 +877,9 @@
       "store": "Tapo Puerta Oriente",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -885,9 +888,9 @@
       "store": "Cetram 4 Caminos",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -896,9 +899,9 @@
       "store": "Echegaray",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -907,9 +910,9 @@
       "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -918,9 +921,9 @@
       "store": "Gustavo Baz 29",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -929,9 +932,9 @@
       "store": "Parque Toreo",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -940,9 +943,9 @@
       "store": "Parque Toreo II",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -951,9 +954,9 @@
       "store": "Periferico Satélite DT",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -962,9 +965,9 @@
       "store": "Plaza Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -973,9 +976,9 @@
       "store": "Plaza Satelite II N1",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -984,9 +987,9 @@
       "store": "Samara Satélite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -995,9 +998,9 @@
       "store": "Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1006,9 +1009,9 @@
       "store": "Satelite Centro Civico",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1017,9 +1020,9 @@
       "store": "Viveros de la Loma",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1028,9 +1031,9 @@
       "store": "Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1039,9 +1042,9 @@
       "store": "Bellavista",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1050,9 +1053,9 @@
       "store": "Centro Comercial Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1061,9 +1064,9 @@
       "store": "City Center Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1072,9 +1075,9 @@
       "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1083,9 +1086,9 @@
       "store": "Galerias Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1094,9 +1097,9 @@
       "store": "Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1105,9 +1108,9 @@
       "store": "Lomas Verdes II",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1116,9 +1119,9 @@
       "store": "San Mateo",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1127,9 +1130,9 @@
       "store": "Star Medica Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1138,9 +1141,9 @@
       "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1149,9 +1152,9 @@
       "store": "Zona Azul",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -1160,21 +1163,10 @@
       "store": "Zona Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "pending": 9,
+      "pending": 10,
       "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38894",
-      "store": "Galerias Perinorte",
-      "dm": "Enrique Cesar Flores",
-      "completed": 1,
-      "expected": 9,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 11.1,
       "status": "Atención"
     },
     {
@@ -1182,11 +1174,44 @@
       "store": "Izcalli Mega",
       "dm": "Enrique Cesar Flores",
       "completed": 1,
-      "expected": 9,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "43194",
+      "store": "Atana Lindavista",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "completed": 2,
+      "expected": 10,
       "notApplicable": 0,
       "pending": 8,
-      "compliance": 11.1,
+      "compliance": 20.0,
       "status": "Atención"
+    },
+    {
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "completed": 4,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 40.0,
+      "status": "Seguimiento"
     }
   ],
   "stores": [
@@ -1197,7 +1222,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1210,7 +1235,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1221,7 +1247,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1231,7 +1258,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1244,7 +1271,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1255,7 +1283,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1265,7 +1294,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1278,7 +1307,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1289,7 +1319,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1298,21 +1329,22 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
-      "expected": 9,
+      "completed": 2,
+      "expected": 10,
       "notApplicable": 0,
-      "compliance": 11.1,
-      "lastUpdate": "2026-08-29T12:13:32",
+      "compliance": 20.0,
+      "lastUpdate": "2026-08-29T14:10:32",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
+        "Rack FHW": true,
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1323,7 +1355,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1333,9 +1366,9 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 1,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
-      "compliance": 11.1,
+      "compliance": 10.0,
       "lastUpdate": "2026-08-29T11:28:18",
       "activities": {
         "Roll Out": true,
@@ -1346,7 +1379,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1357,7 +1391,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1367,7 +1402,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1380,7 +1415,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1391,7 +1427,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1401,7 +1438,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1414,7 +1451,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1425,7 +1463,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1435,7 +1474,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1448,7 +1487,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1459,7 +1499,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1469,7 +1510,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1482,7 +1523,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1493,7 +1535,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1502,21 +1545,22 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 9,
+      "completed": 4,
+      "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 40.0,
+      "lastUpdate": "2026-08-29T14:28:13",
       "activities": {
-        "Roll Out": false,
+        "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
+        "Rack FHW": true,
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false
+        "Mandil Verde": true,
+        "Lay Out": true,
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1527,7 +1571,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1537,7 +1582,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1550,7 +1595,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1561,7 +1607,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1571,7 +1618,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1584,7 +1631,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1595,7 +1643,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1605,7 +1654,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1618,7 +1667,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1629,7 +1679,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1639,7 +1690,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1652,7 +1703,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1663,7 +1715,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1673,7 +1726,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1686,7 +1739,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1697,7 +1751,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1707,7 +1762,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1720,7 +1775,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1731,7 +1787,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1741,7 +1798,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1754,7 +1811,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1765,7 +1823,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1775,7 +1834,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1788,7 +1847,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1799,7 +1859,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1809,7 +1870,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1822,7 +1883,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1833,7 +1895,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1843,7 +1906,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1856,7 +1919,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1867,7 +1931,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1877,7 +1942,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1890,7 +1955,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1901,7 +1967,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1911,7 +1978,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1924,7 +1991,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1935,7 +2003,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1944,13 +2013,13 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 9,
+      "completed": 1,
+      "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-08-29T13:28:30",
       "activities": {
-        "Roll Out": false,
+        "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": false,
         "Rack FHW": false,
         "QR - Qualtrics": false,
@@ -1958,7 +2027,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -1969,7 +2039,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -1979,7 +2050,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -1992,7 +2063,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2003,7 +2075,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2013,7 +2086,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2026,7 +2099,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2037,7 +2111,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2047,7 +2122,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2060,7 +2135,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2071,7 +2147,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2081,7 +2158,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2094,7 +2171,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2105,7 +2183,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2115,7 +2194,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2128,7 +2207,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2139,7 +2219,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2149,7 +2230,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2162,7 +2243,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2173,7 +2255,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2183,7 +2266,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2196,7 +2279,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2207,7 +2291,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2217,7 +2302,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2230,7 +2315,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2241,7 +2327,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2251,7 +2338,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2264,7 +2351,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2275,7 +2363,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2285,7 +2374,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2298,7 +2387,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2309,7 +2399,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2319,7 +2410,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2332,7 +2423,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2343,7 +2435,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2353,7 +2446,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2366,7 +2459,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2377,7 +2471,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2387,7 +2482,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2400,7 +2495,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2411,7 +2507,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2421,7 +2518,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2434,7 +2531,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2445,7 +2543,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2455,7 +2554,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2468,7 +2567,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2479,7 +2579,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2489,7 +2590,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2502,7 +2603,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2513,7 +2615,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2523,7 +2626,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2536,7 +2639,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2547,7 +2651,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2557,7 +2662,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2570,7 +2675,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2581,7 +2687,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2591,7 +2698,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2604,7 +2711,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2615,7 +2723,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2625,7 +2734,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2638,7 +2747,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2649,7 +2759,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2659,7 +2770,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2672,7 +2783,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2683,7 +2795,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2693,7 +2806,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2706,7 +2819,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2717,7 +2831,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2727,7 +2842,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2740,7 +2855,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2751,7 +2867,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2761,7 +2878,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2774,7 +2891,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2785,7 +2903,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2795,7 +2914,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2808,7 +2927,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2819,7 +2939,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2829,7 +2950,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2842,7 +2963,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2853,7 +2975,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2863,7 +2986,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2876,7 +2999,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2887,7 +3011,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2897,7 +3022,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2910,7 +3035,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2921,7 +3047,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2931,7 +3058,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2944,7 +3071,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2955,7 +3083,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2965,7 +3094,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -2978,7 +3107,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2989,7 +3119,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -2999,7 +3130,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3012,7 +3143,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3023,7 +3155,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3033,7 +3166,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3046,7 +3179,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3057,7 +3191,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3067,7 +3202,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3080,7 +3215,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3091,7 +3227,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3101,7 +3238,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3114,7 +3251,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3125,7 +3263,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3135,7 +3274,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3148,7 +3287,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3159,7 +3299,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3169,7 +3310,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3182,7 +3323,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3193,7 +3335,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3203,7 +3346,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3216,7 +3359,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3227,7 +3371,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3237,7 +3382,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3250,7 +3395,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3261,7 +3407,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3271,7 +3418,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3284,7 +3431,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3295,7 +3443,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3305,7 +3454,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3318,7 +3467,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3329,7 +3479,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3339,7 +3490,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3352,7 +3503,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3363,7 +3515,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3373,7 +3526,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3386,7 +3539,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3397,7 +3551,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3407,7 +3562,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3420,7 +3575,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3431,7 +3587,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3441,7 +3598,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3454,7 +3611,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3465,7 +3623,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3475,7 +3634,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3488,7 +3647,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3499,7 +3659,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3509,7 +3670,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3522,7 +3683,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3533,7 +3695,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3543,7 +3706,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3556,7 +3719,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3567,7 +3731,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3577,7 +3742,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3590,7 +3755,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3601,7 +3767,8 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     },
     {
@@ -3611,7 +3778,7 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 9,
+      "expected": 10,
       "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
@@ -3624,7 +3791,8 @@
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": false
+        "Community Board": false,
+        "Activacion PSL Sharpie": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3635,11 +3803,138 @@
         "Fotografia - SM": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true
+        "Community Board": true,
+        "Activacion PSL Sharpie": true
       }
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-ac19bf105a85ca03",
+      "timestamp": "2026-08-29T14:28:13",
+      "timestampDisplay": "29/08/2026 14:28",
+      "activity": "Lay Out",
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "evidenceKey": "Lay_Out_38862",
+      "evidenceLinkLabel": "Link_Lay_Out_38862",
+      "evidenceFileName": "20260829_142749-COLLAGE_Starbucks San Miguel.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/20260829_142749-COLLAGE_Starbucks%20San%20Miguel.jpg"
+    },
+    {
+      "id": "respuesta-54bb34054ae8102b",
+      "timestamp": "2026-08-29T14:24:57",
+      "timestampDisplay": "29/08/2026 14:24",
+      "activity": "Roll Out",
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "evidenceKey": "Roll_Out_38862",
+      "evidenceLinkLabel": "Link_Roll_Out_38862",
+      "evidenceFileName": "IMG-20260829-WA0000_Starbucks San Miguel.jpg",
+      "evidenceSourceHeader": "Evidencia_RollOut",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia/IMG-20260829-WA0000_Starbucks%20San%20Miguel.jpg"
+    },
+    {
+      "id": "respuesta-6b6e61c76dc31e74",
+      "timestamp": "2026-08-29T14:10:32",
+      "timestampDisplay": "29/08/2026 14:10",
+      "activity": "Rack FHW",
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "evidenceKey": "Rack_FHW_38894",
+      "evidenceLinkLabel": "Link_Rack_FHW_38894",
+      "evidenceFileName": "image_Starbucks Galerias P.jpg",
+      "evidenceSourceHeader": "Evidencia_Rack_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/image_Starbucks%20Galerias%20P.jpg"
+    },
+    {
+      "id": "respuesta-d49f59078eb62707",
+      "timestamp": "2026-08-29T14:04:38",
+      "timestampDisplay": "29/08/2026 14:04",
+      "activity": "Rack FHW",
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "evidenceKey": "Rack_FHW_38862",
+      "evidenceLinkLabel": "Link_Rack_FHW_38862",
+      "evidenceFileName": "17880338415158301924124629037929_Starbucks San Miguel.jpg",
+      "evidenceSourceHeader": "Evidencia_Rack_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/17880338415158301924124629037929_Starbucks%20San%20Miguel.jpg"
+    },
+    {
+      "id": "respuesta-0a3b6a6809a63cd3",
+      "timestamp": "2026-08-29T14:03:04",
+      "timestampDisplay": "29/08/2026 14:03",
+      "activity": "Mandil Verde",
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "evidenceKey": "Mandil_Verde_38862",
+      "evidenceLinkLabel": "Link_Mandil_Verde_38862",
+      "evidenceFileName": "17880337596294213442656647095211_Starbucks San Miguel.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/17880337596294213442656647095211_Starbucks%20San%20Miguel.jpg"
+    },
+    {
+      "id": "respuesta-f22541bfee169a5f",
+      "timestamp": "2026-08-29T13:28:30",
+      "timestampDisplay": "29/08/2026 13:28",
+      "activity": "Roll Out",
+      "ceco": "43194",
+      "store": "Atana Lindavista",
+      "dm": "Vanessa Carreño Rios",
+      "evidenceKey": "Roll_Out_43194",
+      "evidenceLinkLabel": "Link_Roll_Out_43194",
+      "evidenceFileName": "ab544637-f78d-4059-ac80-1a1426688537_Starbucks Atana Lind.jpeg",
+      "evidenceSourceHeader": "Evidencia_RollOut",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia/ab544637-f78d-4059-ac80-1a1426688537_Starbucks%20Atana%20Lind.jpeg"
+    },
     {
       "id": "respuesta-441a12037b02ac05",
       "timestamp": "2026-08-29T12:13:32",
