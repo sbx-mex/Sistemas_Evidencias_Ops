@@ -31,6 +31,7 @@ REQUIRED = [
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
     "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
 )]
+TEXT_SUFFIXES = {".py", ".js", ".css", ".html", ".md", ".yml", ".yaml", ".json"}
 
 
 def fail(message: str) -> None:
@@ -59,6 +60,20 @@ for relative in REQUIRED:
 obsolete_present = [relative for relative in OBSOLETE_FILES if (ROOT / relative).exists()]
 if obsolete_present:
     fail("Persisten archivos obsoletos: " + ", ".join(obsolete_present))
+mojibake_codepoints = {0x00C2, 0x00C3, 0x00E2}
+encoding_issues = []
+for source in ROOT.rglob("*"):
+    if not source.is_file() or ".git" in source.parts or source.suffix.casefold() not in TEXT_SUFFIXES:
+        continue
+    try:
+        source_text = source.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        encoding_issues.append(source.relative_to(ROOT).as_posix())
+        continue
+    if any(ord(character) in mojibake_codepoints for character in source_text):
+        encoding_issues.append(source.relative_to(ROOT).as_posix())
+if encoding_issues:
+    fail("Archivos con codificación dañada: " + ", ".join(sorted(encoding_issues)))
 approve("01 · Archivos requeridos y limpieza de obsoletos")
 
 data = json.loads((ROOT / "data/dashboard.json").read_text(encoding="utf-8"))
@@ -260,10 +275,10 @@ if '"Aplican"' in js[js.index("function renderSummary"):js.index("function rende
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
 approve("09 · Ranking, fotografía DM e identidad ejecutiva")
-for text in ["python scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python scripts/build_dashboard.py", "python scripts/export_excel.py", "python scripts/export_pdf.py", "python scripts/clean_obsolete.py --check", "python tests/validate_dynamic_forms_schema.py", "python tests/validate_project.py", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+for text in ["python -X utf8 scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python -X utf8 scripts/build_dashboard.py", "python -X utf8 scripts/export_excel.py", "python -X utf8 scripts/export_pdf.py", "python -X utf8 scripts/clean_obsolete.py --check", "python -X utf8 tests/validate_dynamic_forms_schema.py", "python -X utf8 tests/validate_project.py", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
-for text in ["set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:
+for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:
     if text not in workflow:
         fail(f"Publicación no idempotente: falta {text}")
 if "git add -A -- tests/validate_horno_applicability.py" in workflow:

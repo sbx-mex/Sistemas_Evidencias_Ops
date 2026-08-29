@@ -56,10 +56,29 @@ APPLICABILITY_HEADER_HINTS = (
 )
 REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
+MOJIBAKE_MARKERS = ("\u00c3", "\u00c2", "\u00e2")
+
+
+def repair_mojibake(value: str) -> str:
+    """Repara UTF-8 interpretado como Latin-1 sin alterar texto Unicode válido."""
+    repaired = value
+    for _ in range(2):
+        if not any(marker in repaired for marker in MOJIBAKE_MARKERS):
+            break
+        try:
+            candidate = repaired.encode("latin-1").decode("utf-8")
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            break
+        before = sum(repaired.count(marker) for marker in MOJIBAKE_MARKERS)
+        after = sum(candidate.count(marker) for marker in MOJIBAKE_MARKERS)
+        if after >= before:
+            break
+        repaired = candidate
+    return repaired
 
 
 def clean_text(value: Any) -> str:
-    return re.sub(r"\s+", " ", str(value or "").strip())
+    return re.sub(r"\s+", " ", repair_mojibake(str(value or "").strip()))
 
 
 def key_text(value: Any) -> str:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Elimina únicamente archivos heredados reemplazados por el CMS y WebP."""
+"""Elimina archivos heredados y residuos técnicos que no deben versionarse."""
 
 from __future__ import annotations
 
@@ -21,15 +21,33 @@ OBSOLETE_FILES = (
     "assets/icons/icon.svg",
     "tests/validate_horno_applicability.py",
 )
+TRANSIENT_FILE_NAMES = {".DS_Store", "Thumbs.db"}
+TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
+
+
+def transient_files() -> list[str]:
+    """Detecta sólo residuos técnicos conocidos y nunca recorre el contenido de .git."""
+    found = []
+    for path in ROOT.rglob("*"):
+        if ".git" in path.parts or not (path.is_file() or path.is_symlink()):
+            continue
+        if (
+            path.name in TRANSIENT_FILE_NAMES
+            or path.suffix.casefold() in TRANSIENT_SUFFIXES
+            or path.name.endswith(".inspect.ndjson")
+        ):
+            found.append(path.relative_to(ROOT).as_posix())
+    return sorted(found)
 
 
 def existing_obsolete_files() -> list[str]:
-    """Devuelve sólo rutas exactas existentes; acepta archivos o enlaces obsoletos."""
-    return [
+    """Devuelve rutas heredadas exactas y residuos técnicos controlados."""
+    exact = [
         relative
         for relative in OBSOLETE_FILES
         if (ROOT / relative).is_file() or (ROOT / relative).is_symlink()
     ]
+    return sorted(set(exact + transient_files()))
 
 
 def main() -> None:
@@ -47,7 +65,14 @@ def main() -> None:
         return
 
     for relative in obsolete:
-        (ROOT / relative).unlink()
+        path = ROOT / relative
+        parent = path.parent
+        path.unlink()
+        if parent.name == "__pycache__":
+            try:
+                parent.rmdir()
+            except OSError:
+                pass
         print(f"Eliminado: {relative}")
     if not obsolete:
         print("Limpieza sin cambios: no hay archivos obsoletos conocidos")
