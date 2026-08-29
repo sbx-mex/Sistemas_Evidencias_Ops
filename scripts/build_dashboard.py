@@ -4,7 +4,7 @@
 Fuentes editoriales:
   - cms/Sistema de Evidencias OPS.xlsx
   - cms/Centro Norte_Directorio.xlsx
-  - config/actividades.csv
+  - cms/Sistema_Evidencias_OPS_CMS.xlsx
 
 El navegador nunca procesa los Excel. Este motor valida encabezados, cruza CeCo,
 deduplica cumplimiento por tienda/actividad y publica únicamente el JSON mínimo.
@@ -29,6 +29,7 @@ DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
 DEFAULT_DIRECTORY = ROOT / "cms" / "Centro Norte_Directorio.xlsx"
 DEFAULT_ACTIVITIES = ROOT / "config" / "actividades.csv"
 DEFAULT_MANAGERS = ROOT / "config" / "gerentes.csv"
+DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
 DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
 
@@ -95,8 +96,114 @@ def resolve_columns(headers: list[Any], contract: dict[str, tuple[str, ...]]) ->
     return result
 
 
-def load_settings(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+def load_settings(path: Path, cms_settings: dict[str, Any] | None = None) -> dict[str, Any]:
+    settings = json.loads(path.read_text(encoding="utf-8"))
+    settings.update(cms_settings or {})
+    return settings
+
+
+def parse_date(value: Any):
+    if isinstance(value, datetime):
+        return value.date()
+    text = clean_text(value)
+    if not text:
+        return None
+    for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            continue
+    raise ValueError(f"Fecha CMS inválida: {text}")
+
+
+def date_status(start, end) -> str:
+    today = datetime.now().date()
+    if start and today < start:
+        return "Programada"
+    if end and today > end:
+        return "Vencida"
+    return "Vigente"
+
+
+def find_header(ws, required: set[str]) -> tuple[int, dict[str, int]]:
+    for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=12, values_only=True), 1):
+        normalized = {key_text(value): index for index, value in enumerate(row) if clean_text(value)}
+        if required.issubset(normalized):
+            return row_number, normalized
+    raise ValueError(f"No se encontró encabezado {', '.join(sorted(required))} en {ws.title}")
+
+
+def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]], dict[str, Any], dict[str, int]]:
+    """Lee actividades, fechas, gerentes y configuración desde un solo Excel CMS."""
+    workbook = load_workbook(path, read_only=True, data_only=False)
+    required_sheets = {"Actividades", "Gerentes", "Configuracion"}
+    missing = required_sheets.difference(workbook.sheetnames)
+    if missing:
+        raise ValueError("Faltan hojas CMS: " + ", ".join(sorted(missing)))
+
+    config_ws = workbook["Configuracion"]
+    config_header, config_cols = find_header(config_ws, {"clave", "valor"})
+    cms_settings: dict[str, Any] = {}
+    boolean_keys = {"onlyOpenStores", "requireEvidence", "publishEvidenceLinks", "publishPersonalData"}
+    for row in config_ws.iter_rows(min_row=config_header + 1, values_only=True):
+        key = clean_text(row[config_cols["clave"]])
+        if not key:
+            continue
+        value = row[config_cols["valor"]]
+        cms_settings[key] = is_yes(value) if key in boolean_keys else clean_text(value)
+
+    activity_ws = workbook["Actividades"]
+    header_row, cols = find_header(activity_ws, {"orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo"})
+    activities = []
+    calendar = {"active": 0, "scheduled": 0, "expired": 0, "inactive": 0}
+    for row in activity_ws.iter_rows(min_row=header_row + 1, values_only=True):
+        name = clean_text(row[cols["actividad"]])
+        if not name:
+            continue
+        active = is_yes(row[cols["activo"]])
+        start = parse_date(row[cols["fecha inicio"]])
+        end = parse_date(row[cols["fecha limite"]])
+        if start and end and end < start:
+            raise ValueError(f"La fecha límite de {name} es anterior a la fecha de inicio")
+        status = date_status(start, end)
+        if not active:
+            calendar["inactive"] += 1
+            continue
+        if status == "Programada":
+            calendar["scheduled"] += 1
+            continue
+        if status == "Vencida":
+            calendar["expired"] += 1
+            continue
+        calendar["active"] += 1
+        evidence_col = cols.get("evidencia requerida")
+        priority_col = cols.get("prioridad")
+        activities.append({
+            "name": name,
+            "description": clean_text(row[cols["descripcion"]]),
+            "order": int(float(row[cols["orden"]] or 999)),
+            "startDate": start.isoformat() if start else None,
+            "endDate": end.isoformat() if end else None,
+            "requireEvidence": is_yes(row[evidence_col]) if evidence_col is not None else True,
+            "priority": clean_text(row[priority_col]) if priority_col is not None else "Media",
+            "autoDetected": False,
+        })
+
+    manager_ws = workbook["Gerentes"]
+    manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
+    managers: dict[str, dict[str, str]] = {}
+    for row in manager_ws.iter_rows(min_row=manager_header + 1, values_only=True):
+        dm = clean_text(row[manager_cols["dm"]])
+        if not dm or not is_yes(row[manager_cols["activo"]]):
+            continue
+        photo = clean_text(row[manager_cols["foto webp"]])
+        if photo and not (ROOT / photo).is_file():
+            raise ValueError(f"No existe la fotografía configurada para {dm}: {photo}")
+        managers[key_text(dm)] = {
+            "shortName": clean_text(row[manager_cols["nombre corto"]]) or dm,
+            "photo": photo,
+        }
+    return sorted(activities, key=lambda item: (item["order"], key_text(item["name"]))), managers, cms_settings, calendar
 
 
 def load_activities(path: Path) -> list[dict[str, Any]]:
@@ -222,15 +329,13 @@ def iso_or_none(value: datetime | None) -> str | None:
 def build_payload(
     responses_path: Path,
     directory_path: Path,
-    activities_path: Path,
     settings_path: Path,
-    managers_path: Path = DEFAULT_MANAGERS,
+    cms_path: Path = DEFAULT_CMS,
 ) -> dict[str, Any]:
-    settings = load_settings(settings_path)
+    activities, managers, cms_settings, calendar = load_cms(cms_path)
+    settings = load_settings(settings_path, cms_settings)
     stores, directory_sheet = load_directory(directory_path, settings)
     responses = load_responses(responses_path)
-    activities = load_activities(activities_path)
-    managers = load_managers(managers_path)
 
     configured = {key_text(item["name"]): item for item in activities}
     for response in responses:
@@ -240,6 +345,10 @@ def build_payload(
                 "name": response["activity"],
                 "description": "Actividad detectada automáticamente en las respuestas del Forms.",
                 "order": 900 + len(configured),
+                "startDate": None,
+                "endDate": None,
+                "requireEvidence": settings.get("requireEvidence", True),
+                "priority": "Media",
                 "autoDetected": True,
             }
             activities.append(item)
@@ -247,6 +356,7 @@ def build_payload(
     activities.sort(key=lambda item: (item["order"], key_text(item["name"])))
     activity_names = [item["name"] for item in activities]
     canonical_activity = {key_text(item["name"]): item["name"] for item in activities}
+    evidence_rules = {key_text(item["name"]): item.get("requireEvidence", True) for item in activities}
 
     submissions = []
     latest_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
@@ -262,7 +372,7 @@ def build_payload(
             store
             and activity
             and response["confirmed"]
-            and (evidence_available or not settings.get("requireEvidence", True))
+            and (evidence_available or not evidence_rules.get(key_text(activity), settings.get("requireEvidence", True)))
         )
         if response["ceco"] and not store:
             unknown_cecos.add(response["ceco"])
@@ -360,8 +470,7 @@ def build_payload(
             "responses": responses_path.name,
             "directory": directory_path.name,
             "directorySheet": directory_sheet,
-            "activities": activities_path.name,
-            "managers": managers_path.name,
+            "cms": cms_path.name,
         },
         "summary": {
             "stores": len(stores),
@@ -380,6 +489,7 @@ def build_payload(
             "duplicateValidResponses": max(valid_responses - completed_total, 0),
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
         },
+        "calendar": calendar,
         "activities": activity_stats,
         "dms": dm_stats,
         "attention": sorted(
@@ -408,12 +518,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Genera data/dashboard.json desde los Excel del proyecto.")
     parser.add_argument("--responses", type=Path, default=DEFAULT_RESPONSES)
     parser.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
-    parser.add_argument("--activities", type=Path, default=DEFAULT_ACTIVITIES)
     parser.add_argument("--settings", type=Path, default=DEFAULT_SETTINGS)
-    parser.add_argument("--managers", type=Path, default=DEFAULT_MANAGERS)
+    parser.add_argument("--cms", type=Path, default=DEFAULT_CMS)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    payload = build_payload(args.responses, args.directory, args.activities, args.settings, args.managers)
+    payload = build_payload(args.responses, args.directory, args.settings, args.cms)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = payload["summary"]

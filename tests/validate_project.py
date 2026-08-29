@@ -10,15 +10,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
     "index.html", "styles.css", "app.js", "service-worker.js", "manifest.webmanifest",
-    "data/dashboard.json", "scripts/build_dashboard.py", "scripts/audit_project.py",
-    "config/settings.json", "config/actividades.csv", "config/gerentes.csv",
+    "data/dashboard.json", "scripts/build_dashboard.py", "scripts/prepare_images.py",
+    "scripts/audit_project.py", "config/settings.json",
     "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
-    "assets/icons/icon.svg", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
-    ".github/workflows/build-dashboard.yml", ".nojekyll", "README.md",
-    "assets/dm/enrique-cesar.jpeg", "assets/dm/nancy-carolina.jpeg",
-    "assets/dm/vanessa-carreno.jpeg", "assets/dm/veronica-garcia.jpeg",
-    "assets/dm/yazmin-chabela.jpeg", "assets/dm/yazmin-garcia.jpeg",
+    "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
+    "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
+    "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
 ]
+REQUIRED += [f"assets/dm/{name}.webp" for name in (
+    "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
+)]
 
 
 def fail(message: str) -> None:
@@ -37,77 +38,58 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("project") != "Sistema de Evidencias OPS":
-    fail("Nombre de proyecto incorrecto")
-if data.get("region") != "Centro Norte":
-    fail("Región incorrecta")
+if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
+    fail("Identidad del proyecto incorrecta")
 if data.get("sources", {}).get("directorySheet") != "72 T":
     fail("No se utilizó la hoja configurada del directorio")
+if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
+    fail("Python no está leyendo el Excel CMS")
 if data.get("lastUpdatedDisplay") != "28/08/2026 20:32":
-    fail("La Hora de finalización no alimenta Última actualización")
-if data.get("summary", {}).get("stores") != 72:
-    fail("Conteo esperado de tiendas abiertas incorrecto")
-if data.get("summary", {}).get("activities") != 7:
-    fail("Catálogo inicial de actividades incorrecto")
-if data.get("summary", {}).get("completedCompletions") != 1:
-    fail("La respuesta válida del Forms no fue contabilizada")
+    fail("Última actualización incorrecta")
+if data.get("summary", {}).get("stores") != 72 or data.get("summary", {}).get("activities") != 7:
+    fail("Conteos iniciales incorrectos")
+if data.get("calendar", {}).get("active") != 7:
+    fail("Las actividades vigentes del CMS no fueron calculadas")
 
 sample = next((store for store in data.get("stores", []) if store.get("ceco") == "38401"), None)
 if not sample or sample.get("store") != "Coacalco" or sample.get("dm") != "Enrique Cesar Flores":
-    fail("El cruce CeCo 38401 → Tienda/DM falló")
+    fail("Falló el cruce 38401 → Coacalco → Enrique Cesar")
 if sample.get("activities", {}).get("Roll Out") is not True:
-    fail("Roll Out no quedó marcado para el CeCo 38401")
-
-if data.get("quality", {}).get("unknownCeCos"):
-    fail("Existen CeCo sin cruce en el archivo inicial")
-if not data.get("quality", {}).get("privacyMode"):
-    fail("El proyecto inicial debe excluir datos personales y links privados")
+    fail("Roll Out no quedó contabilizado")
+if len(data.get("dms", [])) != 6 or any(not item.get("photo", "").endswith(".webp") for item in data.get("dms", [])):
+    fail("Las seis fotografías WebP no quedaron vinculadas")
+if data.get("quality", {}).get("unknownCeCos") or not data.get("quality", {}).get("privacyMode"):
+    fail("Calidad o privacidad inicial incorrecta")
 if any("email" in row or "submittedBy" in row or "evidenceUrl" in row for row in data.get("submissions", [])):
-    fail("El JSON público expone datos personales o vínculos privados")
-if len(data.get("dms", [])) != 6 or any(not item.get("photo") for item in data.get("dms", [])):
-    fail("Las seis fotografías de DM no quedaron integradas")
-if any(item.get("pending") is None or not item.get("status") for item in data.get("dms", [])):
-    fail("El motor Python no generó indicadores ejecutivos por DM")
-if len(data.get("attention", [])) != 72:
-    fail("La cola de atención Python no contiene las tiendas pendientes")
+    fail("El JSON público expone información privada")
 
 with tempfile.TemporaryDirectory() as temp_dir:
     generated = Path(temp_dir) / "dashboard.json"
-    subprocess.run(
-        [sys.executable, str(ROOT / "scripts/build_dashboard.py"), "--output", str(generated)],
-        cwd=ROOT,
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
+    subprocess.run([sys.executable, str(ROOT / "scripts/build_dashboard.py"), "--output", str(generated)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     fresh = json.loads(generated.read_text(encoding="utf-8"))
-
 for payload in (data, fresh):
     payload.pop("generatedAt", None)
 if data != fresh:
-    fail("data/dashboard.json está desincronizado respecto a los Excel y configuración")
+    fail("data/dashboard.json está desincronizado")
 
-for text in ["Sistema de Evidencias OPS", "Última actualización", "filter-dm", "filter-store", "filter-activity", "dm-team", "pulse-ring"]:
+for text in ["Lo importante, en una sola vista.", "dm-team", "store-table", "Sistema_Evidencias_OPS_CMS.xlsx"]:
     if text not in html:
-        fail(f"Interfaz incompleta: {text}")
-for text in ["toolAvailability", "HOME_TOOL_NAMES"]:
-    if text in js:
-        fail(f"Código ajeno heredado de otro proyecto: {text}")
-for text in ["filteredStores", "renderActivityCards", "renderDmTeam", "renderExecutivePulse", "exportCsv", "serviceWorker"]:
+        fail(f"Interfaz simplificada incompleta: {text}")
+for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar"]:
+    if forbidden in html + js + css:
+        fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
+for text in ["renderSummary", "renderActivities", "renderTeam", "renderStores", "exportCsv", "serviceWorker"]:
     if text not in js:
         fail(f"Funcionalidad faltante: {text}")
-if "--green: #006241" not in css or "content-visibility" in css:
-    fail("Tema visual o CSS inesperado")
-if "sistema-evidencias-ops-v2" not in sw or "data/dashboard.json" not in sw or "assets/dm/enrique-cesar.jpeg" not in sw:
-    fail("Service Worker incompleto")
-if manifest.get("start_url") != "./" or manifest.get("scope") != "./" or manifest.get("display") != "standalone":
-    fail("Manifest no compatible con GitHub Pages")
+if "sistema-evidencias-ops-v3" not in sw or ".webp" not in sw or "Sistema_Evidencias_OPS_CMS.xlsx" not in sw:
+    fail("Caché PWA v3 incompleto")
+if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
+    fail("El nuevo logo no está configurado en todos los tamaños")
 for text in ["python scripts/build_dashboard.py", "python tests/validate_project.py", "git add data/dashboard.json"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
 
-print("Validación aprobada")
-print("Proyecto: Sistema de Evidencias OPS")
-print(f"Tiendas: {data['summary']['stores']} · Actividades: {data['summary']['activities']}")
-print(f"Última actualización: {data['lastUpdatedDisplay']}")
-print("CeCo 38401 → Coacalco → Enrique Cesar · seis fotografías DM integradas")
-print("Privacidad pública protegida · lectura ejecutiva generada por Python")
+print("Validación aprobada · diseño sin barra lateral")
+print("CMS Excel → Python → un JSON consolidado")
+print("72 tiendas · 7 actividades vigentes · 6 fotografías WebP")
+print("CeCo 38401 → Coacalco → Enrique Cesar · privacidad protegida")

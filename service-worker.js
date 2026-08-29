@@ -1,4 +1,4 @@
-const CACHE_NAME = "sistema-evidencias-ops-v2";
+const CACHE_NAME = "sistema-evidencias-ops-v3";
 const CORE = [
   "./",
   "./index.html",
@@ -6,14 +6,16 @@ const CORE = [
   "./app.js",
   "./manifest.webmanifest",
   "./data/dashboard.json",
+  "./cms/Sistema_Evidencias_OPS_CMS.xlsx",
+  "./assets/icons/icon-64.webp",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
-  "./assets/dm/enrique-cesar.jpeg",
-  "./assets/dm/nancy-carolina.jpeg",
-  "./assets/dm/vanessa-carreno.jpeg",
-  "./assets/dm/veronica-garcia.jpeg",
-  "./assets/dm/yazmin-chabela.jpeg",
-  "./assets/dm/yazmin-garcia.jpeg"
+  "./assets/dm/enrique-cesar.webp",
+  "./assets/dm/nancy-carolina.webp",
+  "./assets/dm/vanessa-carreno.webp",
+  "./assets/dm/veronica-garcia.webp",
+  "./assets/dm/yazmin-chabela.webp",
+  "./assets/dm/yazmin-garcia.webp"
 ];
 
 self.addEventListener("install", (event) => {

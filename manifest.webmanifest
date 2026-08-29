@@ -1,7 +1,7 @@
 {
   "name": "Sistema de Evidencias OPS",
   "short_name": "Evidencias OPS",
-  "description": "Dashboard de cumplimiento y seguimiento de actividades operativas de Centro Norte.",
+  "description": "Seguimiento simple de evidencias operativas de Centro Norte.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,6 +9,7 @@
   "theme_color": "#006241",
   "lang": "es-MX",
   "icons": [
+    {"src": "./assets/icons/icon-64.png", "sizes": "64x64", "type": "image/png"},
     {"src": "./assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
     {"src": "./assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
   ]

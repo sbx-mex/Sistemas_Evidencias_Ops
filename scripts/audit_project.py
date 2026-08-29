@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_FILES = [ROOT / "index.html", ROOT / "styles.css", ROOT / "app.js", ROOT / "service-worker.js", ROOT / "manifest.webmanifest"]
@@ -16,7 +17,7 @@ for source in TEXT_FILES:
     for reference in re.findall(r"(?:src|href)[=:]\s*[\"'](\./[^\"'#?]+)", text):
         if "${" in reference:
             continue
-        target = ROOT / reference.removeprefix("./")
+        target = ROOT / unquote(reference.removeprefix("./"))
         if not target.exists():
             missing.append({"source": source.name, "target": reference})
 
