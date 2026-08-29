@@ -5,5 +5,8 @@
   "onlyOpenStores": true,
   "requireEvidence": true,
   "publishEvidenceLinks": true,
-  "publishPersonalData": false
+  "publishPersonalData": false,
+  "notApplicableOnNoActivities": [
+    "Programacion Hornos Merry - Focaccia"
+  ]
 }

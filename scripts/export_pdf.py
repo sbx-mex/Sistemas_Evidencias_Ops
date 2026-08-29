@@ -109,13 +109,14 @@ def build_pdf(data: dict, output: Path) -> None:
         pdf.drawString(page_width - 90, page_height - 79, director.get("role", "Director Regional"))
 
         cards = [
-            ("REALIZADAS / TOTAL", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),
+            ("REALIZADAS / APLICAN", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),
+            ("NO APLICA", number(summary.get("notApplicableCompletions", 0))),
             ("% AVANCE", percent(summary.get("compliance", 0))),
         ]
-        card_width = (page_width - 66) / 2
+        card_width = (page_width - 76) / 3
         for index, (label, value) in enumerate(cards):
             x = 28 + index * (card_width + 10)
-            pdf.setFillColor(SOFT if index == 1 else white)
+            pdf.setFillColor(SOFT if index == 2 else white)
             pdf.roundRect(x, page_height - 184, card_width, 44, 7, stroke=0, fill=1)
             pdf.setFillColor(MUTED)
             pdf.setFont("Helvetica-Bold", 7)
@@ -125,8 +126,8 @@ def build_pdf(data: dict, output: Path) -> None:
             pdf.drawCentredString(x + card_width / 2, page_height - 174, str(value))
 
         table_top = page_height - 204
-        columns = [28, 85, 500, 665]
-        headers = ["RANKING", "DM", "REALIZADAS / TOTAL", "% AVANCE"]
+        columns = [28, 85, 480, 625, 700]
+        headers = ["RANKING", "DM", "REALIZADAS / APLICAN", "N/A", "% AVANCE"]
         pdf.setFillColor(DARK)
         pdf.roundRect(28, table_top - 25, page_width - 56, 25, 6, stroke=0, fill=1)
         pdf.setFillColor(white)
@@ -155,9 +156,10 @@ def build_pdf(data: dict, output: Path) -> None:
             pdf.drawString(140, y + 12, f"{number(item.get('stores', 0))} tiendas")
             pdf.setFillColor(DARK)
             pdf.setFont("Helvetica-Bold", 10)
-            pdf.drawString(521, y + 19, f"{number(item.get('completed', 0))} / {number(item.get('expected', 0))}")
+            pdf.drawString(501, y + 19, f"{number(item.get('completed', 0))} / {number(item.get('expected', 0))}")
+            pdf.drawString(646, y + 19, number(item.get("notApplicable", 0)))
             pdf.setFillColor(signal(item.get("compliance", 0)))
-            pdf.drawString(686, y + 19, percent(item.get("compliance", 0)))
+            pdf.drawString(721, y + 19, percent(item.get("compliance", 0)))
             pdf.setFillColor(LINE)
             pdf.rect(758, y + 16, 50, 6, stroke=0, fill=1)
             pdf.setFillColor(signal(item.get("compliance", 0)))
@@ -175,7 +177,7 @@ def build_pdf(data: dict, output: Path) -> None:
 
     pdf.setTitle(f"Sistema de Evidencia OPS · {region}")
     pdf.setAuthor("Centro Norte")
-    pdf.setSubject("Realizadas / Total / % Avance")
+    pdf.setSubject("Realizadas / Aplican / No aplica / % Avance")
     pdf.save()
 
 

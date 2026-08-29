@@ -27,17 +27,20 @@ function filteredStores() {
 }
 
 function completionFor(store, activities = selectedActivities()) {
-  const completed = activities.reduce((sum, activity) => sum + (store.activities[activity] ? 1 : 0), 0);
-  const expected = activities.length;
-  return { completed, expected, pending: expected - completed, compliance: expected ? completed / expected * 100 : 0 };
+  const applicable = activities.filter((activity) => store.applicableActivities?.[activity] !== false);
+  const completed = applicable.reduce((sum, activity) => sum + (store.activities[activity] ? 1 : 0), 0);
+  const expected = applicable.length;
+  const notApplicable = activities.length - expected;
+  return { completed, expected, notApplicable, pending: expected - completed, compliance: expected ? completed / expected * 100 : 0 };
 }
 
 function metrics() {
   const stores = filteredStores();
   const activities = selectedActivities();
   const storeProgress = stores.map((store) => completionFor(store, activities));
-  const expected = stores.length * activities.length;
+  const expected = storeProgress.reduce((sum, item) => sum + item.expected, 0);
   const completed = storeProgress.reduce((sum, item) => sum + item.completed, 0);
+  const notApplicable = storeProgress.reduce((sum, item) => sum + item.notApplicable, 0);
   return {
     dms: new Set(stores.map((store) => store.dm)).size,
     stores: stores.length,
@@ -45,6 +48,7 @@ function metrics() {
     completed,
     expected,
     pending: expected - completed,
+    notApplicable,
     compliance: expected ? completed / expected * 100 : 0,
     completedStores: storeProgress.filter((item) => item.completed > 0).length,
     notStartedStores: storeProgress.filter((item) => item.completed === 0).length,
@@ -98,13 +102,17 @@ function renderSummary() {
   $("#score-ring").dataset.tone = signal.tone;
   $("#score-ring").style.setProperty("--score", `${Math.min(item.compliance, 100) * 3.6}deg`);
   $("#score-title").textContent = currentScope();
-  $("#score-message").textContent = item.pending
-    ? `${number(item.completed)} de ${number(item.expected)} actividades realizadas · ${signal.label}.`
-    : "El alcance seleccionado está completo.";
+  $("#score-message").textContent = !item.expected
+    ? "El alcance seleccionado no aplica para esta actividad."
+    : item.pending
+      ? `${number(item.completed)} de ${number(item.expected)} actividades aplicables realizadas · ${signal.label}.`
+      : "El alcance seleccionado está completo.";
   $("#kpi-grid").innerHTML = [
     [number(item.dms), "DM"],
     [number(item.activities), "Actividades"],
     [number(item.stores), "Tiendas"],
+    [number(item.expected), "Aplican"],
+    [number(item.notApplicable), "No aplica"],
     [number(item.pending), "Pendientes"],
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
@@ -113,14 +121,17 @@ function renderActivities() {
   const stores = filteredStores();
   const activities = state.data.activities.filter((item) => !state.filters.activity || item.name === state.filters.activity);
   $("#activity-progress").innerHTML = activities.length ? activities.map((item) => {
-    const completed = stores.filter((store) => store.activities[item.name]).length;
-    const value = stores.length ? completed / stores.length * 100 : 0;
+    const progress = stores.map((store) => completionFor(store, [item.name]));
+    const completed = progress.reduce((sum, row) => sum + row.completed, 0);
+    const expected = progress.reduce((sum, row) => sum + row.expected, 0);
+    const notApplicable = progress.reduce((sum, row) => sum + row.notApplicable, 0);
+    const value = expected ? completed / expected * 100 : 0;
     const signal = semaphore(value);
     return `<article class="progress-item ${signal.tone}">
       <span class="traffic-light" aria-hidden="true"></span>
       <div class="progress-title"><strong>${esc(item.name)}</strong><span>${esc(item.description || "Actividad vigente")}</span></div>
       <div class="bar" aria-label="${percent(value)} de avance"><span style="--progress:${Math.min(value, 100)}%"></span></div>
-      <div class="progress-number"><strong>${percent(value)}</strong><small>${completed}/${stores.length} tiendas</small></div>
+      <div class="progress-number"><strong>${percent(value)}</strong><small>${completed}/${expected} aplican${notApplicable ? ` · ${notApplicable} N/A` : ""}</small></div>
       <span class="status ${signal.tone}">${signal.label}</span>
     </article>`;
   }).join("") : '<div class="empty-state">No hay actividades para el filtro seleccionado.</div>';
@@ -173,8 +184,9 @@ function dmRanking() {
   return state.data.dms.filter((dm) => activeDms.has(dm.dm)).map((dm) => {
     const dmStores = stores.filter((store) => store.dm === dm.dm);
     const completed = dmStores.reduce((sum, store) => sum + completionFor(store, activities).completed, 0);
-    const expected = dmStores.length * activities.length;
-    return { ...dm, dmStores, completed, expected, value: expected ? completed / expected * 100 : 0 };
+    const expected = dmStores.reduce((sum, store) => sum + completionFor(store, activities).expected, 0);
+    const notApplicable = dmStores.reduce((sum, store) => sum + completionFor(store, activities).notApplicable, 0);
+    return { ...dm, dmStores, completed, expected, notApplicable, value: expected ? completed / expected * 100 : 0 };
   }).sort((a, b) => b.value - a.value || a.shortName.localeCompare(b.shortName, "es-MX"));
 }
 
@@ -186,7 +198,7 @@ function exportRows() {
   if (exportMode() === "dms") {
     return dmRanking().map((item, index) => ({
       kind: "dm", rank: index + 1, label: item.shortName, detail: `${item.dmStores.length} tiendas`, photo: item.photo,
-      completed: item.completed, expected: item.expected, pending: item.expected - item.completed, value: item.value,
+      completed: item.completed, expected: item.expected, notApplicable: item.notApplicable, pending: item.expected - item.completed, value: item.value,
     }));
   }
   const activities = selectedActivities();
@@ -194,7 +206,7 @@ function exportRows() {
     const result = completionFor(store, activities);
     return {
       kind: "store", label: store.store, detail: `CeCo ${store.ceco}`, ceco: store.ceco, dm: store.dm,
-      completed: result.completed, expected: result.expected, pending: result.pending, value: result.compliance,
+      completed: result.completed, expected: result.expected, notApplicable: result.notApplicable, pending: result.pending, value: result.compliance,
     };
   }).sort((a, b) => b.value - a.value || b.completed - a.completed || a.label.localeCompare(b.label, "es-MX"))
     .map((item, index) => ({ ...item, rank: index + 1 }));
@@ -209,7 +221,7 @@ function renderTeam() {
     return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}">
       <span class="rank-icon" aria-label="Posición ${index + 1}">${rank}</span>
       <img src="./${esc(dm.photo)}" alt="Fotografía de ${esc(dm.shortName)}" loading="lazy">
-      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.completed}/${dm.expected} realizadas</em></span>
+      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.completed}/${dm.expected} aplican${dm.notApplicable ? ` · ${dm.notApplicable} N/A` : ""}</em></span>
       <span class="dm-result"><strong>${percent(dm.value)}</strong><small class="status ${signal.tone}">${signal.label}</small></span>
     </button>`;
   }).join("") || '<div class="empty-state">Sin gerentes para el filtro seleccionado.</div>';
@@ -224,25 +236,46 @@ function renderStores() {
     return `<tr>
       <td><span class="table-rank">${index + 1}</span></td><td><strong>${esc(store.ceco)}</strong></td><td>${esc(store.store)}</td><td>${esc(store.dm)}</td>
       <td><strong>${store.completed}/${store.expected}</strong></td>
+      <td>${store.notApplicable ? `<span class="status neutral">${store.notApplicable}</span>` : "—"}</td>
       <td><div class="table-progress ${signal.tone}"><span><i style="--progress:${Math.min(store.compliance, 100)}%"></i></span><b>${percent(store.compliance)}</b></div></td>
       <td><span class="status ${signal.tone}">${signal.label}</span></td>
     </tr>`;
-  }).join("") : '<tr><td colspan="7"><div class="empty-state">Sin tiendas para mostrar.</div></td></tr>';
+  }).join("") : '<tr><td colspan="8"><div class="empty-state">Sin tiendas para mostrar.</div></td></tr>';
+}
+
+function syncFilterUrl() {
+  const url = new URL(location.href);
+  [["dm", state.filters.dm], ["store", state.filters.store], ["activity", state.filters.activity]].forEach(([key, value]) => {
+    if (value) url.searchParams.set(key, value); else url.searchParams.delete(key);
+  });
+  history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function readFilterUrl() {
+  const params = new URLSearchParams(location.search);
+  state.filters = { dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "" };
+}
+
+function renderActiveScope() {
+  const item = metrics();
+  $("#active-scope").innerHTML = `<strong>Vista:</strong> ${esc(reportScope())} <span>·</span> ${esc(state.filters.activity || "Todas las actividades")} <span>·</span> ${number(item.completed)}/${number(item.expected)} aplican${item.notApplicable ? ` <span>·</span> ${number(item.notApplicable)} no aplica` : ""}`;
 }
 
 function renderAll() {
-  renderSummary(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores();
+  renderSummary(); renderActivities(); renderCommitments(); renderEvidence(); renderTeam(); renderStores(); renderActiveScope(); syncFilterUrl();
 }
 
 function populateFilters() {
   const dms = [...new Set(state.data.stores.map((store) => store.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
   $("#filter-dm").innerHTML = '<option value="">Todos los DM</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
+  if (!dms.includes(state.filters.dm)) state.filters.dm = "";
   $("#filter-dm").value = state.filters.dm;
   const stores = state.data.stores.filter((store) => !state.filters.dm || store.dm === state.filters.dm);
   $("#filter-store").innerHTML = '<option value="">Todas las tiendas</option>' + stores.map((store) => `<option value="${esc(store.ceco)}">${esc(store.ceco)} · ${esc(store.store)}</option>`).join("");
   if (!stores.some((store) => store.ceco === state.filters.store)) state.filters.store = "";
   $("#filter-store").value = state.filters.store;
   $("#filter-activity").innerHTML = '<option value="">Todas las actividades</option>' + state.data.activities.map((item) => `<option value="${esc(item.name)}">${esc(item.name)}</option>`).join("");
+  if (!state.data.activities.some((item) => item.name === state.filters.activity)) state.filters.activity = "";
   $("#filter-activity").value = state.filters.activity;
 }
 
@@ -297,7 +330,8 @@ function exportContext(format) {
     summary: [
       ["Alcance", `${type} · ${name}`],
       ["Actividad", activity],
-      ["Avance", `${number(item.completed)} realizadas / ${number(item.expected)} total / ${percent(item.compliance)}`],
+      ["Avance", `${number(item.completed)} realizadas / ${number(item.expected)} aplican / ${percent(item.compliance)}`],
+      ["No aplica", number(item.notApplicable)],
     ],
   };
 }
@@ -370,20 +404,20 @@ async function renderPdfPages() {
       context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(profile.name, 1184, 162);
       context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1184, 181);
     }
-    const cards = [["REALIZADAS / TOTAL", `${number(current.completed)} / ${number(current.expected)}`], ["% AVANCE", percent(current.compliance)]];
+    const cards = [["REALIZADAS / APLICAN", `${number(current.completed)} / ${number(current.expected)}`], ["NO APLICA", number(current.notApplicable)], ["% AVANCE", percent(current.compliance)]];
     cards.forEach(([label, value], cardIndex) => {
-      const x = 55 + cardIndex * 755;
-      context.fillStyle = cardIndex === 1 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, 735, 82);
+      const x = 55 + cardIndex * 503;
+      context.fillStyle = cardIndex === 2 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, 483, 82);
       context.textAlign = "center";
-      context.fillStyle = "#5d7067"; context.font = "750 14px Segoe UI, sans-serif"; context.fillText(label, x + 367, 252);
-      context.fillStyle = "#1e3932"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(value, x + 367, 287);
+      context.fillStyle = "#5d7067"; context.font = "750 14px Segoe UI, sans-serif"; context.fillText(label, x + 241, 252);
+      context.fillStyle = "#1e3932"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(value, x + 241, 287);
       context.textAlign = "left";
     });
 
     const tableTop = 330;
     context.fillStyle = "#1e3932"; context.fillRect(55, tableTop, 1490, 55);
     context.fillStyle = "#ffffff"; context.font = "750 14px Segoe UI, sans-serif";
-    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["REALIZADAS / TOTAL", 1040], ["% AVANCE", 1390]];
+    const headers = [["RANKING", 75], [mode === "dms" ? "DM" : "TIENDA / CECO", 185], ["REALIZADAS / APLICAN", 960], ["N/A", 1260], ["% AVANCE", 1390]];
     headers.forEach(([label, x]) => context.fillText(label, x, tableTop + 34));
 
     pageRows.forEach((item, localIndex) => {
@@ -400,7 +434,8 @@ async function renderPdfPages() {
       }
       context.fillStyle = "#1e3932"; context.font = `750 ${mode === "dms" ? 22 : 18}px Segoe UI, sans-serif`; context.fillText(fitText(context, item.label, 650), labelX, y + rowHeight / 2 - (mode === "dms" ? 4 : -6));
       if (mode === "dms") { context.fillStyle = "#687970"; context.font = "500 15px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, y + rowHeight / 2 + 22); }
-      context.fillStyle = "#1e3932"; context.font = "800 20px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1090, y + rowHeight / 2 + 7);
+      context.fillStyle = "#1e3932"; context.font = "800 20px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1005, y + rowHeight / 2 + 7);
+      context.fillText(number(item.notApplicable), 1280, y + rowHeight / 2 + 7);
       context.fillStyle = signal.tone === "green" ? "#116444" : signal.tone === "amber" ? "#80520c" : "#922f24"; context.font = "850 20px Segoe UI, sans-serif";
       context.fillText(percent(item.value), 1410, y + rowHeight / 2 + 7);
     });
@@ -433,7 +468,7 @@ async function exportImage() {
     context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 55);
     context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 108);
     context.font = "600 22px Segoe UI, sans-serif"; context.fillText(`${reportScope()} · Corte ${cutStamp()}`, 800, 150);
-    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`REALIZADAS / TOTAL  ${number(current.completed)} / ${number(current.expected)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
+    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`REALIZADAS / APLICAN  ${number(current.completed)} / ${number(current.expected)}   |   NO APLICA  ${number(current.notApplicable)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
     context.textAlign = "left";
     if (profilePhoto) {
       context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1217, 62, 86, 86); context.restore();
@@ -443,7 +478,7 @@ async function exportImage() {
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
     context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
-    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("REALIZADAS / TOTAL", 1050, top + 45); context.fillText("% AVANCE", 1400, top + 45);
+    context.fillText("RANKING", 70, top + 45); context.fillText(mode === "dms" ? "DM" : "TIENDA / CECO", 190, top + 45); context.fillText("REALIZADAS / APLICAN", 960, top + 45); context.fillText("N/A", 1270, top + 45); context.fillText("% AVANCE", 1400, top + 45);
     rows.forEach((item, index) => {
       const y = top + tableHeader + index * rowHeight; const signal = semaphore(item.value); const centerY = y + rowHeight / 2;
       context.fillStyle = index % 2 ? "#f4f7f5" : "#ffffff"; context.fillRect(0, y, width, rowHeight - 2);
@@ -457,7 +492,8 @@ async function exportImage() {
       }
       context.fillStyle = "#1e3932"; context.font = `${mode === "dms" ? 700 : 650} ${mode === "dms" ? 27 : 23}px Segoe UI, sans-serif`; context.fillText(item.label, labelX, centerY - 4);
       context.fillStyle = "#65756d"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(item.detail, labelX, centerY + 24);
-      context.fillStyle = "#1e3932"; context.font = "700 28px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1110, centerY + 10);
+      context.fillStyle = "#1e3932"; context.font = "700 28px Segoe UI, sans-serif"; context.fillText(`${number(item.completed)} / ${number(item.expected)}`, 1000, centerY + 10);
+      context.fillText(number(item.notApplicable), 1290, centerY + 10);
       context.fillStyle = signal.tone === "green" ? "#16845b" : signal.tone === "amber" ? "#a86b0a" : "#a2352a"; context.font = "800 31px Segoe UI, sans-serif"; context.fillText(percent(item.value), 1410, centerY + 10);
     });
     const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
@@ -584,21 +620,24 @@ function buildExcelSpec() {
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
   const detailHeaders = mode === "dms"
-    ? ["Ranking", "DM", "Realizadas", "Total", "% Avance", "Estado"]
-    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Total", "% Avance"];
+    ? ["Ranking", "DM", "Realizadas", "Aplican", "No aplica", "% Avance", "Estado"]
+    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Aplican", "No aplica", "% Avance"];
   const activityStartColumn = 3;
   const activityEndColumn = activityStartColumn + activities.length - 1;
   const completedColumn = activityEndColumn + 1;
   const totalColumn = completedColumn + 1;
-  const advanceColumn = totalColumn + 1;
+  const notApplicableColumn = totalColumn + 1;
+  const advanceColumn = notApplicableColumn + 1;
   const storesByCeco = new Map(stores.map((store) => [store.ceco, store]));
   const matrixStores = rows.map((row) => storesByCeco.get(row.ceco)).filter(Boolean);
   const detailRows = mode === "dms" ? rows.map((row) => [
-    row.rank, row.label, row.completed, row.expected, row.value / 100, semaphore(row.value).label,
+    row.rank, row.label, row.completed, row.expected, row.notApplicable, row.value / 100, semaphore(row.value).label,
   ]) : matrixStores.map((store, index) => {
     const rowNumber = index + 5;
     const result = completionFor(store, activities.map((activity) => activity.name));
-    const activityValues = activities.map((activity) => ({ value: store.activities[activity.name] ? 1 : 0, style: store.activities[activity.name] ? 7 : 8 }));
+    const activityValues = activities.map((activity) => store.applicableActivities?.[activity.name] === false
+      ? { value: "", style: 0 }
+      : { value: store.activities[activity.name] ? 1 : 0, style: store.activities[activity.name] ? 7 : 8 });
     const activityRange = `${spreadsheetColumn(activityStartColumn)}${rowNumber}:${spreadsheetColumn(activityEndColumn)}${rowNumber}`;
     return [
       store.ceco,
@@ -606,13 +645,17 @@ function buildExcelSpec() {
       ...activityValues,
       { formula: `SUM(${activityRange})`, cached: result.completed, style: 6 },
       { formula: `COUNT(${activityRange})`, cached: result.expected, style: 6 },
+      { formula: `COUNTBLANK(${activityRange})`, cached: result.notApplicable, style: 6 },
       { formula: `IFERROR(${spreadsheetColumn(completedColumn)}${rowNumber}/${spreadsheetColumn(totalColumn)}${rowNumber},0)`, cached: result.compliance / 100, style: 3 },
     ];
   });
   const activityRows = activities.map((activity, index) => {
-    const completed = stores.filter((store) => store.activities[activity.name]).length;
-    const value = stores.length ? completed / stores.length : 0;
-    return [index + 1, activity.name, completed, stores.length, value, activity.commitmentDateDisplay || "Sin fecha"];
+    const progress = stores.map((store) => completionFor(store, [activity.name]));
+    const completed = progress.reduce((sum, row) => sum + row.completed, 0);
+    const expected = progress.reduce((sum, row) => sum + row.expected, 0);
+    const notApplicable = progress.reduce((sum, row) => sum + row.notApplicable, 0);
+    const value = expected ? completed / expected : 0;
+    return [index + 1, activity.name, completed, expected, notApplicable, value, activity.commitmentDateDisplay || "Sin fecha"];
   });
   return {
     title: `Sistema de Evidencias OPS · ${scope}`,
@@ -625,28 +668,29 @@ function buildExcelSpec() {
           [],
           ["Indicador", "Valor", "Validación"],
           ["Realizadas", item.completed, "Cumplimientos del filtro actual"],
-          ["Total", item.expected, `${item.stores} tiendas · ${item.activities} actividades`],
-          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} realizadas / ${item.expected} total`],
+          ["Aplican", item.expected, `${item.stores} tiendas · ${item.activities} actividades`],
+          ["No aplica", item.notApplicable, "Excluidas únicamente por la regla de Hornos"],
+          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} realizadas / ${item.expected} aplican`],
         ],
-        widths: [24, 18, 46], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C7",
+        widths: [24, 18, 46], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C8",
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
-        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
-        widths: mode === "dms" ? [10, 34, 14, 12, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 12, 14],
+        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente · vacío = No aplica", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
+        widths: mode === "dms" ? [10, 34, 14, 12, 12, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 12, 12, 14],
         merges: mode === "dms"
-          ? ["A1:F1", "A2:F2"]
+          ? ["A1:G1", "A2:G2"]
           : [`A1:${spreadsheetColumn(advanceColumn)}1`, `A2:${spreadsheetColumn(advanceColumn)}2`, `A3:${spreadsheetColumn(advanceColumn)}3`],
         headerRows: [4],
-        percentColumns: [mode === "dms" ? 5 : advanceColumn],
-        countColumns: mode === "dms" ? [1, 3, 4] : [...activities.map((_, index) => activityStartColumn + index), completedColumn, totalColumn],
+        percentColumns: [mode === "dms" ? 6 : advanceColumn],
+        countColumns: mode === "dms" ? [1, 3, 4, 5] : [...activities.map((_, index) => activityStartColumn + index), completedColumn, totalColumn, notApplicableColumn],
         freezeRow: 4,
-        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 6 : advanceColumn)}${4 + detailRows.length}`,
+        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 7 : advanceColumn)}${4 + detailRows.length}`,
       },
       {
         name: "Actividades",
-        rows: [["Avance por actividad", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Total", "% Avance", "Fecha compromiso"], ...activityRows],
-        widths: [10, 42, 14, 12, 14, 20], merges: ["A1:F1", "A2:F2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:F${4 + activityRows.length}`,
+        rows: [["Avance por actividad", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Aplican", "No aplica", "% Avance", "Fecha compromiso"], ...activityRows],
+        widths: [10, 42, 14, 12, 12, 14, 20], merges: ["A1:G1", "A2:G2"], headerRows: [4], percentColumns: [6], freezeRow: 4, autoFilter: `A4:G${4 + activityRows.length}`,
       },
     ],
   };
@@ -710,6 +754,8 @@ function bindEvents() {
     state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
   });
   $("#refresh-button").addEventListener("click", () => loadData(true));
+  $("#back-to-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  window.addEventListener("scroll", () => { $("#back-to-top").hidden = window.scrollY < 520; }, { passive: true });
   window.addEventListener("online", updateConnection); window.addEventListener("offline", updateConnection);
   window.addEventListener("beforeinstallprompt", (event) => { event.preventDefault(); state.installPrompt = event; $("#install-button").hidden = false; });
   $("#install-button").addEventListener("click", async () => { if (!state.installPrompt) return; state.installPrompt.prompt(); await state.installPrompt.userChoice; state.installPrompt = null; $("#install-button").hidden = true; });
@@ -727,6 +773,7 @@ async function loadData(announce = false) {
     const response = await fetch(`./data/dashboard.json?v=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`No fue posible cargar los datos (${response.status}).`);
     state.data = await response.json();
+    readFilterUrl();
     $("#last-updated").textContent = cutStamp();
     const director = state.data.report?.regionalDirector;
     if (director) {

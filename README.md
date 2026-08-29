@@ -20,7 +20,7 @@ El motor utiliza exclusivamente estos encabezados del Forms:
 1. `Hora de finalización` → **Última actualización**.
 2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
 3. `CeCo` → cruce automático con nombre de tienda y DM.
-4. `¿Confirmas que realizaste la actividad seleccionada?` → solo `Sí` puede validar.
+4. `¿Confirmas que realizaste la actividad seleccionada?` → `Sí` valida; únicamente en Hornos, `No` significa **No aplica**.
 5. `Evidencia del avance` → valida HTTPS y dominio autorizado; genera una etiqueta `Actividad_CeCo`.
 
 El correo y el nombre del respondente no se publican. Por autorización operativa, el dashboard muestra el nombre real del archivo y el vínculo directo de SharePoint exactamente como viene en Forms, después de validar HTTPS y el dominio permitido.
@@ -35,6 +35,8 @@ El correo y el nombre del respondente no se publican. Por autorización operativ
 pip install -r requirements.txt
 python scripts/build_dashboard.py
 python scripts/export_excel.py
+python scripts/export_pdf.py
+python tests/validate_horno_applicability.py
 python tests/validate_project.py
 python scripts/audit_project.py
 ```
@@ -62,18 +64,9 @@ En `Configuracion` se administran región, privacidad, dominios autorizados y Di
 
 La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía en `assets/dm/`. La hoja `Configuracion` publica a **Jorge Alcantar** como **Director Regional** mediante `assets/director/jorge-alcantar.webp`. Python detiene la generación si falta una imagen configurada.
 
-## 10 mejoras de navegación, visibilidad y exportación
+## 10 mejoras de navegación, cálculo y exportación
 
-1. Navegación adaptable y sección activa visible, también en celular.
-2. Navegación y contenido comparten el orden Resumen, Ranking DM, Actividades, Tiendas y Evidencias.
-3. Exportación regional dinámica: **Todos los DM** genera un ranking por DM.
-4. Exportación focalizada: un solo DM desglosa sus tiendas de mayor a menor avance.
-5. Pantalla previa **Le damos seguimiento** con confirmación del filtro y botón **Aceptar y descargar**.
-6. PDF multipágina de descarga directa y confirmación **Un placer haber ayudado** con vínculo para abrir el archivo.
-7. Exportación XLSX dinámica con Resumen, ranking/tiendas y actividades; Ranking DM omite CeCo.
-8. Generadores Python de XLSX y PDF regional con fotografía de Jorge Alcantar.
-9. Imagen, PDF y Excel incluyen **Realizadas / Total / % Avance** del filtro actual.
-10. PWA offline v11 y pruebas automáticas para archivos, PDF, Excel, imágenes y seguridad.
+Consulta [MEJORAS.md](MEJORAS.md) para el detalle verificable. La actualización incorpora navegación compartible, alcance visible, regreso rápido, exportaciones con **Realizadas / Aplican / No aplica / % Avance** y una prueba automática del caso de Hornos.
 
 ## Python como producto principal
 
@@ -91,6 +84,10 @@ Una combinación tienda–actividad cuenta una sola vez cuando:
 - la actividad está activa o fue detectada en el Forms.
 
 Envíos repetidos se conservan como registros, pero el cumplimiento se deduplica por `CeCo + Actividad`, utilizando el más reciente.
+
+### Excepción exclusiva de Hornos
+
+Para `Programacion Hornos Merry - Focaccia`, la respuesta explícita `No` registra **No aplica** y elimina esa combinación tienda–actividad del denominador. Una respuesta vacía sigue pendiente. La regla se configura en `config/settings.json` y no modifica ninguna otra actividad. El texto exacto y la ramificación de Microsoft Forms están en [INSTRUCCION_FORMS.md](INSTRUCCION_FORMS.md).
 
 ## Publicación en GitHub Pages
 
@@ -113,7 +110,7 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 ## Fuente inicial validada
 
 - 72 tiendas abiertas de la hoja `72 T`, alineadas con las seis fotografías proporcionadas.
-- 7 actividades activas.
+- 8 actividades activas.
 - Última actualización: `28/08/2026 20:39`.
 - CeCo `38401` cruzado como `Coacalco` y asignado a `Enrique Cesar Flores`.
 - 2 respuestas válidas y 0 CeCo sin cruce.

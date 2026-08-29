@@ -15,6 +15,7 @@
 | `assets/ui/Damos_Seguimiento.webp` | Aviso visual previo a la exportación. |
 | `assets/ui/Un_placer_haber_Ayudado.webp` | Confirmación visual posterior a la exportación. |
 | `config/settings.json` | Región, hoja y autorización de enlaces SharePoint. |
+| `INSTRUCCION_FORMS.md` | Texto y ramificación exacta para la pregunta de Hornos en Forms. |
 | `scripts/build_dashboard.py` | Motor Python de cruce y cumplimiento. |
 | `scripts/clean_obsolete.py` | Limpieza segura mediante una lista cerrada de duplicados heredados. |
 | `scripts/export_excel.py` | Genera el XLSX ejecutivo con fórmulas y formatos numéricos congruentes. |
@@ -24,6 +25,7 @@
 | `exports/Resumen_Evidencias_OPS.xlsx` | Respaldo ejecutivo generado por Python. |
 | `exports/Resumen_Evidencias_OPS.pdf` | Respaldo PDF regional generado por Python. |
 | `tests/validate_project.py` | Validación integral del proyecto. |
+| `tests/validate_horno_applicability.py` | Prueba 10 tiendas, 2 N/A e ideal 8 para Hornos. |
 | `tests/build_dynamic_xlsx.js` | Prueba que la exportación XLSX dinámica sea válida. |
 | `tests/build_direct_pdf.js` | Prueba que el PDF directo sea estructuralmente válido. |
 | `.github/workflows/build-dashboard.yml` | Automatización al actualizar los Excel. |

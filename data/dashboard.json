@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 7,
+  "schemaVersion": 8,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T05:10:45-04:00",
+  "generatedAt": "2026-08-29T09:13:42-04:00",
   "lastUpdated": "2026-08-28T20:39:22",
   "lastUpdatedDisplay": "28/08/2026 20:39",
   "report": {
@@ -26,13 +26,14 @@
   "summary": {
     "dms": 6,
     "stores": 72,
-    "activities": 7,
-    "expectedCompletions": 504,
+    "activities": 8,
+    "expectedCompletions": 576,
     "completedCompletions": 2,
-    "compliance": 0.4,
+    "compliance": 0.3,
     "validResponses": 2,
     "storesComplete": 0,
-    "pendingCompletions": 502
+    "pendingCompletions": 574,
+    "notApplicableCompletions": 0
   },
   "quality": {
     "responsesRead": 2,
@@ -40,11 +41,13 @@
     "unknownCeCos": [],
     "duplicateValidResponses": 0,
     "unsafeEvidenceRows": [],
+    "notApplicableResponses": 0,
+    "notApplicablePairs": 0,
     "evidenceLinksPublished": 2,
     "privacyMode": false
   },
   "calendar": {
-    "active": 7,
+    "active": 8,
     "scheduled": 0,
     "expired": 0,
     "inactive": 0
@@ -60,7 +63,10 @@
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
+      "noMeansNotApplicable": false,
       "completedStores": 1,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 71,
       "compliance": 1.4
     },
@@ -74,7 +80,10 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
+      "noMeansNotApplicable": true,
       "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 72,
       "compliance": 0.0
     },
@@ -88,13 +97,16 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
+      "noMeansNotApplicable": false,
       "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 72,
       "compliance": 0.0
     },
     {
       "name": "QR - Qualtrics",
-      "description": "Disponibilidad y colocación del código QR.",
+      "description": "Colocacion de Materiales Customer Experience",
       "order": 4,
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
@@ -102,13 +114,16 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
+      "noMeansNotApplicable": false,
       "completedStores": 1,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 71,
       "compliance": 1.4
     },
     {
       "name": "Max & Min",
-      "description": "Validación del estándar Max & Min.",
+      "description": "Validación del estándar Max & Min | Acomodo de Back",
       "order": 5,
       "startDate": "2026-08-28",
       "endDate": "2026-09-06",
@@ -116,13 +131,16 @@
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
+      "noMeansNotApplicable": false,
       "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 72,
       "compliance": 0.0
     },
     {
       "name": "Fotografia - SM",
-      "description": "Carga de evidencia visual solicitada.",
+      "description": "Carga de Foto|Proyecto Starbucks",
       "order": 6,
       "startDate": "2026-08-28",
       "endDate": "2026-09-06",
@@ -130,7 +148,10 @@
       "requireEvidence": true,
       "priority": "Baja",
       "autoDetected": false,
+      "noMeansNotApplicable": false,
       "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 72,
       "compliance": 0.0
     },
@@ -144,7 +165,27 @@
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
+      "noMeansNotApplicable": false,
       "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
+      "pendingStores": 72,
+      "compliance": 0.0
+    },
+    {
+      "name": "Lay Out",
+      "description": "Valida Estaciones y Acomodo con Insumos Recientes",
+      "order": 8,
+      "startDate": "2026-08-28",
+      "endDate": "2026-09-06",
+      "commitmentDateDisplay": "06/09/26",
+      "requireEvidence": true,
+      "priority": "Alta",
+      "autoDetected": false,
+      "noMeansNotApplicable": false,
+      "completedStores": 0,
+      "applicableStores": 72,
+      "notApplicableStores": 0,
       "pendingStores": 72,
       "compliance": 0.0
     }
@@ -156,10 +197,11 @@
       "photo": "assets/dm/enrique-cesar.webp",
       "stores": 10,
       "completed": 2,
-      "expected": 70,
-      "pending": 68,
+      "expected": 80,
+      "notApplicable": 0,
+      "pending": 78,
       "pendingStores": 10,
-      "compliance": 2.9,
+      "compliance": 2.5,
       "status": "Atención",
       "rank": 1
     },
@@ -169,8 +211,9 @@
       "photo": "assets/dm/nancy-carolina.webp",
       "stores": 12,
       "completed": 0,
-      "expected": 84,
-      "pending": 84,
+      "expected": 96,
+      "notApplicable": 0,
+      "pending": 96,
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
@@ -182,8 +225,9 @@
       "photo": "assets/dm/vanessa-carreno.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 91,
-      "pending": 91,
+      "expected": 104,
+      "notApplicable": 0,
+      "pending": 104,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -195,8 +239,9 @@
       "photo": "assets/dm/veronica-garcia.webp",
       "stores": 11,
       "completed": 0,
-      "expected": 77,
-      "pending": 77,
+      "expected": 88,
+      "notApplicable": 0,
+      "pending": 88,
       "pendingStores": 11,
       "compliance": 0.0,
       "status": "Atención",
@@ -208,8 +253,9 @@
       "photo": "assets/dm/yazmin-chabela.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 91,
-      "pending": 91,
+      "expected": 104,
+      "notApplicable": 0,
+      "pending": 104,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -221,8 +267,9 @@
       "photo": "assets/dm/yazmin-garcia.webp",
       "stores": 13,
       "completed": 0,
-      "expected": 91,
-      "pending": 91,
+      "expected": 104,
+      "notApplicable": 0,
+      "pending": 104,
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
@@ -235,8 +282,9 @@
       "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -245,8 +293,9 @@
       "store": "Cosmopol N1",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -255,8 +304,9 @@
       "store": "Galerias Perinorte",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -265,8 +315,9 @@
       "store": "Izcalli Mega",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -275,8 +326,9 @@
       "store": "Luna Park",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -285,8 +337,9 @@
       "store": "Patio Ecatepec",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -295,8 +348,9 @@
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -305,8 +359,9 @@
       "store": "San Miguel Izcalli",
       "dm": "Enrique Cesar Flores",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -315,8 +370,9 @@
       "store": "Arboledas",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -325,8 +381,9 @@
       "store": "ITEMS Edo de Mexico",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -335,8 +392,9 @@
       "store": "Jinetes",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -345,8 +403,9 @@
       "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -355,8 +414,9 @@
       "store": "Mundo E II",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -365,8 +425,9 @@
       "store": "Pasaje Tlanepantla",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -375,8 +436,9 @@
       "store": "Punta Norte",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -385,8 +447,9 @@
       "store": "Santa Monica",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -395,8 +458,9 @@
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -405,8 +469,9 @@
       "store": "TlalnepantlaCarso",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -415,8 +480,9 @@
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -425,8 +491,9 @@
       "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -435,8 +502,9 @@
       "store": "Atana Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -445,8 +513,9 @@
       "store": "Camarones",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -455,8 +524,9 @@
       "store": "Centenario Azcapotzalco",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -465,8 +535,9 @@
       "store": "Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -475,8 +546,9 @@
       "store": "Lindavista II",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -485,8 +557,9 @@
       "store": "Montevideo DT",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -495,8 +568,9 @@
       "store": "Montevideo Insurgentes",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -505,8 +579,9 @@
       "store": "Parque Jadin kiosko",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -515,8 +590,9 @@
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -525,8 +601,9 @@
       "store": "Patio la Raza",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -535,8 +612,9 @@
       "store": "Plaza Vista Norte",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -545,8 +623,9 @@
       "store": "Torres Lindavista",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -555,8 +634,9 @@
       "store": "Via Vallejo",
       "dm": "Vanessa Carreño Rios",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -565,8 +645,9 @@
       "store": "Blvd. Aeropuerto dt",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -575,8 +656,9 @@
       "store": "Bosques de Aragon",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -585,8 +667,9 @@
       "store": "Eduardo Molina",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -595,8 +678,9 @@
       "store": "Encuentro Oceania",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -605,8 +689,9 @@
       "store": "Encuentro Oceania II",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -615,8 +700,9 @@
       "store": "Parque Tepeyac Piso 1",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -625,8 +711,9 @@
       "store": "Parque Tepeyac Piso 2",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -635,8 +722,9 @@
       "store": "Plaza Aeropuerto",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -645,8 +733,9 @@
       "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -655,8 +744,9 @@
       "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -665,8 +755,9 @@
       "store": "Tapo Puerta Oriente",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -675,8 +766,9 @@
       "store": "Cetram 4 Caminos",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -685,8 +777,9 @@
       "store": "Echegaray",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -695,8 +788,9 @@
       "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -705,8 +799,9 @@
       "store": "Gustavo Baz 29",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -715,8 +810,9 @@
       "store": "Parque Toreo",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -725,8 +821,9 @@
       "store": "Parque Toreo II",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -735,8 +832,9 @@
       "store": "Periferico Satélite DT",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -745,8 +843,9 @@
       "store": "Plaza Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -755,8 +854,9 @@
       "store": "Plaza Satelite II N1",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -765,8 +865,9 @@
       "store": "Samara Satélite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -775,8 +876,9 @@
       "store": "Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -785,8 +887,9 @@
       "store": "Satelite Centro Civico",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -795,8 +898,9 @@
       "store": "Viveros de la Loma",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -805,8 +909,9 @@
       "store": "Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -815,8 +920,9 @@
       "store": "Bellavista",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -825,8 +931,9 @@
       "store": "Centro Comercial Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -835,8 +942,9 @@
       "store": "City Center Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -845,8 +953,9 @@
       "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -855,8 +964,9 @@
       "store": "Galerias Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -865,8 +975,9 @@
       "store": "Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -875,8 +986,9 @@
       "store": "Lomas Verdes II",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -885,8 +997,9 @@
       "store": "San Mateo",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -895,8 +1008,9 @@
       "store": "Star Medica Lomas Verdes",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -905,8 +1019,9 @@
       "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -915,8 +1030,9 @@
       "store": "Zona Azul",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -925,8 +1041,9 @@
       "store": "Zona Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 0,
-      "expected": 7,
-      "pending": 7,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 8,
       "compliance": 0.0,
       "status": "Atención"
     },
@@ -935,9 +1052,10 @@
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
       "completed": 1,
-      "expected": 7,
-      "pending": 6,
-      "compliance": 14.3,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 12.5,
       "status": "Atención"
     },
     {
@@ -945,9 +1063,10 @@
       "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 1,
-      "expected": 7,
-      "pending": 6,
-      "compliance": 14.3,
+      "expected": 8,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 12.5,
       "status": "Atención"
     }
   ],
@@ -959,8 +1078,9 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 1,
-      "expected": 7,
-      "compliance": 14.3,
+      "expected": 8,
+      "notApplicable": 0,
+      "compliance": 12.5,
       "lastUpdate": "2026-08-28T20:32:52",
       "activities": {
         "Roll Out": true,
@@ -969,7 +1089,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -979,7 +1110,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -989,7 +1121,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -999,7 +1142,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1009,7 +1153,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1019,7 +1174,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1029,7 +1185,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1039,7 +1206,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1049,7 +1217,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1059,7 +1238,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1069,7 +1249,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1079,7 +1270,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1089,7 +1281,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1099,8 +1302,9 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 1,
-      "expected": 7,
-      "compliance": 14.3,
+      "expected": 8,
+      "notApplicable": 0,
+      "compliance": 12.5,
       "lastUpdate": "2026-08-28T20:39:22",
       "activities": {
         "Roll Out": false,
@@ -1109,7 +1313,18 @@
         "QR - Qualtrics": true,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1119,7 +1334,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1129,7 +1345,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1139,7 +1366,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1149,7 +1377,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1159,7 +1398,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1169,7 +1409,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1179,7 +1430,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1189,7 +1441,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1199,7 +1462,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1209,7 +1473,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1219,7 +1494,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1229,7 +1505,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1239,7 +1526,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1249,7 +1537,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1259,7 +1558,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1269,7 +1569,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1279,7 +1590,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1289,7 +1601,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1299,7 +1622,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1309,7 +1633,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1319,7 +1654,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1329,7 +1665,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1339,7 +1686,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1349,7 +1697,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1359,7 +1718,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1369,7 +1729,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1379,7 +1750,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1389,7 +1761,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1399,7 +1782,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1409,7 +1793,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1419,7 +1814,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1429,7 +1825,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1439,7 +1846,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1449,7 +1857,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1459,7 +1878,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1469,7 +1889,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1479,7 +1910,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1489,7 +1921,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1499,7 +1942,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1509,7 +1953,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1519,7 +1974,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1529,7 +1985,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1539,7 +2006,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1549,7 +2017,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1559,7 +2038,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1569,7 +2049,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1579,7 +2070,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1589,7 +2081,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1599,7 +2102,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1609,7 +2113,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1619,7 +2134,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1629,7 +2145,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1639,7 +2166,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1649,7 +2177,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1659,7 +2198,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1669,7 +2209,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1679,7 +2230,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1689,7 +2241,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1699,7 +2262,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1709,7 +2273,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1719,7 +2294,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1729,7 +2305,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1739,7 +2326,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1749,7 +2337,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1759,7 +2358,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1769,7 +2369,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1779,7 +2390,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1789,7 +2401,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1799,7 +2422,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1809,7 +2433,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1819,7 +2454,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1829,7 +2465,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1839,7 +2486,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1849,7 +2497,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1859,7 +2518,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1869,7 +2529,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1879,7 +2550,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1889,7 +2561,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1899,7 +2582,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1909,7 +2593,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1919,7 +2614,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1929,7 +2625,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1939,7 +2646,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1949,7 +2657,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1959,7 +2678,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1969,7 +2689,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1979,7 +2710,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -1989,7 +2721,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -1999,7 +2742,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2009,7 +2753,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2019,7 +2774,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2029,7 +2785,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2039,7 +2806,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2049,7 +2817,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2059,7 +2838,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2069,7 +2849,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2079,7 +2870,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2089,7 +2881,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2099,7 +2902,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2109,7 +2913,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2119,7 +2934,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2129,7 +2945,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2139,7 +2966,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2149,7 +2977,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2159,7 +2998,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2169,7 +3009,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2179,7 +3030,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2189,7 +3041,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2199,7 +3062,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2209,7 +3073,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2219,7 +3094,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2229,7 +3105,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2239,7 +3126,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2249,7 +3137,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2259,7 +3158,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2269,7 +3169,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2279,7 +3190,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2289,7 +3201,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2299,7 +3222,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2309,7 +3233,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2319,7 +3254,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2329,7 +3265,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2339,7 +3286,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2349,7 +3297,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2359,7 +3318,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2369,7 +3329,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     },
     {
@@ -2379,7 +3350,8 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 0,
-      "expected": 7,
+      "expected": 8,
+      "notApplicable": 0,
       "compliance": 0.0,
       "lastUpdate": null,
       "activities": {
@@ -2389,7 +3361,18 @@
         "QR - Qualtrics": false,
         "Max & Min": false,
         "Fotografia - SM": false,
-        "Mandil Verde": false
+        "Mandil Verde": false,
+        "Lay Out": false
+      },
+      "applicableActivities": {
+        "Roll Out": true,
+        "Programacion Hornos Merry - Focaccia": true,
+        "Rack FHW": true,
+        "QR - Qualtrics": true,
+        "Max & Min": true,
+        "Fotografia - SM": true,
+        "Mandil Verde": true,
+        "Lay Out": true
       }
     }
   ],
@@ -2406,6 +3389,9 @@
       "evidenceLinkLabel": "Link_QR_Qualtrics_38456",
       "evidenceFileName": "17879710536332015001691892771562_Ramon Espinosa Macia.jpg",
       "confirmed": true,
+      "answer": "Si",
+      "notApplicable": false,
+      "status": "Realizada",
       "evidenceAvailable": true,
       "evidenceLinkPublished": true,
       "valid": true,
@@ -2423,6 +3409,9 @@
       "evidenceLinkLabel": "Link_Roll_Out_38401",
       "evidenceFileName": "IMG-20260828-WA0115_Enrique Cesar Flores.jpg",
       "confirmed": true,
+      "answer": "Si",
+      "notApplicable": false,
+      "status": "Realizada",
       "evidenceAvailable": true,
       "evidenceLinkPublished": true,
       "valid": true,

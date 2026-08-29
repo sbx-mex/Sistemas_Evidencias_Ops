@@ -57,6 +57,17 @@ def is_yes(value: Any) -> bool:
     return key_text(value) in {"si", "true", "1", "yes"}
 
 
+def is_no(value: Any) -> bool:
+    return key_text(value) in {"no", "false", "0"}
+
+
+def setting_list(value: Any) -> list[str]:
+    """Normaliza una lista JSON o una lista separada por comas desde el CMS."""
+    if isinstance(value, list):
+        return [clean_text(item) for item in value if clean_text(item)]
+    return [clean_text(item) for item in str(value or "").split(",") if clean_text(item)]
+
+
 def normalize_ceco(value: Any) -> str:
     if value is None:
         return ""
@@ -313,7 +324,9 @@ def load_responses(path: Path) -> list[dict[str, Any]]:
             "name": clean_text(row[columns["name"]]),
             "activity": clean_text(row[columns["activity"]]),
             "ceco": normalize_ceco(row[columns["ceco"]]),
+            "confirmedAnswer": clean_text(row[columns["confirmed"]]),
             "confirmed": is_yes(row[columns["confirmed"]]),
+            "explicitNo": is_no(row[columns["confirmed"]]),
             "evidence": clean_text(row[columns["evidence"]]),
         })
     return responses
@@ -360,12 +373,18 @@ def build_payload(
             activities.append(item)
             configured[activity_key] = item
     activities.sort(key=lambda item: (item["order"], key_text(item["name"])))
+    no_means_na_keys = {
+        key_text(name) for name in setting_list(settings.get("notApplicableOnNoActivities"))
+    }
+    for item in activities:
+        item["noMeansNotApplicable"] = key_text(item["name"]) in no_means_na_keys
     activity_names = [item["name"] for item in activities]
     canonical_activity = {key_text(item["name"]): item["name"] for item in activities}
     evidence_rules = {key_text(item["name"]): item.get("requireEvidence", True) for item in activities}
 
     submissions = []
     latest_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
+    latest_decision_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
     unknown_cecos = set()
     invalid_rows = []
     unsafe_evidence_rows = []
@@ -376,6 +395,8 @@ def build_payload(
         activity = canonical_activity.get(key_text(response["activity"]), response["activity"])
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
+        no_means_not_applicable = key_text(activity) in no_means_na_keys
+        not_applicable = bool(store and activity and no_means_not_applicable and response["explicitNo"])
         if response["evidence"] and not evidence_available:
             unsafe_evidence_rows.append(response["row"])
         valid = bool(
@@ -386,7 +407,7 @@ def build_payload(
         )
         if response["ceco"] and not store:
             unknown_cecos.add(response["ceco"])
-        if not valid:
+        if not valid and not not_applicable:
             invalid_rows.append(response["row"])
         if response["finished"] and (latest_update is None or response["finished"] > latest_update):
             latest_update = response["finished"]
@@ -404,6 +425,9 @@ def build_payload(
             "evidenceLinkLabel": f"Link_{key}",
             "evidenceFileName": evidence_filename(evidence_url),
             "confirmed": response["confirmed"],
+            "answer": response["confirmedAnswer"],
+            "notApplicable": not_applicable,
+            "status": "No aplica" if not_applicable else ("Realizada" if valid else "Pendiente"),
             "evidenceAvailable": evidence_available,
             "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
             "valid": valid,
@@ -415,35 +439,53 @@ def build_payload(
             public["email"] = response["email"]
         submissions.append(public)
 
+        if store and activity and no_means_not_applicable and (response["confirmed"] or response["explicitNo"]):
+            pair = (response["ceco"], activity)
+            current = latest_decision_by_pair.get(pair)
+            if current is None or (response["finished"] or datetime.min) > (current["finished"] or datetime.min):
+                latest_decision_by_pair[pair] = response
+
         if valid:
             pair = (response["ceco"], activity)
             current = latest_by_pair.get(pair)
             if current is None or (response["finished"] or datetime.min) > (current["finished"] or datetime.min):
                 latest_by_pair[pair] = response
 
-    completion_pairs = set(latest_by_pair)
+    not_applicable_pairs = {
+        pair for pair, response in latest_decision_by_pair.items() if response["explicitNo"]
+    }
+    completion_pairs = set(latest_by_pair).difference(not_applicable_pairs)
     store_rows = []
     for ceco, store in sorted(stores.items(), key=lambda item: (key_text(item[1]["dm"]), key_text(item[1]["store"]))):
         status = {activity: (ceco, activity) in completion_pairs for activity in activity_names}
+        applicability = {activity: (ceco, activity) not in not_applicable_pairs for activity in activity_names}
         completed = sum(status.values())
+        expected = sum(applicability.values())
+        not_applicable = len(activity_names) - expected
         timestamps = [item["finished"] for (pair_ceco, _), item in latest_by_pair.items() if pair_ceco == ceco and item["finished"]]
         store_rows.append({
             **store,
             "completed": completed,
-            "expected": len(activity_names),
-            "compliance": round(completed / len(activity_names) * 100, 1) if activity_names else 0,
+            "expected": expected,
+            "notApplicable": not_applicable,
+            "compliance": round(completed / expected * 100, 1) if expected else 0,
             "lastUpdate": iso_or_none(max(timestamps)) if timestamps else None,
             "activities": status,
+            "applicableActivities": applicability,
         })
 
     activity_stats = []
     for item in activities:
         completed = sum((ceco, item["name"]) in completion_pairs for ceco in stores)
+        not_applicable = sum((ceco, item["name"]) in not_applicable_pairs for ceco in stores)
+        applicable = len(stores) - not_applicable
         activity_stats.append({
             **item,
             "completedStores": completed,
-            "pendingStores": len(stores) - completed,
-            "compliance": round(completed / len(stores) * 100, 1) if stores else 0,
+            "applicableStores": applicable,
+            "notApplicableStores": not_applicable,
+            "pendingStores": applicable - completed,
+            "compliance": round(completed / applicable * 100, 1) if applicable else 0,
         })
 
     dm_groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -453,6 +495,7 @@ def build_payload(
     for dm, dm_stores in sorted(dm_groups.items(), key=lambda item: key_text(item[0])):
         completed = sum(store["completed"] for store in dm_stores)
         expected = sum(store["expected"] for store in dm_stores)
+        not_applicable = sum(store["notApplicable"] for store in dm_stores)
         compliance = round(completed / expected * 100, 1) if expected else 0
         profile = managers.get(key_text(dm), {})
         pending_stores = sum(store["completed"] < store["expected"] for store in dm_stores)
@@ -463,6 +506,7 @@ def build_payload(
             "stores": len(dm_stores),
             "completed": completed,
             "expected": expected,
+            "notApplicable": not_applicable,
             "pending": expected - completed,
             "pendingStores": pending_stores,
             "compliance": compliance,
@@ -472,13 +516,14 @@ def build_payload(
     for rank, item in enumerate(dm_stats, 1):
         item["rank"] = rank
 
-    expected_total = len(stores) * len(activity_names)
+    not_applicable_total = len(not_applicable_pairs)
+    expected_total = len(stores) * len(activity_names) - not_applicable_total
     completed_total = len(completion_pairs)
     valid_responses = sum(item["valid"] for item in submissions)
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 7,
+        "schemaVersion": 8,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -512,6 +557,7 @@ def build_payload(
             "validResponses": valid_responses,
             "storesComplete": stores_complete,
             "pendingCompletions": expected_total - completed_total,
+            "notApplicableCompletions": not_applicable_total,
         },
         "quality": {
             "responsesRead": len(responses),
@@ -519,6 +565,8 @@ def build_payload(
             "unknownCeCos": sorted(unknown_cecos),
             "duplicateValidResponses": max(valid_responses - completed_total, 0),
             "unsafeEvidenceRows": unsafe_evidence_rows,
+            "notApplicableResponses": sum(item["notApplicable"] for item in submissions),
+            "notApplicablePairs": not_applicable_total,
             "evidenceLinksPublished": sum(bool(item.get("evidenceUrl")) for item in submissions),
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
         },
@@ -533,6 +581,7 @@ def build_payload(
                     "dm": store["dm"],
                     "completed": store["completed"],
                     "expected": store["expected"],
+                    "notApplicable": store["notApplicable"],
                     "pending": store["expected"] - store["completed"],
                     "compliance": store["compliance"],
                     "status": status_label(store["compliance"]),
