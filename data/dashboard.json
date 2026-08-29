@@ -2,7 +2,7 @@
   "schemaVersion": 10,
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-29T21:22:58+00:00",
+  "generatedAt": "2026-08-29T21:23:34+00:00",
   "lastUpdated": "2026-08-29T15:22:03",
   "lastUpdatedDisplay": "29/08/2026 15:22",
   "report": {
@@ -19,7 +19,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "c74cffbf61b2611f475f0f871241c9a007a13969c0af14a1b1e13f2ab8b0b487",
+    "responsesSha256": "1685af37dc0928f2d69ec1c5e506dc26377a22e8adbbfb7cbb82f35a22bc5a82",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -71,7 +71,7 @@
         "Evidencia_Mandil Verde",
         "Evidencia_Lay_Out",
         "Evidencia_Community_Board",
-        "Evidencia_ACtivacion_PSL_Sharpie"
+        "Evidencia_Activacion_PSL_Sharpie"
       ],
       "evidenceHeaderMap": {
         "Evidencia_RollOut": "rollout",
@@ -83,7 +83,7 @@
         "Evidencia_Mandil Verde": "mandilverde",
         "Evidencia_Lay_Out": "layout",
         "Evidencia_Community_Board": "communityboard",
-        "Evidencia_ACtivacion_PSL_Sharpie": "activacionpslsharpie"
+        "Evidencia_Activacion_PSL_Sharpie": "activacionpslsharpie"
       },
       "evidenceHeaderMatch": {
         "Evidencia_RollOut": "exact",
@@ -95,7 +95,7 @@
         "Evidencia_Mandil Verde": "exact",
         "Evidencia_Lay_Out": "exact",
         "Evidencia_Community_Board": "exact",
-        "Evidencia_ACtivacion_PSL_Sharpie": "exact"
+        "Evidencia_Activacion_PSL_Sharpie": "exact"
       },
       "rowConflicts": [],
       "evidenceIssues": {},
@@ -3820,7 +3820,7 @@
       "evidenceKey": "Activacion_PSL_Sharpie_38142",
       "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38142",
       "evidenceFileName": "475806a8-ee33-4297-b735-bb82ecbeb249_Hector Ruben Estevez.jpeg",
-      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "evidenceSourceHeader": "Evidencia_Activacion_PSL_Sharpie",
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": false,
@@ -3841,7 +3841,7 @@
       "evidenceKey": "Activacion_PSL_Sharpie_38925",
       "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38925",
       "evidenceFileName": "IMG_9898_Starbucks Star Medic.jpeg",
-      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "evidenceSourceHeader": "Evidencia_Activacion_PSL_Sharpie",
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": false,
