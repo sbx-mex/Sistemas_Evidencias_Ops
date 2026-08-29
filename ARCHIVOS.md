@@ -25,6 +25,7 @@
 | `exports/Resumen_Evidencias_OPS.xlsx` | Respaldo ejecutivo generado por Python. |
 | `exports/Resumen_Evidencias_OPS.pdf` | Respaldo PDF regional generado por Python. |
 | `tests/validate_project.py` | Validación integral del proyecto. |
+| `tests/validate_dynamic_forms_schema.py` | Prueba columnas de evidencia dinámicas, reordenadas o duplicadas y respuestas agregadas por filas. |
 | `tests/validate_horno_applicability.py` | Prueba 10 tiendas, 2 N/A e ideal 8 para Hornos. |
 | `tests/build_dynamic_xlsx.js` | Prueba que la exportación XLSX dinámica sea válida. |
 | `tests/build_direct_pdf.js` | Prueba que el PDF directo sea estructuralmente válido. |

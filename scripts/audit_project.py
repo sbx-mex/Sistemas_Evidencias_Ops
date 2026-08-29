@@ -67,8 +67,16 @@ for obsolete in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exce
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 8:
-    issues.append("Contrato JSON distinto de la versión 8")
+if data.get("schemaVersion") != 9:
+    issues.append("Contrato JSON distinto de la versión 9")
+response_schema = data.get("quality", {}).get("responseSchema", {})
+if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
+    issues.append("No se auditó el esquema dinámico del Excel Forms")
+if response_schema.get("rowConflicts") or any(
+    key in {"ambiguous-evidence", "ambiguous-matching-evidence", "mismatched-evidence-column", "multiple-evidence-columns"} and rows
+    for key, rows in response_schema.get("evidenceIssues", {}).items()
+):
+    issues.append("El Excel Forms contiene columnas o evidencias ambiguas")
 report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":

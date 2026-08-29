@@ -37,11 +37,16 @@ RESPONSE_FIELDS = {
     "finished": ("Hora de finalización", "Hora de finalizacion"),
     "email": ("Correo electrónico", "Correo electronico"),
     "name": ("Nombre",),
-    "activity": ("Selecciona la actividad que deseas registrar",),
-    "ceco": ("CeCo",),
-    "confirmed": ("¿Confirmas que realizaste la actividad seleccionada?",),
-    "evidence": ("Evidencia del avance",),
+    "activity": ("Selecciona la actividad que deseas registrar", "Actividad"),
+    "ceco": ("CeCo", "CC", "Centro de costo"),
 }
+
+CONFIRMATION_HEADERS = (
+    "¿Confirmas que realizaste la actividad seleccionada?",
+    "Confirmación",
+    "Confirmacion",
+)
+EVIDENCE_HEADERS = ("Evidencia", "Evidencia del avance")
 
 
 def clean_text(value: Any) -> str:
@@ -51,6 +56,11 @@ def clean_text(value: Any) -> str:
 def key_text(value: Any) -> str:
     text = unicodedata.normalize("NFD", clean_text(value).casefold())
     return "".join(char for char in text if unicodedata.category(char) != "Mn")
+
+
+def compact_key(value: Any) -> str:
+    """Clave tolerante a espacios, guiones, &, acentos y cambios de mayúsculas."""
+    return re.sub(r"[^a-z0-9]+", "", key_text(value))
 
 
 def is_yes(value: Any) -> bool:
@@ -141,6 +151,92 @@ def resolve_columns(headers: list[Any], contract: dict[str, tuple[str, ...]]) ->
     if missing:
         raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
     return result
+
+
+def matching_columns(headers: list[Any], aliases: tuple[str, ...]) -> list[int]:
+    """Devuelve todas las columnas equivalentes, incluso si Forms las duplicó."""
+    alias_keys = {key_text(alias) for alias in aliases}
+    result = []
+    for index, header in enumerate(headers):
+        current = key_text(header)
+        if not current:
+            continue
+        # Excel puede añadir sufijos .1 o (2) al desambiguar encabezados repetidos.
+        without_duplicate_suffix = re.sub(r"(?:\s*[.(]\s*\d+\s*\)?|\.\d+)$", "", current).strip()
+        if current in alias_keys or without_duplicate_suffix in alias_keys:
+            result.append(index)
+    return result
+
+
+def evidence_header_activity(header: Any) -> str | None:
+    """Obtiene la actividad codificada en Evidencia_<Actividad>; None = genérica."""
+    raw = key_text(header)
+    if not raw.startswith("evidencia"):
+        return None
+    if raw in {key_text(item) for item in EVIDENCE_HEADERS} or raw.startswith("evidencia del avance (pregunta"):
+        return None
+    suffix = re.sub(r"^evidencia(?:\s+del\s+avance)?", "", raw, count=1)
+    suffix = re.sub(r"\b(?:pregunta\s+no\s+anonima|respuesta\s+necesaria|cargar\s+archivo)\b", "", suffix)
+    return compact_key(suffix) or None
+
+
+def evidence_columns(headers: list[Any]) -> list[dict[str, Any]]:
+    result = []
+    for index, header in enumerate(headers):
+        if key_text(header).startswith("evidencia"):
+            result.append({
+                "index": index,
+                "header": clean_text(header),
+                "activityKey": evidence_header_activity(header),
+            })
+    return result
+
+
+def coalesce_row_value(row: tuple[Any, ...], indices: list[int]) -> tuple[str, bool]:
+    """Une columnas equivalentes. Si hay valores distintos, no adivina."""
+    values = []
+    for index in indices:
+        value = clean_text(row[index]) if index < len(row) else ""
+        if value and value not in values:
+            values.append(value)
+    return (values[0] if len(values) == 1 else "", len(values) > 1)
+
+
+def resolve_evidence_value(
+    row: tuple[Any, ...],
+    columns: list[dict[str, Any]],
+    activity: str,
+) -> tuple[str, str, str | None]:
+    """Selecciona la evidencia por actividad y reporta ambigüedades sin mezclar archivos."""
+    populated = []
+    for column in columns:
+        index = column["index"]
+        value = clean_text(row[index]) if index < len(row) else ""
+        if value:
+            populated.append({**column, "value": value})
+    if not populated:
+        return "", "", None
+
+    activity_key = compact_key(activity)
+    exact = [item for item in populated if item["activityKey"] == activity_key]
+    exact_values = list(dict.fromkeys(item["value"] for item in exact))
+    all_values = list(dict.fromkeys(item["value"] for item in populated))
+    if len(exact_values) == 1:
+        issue = "multiple-evidence-columns" if len(all_values) > 1 else None
+        source = next(item["header"] for item in exact if item["value"] == exact_values[0])
+        return exact_values[0], source, issue
+    if len(exact_values) > 1:
+        return "", "", "ambiguous-matching-evidence"
+
+    generic = [item for item in populated if item["activityKey"] is None]
+    generic_values = list(dict.fromkeys(item["value"] for item in generic))
+    if len(generic_values) == 1 and len(all_values) == 1:
+        source = next(item["header"] for item in generic if item["value"] == generic_values[0])
+        return generic_values[0], source, "generic-evidence-fallback"
+    if len(all_values) == 1:
+        # Una evidencia en la columna de otra actividad no se reasigna por inferencia.
+        return "", "", "mismatched-evidence-column"
+    return "", "", "ambiguous-evidence"
 
 
 def load_settings(path: Path, cms_settings: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -304,32 +400,80 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
     return stores, requested
 
 
-def load_responses(path: Path) -> list[dict[str, Any]]:
+def load_responses(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Lee exportaciones Forms antiguas, anchas o normalizadas por filas.
+
+    Soporta una sola columna genérica de evidencia, múltiples columnas
+    Evidencia_<Actividad>, encabezados duplicados y columnas reordenadas.
+    """
     workbook = load_workbook(path, read_only=True, data_only=True)
     ws = workbook[workbook.sheetnames[0]]
     rows = ws.iter_rows(values_only=True)
     headers = list(next(rows, ()))
-    columns = resolve_columns(headers, RESPONSE_FIELDS)
+    column_groups = {field: matching_columns(headers, aliases) for field, aliases in RESPONSE_FIELDS.items()}
+    missing = [aliases[0] for field, aliases in RESPONSE_FIELDS.items() if not column_groups[field]]
+    if missing:
+        raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
+    confirmation_columns = matching_columns(headers, CONFIRMATION_HEADERS)
+    evidence_group = evidence_columns(headers)
+    if not evidence_group:
+        raise ValueError("No se encontró ninguna columna de evidencia")
+
     responses = []
+    conflicts = []
+    evidence_issues: dict[str, list[int]] = defaultdict(list)
     for row_number, row in enumerate(rows, 2):
         if not any(value not in (None, "") for value in row):
             continue
-        finished = parse_datetime(row[columns["finished"]])
+        values: dict[str, str] = {}
+        row_has_conflict = False
+        for field, indices in column_groups.items():
+            values[field], conflict = coalesce_row_value(row, indices)
+            if conflict:
+                conflicts.append({"row": row_number, "field": field})
+                row_has_conflict = True
+        confirmation, confirmation_conflict = coalesce_row_value(row, confirmation_columns)
+        if confirmation_conflict:
+            conflicts.append({"row": row_number, "field": "confirmed"})
+            row_has_conflict = True
+        evidence, evidence_source, evidence_issue = resolve_evidence_value(row, evidence_group, values["activity"])
+        if evidence_issue:
+            evidence_issues[evidence_issue].append(row_number)
+        finished = parse_datetime(values["finished"])
+        explicit_no = is_no(confirmation)
+        confirmed = is_yes(confirmation) or (not confirmation and bool(evidence))
         responses.append({
             "row": row_number,
-            "id": clean_text(row[columns["id"]]) or str(row_number - 1),
-            "started": parse_datetime(row[columns["started"]]),
+            "id": values["id"] or str(row_number - 1),
+            "started": parse_datetime(values["started"]),
             "finished": finished,
-            "email": clean_text(row[columns["email"]]),
-            "name": clean_text(row[columns["name"]]),
-            "activity": clean_text(row[columns["activity"]]),
-            "ceco": normalize_ceco(row[columns["ceco"]]),
-            "confirmedAnswer": clean_text(row[columns["confirmed"]]),
-            "confirmed": is_yes(row[columns["confirmed"]]),
-            "explicitNo": is_no(row[columns["confirmed"]]),
-            "evidence": clean_text(row[columns["evidence"]]),
+            "email": values["email"],
+            "name": values["name"],
+            "activity": values["activity"],
+            "ceco": normalize_ceco(values["ceco"]),
+            "confirmedAnswer": confirmation or ("Evidencia cargada" if evidence else ""),
+            "confirmed": confirmed and not row_has_conflict,
+            "explicitNo": explicit_no and not row_has_conflict,
+            "evidence": evidence,
+            "evidenceSourceHeader": evidence_source,
+            "schemaConflict": row_has_conflict,
+            "evidenceIssue": evidence_issue,
         })
-    return responses
+    schema = {
+        "sheet": ws.title,
+        "columns": len(headers),
+        "activityHeaders": [clean_text(headers[index]) for index in column_groups["activity"]],
+        "cecoHeaders": [clean_text(headers[index]) for index in column_groups["ceco"]],
+        "confirmationHeaders": [clean_text(headers[index]) for index in confirmation_columns],
+        "evidenceHeaders": [item["header"] for item in evidence_group],
+        "evidenceHeaderMap": {
+            item["header"]: item["activityKey"] or "generic"
+            for item in evidence_group
+        },
+        "rowConflicts": conflicts,
+        "evidenceIssues": dict(evidence_issues),
+    }
+    return responses, schema
 
 
 def iso_or_none(value: datetime | None) -> str | None:
@@ -353,26 +497,10 @@ def build_payload(
     if regional_director_photo and not (ROOT / regional_director_photo).is_file():
         raise ValueError(f"No existe la fotografía del Director Regional: {regional_director_photo}")
     stores, directory_sheet = load_directory(directory_path, settings)
-    responses = load_responses(responses_path)
+    responses, response_schema = load_responses(responses_path)
 
+    # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
     configured = {key_text(item["name"]): item for item in activities}
-    for response in responses:
-        activity_key = key_text(response["activity"])
-        if activity_key and activity_key not in configured:
-            item = {
-                "name": response["activity"],
-                "description": "Actividad detectada automáticamente en las respuestas del Forms.",
-                "order": 900 + len(configured),
-                "startDate": None,
-                "endDate": None,
-                "commitmentDateDisplay": "Sin fecha compromiso",
-                "requireEvidence": settings.get("requireEvidence", True),
-                "priority": "Media",
-                "autoDetected": True,
-            }
-            activities.append(item)
-            configured[activity_key] = item
-    activities.sort(key=lambda item: (item["order"], key_text(item["name"])))
     no_means_na_keys = {
         key_text(name) for name in setting_list(settings.get("notApplicableOnNoActivities"))
     }
@@ -388,11 +516,26 @@ def build_payload(
     unknown_cecos = set()
     invalid_rows = []
     unsafe_evidence_rows = []
+    hidden_activity_rows = []
+    hidden_activities = set()
     latest_update = None
 
     for response in responses:
         store = stores.get(response["ceco"])
-        activity = canonical_activity.get(key_text(response["activity"]), response["activity"])
+        activity_key = key_text(response["activity"])
+        if response["ceco"] and not store:
+            unknown_cecos.add(response["ceco"])
+        if response["finished"] and (latest_update is None or response["finished"] > latest_update):
+            latest_update = response["finished"]
+        if not activity_key:
+            invalid_rows.append(response["row"])
+            continue
+        if activity_key not in configured:
+            hidden_activity_rows.append(response["row"])
+            hidden_activities.add(response["activity"])
+            continue
+
+        activity = canonical_activity[activity_key]
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
         no_means_not_applicable = key_text(activity) in no_means_na_keys
@@ -405,12 +548,8 @@ def build_payload(
             and response["confirmed"]
             and (evidence_available or not evidence_rules.get(key_text(activity), settings.get("requireEvidence", True)))
         )
-        if response["ceco"] and not store:
-            unknown_cecos.add(response["ceco"])
         if not valid and not not_applicable:
             invalid_rows.append(response["row"])
-        if response["finished"] and (latest_update is None or response["finished"] > latest_update):
-            latest_update = response["finished"]
 
         key = evidence_key(activity or "Evidencia", response["ceco"])
         public = {
@@ -424,6 +563,7 @@ def build_payload(
             "evidenceKey": key,
             "evidenceLinkLabel": f"Link_{key}",
             "evidenceFileName": evidence_filename(evidence_url),
+            "evidenceSourceHeader": response["evidenceSourceHeader"],
             "confirmed": response["confirmed"],
             "answer": response["confirmedAnswer"],
             "notApplicable": not_applicable,
@@ -523,7 +663,7 @@ def build_payload(
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
     return {
-        "schemaVersion": 8,
+        "schemaVersion": 9,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": settings.get("region", "Centro Norte"),
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
@@ -563,8 +703,11 @@ def build_payload(
             "responsesRead": len(responses),
             "invalidRows": invalid_rows,
             "unknownCeCos": sorted(unknown_cecos),
+            "hiddenActivityRows": hidden_activity_rows,
+            "hiddenActivities": sorted(hidden_activities, key=key_text),
             "duplicateValidResponses": max(valid_responses - completed_total, 0),
             "unsafeEvidenceRows": unsafe_evidence_rows,
+            "responseSchema": response_schema,
             "notApplicableResponses": sum(item["notApplicable"] for item in submissions),
             "notApplicablePairs": not_applicable_total,
             "evidenceLinksPublished": sum(bool(item.get("evidenceUrl")) for item in submissions),

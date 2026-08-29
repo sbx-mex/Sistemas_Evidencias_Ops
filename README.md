@@ -15,13 +15,15 @@ scripts/build_dashboard.py
 data/dashboard.json → PWA
 ```
 
-El motor utiliza exclusivamente estos encabezados del Forms:
+El motor identifica estos encabezados aunque cambie su orden o existan columnas repetidas:
 
 1. `Hora de finalización` → **Última actualización**.
 2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
 3. `CeCo` → cruce automático con nombre de tienda y DM.
-4. `¿Confirmas que realizaste la actividad seleccionada?` → `Sí` valida; únicamente en Hornos, `No` significa **No aplica**.
-5. `Evidencia del avance` → valida HTTPS y dominio autorizado; genera una etiqueta `Actividad_CeCo`.
+4. `¿Confirmas que realizaste la actividad seleccionada?` → es opcional; cuando no existe, una evidencia válida confirma el registro. Únicamente en Hornos, un `No` explícito significa **No aplica**.
+5. `Evidencia del avance` o `Evidencia_<Actividad>` → Python elige la columna que coincide con la actividad seleccionada, valida HTTPS y dominio autorizado y genera una etiqueta `Actividad_CeCo`.
+
+También admite el formato largo: si las respuestas nuevas aparecen hacia abajo como más filas y usan una columna genérica de evidencia, cada fila se procesa de forma independiente. Si una fila contiene valores contradictorios, evidencia en la columna de otra actividad o varias evidencias incompatibles, se marca en `quality.responseSchema` y no se publica como válida.
 
 El correo y el nombre del respondente no se publican. Por autorización operativa, el dashboard muestra el nombre real del archivo y el vínculo directo de SharePoint exactamente como viene en Forms, después de validar HTTPS y el dominio permitido.
 
@@ -36,6 +38,7 @@ pip install -r requirements.txt
 python scripts/build_dashboard.py
 python scripts/export_excel.py
 python scripts/export_pdf.py
+python tests/validate_dynamic_forms_schema.py
 python tests/validate_horno_applicability.py
 python tests/validate_project.py
 python scripts/audit_project.py
@@ -50,7 +53,7 @@ Edita `cms/Sistema_Evidencias_OPS_CMS.xlsx`:
 - `Activo`: `Si` publica la actividad; `No` la retira del cumplimiento esperado.
 - `Descripción`: contexto que verá el usuario en el dashboard.
 
-En `Configuracion` se administran región, privacidad, dominios autorizados y Director Regional. Si aparece una actividad nueva en Forms, Python la integra como detectada para evitar pérdida de información.
+En `Configuracion` se administran región, privacidad, dominios autorizados y Director Regional. Forms puede seguir acumulando actividades y respuestas, pero **sólo las actividades activas y vigentes del CMS se publican y forman parte del denominador**. Las actividades presentes en Forms pero no habilitadas en CMS se conservan en la fuente y se reportan como ocultas en la auditoría.
 
 ## Evidencias y alcance seguro
 
@@ -79,9 +82,9 @@ Consulta [MEJORAS.md](MEJORAS.md) para el detalle verificable. La actualización
 Una combinación tienda–actividad cuenta una sola vez cuando:
 
 - el CeCo contiene exactamente cinco dígitos y existe en el directorio;
-- la respuesta de confirmación es `Sí`;
+- la respuesta de confirmación es `Sí` o, si esa pregunta ya no existe, se encontró la evidencia correspondiente a la actividad;
 - existe vínculo HTTPS en un dominio autorizado;
-- la actividad está activa o fue detectada en el Forms.
+- la actividad está activa y vigente en el CMS.
 
 Envíos repetidos se conservan como registros, pero el cumplimiento se deduplica por `CeCo + Actividad`, utilizando el más reciente.
 
@@ -111,6 +114,6 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 - 72 tiendas abiertas de la hoja `72 T`, alineadas con las seis fotografías proporcionadas.
 - 8 actividades activas.
-- Última actualización: `28/08/2026 20:39`.
-- CeCo `38401` cruzado como `Coacalco` y asignado a `Enrique Cesar Flores`.
-- 2 respuestas válidas y 0 CeCo sin cruce.
+- Última actualización: `29/08/2026 09:43`.
+- CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.
+- 7 respuestas válidas, 8 columnas dinámicas de evidencia y 0 CeCo sin cruce.
