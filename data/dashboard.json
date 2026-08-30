@@ -1,17 +1,17 @@
 {
   "schemaVersion": 11,
-  "buildVersion": "324e9c2f336abc97",
+  "buildVersion": "533d83a38860057e",
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-30T23:00:16+00:00",
-  "lastUpdated": "2026-08-30T16:53:43",
-  "lastUpdatedDisplay": "30/08/2026 16:53",
+  "generatedAt": "2026-08-30T23:08:18+00:00",
+  "lastUpdated": "2026-08-30T17:01:48",
+  "lastUpdatedDisplay": "30/08/2026 17:01",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "JUNTÉMONOS MÁS",
     "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
-    "cutOffDisplay": "30/08/26 · 16:53 h",
+    "cutOffDisplay": "30/08/26 · 17:01 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -20,7 +20,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "22ac3a4057fb3bd80c81a0343c0a0072ca58e35975d40ac554cba914d0cae322",
+    "responsesSha256": "82c6dde3381a5553ffdd4ba98c0b3c50c7651007344e6402a3409c04a64da2c4",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -32,15 +32,15 @@
     "stores": 72,
     "activities": 10,
     "expectedCompletions": 719,
-    "completedCompletions": 55,
-    "compliance": 7.6,
-    "validResponses": 55,
+    "completedCompletions": 56,
+    "compliance": 7.8,
+    "validResponses": 56,
     "storesComplete": 0,
-    "pendingCompletions": 664,
+    "pendingCompletions": 663,
     "notApplicableCompletions": 1
   },
   "quality": {
-    "responsesRead": 56,
+    "responsesRead": 57,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [],
@@ -104,7 +104,7 @@
     },
     "notApplicableResponses": 1,
     "notApplicablePairs": 1,
-    "evidenceLinksPublished": 55,
+    "evidenceLinksPublished": 56,
     "privacyMode": false
   },
   "calendar": {
@@ -126,11 +126,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 32,
+      "completedStores": 33,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 40,
-      "compliance": 44.4,
+      "pendingStores": 39,
+      "compliance": 45.8,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -355,12 +355,12 @@
       "shortName": "Yazmin Chabela",
       "photo": "assets/dm/yazmin-chabela.webp",
       "stores": 13,
-      "completed": 17,
+      "completed": 18,
       "expected": 130,
       "notApplicable": 0,
-      "pending": 113,
+      "pending": 112,
       "pendingStores": 13,
-      "compliance": 13.1,
+      "compliance": 13.8,
       "status": "Atención",
       "rank": 2
     },
@@ -698,17 +698,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38458",
-      "store": "El Rosario",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38176",
       "store": "Periferico Satélite DT",
       "dm": "Yazmin Chabela Guadarrama",
@@ -953,6 +942,17 @@
     {
       "ceco": "38197",
       "store": "Echegaray",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38458",
+      "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 1,
       "expected": 10,
@@ -2950,11 +2950,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-08-30T17:01:48",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -2965,7 +2965,7 @@
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false
+        "Activacion PSL Sharpie": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3810,6 +3810,27 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-3a9e8237498be6d7",
+      "timestamp": "2026-08-30T17:01:48",
+      "timestampDisplay": "30/08/2026 17:01",
+      "activity": "Activacion PSL Sharpie",
+      "ceco": "38458",
+      "store": "El Rosario",
+      "dm": "Yazmin Chabela Guadarrama",
+      "evidenceKey": "Activacion_PSL_Sharpie_38458",
+      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38458",
+      "evidenceFileName": "515AC9EF-8E43-402A-BB95-2CFA3C1130AB_Starbucks El Rosario.png",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/515AC9EF-8E43-402A-BB95-2CFA3C1130AB_Starbucks%20El%20Rosario.png"
+    },
     {
       "id": "respuesta-9abe15f8e2335cff",
       "timestamp": "2026-08-30T16:53:43",
