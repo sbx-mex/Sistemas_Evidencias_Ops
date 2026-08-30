@@ -1,9 +1,9 @@
 {
   "schemaVersion": 11,
-  "buildVersion": "b0089165d8b41066",
+  "buildVersion": "2111a57696e98fe0",
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-30T23:26:06+00:00",
+  "generatedAt": "2026-08-30T23:53:52+00:00",
   "lastUpdated": "2026-08-30T17:24:35",
   "lastUpdatedDisplay": "30/08/2026 17:24",
   "report": {
@@ -20,7 +20,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "679932759634478b7ca4f5e227b2a769ace1ff1202efb5e9746f48a46655ce40",
+    "responsesSha256": "706b2df6b2eb405fc455f035b1eae264c6d3e48f587fd0774cbf2bfa46eb7bb9",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -34,18 +34,18 @@
     "expectedCompletions": 719,
     "completedCompletions": 65,
     "compliance": 9.0,
-    "validResponses": 66,
+    "validResponses": 65,
     "storesComplete": 0,
     "pendingCompletions": 654,
     "notApplicableCompletions": 1
   },
   "quality": {
-    "responsesRead": 67,
+    "responsesRead": 66,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [],
     "hiddenActivities": [],
-    "duplicateValidResponses": 1,
+    "duplicateValidResponses": 0,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -104,7 +104,7 @@
     },
     "notApplicableResponses": 1,
     "notApplicablePairs": 1,
-    "evidenceLinksPublished": 66,
+    "evidenceLinksPublished": 65,
     "privacyMode": false
   },
   "calendar": {
@@ -3830,27 +3830,6 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/17881192969132117885562748587632_Starbucks%20San%20Marcos.jpg"
-    },
-    {
-      "id": "respuesta-fcaf50d4647409d0",
-      "timestamp": "2026-08-30T17:19:55",
-      "timestampDisplay": "30/08/2026 17:19",
-      "activity": "Activacion PSL Sharpie",
-      "ceco": "38339",
-      "store": "San Marcos",
-      "dm": "Enrique Cesar Flores",
-      "evidenceKey": "Activacion_PSL_Sharpie_38339",
-      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38339",
-      "evidenceFileName": "IMG-20260829-WA0169_Enrique Cesar Flores.jpg",
-      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/IMG-20260829-WA0169_Enrique%20Cesar%20Flores.jpg"
     },
     {
       "id": "respuesta-4a5bc988ba254067",
