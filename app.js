@@ -210,7 +210,7 @@ function renderTeam() {
     return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}">
       <span class="rank-icon" aria-label="Posición ${index + 1}">${rank}</span>
       <img src="./${esc(dm.photo)}" alt="Fotografía de ${esc(dm.shortName)}" loading="lazy">
-      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.completed} realizadas · ${dm.expected - dm.completed} pendientes</em></span>
+      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.expected - dm.completed} pendientes</em></span>
       <span class="dm-result"><strong>${percent(dm.value)}</strong><small class="status ${signal.tone}">${signal.label}</small></span>
     </button>`;
   }).join("") || '<div class="empty-state">Sin gerentes para el filtro seleccionado.</div>';
@@ -302,9 +302,24 @@ function reportScope() {
   return state.filters.store ? `Tienda · ${currentScope()}` : state.filters.dm ? `DM · ${state.filters.dm}` : `Región · ${state.data.region}`;
 }
 
+function exportActivityLabel() {
+  return state.filters.activity || "Todas las actividades";
+}
+
+function exportScopeSummary() {
+  const item = metrics();
+  if (state.filters.store) {
+    return `Tienda · ${currentScope()} · ${number(item.pending)} pendientes`;
+  }
+  if (state.filters.dm) {
+    return `DM · ${state.filters.dm} · ${number(item.stores)} tiendas · ${number(item.pending)} pendientes`;
+  }
+  return `Región · ${state.data.region} · ${number(item.stores)} tiendas · ${number(item.pending)} pendientes`;
+}
+
 function exportContext(format) {
   const item = metrics();
-  const activity = state.filters.activity || "Todas las actividades";
+  const activity = exportActivityLabel();
   const type = state.filters.store ? "Tienda" : state.filters.dm ? "DM" : "Regional";
   const name = state.filters.store ? currentScope() : state.filters.dm || state.data.region;
   const filename = `Sistema_Evidencia_OPS_${type}_${fileSafe(name)}_${fileSafe(activity)}_Corte_${cutDate().replaceAll("/", "-")}.${format}`;
@@ -313,8 +328,9 @@ function exportContext(format) {
     summary: [
       ["Alcance", `${type} · ${name}`],
       ["Actividad", activity],
-      ["Avance", `${number(item.completed)} realizadas / ${number(item.expected)} aplican / ${percent(item.compliance)}`],
-      ["No aplica", number(item.notApplicable)],
+      ["Tiendas", number(item.stores)],
+      ["Pendientes", number(item.pending)],
+      ["Avance", `${number(item.completed)} / ${number(item.expected)} · ${percent(item.compliance)}`],
     ],
   };
 }
@@ -379,7 +395,8 @@ async function renderPdfPages() {
     context.textAlign = "center";
     context.fillStyle = "#a9dbc5"; context.font = "800 18px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 45);
     context.fillStyle = "#ffffff"; context.font = "800 38px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 91);
-    context.font = "650 20px Segoe UI, sans-serif"; context.fillText(fitText(context, `${reportScope()} · Corte ${cutStamp()}`, 850), 800, 132);
+    context.font = "650 20px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 900), 800, 128);
+    context.fillStyle = "#b9e1d0"; context.font = "750 17px Segoe UI, sans-serif"; context.fillText(fitText(context, `Actividad · ${exportActivityLabel()}`, 900), 800, 158);
     context.textAlign = "left";
 
     if (profilePhoto) {
@@ -450,8 +467,9 @@ async function exportImage() {
     context.textAlign = "center";
     context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 55);
     context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 108);
-    context.font = "600 22px Segoe UI, sans-serif"; context.fillText(`${reportScope()} · Corte ${cutStamp()}`, 800, 150);
-    context.fillStyle = "#b9e1d0"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`AVANCE REALIZADO  ${number(current.completed)} / ${number(current.expected)}   |   PENDIENTES  ${number(current.pending)}   |   % AVANCE  ${percent(current.compliance)}`, 800, 188);
+    context.font = "600 20px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 930), 800, 145);
+    context.fillStyle = "#b9e1d0"; context.font = "700 17px Segoe UI, sans-serif"; context.fillText(fitText(context, `ACTIVIDAD  ${exportActivityLabel()}`, 930), 800, 177);
+    context.font = "700 16px Segoe UI, sans-serif"; context.fillText(`AVANCE  ${number(current.completed)} / ${number(current.expected)}   |   ${percent(current.compliance)}`, 800, 205);
     context.textAlign = "left";
     if (profilePhoto) {
       context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1217, 62, 86, 86); context.restore();

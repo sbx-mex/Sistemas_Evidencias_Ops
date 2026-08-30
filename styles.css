@@ -47,7 +47,7 @@ main { display: grid; max-width: 1280px; gap: 22px; margin: auto; padding: 30px 
 .filters { display: grid; grid-template-columns: repeat(3, 1fr) auto auto; gap: 10px; align-items: end; border: 1px solid var(--line); border-radius: 18px; background: white; padding: 14px; }
 .filters label { display: grid; gap: 6px; }.filters label span { color: var(--muted); font-size: .64rem; font-weight: 800; }
 select { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 11px; background: white; color: var(--ink); padding: 0 35px 0 11px; }
-.export-actions { display: flex; gap: 6px; }.export-actions .button { display: flex; align-items: center; justify-content: center; gap: 7px; }
+.export-actions { display: flex; gap: 6px; }.export-actions .button { display: flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; }
 .summary { display: grid; grid-template-columns: minmax(360px, 1.05fr) 1fr; gap: 14px; }
 .main-score { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; border: 1px solid #bfd8cc; border-radius: 20px; background: linear-gradient(120deg, #f1f8f5, #fff); padding: 20px; }
 .score-ring { --score: 0deg; display: grid; width: 110px; height: 110px; place-content: center; justify-items: center; border-radius: 50%; background: radial-gradient(circle, white 59%, transparent 61%), conic-gradient(var(--green) var(--score), #dfe8e4 0); }
