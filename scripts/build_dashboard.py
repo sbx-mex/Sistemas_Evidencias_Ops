@@ -19,7 +19,7 @@ import json
 import re
 import unicodedata
 import zipfile
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -930,6 +930,13 @@ def build_payload(
         if current is None or item_sort > current_sort:
             latest_submission_by_pair[pair] = item
     submissions = list(latest_submission_by_pair.values())
+    latest_timestamp_by_ceco: dict[str, datetime] = {}
+    for (ceco, _), item in latest_by_pair.items():
+        finished = item.get("finished")
+        if finished and (ceco not in latest_timestamp_by_ceco or finished > latest_timestamp_by_ceco[ceco]):
+            latest_timestamp_by_ceco[ceco] = finished
+    completed_by_activity = Counter(activity for _, activity in completion_pairs)
+    not_applicable_by_activity = Counter(activity for _, activity in not_applicable_pairs)
     store_rows = []
     for ceco, store in sorted(stores.items(), key=lambda item: (key_text(item[1]["dm"]), key_text(item[1]["store"]))):
         status = {activity: (ceco, activity) in completion_pairs for activity in activity_names}
@@ -937,22 +944,21 @@ def build_payload(
         completed = sum(status.values())
         expected = sum(applicability.values())
         not_applicable = len(activity_names) - expected
-        timestamps = [item["finished"] for (pair_ceco, _), item in latest_by_pair.items() if pair_ceco == ceco and item["finished"]]
         store_rows.append({
             **store,
             "completed": completed,
             "expected": expected,
             "notApplicable": not_applicable,
             "compliance": round(completed / expected * 100, 1) if expected else 0,
-            "lastUpdate": iso_or_none(max(timestamps)) if timestamps else None,
+            "lastUpdate": iso_or_none(latest_timestamp_by_ceco.get(ceco)),
             "activities": status,
             "applicableActivities": applicability,
         })
 
     activity_stats = []
     for item in activities:
-        completed = sum((ceco, item["name"]) in completion_pairs for ceco in stores)
-        not_applicable = sum((ceco, item["name"]) in not_applicable_pairs for ceco in stores)
+        completed = completed_by_activity[item["name"]]
+        not_applicable = not_applicable_by_activity[item["name"]]
         applicable = len(stores) - not_applicable
         pending = applicable - completed
         activity_stats.append({

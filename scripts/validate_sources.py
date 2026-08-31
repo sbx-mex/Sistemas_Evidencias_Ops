@@ -223,7 +223,10 @@ def main() -> None:
     controls = quality.get("stabilityControls", {})
     if len(controls) != 10 or not all(controls.values()):
         raise SystemExit("Fuentes rechazadas: controles de estabilidad incompletos")
-    print(f"Estabilidad {quality.get('stabilityScore')} · encabezados dinámicos · filas dinámicas · última respuesta única")
+    print(
+        f"Estabilidad {quality.get('stabilityScore')} · encabezados dinámicos · filas dinámicas · "
+        f"{quality.get('duplicateValidResponses', 0)} respuestas históricas deduplicadas"
+    )
     print(
         "Motores auditados · "
         f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['settings']} parámetros · "

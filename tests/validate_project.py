@@ -13,7 +13,7 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import evidence_key, file_sha256, key_text, load_responses, safe_evidence_url
+from scripts.build_dashboard import compact_key, evidence_key, file_sha256, load_responses, safe_evidence_url
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -142,17 +142,26 @@ forms_responses, forms_schema = load_responses(
     ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
     [item["name"] for item in data.get("activities", [])],
 )
-active_names = {key_text(item["name"]) for item in data.get("activities", [])}
-excel_links = [
-    row["evidence"] for row in forms_responses
-    if row["evidence"] and key_text(row["activity"]) in active_names and row["ceco"]
-]
+active_by_key = {compact_key(item["name"]): item["name"] for item in data.get("activities", [])}
+stores_by_ceco = {item["ceco"]: item for item in data.get("stores", [])}
+latest_excel_by_pair = {}
+for row in forms_responses:
+    activity = active_by_key.get(compact_key(row["activity"]))
+    evidence_url = safe_evidence_url(row["evidence"], allowed_hosts)
+    if not activity or row["ceco"] not in stores_by_ceco or not row["confirmed"] or row["explicitNo"] or not evidence_url:
+        continue
+    pair = (row["ceco"], activity)
+    row_sort = (row["finished"].isoformat() if row["finished"] else "", row["row"])
+    current = latest_excel_by_pair.get(pair)
+    if current is None or row_sort > current[0]:
+        latest_excel_by_pair[pair] = (row_sort, evidence_url)
+expected_excel_links = {item[1] for item in latest_excel_by_pair.values()}
 if data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
     fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
 if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
     fail("Nombre de archivo o vínculo directo inválido")
-if {row["evidenceUrl"] for row in published} != set(excel_links):
-    fail("El vínculo publicado no coincide exactamente con el Excel")
+if {row["evidenceUrl"] for row in published} != expected_excel_links:
+    fail("La última evidencia publicada por tienda y actividad no coincide con el Excel")
 if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"] or forms_schema.get("applicabilityIssues"):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
 if any(match not in {"exact", "affinity", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
@@ -163,7 +172,6 @@ for row in published:
         fail("El nombre de archivo no coincide con el vínculo del Excel")
 if data.get("submissions") and data["submissions"][0].get("timestampDisplay") != data.get("lastUpdatedDisplay"):
     fail("La última actualización no coincide con la respuesta más reciente")
-stores_by_ceco = {item["ceco"]: item for item in data.get("stores", [])}
 for submission in published:
     store = stores_by_ceco.get(submission["ceco"])
     if not store or store["store"] != submission["store"] or store["dm"] != submission["dm"]:

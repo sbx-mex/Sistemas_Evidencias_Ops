@@ -179,6 +179,13 @@ director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
 published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
+published_pairs = [(item.get("ceco"), item.get("activity")) for item in published_evidence]
+if len(published_pairs) != len(set(published_pairs)):
+    issues.append("Hay evidencias publicadas duplicadas para la misma tienda y actividad")
+if data.get("summary", {}).get("validResponses") != len(published_evidence):
+    issues.append("El resumen no coincide con las evidencias vigentes deduplicadas")
+if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
+    issues.append("El contador de respuestas históricas deduplicadas es inválido")
 if data.get("quality", {}).get("unsafeEvidenceRows"):
     issues.append("Se detectaron evidencias con vínculo inseguro")
 if any(not item.get("evidenceFileName") or not item.get("evidenceUrl") or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}" or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com" for item in published_evidence):
