@@ -168,8 +168,16 @@ if published_excel_links != expected_excel_links:
     fail(f"La última evidencia por tienda y actividad no coincide: faltan {missing}, sobran {unexpected}, cambiaron {changed}")
 if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"] or forms_schema.get("applicabilityIssues"):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
-if any(match not in {"exact", "affinity", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
-    fail("Un encabezado de evidencia no pudo relacionarse de forma segura con el CMS")
+evidence_header_matches = forms_schema.get("evidenceHeaderMatch", {})
+evidence_header_map = forms_schema.get("evidenceHeaderMap", {})
+if any(match not in {"exact", "affinity", "generic", "unverified"} for match in evidence_header_matches.values()):
+    fail("Un encabezado de evidencia produjo una relación ambigua o insegura")
+for header, match in evidence_header_matches.items():
+    mapped_key = evidence_header_map.get(header)
+    if match in {"exact", "affinity"} and mapped_key not in active_by_key:
+        fail(f"El encabezado {header} declara una actividad CMS inexistente")
+    if match == "unverified" and mapped_key in active_by_key:
+        fail(f"El encabezado {header} dejó sin relacionar una actividad activa del CMS")
 for row in published:
     expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
     if row["evidenceFileName"] != expected_name:

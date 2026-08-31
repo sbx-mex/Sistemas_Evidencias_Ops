@@ -9,7 +9,7 @@ from urllib.parse import unquote, urlsplit
 
 from PIL import Image
 
-from build_dashboard import file_sha256, validate_xlsx
+from build_dashboard import compact_key, file_sha256, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -160,8 +160,17 @@ if len(stability_controls) != 10 or not all(stability_controls.values()) or data
     issues.append("Los 10 controles Python de estabilidad no están activos")
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
-if any(match not in {"exact", "affinity", "generic"} for match in response_schema.get("evidenceHeaderMatch", {}).values()):
-    issues.append("Hay encabezados de evidencia sin coincidencia segura en el CMS")
+active_activity_keys = {compact_key(item.get("name")) for item in data.get("activities", [])}
+evidence_header_matches = response_schema.get("evidenceHeaderMatch", {})
+evidence_header_map = response_schema.get("evidenceHeaderMap", {})
+if any(match not in {"exact", "affinity", "generic", "unverified"} for match in evidence_header_matches.values()):
+    issues.append("Hay encabezados de evidencia con una relación ambigua o insegura")
+if any(
+    (match in {"exact", "affinity"} and evidence_header_map.get(header) not in active_activity_keys)
+    or (match == "unverified" and evidence_header_map.get(header) in active_activity_keys)
+    for header, match in evidence_header_matches.items()
+):
+    issues.append("La relación entre encabezados de evidencia y actividades CMS es incongruente")
 if response_schema.get("rowConflicts") or any(
     key in {"ambiguous-evidence", "ambiguous-matching-evidence", "mismatched-evidence-column", "multiple-evidence-columns"} and rows
     for key, rows in response_schema.get("evidenceIssues", {}).items()

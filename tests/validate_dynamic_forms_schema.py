@@ -132,6 +132,12 @@ def main() -> None:
             hidden_cms,
         )
         hidden_cms_activities, _, _, _ = load_cms(hidden_cms)
+        _, hidden_schema = load_responses(
+            hidden,
+            [item["name"] for item in hidden_cms_activities],
+        )
+        assert hidden_schema["evidenceHeaderMatch"]["Evidencia_RollOut"] == "unverified"
+        assert hidden_schema["evidenceHeaderMatch"]["Evidencia_Nueva_Actividad"] == "unverified"
         assert payload["summary"]["activities"] == len(hidden_cms_activities)
         assert "Roll Out" not in {item["name"] for item in payload["activities"]}
         assert payload["submissions"] == []
