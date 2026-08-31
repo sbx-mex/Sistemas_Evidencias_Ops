@@ -306,6 +306,12 @@ function exportActivityLabel() {
   return state.filters.activity || "Todas las actividades";
 }
 
+function exportAdvanceLabel() {
+  if (state.filters.store) return "AVANCE TIENDA";
+  if (state.filters.dm) return "AVANCE DM";
+  return "AVANCE REGIÓN";
+}
+
 function exportScopeSummary() {
   const item = metrics();
   if (state.filters.store) {
@@ -375,7 +381,6 @@ async function renderPdfPages() {
   const meta = reportMeta();
   const current = metrics();
   const mode = exportMode();
-  const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp" };
   const profile = exportProfile();
   const sources = ["./assets/icons/icon-64.webp", `./${profile.photo}`, ...rows.map((item) => item.photo ? `./${item.photo}` : "")];
   const loaded = await Promise.all(sources.map((source) => source ? loadImage(source) : Promise.resolve(null)));
@@ -393,10 +398,10 @@ async function renderPdfPages() {
     context.fillStyle = "#006241"; context.fillRect(0, 0, 1600, 205);
     if (logo) context.drawImage(logo, 55, 66, 76, 76);
     context.textAlign = "center";
-    context.fillStyle = "#a9dbc5"; context.font = "800 18px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 45);
-    context.fillStyle = "#ffffff"; context.font = "800 38px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 91);
-    context.font = "650 20px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 900), 800, 128);
-    context.fillStyle = "#b9e1d0"; context.font = "750 17px Segoe UI, sans-serif"; context.fillText(fitText(context, `Actividad · ${exportActivityLabel()}`, 900), 800, 158);
+    context.fillStyle = "#ffffff"; context.font = "800 38px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 55);
+    context.font = "650 18px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 800), 800, 91);
+    context.fillStyle = "#ffffff"; context.font = "850 27px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 800), 800, 136);
+    context.fillStyle = "#b9e1d0"; context.font = "800 18px Segoe UI, sans-serif"; context.fillText(`${exportAdvanceLabel()}  ·  ${percent(current.compliance)}`, 800, 174);
     context.textAlign = "left";
 
     if (profilePhoto) {
@@ -404,13 +409,16 @@ async function renderPdfPages() {
       context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(profile.name, 1184, 162);
       context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1184, 181);
     }
-    const cards = [["AVANCE REALIZADO", `${number(current.completed)} / ${number(current.expected)}`], ["PENDIENTES", number(current.pending)], ["% AVANCE", percent(current.compliance)]];
-    cards.forEach(([label, value], cardIndex) => {
-      const x = 55 + cardIndex * 503;
-      context.fillStyle = cardIndex === 2 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, 483, 82);
+    const cards = [
+      ["AVANCE REALIZADO", `${number(current.completed)} / ${number(current.expected)}`, 55, 355],
+      ["PENDIENTES", number(current.pending), 425, 355],
+      [exportAdvanceLabel(), percent(current.compliance), 795, 750],
+    ];
+    cards.forEach(([label, value, x, width], cardIndex) => {
+      context.fillStyle = cardIndex === 2 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, width, 82);
       context.textAlign = "center";
-      context.fillStyle = "#5d7067"; context.font = "750 14px Segoe UI, sans-serif"; context.fillText(label, x + 241, 252);
-      context.fillStyle = "#1e3932"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(value, x + 241, 287);
+      context.fillStyle = "#5d7067"; context.font = "750 14px Segoe UI, sans-serif"; context.fillText(label, x + width / 2, 252);
+      context.fillStyle = "#1e3932"; context.font = `850 ${cardIndex === 2 ? 38 : 28}px Segoe UI, sans-serif`; context.fillText(value, x + width / 2, 289);
       context.textAlign = "left";
     });
 
@@ -454,7 +462,6 @@ async function exportImage() {
     const meta = reportMeta();
     const current = metrics();
     const mode = exportMode();
-    const director = meta.regionalDirector || { name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp" };
     const profile = exportProfile();
     const width = 1600; const headerHeight = 230; const tableHeader = 72; const rowHeight = mode === "dms" ? 148 : 108; const footerHeight = 110;
     const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = headerHeight + tableHeader + Math.max(rows.length, 1) * rowHeight + footerHeight;
@@ -465,11 +472,10 @@ async function exportImage() {
     const [logo, profilePhoto, ...photos] = assets;
     if (logo) context.drawImage(logo, 72, 70, 78, 78);
     context.textAlign = "center";
-    context.fillStyle = "#b9e1d0"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(meta.motto, 800, 55);
-    context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 108);
-    context.font = "600 20px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 930), 800, 145);
-    context.fillStyle = "#b9e1d0"; context.font = "700 17px Segoe UI, sans-serif"; context.fillText(fitText(context, `ACTIVIDAD  ${exportActivityLabel()}`, 930), 800, 177);
-    context.font = "700 16px Segoe UI, sans-serif"; context.fillText(`AVANCE  ${number(current.completed)} / ${number(current.expected)}   |   ${percent(current.compliance)}`, 800, 205);
+    context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 55);
+    context.font = "600 19px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 800), 800, 91);
+    context.font = "850 31px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 800), 800, 143);
+    context.fillStyle = "#b9e1d0"; context.font = "850 27px Segoe UI, sans-serif"; context.fillText(`${exportAdvanceLabel()}  ${percent(current.compliance)}`, 800, 188);
     context.textAlign = "left";
     if (profilePhoto) {
       context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1217, 62, 86, 86); context.restore();
@@ -499,8 +505,7 @@ async function exportImage() {
     });
     const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
     context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
-    context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 72, footerY + 79);
-    context.textAlign = "right"; context.fillStyle = "#ffffff"; context.font = "700 18px Segoe UI, sans-serif"; context.fillText(`${director.role} · ${director.name}`, 1525, footerY + 64); context.textAlign = "left";
+    context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 1525, footerY + 64); context.textAlign = "left";
     const exportInfo = exportContext("png");
     const blob = await new Promise((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error("No fue posible crear la imagen.")), "image/png"));
     const url = URL.createObjectURL(blob);

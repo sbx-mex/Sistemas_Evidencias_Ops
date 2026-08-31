@@ -234,7 +234,7 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportScopeSummary", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "exportScopeSummary", "AVANCE REGIÓN", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
     if text not in js:
         if text not in html + css:
             fail(f"Funcionalidad faltante: {text}")
@@ -243,6 +243,15 @@ for forbidden in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exc
         fail(f"La confirmación final conserva una acción obsoleta: {forbidden}")
 if "tiendas · ${dm.completed} realizadas" in js:
     fail("Ranking DM todavía muestra realizadas junto a tiendas")
+for redundant_export_text in (
+    'fillText(meta.motto, 800, 45)',
+    'fillText(meta.motto, 800, 55)',
+    '`Actividad · ${exportActivityLabel()}`',
+    '`ACTIVIDAD  ${exportActivityLabel()}`',
+    '`${director.role} · ${director.name}`',
+):
+    if redundant_export_text in js:
+        fail(f"Exportación redundante: {redundant_export_text}")
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")

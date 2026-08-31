@@ -57,7 +57,7 @@ for forbidden in ("Gerente de Distrito</small>",):
 for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportScopeSummary", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
+for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "exportScopeSummary", "AVANCE REGIÓN", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 for required in ("Valida tu archivo", "Carpeta Descargas", "URL.revokeObjectURL(state.exportUrl)"):
@@ -68,6 +68,15 @@ for obsolete in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Exce
         issues.append(f"La confirmación conserva una acción obsoleta: {obsolete}")
 if "tiendas · ${dm.completed} realizadas" in js:
     issues.append("Ranking DM repite el número de realizadas")
+for redundant_export_text in (
+    'fillText(meta.motto, 800, 45)',
+    'fillText(meta.motto, 800, 55)',
+    '`Actividad · ${exportActivityLabel()}`',
+    '`ACTIVIDAD  ${exportActivityLabel()}`',
+    '`${director.role} · ${director.name}`',
+):
+    if redundant_export_text in js:
+        issues.append(f"Texto redundante en exportación: {redundant_export_text}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 source_fingerprints = {}
