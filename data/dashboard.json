@@ -1,17 +1,17 @@
 {
   "schemaVersion": 11,
-  "buildVersion": "b716b508e8b2a527",
+  "buildVersion": "c95627d77d4e376e",
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-31T18:45:26+00:00",
-  "lastUpdated": "2026-08-31T12:28:18",
-  "lastUpdatedDisplay": "31/08/2026 12:28",
+  "generatedAt": "2026-08-31T18:47:03+00:00",
+  "lastUpdated": "2026-08-31T12:45:59",
+  "lastUpdatedDisplay": "31/08/2026 12:45",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "JUNTÉMONOS MÁS",
     "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
-    "cutOffDisplay": "31/08/26 · 12:28 h",
+    "cutOffDisplay": "31/08/26 · 12:45 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -20,7 +20,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "5b707e3882881d0ed728e42ffc2fbccb7979125ebc504be345c40ba2e498ada0",
+    "responsesSha256": "2eda74ce7026a354ab10e945bf8c5496cf010004791daffee84c5e1a0b1eccad",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -32,15 +32,15 @@
     "stores": 72,
     "activities": 10,
     "expectedCompletions": 718,
-    "completedCompletions": 102,
-    "compliance": 14.2,
-    "validResponses": 102,
+    "completedCompletions": 105,
+    "compliance": 14.6,
+    "validResponses": 105,
     "storesComplete": 0,
-    "pendingCompletions": 616,
+    "pendingCompletions": 613,
     "notApplicableCompletions": 2
   },
   "quality": {
-    "responsesRead": 109,
+    "responsesRead": 112,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -117,7 +117,7 @@
     },
     "notApplicableResponses": 2,
     "notApplicablePairs": 2,
-    "evidenceLinksPublished": 102,
+    "evidenceLinksPublished": 105,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -152,11 +152,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 54,
+      "completedStores": 57,
       "applicableStores": 72,
       "notApplicableStores": 0,
-      "pendingStores": 18,
-      "compliance": 75.0,
+      "pendingStores": 15,
+      "compliance": 79.2,
       "deadlineLabel": "Vence hoy",
       "deadlineTone": "red",
       "daysRemaining": 0,
@@ -395,12 +395,12 @@
       "shortName": "Veronica Garcia",
       "photo": "assets/dm/veronica-garcia.webp",
       "stores": 11,
-      "completed": 11,
+      "completed": 13,
       "expected": 110,
       "notApplicable": 0,
-      "pending": 99,
+      "pending": 97,
       "pendingStores": 11,
-      "compliance": 10.0,
+      "compliance": 11.8,
       "status": "Atención",
       "rank": 3
     },
@@ -409,12 +409,12 @@
       "shortName": "Vanessa Carreño",
       "photo": "assets/dm/vanessa-carreno.webp",
       "stores": 13,
-      "completed": 11,
+      "completed": 12,
       "expected": 130,
       "notApplicable": 0,
-      "pending": 119,
+      "pending": 118,
       "pendingStores": 13,
-      "compliance": 8.5,
+      "compliance": 9.2,
       "status": "Atención",
       "rank": 4
     },
@@ -504,17 +504,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38529",
       "store": "Bosques de Aragon",
       "dm": "Veronica Garcia Ortega",
@@ -561,17 +550,6 @@
     {
       "ceco": "38811",
       "store": "Plaza Tepeyac",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38992",
-      "store": "Tapo Puerta Oriente",
       "dm": "Veronica Garcia Ortega",
       "completed": 0,
       "expected": 10,
@@ -724,6 +702,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "43111",
       "store": "Montevideo Insurgentes",
       "dm": "Vanessa Carreño Rios",
@@ -836,6 +825,17 @@
     {
       "ceco": "38924",
       "store": "Plaza Aeropuerto",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38992",
+      "store": "Tapo Puerta Oriente",
       "dm": "Veronica Garcia Ortega",
       "completed": 1,
       "expected": 10,
@@ -1233,12 +1233,12 @@
       "ceco": "38719",
       "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "pending": 3,
-      "compliance": 70.0,
-      "status": "Seguimiento"
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
     }
   ],
   "stores": [
@@ -2220,11 +2220,11 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-08-31T12:45:15",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -2235,7 +2235,7 @@
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false
+        "Activacion PSL Sharpie": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2796,11 +2796,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 70.0,
-      "lastUpdate": "2026-08-31T12:28:18",
+      "compliance": 80.0,
+      "lastUpdate": "2026-08-31T12:45:59",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -2811,7 +2811,7 @@
         "Mandil Verde": true,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false
+        "Activacion PSL Sharpie": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -2868,11 +2868,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-08-31T12:44:53",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -2883,7 +2883,7 @@
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false
+        "Activacion PSL Sharpie": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -3836,6 +3836,69 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-b2ac8dba8c2dfb03",
+      "timestamp": "2026-08-31T12:45:59",
+      "timestampDisplay": "31/08/2026 12:45",
+      "activity": "Activacion PSL Sharpie",
+      "ceco": "38719",
+      "store": "Plaza Fortuna",
+      "dm": "Veronica Garcia Ortega",
+      "evidenceKey": "Activacion_PSL_Sharpie_38719",
+      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38719",
+      "evidenceFileName": "image_Hector Martinez Urib.jpg",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/image_Hector%20Martinez%20Urib.jpg"
+    },
+    {
+      "id": "respuesta-f66ec789674adb49",
+      "timestamp": "2026-08-31T12:45:15",
+      "timestampDisplay": "31/08/2026 12:45",
+      "activity": "Activacion PSL Sharpie",
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "evidenceKey": "Activacion_PSL_Sharpie_38371",
+      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38371",
+      "evidenceFileName": "3a450334-8e66-4060-88b5-874ba17e9e33_Vanessa Carreño Rios.jpeg",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/3a450334-8e66-4060-88b5-874ba17e9e33_Vanessa%20Carre%C3%B1o%20Rios.jpeg"
+    },
+    {
+      "id": "respuesta-1c848e1f20ade238",
+      "timestamp": "2026-08-31T12:44:53",
+      "timestampDisplay": "31/08/2026 12:44",
+      "activity": "Activacion PSL Sharpie",
+      "ceco": "38992",
+      "store": "Tapo Puerta Oriente",
+      "dm": "Veronica Garcia Ortega",
+      "evidenceKey": "Activacion_PSL_Sharpie_38992",
+      "evidenceLinkLabel": "Link_Activacion_PSL_Sharpie_38992",
+      "evidenceFileName": "1788201869665846146572077266121_Starbucks Tapo puert.jpg",
+      "evidenceSourceHeader": "Evidencia_ACtivacion_PSL_Sharpie",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/1788201869665846146572077266121_Starbucks%20Tapo%20puert.jpg"
+    },
     {
       "id": "respuesta-a01ab62be9f59cc6",
       "timestamp": "2026-08-31T12:28:18",
