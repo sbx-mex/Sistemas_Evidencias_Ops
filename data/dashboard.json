@@ -1,9 +1,9 @@
 {
   "schemaVersion": 11,
-  "buildVersion": "3cf01e34beee16af",
+  "buildVersion": "91566b0e94ec8940",
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-31T05:36:35+00:00",
+  "generatedAt": "2026-08-31T05:50:46+00:00",
   "lastUpdated": "2026-08-30T23:20:38",
   "lastUpdatedDisplay": "30/08/2026 23:20",
   "report": {
@@ -45,6 +45,7 @@
     "unknownCeCos": [],
     "hiddenActivityRows": [],
     "hiddenActivities": [],
+    "canonicalizedActivityRows": [],
     "duplicateValidResponses": 2,
     "unsafeEvidenceRows": [],
     "responseSchema": {
@@ -113,16 +114,16 @@
     "evidenceLinksPublished": 94,
     "privacyMode": false,
     "stabilityControls": {
-      "xlsxIntegrity": true,
-      "dynamicHeaders": true,
-      "dynamicRows": true,
+      "sourceIntegrity": true,
       "cmsActiveAllowlist": true,
-      "canonicalActivityNames": true,
-      "evidenceHeaderAffinity": true,
-      "columnOrderIndependent": true,
-      "latestResponseDeduplication": true,
-      "sourceFingerprints": true,
-      "atomicOutput": true
+      "externalFormsIsolation": true,
+      "canonicalActivityMatching": true,
+      "evidenceHeaderSafety": true,
+      "columnOrderIndependence": true,
+      "duplicateResponseResolution": true,
+      "directoryUniqueness": true,
+      "safeEvidenceLinks": true,
+      "atomicPublication": true
     },
     "stabilityScore": "10/10"
   },
