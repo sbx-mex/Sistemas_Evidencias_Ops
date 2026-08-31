@@ -234,6 +234,12 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
+for required in [".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table thead { display: none", "grid-template-columns: repeat(2, minmax(0, 1fr))"]:
+    if required not in css:
+        fail(f"Actividades no está adaptada a móvil: {required}")
+if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
+    fail("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
+approve("07 · Actividades fluidas y sin desplazamiento horizontal en móvil")
 for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "clearDashboardFilters", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
     if text not in js:
         if text not in html + css:
@@ -314,9 +320,9 @@ if "git add -A -- tests/validate_horno_applicability.py" in workflow:
     fail("El workflow conserva el pathspec directo que falla si el archivo no existe")
 approve("10 · Workflow completo: limpiar, generar, validar y publicar")
 
-if len(passed) != 10:
-    fail(f"Se esperaban 10 validaciones y se ejecutaron {len(passed)}")
-print("Validación aprobada · 10/10 controles")
+if len(passed) != 11:
+    fail(f"Se esperaban 11 validaciones y se ejecutaron {len(passed)}")
+print("Validación aprobada · 11/11 controles")
 for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
