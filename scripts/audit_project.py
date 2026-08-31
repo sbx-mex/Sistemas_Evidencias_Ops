@@ -54,10 +54,10 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "filter-summary", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
-for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "exportScopeSummary", "AVANCE REGIÓN", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
+for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "renderFilterSummary", "clearDashboardFilters", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "exportScopeSummary", "AVANCE REGIÓN", "icon-192.webp", "data-clear-dashboard-filters", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 for required in ("Valida tu archivo", "Carpeta Descargas", "URL.revokeObjectURL(state.exportUrl)"):
@@ -77,6 +77,14 @@ for redundant_export_text in (
 ):
     if redundant_export_text in js:
         issues.append(f"Texto redundante en exportación: {redundant_export_text}")
+if js.count("./assets/icons/icon-192.webp") < 2:
+    issues.append("PDF e imagen no comparten el icono ejecutivo de alta resolución")
+if js.count("context.fillRect(1320,") < 2:
+    issues.append("PDF e imagen no comparten el recuadro dinámico de avance")
+excel_source = js[js.index("function buildExcelSpec"):js.index("async function exportExcel")]
+for required_excel_context in ("const activityLabel = exportActivityLabel()", "exportAdvanceLabel()", "${scope} · ${activityLabel}"):
+    if required_excel_context not in excel_source:
+        issues.append(f"Excel no conserva el filtro ejecutivo: {required_excel_context}")
 
 data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
 source_fingerprints = {}

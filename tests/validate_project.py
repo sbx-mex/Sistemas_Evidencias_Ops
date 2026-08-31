@@ -234,7 +234,7 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "exportScopeSummary", "AVANCE REGIÓN", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
+for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "renderFilterSummary", "clearDashboardFilters", "filter-summary", "data-clear-dashboard-filters", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "exportScopeSummary", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
     if text not in js:
         if text not in html + css:
             fail(f"Funcionalidad faltante: {text}")
@@ -252,6 +252,12 @@ for redundant_export_text in (
 ):
     if redundant_export_text in js:
         fail(f"Exportación redundante: {redundant_export_text}")
+if js.count("./assets/icons/icon-192.webp") < 2 or js.count("context.fillRect(1320,") < 2:
+    fail("PDF e imagen no comparten icono grande o recuadro de avance")
+excel_export_source = js[js.index("function buildExcelSpec"):js.index("async function exportExcel")]
+for required_excel_context in ("const activityLabel = exportActivityLabel()", "exportAdvanceLabel()", "${scope} · ${activityLabel}"):
+    if required_excel_context not in excel_export_source:
+        fail(f"Excel perdió el filtro dinámico: {required_excel_context}")
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")

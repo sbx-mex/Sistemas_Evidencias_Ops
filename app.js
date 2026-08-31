@@ -245,7 +245,26 @@ function readFilterUrl() {
 }
 
 function renderAll() {
-  renderSummary(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
+  renderFilterSummary(); renderSummary(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
+}
+
+function renderFilterSummary() {
+  const item = metrics();
+  const tags = [
+    reportScope(),
+    exportActivityLabel(),
+    `${number(item.stores)} tiendas`,
+    `${number(item.pending)} pendientes`,
+  ];
+  const active = Boolean(state.filters.dm || state.filters.store || state.filters.activity);
+  $("#filter-summary").innerHTML = `<div class="filter-tags">${tags.map((tag) => `<span class="filter-tag">${esc(tag)}</span>`).join("")}</div>${active ? '<button type="button" data-clear-dashboard-filters>Restablecer filtros</button>' : ""}`;
+}
+
+function clearDashboardFilters() {
+  state.filters = { dm: "", store: "", activity: "" };
+  state.showAllEvidence = false;
+  populateFilters();
+  renderAll();
 }
 
 function populateFilters() {
@@ -382,7 +401,7 @@ async function renderPdfPages() {
   const current = metrics();
   const mode = exportMode();
   const profile = exportProfile();
-  const sources = ["./assets/icons/icon-64.webp", `./${profile.photo}`, ...rows.map((item) => item.photo ? `./${item.photo}` : "")];
+  const sources = ["./assets/icons/icon-192.webp", `./${profile.photo}`, ...rows.map((item) => item.photo ? `./${item.photo}` : "")];
   const loaded = await Promise.all(sources.map((source) => source ? loadImage(source) : Promise.resolve(null)));
   const [logo, profilePhoto, ...photos] = loaded;
   const rowHeight = mode === "dms" ? 92 : 58;
@@ -396,19 +415,22 @@ async function renderPdfPages() {
     const context = canvas.getContext("2d");
     context.fillStyle = "#f5f8f6"; context.fillRect(0, 0, 1600, 1131);
     context.fillStyle = "#006241"; context.fillRect(0, 0, 1600, 205);
-    if (logo) context.drawImage(logo, 55, 66, 76, 76);
+    if (logo) context.drawImage(logo, 45, 48, 112, 112);
     context.textAlign = "center";
-    context.fillStyle = "#ffffff"; context.font = "800 38px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 55);
-    context.font = "650 18px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 800), 800, 91);
-    context.fillStyle = "#ffffff"; context.font = "850 27px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 800), 800, 136);
-    context.fillStyle = "#b9e1d0"; context.font = "800 18px Segoe UI, sans-serif"; context.fillText(`${exportAdvanceLabel()}  ·  ${percent(current.compliance)}`, 800, 174);
+    context.fillStyle = "#ffffff"; context.font = "800 37px Segoe UI, sans-serif"; context.fillText(meta.title, 730, 52);
+    context.font = "650 17px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 760), 730, 87);
+    context.fillStyle = "#ffffff"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 760), 730, 135);
     context.textAlign = "left";
 
     if (profilePhoto) {
-      context.save(); context.beginPath(); context.arc(1248, 92, 48, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1200, 44, 96, 96); context.restore();
-      context.fillStyle = "#ffffff"; context.font = "750 16px Segoe UI, sans-serif"; context.fillText(profile.name, 1184, 162);
-      context.fillStyle = "#b9e1d0"; context.font = "650 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1184, 181);
+      context.save(); context.beginPath(); context.arc(1220, 88, 46, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1174, 42, 92, 92); context.restore();
+      context.fillStyle = "#ffffff"; context.font = "750 15px Segoe UI, sans-serif"; context.fillText(profile.name, 1164, 157);
+      context.fillStyle = "#b9e1d0"; context.font = "650 12px Segoe UI, sans-serif"; context.fillText(profile.role, 1164, 176);
     }
+    context.fillStyle = "#ffffff"; context.globalAlpha = .13; context.fillRect(1320, 41, 225, 122); context.globalAlpha = 1;
+    context.textAlign = "center"; context.fillStyle = "#b9e1d0"; context.font = "800 13px Segoe UI, sans-serif"; context.fillText(exportAdvanceLabel(), 1432, 69);
+    context.fillStyle = "#ffffff"; context.font = "900 45px Segoe UI, sans-serif"; context.fillText(percent(current.compliance), 1432, 121);
+    context.fillStyle = "#b9e1d0"; context.font = "700 12px Segoe UI, sans-serif"; context.fillText(state.filters.dm || state.filters.store ? currentScope() : state.data.region, 1432, 147); context.textAlign = "left";
     const cards = [
       ["AVANCE REALIZADO", `${number(current.completed)} / ${number(current.expected)}`, 55, 355],
       ["PENDIENTES", number(current.pending), 425, 355],
@@ -468,20 +490,23 @@ async function exportImage() {
     const context = canvas.getContext("2d");
     context.fillStyle = "#f6f8f7"; context.fillRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "#006241"; context.fillRect(0, 0, width, headerHeight);
-    const assets = await Promise.all([loadImage("./assets/icons/icon-64.webp"), loadImage(`./${profile.photo}`), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
+    const assets = await Promise.all([loadImage("./assets/icons/icon-192.webp"), loadImage(`./${profile.photo}`), ...rows.map((item) => item.photo ? loadImage(`./${item.photo}`) : Promise.resolve(null))]);
     const [logo, profilePhoto, ...photos] = assets;
-    if (logo) context.drawImage(logo, 72, 70, 78, 78);
+    if (logo) context.drawImage(logo, 48, 55, 112, 112);
     context.textAlign = "center";
-    context.fillStyle = "#ffffff"; context.font = "700 42px Segoe UI, sans-serif"; context.fillText(meta.title, 800, 55);
-    context.font = "600 19px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 800), 800, 91);
-    context.font = "850 31px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 800), 800, 143);
-    context.fillStyle = "#b9e1d0"; context.font = "850 27px Segoe UI, sans-serif"; context.fillText(`${exportAdvanceLabel()}  ${percent(current.compliance)}`, 800, 188);
+    context.fillStyle = "#ffffff"; context.font = "700 40px Segoe UI, sans-serif"; context.fillText(meta.title, 730, 55);
+    context.font = "600 18px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 760), 730, 91);
+    context.font = "850 31px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 760), 730, 145);
     context.textAlign = "left";
     if (profilePhoto) {
-      context.save(); context.beginPath(); context.arc(1260, 105, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1217, 62, 86, 86); context.restore();
-      context.fillStyle = "#ffffff"; context.font = "700 15px Segoe UI, sans-serif"; context.fillText(profile.name, 1190, 169);
-      context.fillStyle = "#b9e1d0"; context.font = "600 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1190, 190);
+      context.save(); context.beginPath(); context.arc(1220, 91, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1177, 48, 86, 86); context.restore();
+      context.fillStyle = "#ffffff"; context.font = "700 15px Segoe UI, sans-serif"; context.fillText(profile.name, 1165, 160);
+      context.fillStyle = "#b9e1d0"; context.font = "600 13px Segoe UI, sans-serif"; context.fillText(profile.role, 1165, 181);
     }
+    context.fillStyle = "#ffffff"; context.globalAlpha = .13; context.fillRect(1320, 42, 225, 132); context.globalAlpha = 1;
+    context.textAlign = "center"; context.fillStyle = "#b9e1d0"; context.font = "800 13px Segoe UI, sans-serif"; context.fillText(exportAdvanceLabel(), 1432, 72);
+    context.fillStyle = "#ffffff"; context.font = "900 48px Segoe UI, sans-serif"; context.fillText(percent(current.compliance), 1432, 127);
+    context.fillStyle = "#b9e1d0"; context.font = "700 12px Segoe UI, sans-serif"; context.fillText(state.filters.dm || state.filters.store ? currentScope() : state.data.region, 1432, 153); context.textAlign = "left";
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
     context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
@@ -623,6 +648,7 @@ function buildExcelSpec() {
   const rows = exportRows();
   const mode = exportMode();
   const scope = reportScope();
+  const activityLabel = exportActivityLabel();
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
   const detailHeaders = mode === "dms"
@@ -662,24 +688,24 @@ function buildExcelSpec() {
     return [index + 1, activity.name, completed, pending, value, activity.commitmentDateDisplay || "Sin fecha"];
   });
   return {
-    title: `Sistema de Evidencias OPS · ${scope}`,
+    title: `Sistema de Evidencias OPS · ${scope} · ${activityLabel}`,
     sheets: [
       {
         name: "Resumen",
         rows: [
           ["Sistema de Evidencias OPS", "", ""],
-          [`${scope} · Corte ${cutStamp()}`, "", ""],
+          [`${scope} · ${activityLabel} · Corte ${cutStamp()}`, "", ""],
           [],
           ["Indicador", "Valor", "Lectura ejecutiva"],
           ["Realizadas", item.completed, "Actividades concluidas en el filtro actual"],
           ["Pendientes", item.pending, "Actividades que aún requieren ejecución"],
-          ["% Avance", { value: item.compliance / 100, style: 3 }, `${item.completed} de ${item.expected} en la meta actual`],
+          [exportAdvanceLabel(), { value: item.compliance / 100, style: 3 }, `${item.completed} de ${item.expected} en el filtro actual`],
         ],
         widths: [24, 18, 48], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C7",
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
-        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
+        rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · ${activityLabel} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
         widths: mode === "dms" ? [10, 34, 14, 14, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 14, 14],
         merges: mode === "dms"
           ? ["A1:F1", "A2:F2"]
@@ -732,7 +758,8 @@ function bindEvents() {
   $("#filter-dm").addEventListener("change", (event) => { state.filters.dm = event.target.value; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; state.showAllEvidence = false; renderAll(); });
-  $("#clear-filters").addEventListener("click", () => { state.filters = { dm: "", store: "", activity: "" }; state.showAllEvidence = false; populateFilters(); renderAll(); });
+  $("#clear-filters").addEventListener("click", clearDashboardFilters);
+  $("#filter-summary").addEventListener("click", (event) => { if (event.target.closest("[data-clear-dashboard-filters]")) clearDashboardFilters(); });
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
   $("#evidence-filter-dm").addEventListener("change", (event) => {
     state.evidenceFilters.dm = event.target.value; state.evidenceFilters.store = ""; state.showAllEvidence = false;
@@ -746,6 +773,7 @@ function bindEvents() {
   $("#export-modal-accept").addEventListener("click", acceptExportConfirmation);
   $("#export-modal-cancel").addEventListener("click", cancelExportConfirmation);
   $("#export-modal-close").addEventListener("click", closeExportModal);
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("#export-modal").hidden && !state.exporting) closeExportModal(); });
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-dm-focus]");
     if (!button) return;
