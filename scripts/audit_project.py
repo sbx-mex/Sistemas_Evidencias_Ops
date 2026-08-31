@@ -22,6 +22,7 @@ issues = []
 obsolete_files = existing_obsolete_files()
 texts = {source.name: source.read_text(encoding="utf-8") for source in TEXT_FILES}
 workflow = (ROOT / ".github" / "workflows" / "build-dashboard.yml").read_text(encoding="utf-8")
+css = texts["styles.css"]
 
 for source in TEXT_FILES:
     for reference in re.findall(r"(?:src|href)[=:]\s*[\"'](\./[^\"'#?]+)", texts[source.name]):
@@ -57,6 +58,11 @@ for forbidden in ("Gerente de Distrito</small>",):
 for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
+for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table thead { display: none", "grid-template-columns: repeat(2, minmax(0, 1fr))"):
+    if required not in css:
+        issues.append(f"Actividades no está adaptada a móvil: {required}")
+if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
+    issues.append("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
 for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "clearDashboardFilters", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
