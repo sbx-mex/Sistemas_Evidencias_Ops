@@ -14,6 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts.build_dashboard import build_payload, find_header, load_cms
+from scripts.build_dashboard import (
+    STABILITY_CONTROLS, ensure_source_stability, find_directory_header,
+    load_directory, load_settings, normalize_allowed_hosts, source_fingerprints,
+)
 from scripts.clean_obsolete import existing_obsolete_files
 from scripts.io_utils import atomic_output_path, atomic_write_text
 from scripts.validate_sources import validate_cms_engine
@@ -55,6 +59,87 @@ def test_obsolete_detection(temp: Path) -> None:
         "exports/Resumen.pdf.tmp",
         "scripts/__pycache__/motor.pyc",
     ]
+
+
+def expect_error(action, text: str) -> None:
+    try:
+        action()
+    except (RuntimeError, ValueError) as error:
+        assert text in str(error)
+    else:
+        raise AssertionError(f"No se bloqueó el escenario inseguro: {text}")
+
+
+def test_source_and_host_guards(temp: Path) -> None:
+    source = temp / "fuente.xlsx"
+    source.write_bytes(b"version-1")
+    paths = {"Forms": source}
+    before = source_fingerprints(paths)
+    source.write_bytes(b"version-2")
+    expect_error(lambda: ensure_source_stability(before, paths), "cambiaron durante")
+
+    assert normalize_allowed_hosts("GRUPOVIPS-my.sharepoint.com.") == {
+        "grupovips-my.sharepoint.com"
+    }
+    expect_error(lambda: normalize_allowed_hosts("https://example.com/ruta"), "Dominio")
+    expect_error(lambda: normalize_allowed_hosts(""), "al menos un dominio")
+
+
+def test_structural_guards(temp: Path) -> None:
+    original_cms = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
+
+    duplicate_config = temp / "cms_config_duplicada.xlsx"
+    shutil.copy2(original_cms, duplicate_config)
+    workbook = load_workbook(duplicate_config)
+    sheet = workbook["Configuracion"]
+    header_row, cols = find_header(sheet, {"clave", "valor"})
+    row = sheet.max_row + 1
+    sheet.cell(row, cols["clave"] + 1, "PROJECTNAME")
+    sheet.cell(row, cols["valor"] + 1, "Duplicado")
+    workbook.save(duplicate_config)
+    expect_error(lambda: load_cms(duplicate_config), "configuración duplicada")
+
+    duplicate_activity = temp / "cms_actividad_duplicada.xlsx"
+    shutil.copy2(original_cms, duplicate_activity)
+    workbook = load_workbook(duplicate_activity)
+    sheet = workbook["Actividades"]
+    header_row, cols = find_header(sheet, {
+        "orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo",
+    })
+    first = header_row + 1
+    target = sheet.max_row + 1
+    for column in range(1, sheet.max_column + 1):
+        sheet.cell(target, column, sheet.cell(first, column).value)
+    sheet.cell(target, cols["orden"] + 1, 999)
+    workbook.save(duplicate_activity)
+    expect_error(lambda: load_cms(duplicate_activity), "duplicadas")
+
+    no_active = temp / "cms_sin_activas.xlsx"
+    shutil.copy2(original_cms, no_active)
+    workbook = load_workbook(no_active)
+    sheet = workbook["Actividades"]
+    header_row, cols = find_header(sheet, {
+        "orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo",
+    })
+    for row in range(header_row + 1, sheet.max_row + 1):
+        if sheet.cell(row, cols["actividad"] + 1).value:
+            sheet.cell(row, cols["activo"] + 1, "No")
+    workbook.save(no_active)
+    expect_error(lambda: load_cms(no_active), "no contiene actividades activas")
+
+    duplicate_directory = temp / "directorio_duplicado.xlsx"
+    shutil.copy2(ROOT / "cms" / "Centro Norte_Directorio.xlsx", duplicate_directory)
+    _, _, cms_settings, _ = load_cms(original_cms)
+    settings = load_settings(ROOT / "config" / "settings.json", cms_settings)
+    workbook = load_workbook(duplicate_directory)
+    sheet = workbook[settings["directorySheet"]]
+    header_row, _ = find_directory_header(sheet)
+    first = header_row + 1
+    target = sheet.max_row + 1
+    for column in range(1, sheet.max_column + 1):
+        sheet.cell(target, column, sheet.cell(first, column).value)
+    workbook.save(duplicate_directory)
+    expect_error(lambda: load_directory(duplicate_directory, settings), "CeCo duplicado")
 
 
 def test_flexible_cms(temp: Path) -> None:
@@ -125,6 +210,8 @@ def test_flexible_cms(temp: Path) -> None:
     )
     assert payload["project"] == "Sistema de Evidencias OPS"
     assert payload["summary"]["activities"] == 10
+    assert tuple(payload["quality"]["stabilityControls"]) == STABILITY_CONTROLS
+    assert all(payload["quality"]["stabilityControls"].values())
 
 
 def main() -> None:
@@ -132,6 +219,8 @@ def main() -> None:
         temp = Path(temp_dir)
         test_atomic_writes(temp)
         test_obsolete_detection(temp)
+        test_source_and_host_guards(temp)
+        test_structural_guards(temp)
         test_flexible_cms(temp)
     print("Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros")
 

@@ -13,14 +13,14 @@ from openpyxl import load_workbook
 try:
     from .build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
-        build_payload, clean_text, file_sha256, find_directory_header,
+        STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, is_no, is_yes, key_text, load_cms, load_settings,
         normalize_ceco, parse_date, validate_xlsx,
     )
 except ImportError:  # Ejecución directa: python scripts/validate_sources.py
     from build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
-        build_payload, clean_text, file_sha256, find_directory_header,
+        STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, is_no, is_yes, key_text, load_cms, load_settings,
         normalize_ceco, parse_date, validate_xlsx,
     )
@@ -221,11 +221,12 @@ def main() -> None:
         "sin impacto en avance ni fecha de corte"
     )
     controls = quality.get("stabilityControls", {})
-    if len(controls) != 10 or not all(controls.values()):
+    if tuple(controls) != STABILITY_CONTROLS or not all(controls.values()):
         raise SystemExit("Fuentes rechazadas: controles de estabilidad incompletos")
     print(
         f"Estabilidad {quality.get('stabilityScore')} · encabezados dinámicos · filas dinámicas · "
-        f"{quality.get('duplicateValidResponses', 0)} respuestas históricas deduplicadas"
+        f"{quality.get('duplicateValidResponses', 0)} respuestas históricas deduplicadas · "
+        f"{len(quality.get('canonicalizedActivityRows', []))} nombres similares normalizados"
     )
     print(
         "Motores auditados · "

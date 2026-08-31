@@ -9,7 +9,7 @@ from urllib.parse import unquote, urlsplit
 
 from PIL import Image
 
-from build_dashboard import compact_key, file_sha256, validate_xlsx
+from build_dashboard import STABILITY_CONTROLS, compact_key, file_sha256, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,6 +70,8 @@ if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,
 for required in (
     "active_activity_catalog",
     "canonical_cms_activity",
+    "ensure_source_stability",
+    "normalize_allowed_hosts",
     "Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte",
     "latest_submission_by_pair",
     "STABILITY_CONTROLS",
@@ -156,7 +158,7 @@ if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
-if len(stability_controls) != 10 or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
     issues.append("Los 10 controles Python de estabilidad no están activos")
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")

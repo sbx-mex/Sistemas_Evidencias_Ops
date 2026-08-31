@@ -20,7 +20,7 @@ import re
 import unicodedata
 import zipfile
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
@@ -63,16 +63,21 @@ REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 MOJIBAKE_MARKERS = ("\u00c3", "\u00c2", "\u00e2")
 STABILITY_CONTROLS = (
-    "xlsxIntegrity",
-    "dynamicHeaders",
-    "dynamicRows",
+    "sourceIntegrity",
     "cmsActiveAllowlist",
-    "canonicalActivityNames",
-    "evidenceHeaderAffinity",
-    "columnOrderIndependent",
-    "latestResponseDeduplication",
-    "sourceFingerprints",
-    "atomicOutput",
+    "externalFormsIsolation",
+    "canonicalActivityMatching",
+    "evidenceHeaderSafety",
+    "columnOrderIndependence",
+    "duplicateResponseResolution",
+    "directoryUniqueness",
+    "safeEvidenceLinks",
+    "atomicPublication",
+)
+KNOWN_SETTING_KEYS = (
+    "projectName", "region", "directorySheet", "onlyOpenStores",
+    "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
+    "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
 )
 
 
@@ -132,8 +137,25 @@ def active_activity_catalog(activities: list[dict[str, Any]]) -> tuple[dict[str,
 
 
 def canonical_cms_activity(value: Any, by_text: dict[str, str], by_compact: dict[str, str]) -> str | None:
-    """Devuelve exclusivamente el nombre canónico de una actividad activa CMS."""
-    return by_text.get(key_text(value)) or by_compact.get(compact_key(value))
+    """Devuelve exclusivamente una actividad activa CMS con coincidencia única.
+
+    Primero exige igualdad normalizada. Un error menor de escritura sólo se
+    acepta con afinidad alta y distancia suficiente frente a la segunda opción.
+    Si hay duda, la fila queda fuera del cálculo en vez de adivinar.
+    """
+    exact = by_text.get(key_text(value)) or by_compact.get(compact_key(value))
+    if exact:
+        return exact
+    catalog = list(dict.fromkeys(by_compact.values()))
+    if not clean_text(value) or not catalog:
+        return None
+    ranked = sorted(
+        ((activity_affinity(value, name), name) for name in catalog),
+        key=lambda item: (-item[0], key_text(item[1])),
+    )
+    best_score, best_name = ranked[0]
+    second_score = ranked[1][0] if len(ranked) > 1 else 0.0
+    return best_name if best_score >= 0.88 and best_score - second_score >= 0.12 else None
 
 
 def activity_tokens(value: Any) -> set[str]:
@@ -167,6 +189,32 @@ def file_sha256(path: Path) -> str:
         for block in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def source_fingerprints(paths: dict[str, Path]) -> dict[str, str]:
+    """Captura una versión estable de cada fuente antes de procesarla."""
+    return {name: file_sha256(path) for name, path in paths.items()}
+
+
+def ensure_source_stability(before: dict[str, str], paths: dict[str, Path]) -> None:
+    """Evita publicar una mezcla si un Excel cambia durante la ejecución."""
+    after = source_fingerprints(paths)
+    changed = sorted(name for name, digest in before.items() if after.get(name) != digest)
+    if changed:
+        raise RuntimeError("Las fuentes cambiaron durante la actualización: " + ", ".join(changed))
+
+
+def normalize_allowed_hosts(value: Any) -> set[str]:
+    """Valida la lista CMS de dominios autorizados sin aceptar rutas ni esquemas."""
+    hosts = set()
+    for candidate in setting_list(value):
+        host = candidate.casefold().rstrip(".")
+        if not re.fullmatch(r"[a-z0-9](?:[a-z0-9.-]{0,251}[a-z0-9])?", host) or ".." in host:
+            raise ValueError(f"Dominio de evidencia inválido en CMS: {candidate}")
+        hosts.add(host)
+    if not hosts:
+        raise ValueError("El CMS debe definir al menos un dominio de evidencia autorizado")
+    return hosts
 
 
 def validate_xlsx(path: Path, label: str) -> None:
@@ -269,6 +317,8 @@ def evidence_filename(url: str | None) -> str:
 def parse_datetime(value: Any) -> datetime | None:
     if isinstance(value, datetime):
         return value
+    if isinstance(value, date):
+        return datetime.combine(value, datetime.min.time())
     text = clean_text(value)
     for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
         try:
@@ -474,6 +524,8 @@ def load_settings(path: Path, cms_settings: dict[str, Any] | None = None) -> dic
 def parse_date(value: Any):
     if isinstance(value, datetime):
         return value.date()
+    if isinstance(value, date):
+        return value
     text = clean_text(value)
     if not text:
         return None
@@ -496,8 +548,17 @@ def date_status(start, end) -> str:
 
 def find_header(ws, required: set[str]) -> tuple[int, dict[str, int]]:
     for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=12, values_only=True), 1):
-        normalized = {key_text(value): index for index, value in enumerate(row) if clean_text(value)}
+        positions: dict[str, list[int]] = defaultdict(list)
+        for index, value in enumerate(row):
+            if clean_text(value):
+                positions[key_text(value)].append(index)
+        normalized = {key: indices[0] for key, indices in positions.items()}
         if required.issubset(normalized):
+            duplicated = sorted(key for key in required if len(positions[key]) > 1)
+            if duplicated:
+                raise ValueError(
+                    f"Encabezados CMS duplicados en {ws.title}: " + ", ".join(duplicated)
+                )
             return row_number, normalized
     raise ValueError(f"No se encontró encabezado {', '.join(sorted(required))} en {ws.title}")
 
@@ -515,10 +576,17 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     config_header, config_cols = find_header(config_ws, {"clave", "valor"})
     cms_settings: dict[str, Any] = {}
     boolean_keys = {"onlyOpenStores", "requireEvidence", "publishEvidenceLinks", "publishPersonalData"}
+    canonical_setting_keys = {key_text(key): key for key in KNOWN_SETTING_KEYS}
+    seen_setting_keys: set[str] = set()
     for row in config_ws.iter_rows(min_row=config_header + 1, values_only=True):
-        key = clean_text(row[config_cols["clave"]])
-        if not key:
+        raw_key = clean_text(row[config_cols["clave"]])
+        if not raw_key:
             continue
+        normalized_key = key_text(raw_key)
+        if normalized_key in seen_setting_keys:
+            raise ValueError(f"El CMS contiene una clave de configuración duplicada: {raw_key}")
+        seen_setting_keys.add(normalized_key)
+        key = canonical_setting_keys.get(normalized_key, raw_key)
         value = row[config_cols["valor"]]
         text_value = clean_text(value)
         if not text_value:
@@ -591,6 +659,10 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             "autoDetected": False,
         })
 
+    if not activities:
+        raise ValueError("El CMS no contiene actividades activas para publicar")
+    active_activity_catalog(activities)
+
     manager_ws = workbook["Gerentes"]
     manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
     managers: dict[str, dict[str, str]] = {}
@@ -598,10 +670,13 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         dm = clean_text(row[manager_cols["dm"]])
         if not dm or not is_yes(row[manager_cols["activo"]]):
             continue
+        manager_key = key_text(dm)
+        if manager_key in managers:
+            raise ValueError(f"El CMS contiene un gerente activo duplicado: {dm}")
         photo = clean_text(row[manager_cols["foto webp"]])
         if photo and not (ROOT / photo).is_file():
             raise ValueError(f"No existe la fotografía configurada para {dm}: {photo}")
-        managers[key_text(dm)] = {
+        managers[manager_key] = {
             "shortName": clean_text(row[manager_cols["nombre corto"]]) or dm,
             "photo": photo,
         }
@@ -649,8 +724,15 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
         requested = max(workbook.sheetnames, key=lambda name: workbook[name].max_row)
     ws = workbook[requested]
     header_row, headers = find_directory_header(ws)
-    normalized = {key_text(value): index for index, value in enumerate(headers) if clean_text(value)}
     required = ("cc", "cc nombre", "region", "estatus", "dm")
+    positions: dict[str, list[int]] = defaultdict(list)
+    for index, value in enumerate(headers):
+        if clean_text(value):
+            positions[key_text(value)].append(index)
+    duplicated_headers = sorted(field for field in required if len(positions.get(field, [])) > 1)
+    if duplicated_headers:
+        raise ValueError("Directorio con encabezados duplicados: " + ", ".join(duplicated_headers))
+    normalized = {key: indices[0] for key, indices in positions.items()}
     missing = [field for field in required if field not in normalized]
     if missing:
         raise ValueError("Directorio incompleto: " + ", ".join(missing))
@@ -666,6 +748,8 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
             continue
         if settings.get("onlyOpenStores") and key_text(status) not in {"abierta", "abierto", "activa", "activo"}:
             continue
+        if ceco in stores:
+            raise ValueError(f"CeCo duplicado en el directorio operativo: {ceco}")
         stores[ceco] = {
             "ceco": ceco,
             "store": clean_text(row[normalized["cc nombre"]]) or f"Tienda {ceco}",
@@ -673,6 +757,8 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
             "region": region,
             "status": status,
         }
+    if not stores:
+        raise ValueError("El directorio no contiene tiendas activas para el alcance configurado")
     return stores, requested
 
 
@@ -719,6 +805,12 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         index for indices in column_groups.values() for index in indices
     } | set(confirmation_columns) | {item["index"] for item in evidence_group}
     applicability_group = applicability_columns(headers, excluded_indices)
+    response_activity_by_text: dict[str, str] = {}
+    response_activity_by_compact: dict[str, str] = {}
+    if activity_names:
+        response_activity_by_text, response_activity_by_compact = active_activity_catalog(
+            [{"name": name} for name in activity_names]
+        )
 
     responses = []
     conflicts = []
@@ -738,7 +830,12 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         if confirmation_conflict:
             conflicts.append({"row": row_number, "field": "confirmed"})
             row_has_conflict = True
-        evidence, evidence_source, evidence_issue = resolve_evidence_value(row, evidence_group, values["activity"])
+        evidence_activity = canonical_cms_activity(
+            values["activity"], response_activity_by_text, response_activity_by_compact
+        ) or values["activity"]
+        evidence, evidence_source, evidence_issue = resolve_evidence_value(
+            row, evidence_group, evidence_activity
+        )
         if evidence_issue:
             evidence_issues[evidence_issue].append(row_number)
         applicability, applicability_sources, applicability_issue = resolve_applicability_answer(
@@ -810,13 +907,17 @@ def build_payload(
     settings_path: Path,
     cms_path: Path = DEFAULT_CMS,
 ) -> dict[str, Any]:
+    source_paths = {
+        "responsesSha256": responses_path,
+        "directorySha256": directory_path,
+        "cmsSha256": cms_path,
+    }
+    initial_source_hashes = source_fingerprints(source_paths)
     activities, managers, cms_settings, calendar = load_cms(cms_path)
     settings = load_settings(settings_path, cms_settings)
-    allowed_hosts = {
-        host.strip().casefold().rstrip(".")
-        for host in clean_text(settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")).split(",")
-        if host.strip()
-    }
+    allowed_hosts = normalize_allowed_hosts(
+        settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")
+    )
     regional_director_photo = clean_text(settings.get("regionalDirectorPhoto", "assets/director/jorge-alcantar.webp"))
     if regional_director_photo and not (ROOT / regional_director_photo).is_file():
         raise ValueError(f"No existe la fotografía del Director Regional: {regional_director_photo}")
@@ -836,6 +937,7 @@ def build_payload(
     unsafe_evidence_rows = []
     hidden_activity_rows = []
     hidden_activities = set()
+    canonicalized_activity_rows = []
     latest_update = None
 
     for response in responses:
@@ -849,6 +951,8 @@ def build_payload(
             hidden_activity_rows.append(response["row"])
             hidden_activities.add(activity_text)
             continue
+        if compact_key(activity_text) != compact_key(activity):
+            canonicalized_activity_rows.append(response["row"])
         if response["ceco"] and not store:
             unknown_cecos.add(response["ceco"])
         # Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte.
@@ -1014,11 +1118,8 @@ def build_payload(
     valid_responses = sum(item["valid"] for item in submissions)
     stores_complete = sum(item["completed"] == item["expected"] and item["expected"] > 0 for item in store_rows)
 
-    source_hashes = {
-        "responsesSha256": file_sha256(responses_path),
-        "directorySha256": file_sha256(directory_path),
-        "cmsSha256": file_sha256(cms_path),
-    }
+    ensure_source_stability(initial_source_hashes, source_paths)
+    source_hashes = initial_source_hashes
     version_inputs = dict(source_hashes)
     for relative_path in (
         "scripts/build_dashboard.py", "app.js", "styles.css", "service-worker.js",
@@ -1028,6 +1129,33 @@ def build_payload(
     build_version = hashlib.sha256(
         json.dumps(version_inputs, sort_keys=True).encode("utf-8")
     ).hexdigest()[:16]
+
+    ambiguous_evidence_issues = {
+        "ambiguous-evidence", "ambiguous-matching-evidence",
+        "ambiguous-evidence-header", "mismatched-evidence-column",
+        "multiple-evidence-columns",
+    }
+    published_pairs = [(item["ceco"], item["activity"]) for item in submissions]
+    stability_controls = {
+        "sourceIntegrity": True,
+        "cmsActiveAllowlist": bool(activity_names) and len(activity_names) == len(set(activity_names)),
+        "externalFormsIsolation": all(item["activity"] in activity_names for item in submissions),
+        "canonicalActivityMatching": all(item["activity"] in activity_names for item in submissions),
+        "evidenceHeaderSafety": not any(
+            rows for issue, rows in response_schema.get("evidenceIssues", {}).items()
+            if issue in ambiguous_evidence_issues
+        ),
+        "columnOrderIndependence": bool(
+            response_schema.get("activityHeaders")
+            and response_schema.get("cecoHeaders")
+            and response_schema.get("evidenceHeaders")
+        ),
+        "duplicateResponseResolution": len(published_pairs) == len(set(published_pairs)),
+        "directoryUniqueness": bool(stores) and len(stores) == len(set(stores)),
+        "safeEvidenceLinks": not unsafe_evidence_rows,
+        "atomicPublication": True,
+    }
+    stability_passed = sum(stability_controls.values())
 
     return {
         "schemaVersion": 11,
@@ -1076,6 +1204,7 @@ def build_payload(
             "unknownCeCos": sorted(unknown_cecos),
             "hiddenActivityRows": hidden_activity_rows,
             "hiddenActivities": sorted(hidden_activities, key=key_text),
+            "canonicalizedActivityRows": canonicalized_activity_rows,
             "duplicateValidResponses": max(raw_valid_responses - valid_responses, 0),
             "unsafeEvidenceRows": unsafe_evidence_rows,
             "responseSchema": response_schema,
@@ -1083,8 +1212,8 @@ def build_payload(
             "notApplicablePairs": not_applicable_total,
             "evidenceLinksPublished": sum(bool(item.get("evidenceUrl")) for item in submissions),
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
-            "stabilityControls": {control: True for control in STABILITY_CONTROLS},
-            "stabilityScore": f"{len(STABILITY_CONTROLS)}/{len(STABILITY_CONTROLS)}",
+            "stabilityControls": stability_controls,
+            "stabilityScore": f"{stability_passed}/{len(STABILITY_CONTROLS)}",
         },
         "calendar": calendar,
         "activities": activity_stats,

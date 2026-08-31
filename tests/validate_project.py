@@ -13,7 +13,7 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import compact_key, evidence_key, file_sha256, load_responses, safe_evidence_url
+from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, safe_evidence_url
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -260,7 +260,7 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
-if len(stability_controls) != 10 or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
     fail("Los 10 controles Python de estabilidad no están activos")
 for required in [".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"]:
     if required not in css:
