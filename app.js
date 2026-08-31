@@ -638,21 +638,30 @@ function buildExcelSpec() {
   const activityLabel = exportActivityLabel();
   const stores = filteredStores();
   const activities = state.data.activities.filter((activity) => !state.filters.activity || activity.name === state.filters.activity);
+  const executiveDecision = (value) => value >= 80
+    ? { status: "En meta", action: "Mantener estándar", style: 9 }
+    : value >= 40
+      ? { status: "Seguimiento", action: "Dar seguimiento", style: 10 }
+      : { status: "Atención", action: "Priorizar hoy", style: 11 };
   const detailHeaders = mode === "dms"
-    ? ["Ranking", "DM", "Realizadas", "Pendientes", "% Avance", "Estado"]
-    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Pendientes", "% Avance"];
+    ? ["Ranking", "DM", "Realizadas", "Pendientes", "% Avance", "Estado", "Decisión"]
+    : ["CeCo", "Tienda", ...activities.map((activity) => activity.name), "Realizadas", "Pendientes", "% Avance", "Estado", "Decisión"];
   const activityStartColumn = 3;
   const activityEndColumn = activityStartColumn + activities.length - 1;
   const completedColumn = activityEndColumn + 1;
   const pendingColumn = completedColumn + 1;
   const advanceColumn = pendingColumn + 1;
+  const statusColumn = advanceColumn + 1;
+  const decisionColumn = statusColumn + 1;
   const storesByCeco = new Map(stores.map((store) => [store.ceco, store]));
   const matrixStores = rows.map((row) => storesByCeco.get(row.ceco)).filter(Boolean);
-  const detailRows = mode === "dms" ? rows.map((row) => [
-    row.rank, row.label, row.completed, row.pending, row.value / 100, semaphore(row.value).label,
-  ]) : matrixStores.map((store, index) => {
+  const detailRows = mode === "dms" ? rows.map((row) => {
+    const decision = executiveDecision(row.value);
+    return [row.rank, row.label, row.completed, row.pending, row.value / 100, { value: decision.status, style: decision.style }, { value: decision.action, style: decision.style }];
+  }) : matrixStores.map((store, index) => {
     const rowNumber = index + 5;
     const result = completionFor(store, activities.map((activity) => activity.name));
+    const decision = executiveDecision(result.compliance);
     const activityValues = activities.map((activity) => store.applicableActivities?.[activity.name] === false
       ? { value: "", style: 0 }
       : { value: store.activities[activity.name] ? 1 : 0, style: store.activities[activity.name] ? 7 : 8 });
@@ -664,6 +673,8 @@ function buildExcelSpec() {
       { formula: `SUM(${activityRange})`, cached: result.completed, style: 6 },
       { formula: `COUNT(${activityRange})-SUM(${activityRange})`, cached: result.pending, style: 6 },
       { formula: `IFERROR(SUM(${activityRange})/COUNT(${activityRange}),0)`, cached: result.compliance / 100, style: 3 },
+      { value: decision.status, style: decision.style },
+      { value: decision.action, style: decision.style },
     ];
   });
   const activityRows = activities.map((activity, index) => {
@@ -672,7 +683,8 @@ function buildExcelSpec() {
     const expected = progress.reduce((sum, row) => sum + row.expected, 0);
     const pending = expected - completed;
     const value = expected ? completed / expected : 0;
-    return [index + 1, activity.name, completed, pending, value, activity.commitmentDateDisplay || "Sin fecha"];
+    const decision = executiveDecision(value * 100);
+    return [index + 1, activity.name, completed, pending, value, activity.commitmentDateDisplay || "Sin fecha", { value: decision.status, style: decision.style }, { value: decision.action, style: decision.style }];
   });
   return {
     title: `Sistema de Evidencias OPS · ${scope} · ${activityLabel}`,
@@ -680,33 +692,34 @@ function buildExcelSpec() {
       {
         name: "Resumen",
         rows: [
-          ["Sistema de Evidencias OPS", "", ""],
-          [`${scope} · ${activityLabel} · Corte ${cutStamp()}`, "", ""],
+          ["Sistema de Evidencias OPS", "", "", ""],
+          [`${scope} · ${activityLabel} · Corte ${cutStamp()}`, "", "", ""],
           [],
-          ["Indicador", "Valor", "Lectura ejecutiva"],
-          ["Realizadas", item.completed, "Actividades concluidas en el filtro actual"],
-          ["Pendientes", item.pending, "Actividades que aún requieren ejecución"],
-          [exportAdvanceLabel(), { value: item.compliance / 100, style: 3 }, `${item.completed} de ${item.expected} en el filtro actual`],
+          ["Indicador", "Valor", "Lectura ejecutiva", "Decisión"],
+          ["Realizadas", item.completed, "Actividades concluidas en el filtro actual", { value: "Mantener avance", style: 9 }],
+          ["Pendientes", item.pending, "Actividades que aún requieren ejecución", { value: item.pending ? "Cerrar brechas" : "Sin pendientes", style: item.pending ? 10 : 9 }],
+          [exportAdvanceLabel(), { value: item.compliance / 100, style: 3 }, `${item.completed} de ${item.expected} en el filtro actual`, { value: executiveDecision(item.compliance).action, style: executiveDecision(item.compliance).style }],
         ],
-        widths: [24, 18, 48], merges: ["A1:C1", "A2:C2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:C7",
+        widths: [24, 18, 44, 22], merges: ["A1:D1", "A2:D2"], headerRows: [4], countColumns: [2], freezeRow: 4, autoFilter: "A4:D7", tabColor: "FF006241",
       },
       {
         name: mode === "dms" ? "Ranking DM" : "Tiendas",
         rows: [[mode === "dms" ? "Ranking DM" : "Detalle de actividades por tienda", ...Array(detailHeaders.length - 1).fill("")], [`${scope} · ${activityLabel} · Corte ${cutStamp()}`, ...Array(detailHeaders.length - 1).fill("")], [mode === "dms" ? "" : "1 = Realizada · 0 = Pendiente", ...Array(detailHeaders.length - 1).fill("")], detailHeaders, ...detailRows],
-        widths: mode === "dms" ? [10, 34, 14, 14, 14, 16] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 14, 14],
+        widths: mode === "dms" ? [10, 32, 14, 14, 14, 16, 20] : [13, 28, ...activities.map((activity) => Math.max(16, Math.min(36, activity.name.length + 3))), 14, 14, 14, 16, 20],
         merges: mode === "dms"
-          ? ["A1:F1", "A2:F2"]
-          : [`A1:${spreadsheetColumn(advanceColumn)}1`, `A2:${spreadsheetColumn(advanceColumn)}2`, `A3:${spreadsheetColumn(advanceColumn)}3`],
+          ? ["A1:G1", "A2:G2"]
+          : [`A1:${spreadsheetColumn(decisionColumn)}1`, `A2:${spreadsheetColumn(decisionColumn)}2`, `A3:${spreadsheetColumn(decisionColumn)}3`],
         headerRows: [4],
         percentColumns: [mode === "dms" ? 5 : advanceColumn],
         countColumns: mode === "dms" ? [1, 3, 4] : [...activities.map((_, index) => activityStartColumn + index), completedColumn, pendingColumn],
         freezeRow: 4,
-        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 6 : advanceColumn)}${4 + detailRows.length}`,
+        autoFilter: `A4:${spreadsheetColumn(mode === "dms" ? 7 : decisionColumn)}${4 + detailRows.length}`,
+        tabColor: "FF004C3F",
       },
       {
         name: "Actividades",
-        rows: [["Avance por actividad", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "% Avance", "Fecha compromiso"], ...activityRows],
-        widths: [10, 44, 14, 14, 14, 20], merges: ["A1:F1", "A2:F2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:F${4 + activityRows.length}`,
+        rows: [["Avance por actividad", "", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "% Avance", "Fecha compromiso", "Estado", "Decisión"], ...activityRows],
+        widths: [10, 40, 14, 14, 14, 20, 16, 20], merges: ["A1:H1", "A2:H2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:H${4 + activityRows.length}`, tabColor: "FF16845B",
       },
     ],
   };

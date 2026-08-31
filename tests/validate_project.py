@@ -195,27 +195,29 @@ approve("03 · Python sincronizado con la última actualización")
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
 if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades"]:
     fail("El Excel Python no contiene las tres vistas ejecutivas")
-if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("003B2E") for sheet in static_excel.sheetnames):
+if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("002E24") for sheet in static_excel.sheetnames):
     fail("Los títulos del Excel Python no conservan el verde oscuro")
 expected_summary_formula = "=IFERROR(A6/(A6+C6),0)"
 if static_excel["Resumen"]["E6"].value != expected_summary_formula or static_excel["Resumen"]["A6"].number_format != "#,##0" or static_excel["Resumen"]["E6"].number_format != "0.0%" or static_excel["Resumen"]._charts:
     fail("El resumen Excel no conserva fórmula, formato numérico o limpieza visual")
 for sheet_name, header_row in (("Resumen", 9), ("Tiendas", 4), ("Actividades", 4)):
     headers = [cell.value for cell in static_excel[sheet_name][header_row]]
-    if "Pendientes" not in headers or any(label in headers for label in ("Aplican", "No aplica", "N/A")):
+    if "Pendientes" not in headers or "Decisión" not in headers or any(label in headers for label in ("Aplican", "No aplica", "N/A")):
         fail(f"La hoja {sheet_name} no está enfocada únicamente en Realizadas y Pendientes")
 with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
     subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     dynamic_book = load_workbook(dynamic_excel, data_only=False)
     dm_sheet = dynamic_book["Tiendas"]
-    if dynamic_book.sheetnames != ["Resumen", "Tiendas"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
+    if dynamic_book.sheetnames != ["Resumen", "Tiendas", "Actividades"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
         fail("El motor XLSX dinámico generó un libro inválido")
-    if [cell.value for cell in dm_sheet[4]] != ["CeCo", "Tienda", "Roll Out", "Rack FHW", "QR - Qualtrics", "Mandil Verde", "Realizadas", "Pendientes", "% Avance"]:
+    if any(dynamic_book[sheet]["A1"].fill.fgColor.rgb != "FF002E24" for sheet in dynamic_book.sheetnames):
+        fail("El título verde oscuro no se aplicó a todas las pestañas dinámicas")
+    if [cell.value for cell in dm_sheet[4]] != ["CeCo", "Tienda", "Roll Out", "Rack FHW", "QR - Qualtrics", "Mandil Verde", "Realizadas", "Pendientes", "% Avance", "Estado", "Decisión"]:
         fail("La hoja Tiendas no contiene el detalle por actividad")
     if dm_sheet["G5"].value != "=SUM(C5:F5)" or dm_sheet["H5"].value != "=COUNT(C5:F5)-SUM(C5:F5)" or dm_sheet["I5"].value != "=IFERROR(SUM(C5:F5)/COUNT(C5:F5),0)" or dm_sheet["I5"].number_format != "0.0%":
         fail("Realizadas, Pendientes o porcentaje del DM no son auditables")
-    if dm_sheet["A1"].fill.fgColor.rgb != "FF003B2E" or dm_sheet["C5"].fill.fgColor.rgb != "FF1E3932" or dm_sheet["F5"].fill.fgColor.rgb != "FFE9F4EF" or dm_sheet["D5"].value not in (None, ""):
+    if dm_sheet["A1"].fill.fgColor.rgb != "FF002E24" or dm_sheet["C5"].fill.fgColor.rgb != "FF1E3932" or dm_sheet["F5"].fill.fgColor.rgb != "FFE9F4EF" or dm_sheet["J5"].fill.fgColor.rgb != "FFFFF0D5" or dm_sheet["K5"].value != "Dar seguimiento" or dm_sheet["D5"].value not in (None, ""):
         fail("El contraste del título o los estados realizados/pendientes no es consistente")
 approve("04 · XLSX regional y dinámico con formatos congruentes")
 with tempfile.TemporaryDirectory() as temp_dir:

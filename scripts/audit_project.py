@@ -40,6 +40,8 @@ for path in ROOT.rglob("*"):
 
 html = texts["index.html"]
 js = texts["app.js"]
+xlsx_engine = texts["xlsx-export.js"]
+python_excel = (ROOT / "scripts" / "export_excel.py").read_text(encoding="utf-8")
 ids = re.findall(r'\bid=["\']([^"\']+)', html)
 duplicate_ids = sorted(item for item, count in Counter(ids).items() if count > 1)
 missing_dom_targets = sorted(set(re.findall(r'\$\("#([^"\s]+)"\)', js)).difference(ids))
@@ -233,6 +235,12 @@ if not (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file():
     issues.append("No se generó el PDF regional de respaldo")
 if "window.print" in js or "Tiendas realizadas" in js:
     issues.append("La descarga PDF o el KPI inicial conservan comportamiento obsoleto")
+for required in ("002E24", "style_decision_column", '"Decisión"', "Mantener estándar", "Priorizar hoy"):
+    if required not in python_excel:
+        issues.append(f"El Excel Python no conserva la lectura ejecutiva: {required}")
+for required in ("FF002E24", "tabColor", 'cellXfs count="12"', "Dar seguimiento"):
+    if required not in xlsx_engine + js:
+        issues.append(f"El Excel dinámico no conserva el contraste ejecutivo: {required}")
 
 report = {
     "filesReviewed": sum(1 for path in ROOT.rglob("*") if path.is_file() and ".git" not in path.parts),
