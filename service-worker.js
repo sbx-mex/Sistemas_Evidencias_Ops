@@ -1,27 +1,14 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v21";
+const CACHE_NAME = "sistema-evidencias-ops-v22";
 const CORE = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
-  "./pdf-export.js",
-  "./xlsx-export.js",
   "./manifest.webmanifest",
-  "./assets/ui/Damos_Seguimiento.webp",
-  "./assets/ui/Un_placer_haber_Ayudado.webp",
-  "./exports/Resumen_Evidencias_OPS.xlsx",
-  "./exports/Resumen_Evidencias_OPS.pdf",
+  "./assets/icons/icon-64.png",
   "./assets/icons/icon-64.webp",
-  "./assets/icons/icon-192.webp",
-  "./assets/icons/icon-512.png",
-  "./assets/director/jorge-alcantar.webp",
-  "./assets/dm/enrique-cesar.webp",
-  "./assets/dm/nancy-carolina.webp",
-  "./assets/dm/vanessa-carreno.webp",
-  "./assets/dm/veronica-garcia.webp",
-  "./assets/dm/yazmin-chabela.webp",
-  "./assets/dm/yazmin-garcia.webp"
+  "./assets/director/jorge-alcantar.webp"
 ];
 
 async function precacheLatest() {
@@ -68,22 +55,46 @@ self.addEventListener("message", (event) => {
   }
 });
 
-async function networkFirst(request) {
+async function networkFirst(request, cacheKey = request) {
   const cache = await caches.open(CACHE_NAME);
   try {
     const response = await fetch(request, { cache: "no-store" });
-    if (response.ok) await cache.put(request, response.clone());
+    if (response.ok) await cache.put(cacheKey, response.clone());
     return response;
   } catch (error) {
-    const cached = await cache.match(request, { ignoreSearch: true });
+    const cached = await cache.match(cacheKey, { ignoreSearch: true });
     if (cached) return cached;
     throw error;
   }
+}
+
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(request, { ignoreSearch: true });
+  const fresh = fetch(request)
+    .then(async (response) => {
+      if (response.ok) await cache.put(request, response.clone());
+      return response;
+    })
+    .catch(() => null);
+  return cached || fresh || Response.error();
 }
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-  event.respondWith(networkFirst(event.request));
+
+  if (url.pathname.endsWith("/data/dashboard.json")) {
+    event.respondWith(networkFirst(event.request, new Request(new URL("./data/dashboard.json", self.location.href))));
+    return;
+  }
+  if (event.request.mode === "navigate") {
+    event.respondWith(networkFirst(event.request, new Request(new URL("./index.html", self.location.href))));
+    return;
+  }
+  if (["script", "style", "image", "font"].includes(event.request.destination)
+    || url.pathname.includes("/exports/")) {
+    event.respondWith(staleWhileRevalidate(event.request));
+  }
 });

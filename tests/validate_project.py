@@ -20,7 +20,7 @@ REQUIRED = [
     "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
     "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/validate_sources.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
     "scripts/audit_project.py", "config/settings.json", "INSTRUCCION_FORMS.md", "MEJORAS.md",
-    "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
+    "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx", ".gitignore",
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
     "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
@@ -155,13 +155,17 @@ for row in forms_responses:
     current = latest_excel_by_pair.get(pair)
     if current is None or row_sort > current[0]:
         latest_excel_by_pair[pair] = (row_sort, evidence_url)
-expected_excel_links = {item[1] for item in latest_excel_by_pair.values()}
+expected_excel_links = {pair: item[1] for pair, item in latest_excel_by_pair.items()}
+published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for row in published}
 if data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
     fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
 if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
     fail("Nombre de archivo o vínculo directo inválido")
-if {row["evidenceUrl"] for row in published} != expected_excel_links:
-    fail("La última evidencia publicada por tienda y actividad no coincide con el Excel")
+if published_excel_links != expected_excel_links:
+    missing = len(set(expected_excel_links).difference(published_excel_links))
+    unexpected = len(set(published_excel_links).difference(expected_excel_links))
+    changed = sum(published_excel_links.get(pair) != url for pair, url in expected_excel_links.items() if pair in published_excel_links)
+    fail(f"La última evidencia por tienda y actividad no coincide: faltan {missing}, sobran {unexpected}, cambiaron {changed}")
 if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"] or forms_schema.get("applicabilityIssues"):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
 if any(match not in {"exact", "affinity", "generic"} for match in forms_schema.get("evidenceHeaderMatch", {}).values()):
@@ -286,14 +290,22 @@ for required_excel_context in ("const activityLabel = exportActivityLabel()", "e
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }'):
+for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v21", "icon-192.webp", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
+for cache_control in ("sistema-evidencias-ops-v22", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
     fail("El Excel CMS no debe publicarse en la caché web")
+core_cache = sw[sw.index("const CORE"):sw.index("];", sw.index("const CORE"))]
+if any(path in core_cache for path in ("/exports/", "/assets/dm/", "/assets/ui/", "icon-192")):
+    fail("La instalación PWA todavía precarga archivos pesados no esenciales")
+if 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html or "Date.now()" in js[js.index("async function loadData"):js.index("async function refreshApplicationData")]:
+    fail("La carga inicial conserva motores pesados o genera entradas de caché únicas")
+for ignored in ("__pycache__/", "*.py[cod]", "*.tmp", "cms/~$*.xlsx"):
+    if ignored not in (ROOT / ".gitignore").read_text(encoding="utf-8"):
+        fail(f"La limpieza local no ignora {ignored}")
 if "window.print" in js or "Tiendas realizadas" in js:
     fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
 if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
@@ -329,7 +341,7 @@ approve("09 · Ranking, fotografía DM e identidad ejecutiva")
 for text in ["pip check", "python -X utf8 scripts/validate_sources.py", "python scripts/clean_obsolete.py --apply", "python -X utf8 scripts/build_dashboard.py", "python -X utf8 scripts/export_excel.py", "python -X utf8 scripts/export_pdf.py", "python -X utf8 scripts/clean_obsolete.py --check", "python -X utf8 tests/validate_dynamic_forms_schema.py", "python -X utf8 tests/validate_maintenance.py", "python -X utf8 tests/validate_project.py", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
-for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:
+for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:
     if text not in workflow:
         fail(f"Publicación no idempotente: falta {text}")
 if "git add -A -- tests/validate_horno_applicability.py" in workflow:

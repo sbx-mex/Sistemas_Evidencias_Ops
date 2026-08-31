@@ -15,6 +15,31 @@ const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
 })[char]);
 const number = (value) => Number(value || 0).toLocaleString("es-MX");
 const percent = (value) => `${Number(value || 0).toLocaleString("es-MX", { maximumFractionDigits: 1 })}%`;
+const engineLoads = new Map();
+
+function loadScriptOnce(source, globalName) {
+  if (window[globalName]) return Promise.resolve(window[globalName]);
+  if (!engineLoads.has(source)) {
+    engineLoads.set(source, new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = source;
+      script.async = true;
+      script.onload = () => window[globalName] ? resolve(window[globalName]) : reject(new Error(`El motor ${globalName} no inició.`));
+      script.onerror = () => reject(new Error(`No fue posible cargar ${source}.`));
+      document.head.append(script);
+    }).catch((error) => {
+      engineLoads.delete(source);
+      throw error;
+    }));
+  }
+  return engineLoads.get(source);
+}
+
+function loadExportEngine(format) {
+  return format === "pdf"
+    ? loadScriptOnce("./pdf-export.js", "OPSPdf")
+    : loadScriptOnce("./xlsx-export.js", "OPSXlsx");
+}
 
 function selectedActivities() {
   return state.filters.activity ? [state.filters.activity] : state.data.activities.map((item) => item.name);
@@ -351,6 +376,7 @@ function exportContext(format) {
 async function exportPdf() {
   if (!await beginExport("PDF")) return;
   try {
+    await loadExportEngine("pdf");
     if (!window.OPSPdf) throw new Error("El motor PDF no está disponible.");
     const context = exportContext("pdf");
     const canvases = await renderPdfPages();
@@ -728,6 +754,7 @@ function buildExcelSpec() {
 async function exportExcel() {
   if (!await beginExport("Excel")) return;
   try {
+    await loadExportEngine("xlsx");
     if (!window.OPSXlsx) throw new Error("El motor XLSX no está disponible.");
     const context = exportContext("xlsx");
     const result = window.OPSXlsx.downloadWorkbook(buildExcelSpec(), context.filename);
@@ -823,7 +850,7 @@ async function enforceBuildVersion(data) {
 async function loadData(announce = false) {
   $("#refresh-button").disabled = true;
   try {
-    const response = await fetch(`./data/dashboard.json?v=${Date.now()}`, {
+    const response = await fetch("./data/dashboard.json", {
       cache: "no-store", headers: { "Cache-Control": "no-cache" },
     });
     if (!response.ok) throw new Error(`No fue posible cargar los datos (${response.status}).`);

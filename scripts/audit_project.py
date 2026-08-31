@@ -137,8 +137,12 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v21", "icon-192.webp", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v22", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
+if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
+    issues.append("Los motores de exportación no se cargan bajo demanda")
+if "Date.now()" in js[js.index("async function loadData"):js.index("async function refreshApplicationData")]:
+    issues.append("La consulta de datos crea claves de caché distintas en cada carga")
 if not all(token in workflow for token in ("set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch")):
     issues.append("El workflow no publica de forma idempotente")
 if "git add -A -- tests/validate_horno_applicability.py" in workflow:

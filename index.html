@@ -114,7 +114,7 @@
   <section id="export-modal" class="export-modal" role="dialog" aria-modal="true" aria-labelledby="export-modal-title" hidden>
     <article class="export-card">
       <button id="export-modal-close" class="export-close" type="button" aria-label="Cerrar exportación" hidden>Cerrar <span aria-hidden="true">×</span></button>
-      <img id="export-modal-image" src="./assets/ui/Damos_Seguimiento.webp" alt="Le damos seguimiento, estamos trabajando para ti" width="768" height="512">
+      <img id="export-modal-image" src="./assets/ui/Damos_Seguimiento.webp" alt="Le damos seguimiento, estamos trabajando para ti" width="768" height="512" loading="lazy" decoding="async">
       <div class="export-card-copy">
         <p id="export-modal-kicker" class="eyebrow">Preparando exportación</p>
         <h2 id="export-modal-title">Confirma tu exportación</h2>
@@ -136,8 +136,6 @@
 
   <button id="back-to-top" class="back-to-top" type="button" aria-label="Volver al inicio" hidden>↑ Arriba</button>
 
-  <script src="./pdf-export.js" defer></script>
-  <script src="./xlsx-export.js" defer></script>
   <script src="./app.js" defer></script>
 </body>
 </html>
