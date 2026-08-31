@@ -215,6 +215,12 @@ def main() -> None:
         f"encabezado Forms fila {schema['headerRow']}"
     )
     print(
+        "Control CMS · "
+        f"{len(quality.get('hiddenActivityRows', []))} filas Forms ignoradas · "
+        f"{len(quality.get('hiddenActivities', []))} actividades ausentes o inactivas · "
+        "sin impacto en avance ni fecha de corte"
+    )
+    print(
         "Motores auditados · "
         f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['settings']} parámetros · "
         f"Directorio {directory_audit['stores']} tiendas en {directory_audit['sheet']} · "

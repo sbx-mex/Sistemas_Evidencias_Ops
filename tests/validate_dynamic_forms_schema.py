@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import sys
 import tempfile
+import shutil
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -96,22 +97,50 @@ def main() -> None:
         assert rows[0]["evidence"] == "" and rows[0]["confirmed"] is True
         assert schema["evidenceIssues"]["mismatched-evidence-column"] == [2]
 
-        # Escenario 6: una actividad nueva queda en historia, pero no se publica hasta activarla en CMS.
+        # Escenario 6: dos actividades fuera del catálogo activo CMS se ignoran.
+        # Una no existe y otra sí existe en el CMS, pero está desactivada. El orden
+        # de columnas y las filas repetidas no deben afectar avance ni fecha de corte.
         hidden = temp / "hidden.xlsx"
-        start, finish = timestamps(7)
-        hidden_headers = BASE + ["CeCo", ACTIVITY, "Evidencia_Nueva_Actividad"]
-        save_book(hidden, hidden_headers, [[6, start, finish, "", "Prueba", "38115", "Nueva Actividad Forms", f"{allowed}/nueva.jpg"]])
+        hidden_cms = temp / "cms-with-inactive.xlsx"
+        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", hidden_cms)
+        cms_book = load_workbook(hidden_cms)
+        activity_sheet = cms_book["Actividades"]
+        cms_headers = {
+            clean_text(cell.value): index
+            for index, cell in enumerate(next(activity_sheet.iter_rows(min_row=4, max_row=4)), 1)
+            if clean_text(cell.value)
+        }
+        for row_number in range(5, activity_sheet.max_row + 1):
+            if clean_text(activity_sheet.cell(row_number, cms_headers["Actividad"]).value) == "Roll Out":
+                activity_sheet.cell(row_number, cms_headers["Activo"]).value = "No"
+                break
+        cms_book.save(hidden_cms)
+
+        start1, finish1 = timestamps(7)
+        start2, finish2 = timestamps(8)
+        start3, finish3 = timestamps(9)
+        hidden_headers = BASE + ["Evidencia_RollOut", "CeCo", "Evidencia_Nueva_Actividad", ACTIVITY]
+        save_book(hidden, hidden_headers, [
+            [6, start1, finish1, "", "Prueba", f"{allowed}/rollout.jpg", "38115", "", "Roll Out"],
+            [7, start2, finish2, "", "Prueba", "", "38115", f"{allowed}/nueva.jpg", "Nueva Actividad Forms"],
+            [8, start3, finish3, "", "Prueba", "", "38115", f"{allowed}/repetida.jpg", "Nueva Actividad Forms"],
+        ])
         payload = build_payload(
             hidden,
             ROOT / "cms" / "Centro Norte_Directorio.xlsx",
             ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            hidden_cms,
         )
-        cms_activities, _, _, _ = load_cms(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
-        assert payload["summary"]["activities"] == len(cms_activities)
+        hidden_cms_activities, _, _, _ = load_cms(hidden_cms)
+        assert payload["summary"]["activities"] == len(hidden_cms_activities)
+        assert "Roll Out" not in {item["name"] for item in payload["activities"]}
         assert payload["submissions"] == []
-        assert payload["quality"]["hiddenActivities"] == ["Nueva Actividad Forms"]
-        assert payload["quality"]["hiddenActivityRows"] == [2]
+        assert payload["quality"]["hiddenActivities"] == ["Nueva Actividad Forms", "Roll Out"]
+        assert payload["quality"]["hiddenActivityRows"] == [2, 3, 4]
+        assert payload["summary"]["validResponses"] == 0
+        assert payload["summary"]["completedCompletions"] == 0
+        assert payload["lastUpdated"] is None and payload["lastUpdatedDisplay"] == "Sin respuestas"
+        cms_activities, _, _, _ = load_cms(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
 
         # Escenario 7: portada previa, encabezado desplazado y campos personales ausentes.
         shifted = temp / "shifted.xlsx"

@@ -96,6 +96,34 @@ def compact_key(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", "", key_text(value))
 
 
+def active_activity_catalog(activities: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, str]]:
+    """Crea el catálogo autorizado por CMS y rechaza nombres activos ambiguos.
+
+    La primera clave conserva palabras y la segunda tolera signos, espacios y
+    acentos. Esto permite que Forms cambie el formato visual del nombre sin
+    convertir una actividad ajena al CMS en un cumplimiento válido.
+    """
+    by_text: dict[str, str] = {}
+    by_compact: dict[str, str] = {}
+    for item in activities:
+        name = clean_text(item.get("name"))
+        text_key = key_text(name)
+        compact = compact_key(name)
+        if not name or not text_key or not compact:
+            raise ValueError("El CMS contiene una actividad activa sin nombre válido")
+        if text_key in by_text or compact in by_compact:
+            duplicate = by_text.get(text_key) or by_compact.get(compact) or name
+            raise ValueError(f"El CMS contiene actividades activas duplicadas: {duplicate} / {name}")
+        by_text[text_key] = name
+        by_compact[compact] = name
+    return by_text, by_compact
+
+
+def canonical_cms_activity(value: Any, by_text: dict[str, str], by_compact: dict[str, str]) -> str | None:
+    """Devuelve exclusivamente el nombre canónico de una actividad activa CMS."""
+    return by_text.get(key_text(value)) or by_compact.get(compact_key(value))
+
+
 def activity_tokens(value: Any) -> set[str]:
     """Palabras significativas para comparar encabezados humanos del Excel."""
     return set(re.findall(r"[a-z0-9]+", key_text(value)))
@@ -784,9 +812,8 @@ def build_payload(
     responses, response_schema = load_responses(responses_path, [item["name"] for item in activities])
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
-    configured = {key_text(item["name"]): item for item in activities}
+    configured_by_text, configured_by_compact = active_activity_catalog(activities)
     activity_names = [item["name"] for item in activities]
-    canonical_activity = {key_text(item["name"]): item["name"] for item in activities}
     evidence_rules = {key_text(item["name"]): item.get("requireEvidence", True) for item in activities}
 
     submissions = []
@@ -801,20 +828,20 @@ def build_payload(
 
     for response in responses:
         store = stores.get(response["ceco"])
-        activity_key = key_text(response["activity"])
+        activity_text = clean_text(response["activity"])
+        activity = canonical_cms_activity(activity_text, configured_by_text, configured_by_compact)
         if response["ceco"] and not store:
             unknown_cecos.add(response["ceco"])
-        if response["finished"] and (latest_update is None or response["finished"] > latest_update):
-            latest_update = response["finished"]
-        if not activity_key:
+        if not activity_text:
             invalid_rows.append(response["row"])
             continue
-        if activity_key not in configured:
+        if not activity:
             hidden_activity_rows.append(response["row"])
-            hidden_activities.add(response["activity"])
+            hidden_activities.add(activity_text)
             continue
-
-        activity = canonical_activity[activity_key]
+        # Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte.
+        if response["finished"] and (latest_update is None or response["finished"] > latest_update):
+            latest_update = response["finished"]
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
         not_applicable = bool(response["explicitNo"] and store and not response["applicabilityConflict"])
