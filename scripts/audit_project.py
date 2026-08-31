@@ -69,6 +69,8 @@ for required in (
     "active_activity_catalog",
     "canonical_cms_activity",
     "Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte",
+    "latest_submission_by_pair",
+    "STABILITY_CONTROLS",
 ):
     if required not in build_engine:
         issues.append(f"El motor no conserva el control exclusivo del CMS: {required}")
@@ -76,9 +78,15 @@ for required in (
     "dos actividades fuera del catálogo activo CMS",
     'hiddenActivities"] == ["Nueva Actividad Forms", "Roll Out"]',
     'lastUpdated"] is None',
+    "Evidencia_RollOut",
+    'duplicateValidResponses"] == 1',
 ):
     if required not in dynamic_schema_test:
         issues.append(f"Falta prueba de aislamiento CMS: {required}")
+store_table_html = html[html.index('<tbody id="store-table"'):]
+store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
+if "<th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
+    issues.append("La tabla Tiendas todavía muestra la columna DM")
 for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "clearDashboardFilters", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
@@ -141,6 +149,9 @@ if data.get("schemaVersion") != 11:
 if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
+stability_controls = data.get("quality", {}).get("stabilityControls", {})
+if len(stability_controls) != 10 or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
+    issues.append("Los 10 controles Python de estabilidad no están activos")
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
 if any(match not in {"exact", "affinity", "generic"} for match in response_schema.get("evidenceHeaderMatch", {}).values()):

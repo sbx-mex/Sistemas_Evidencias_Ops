@@ -230,10 +230,16 @@ if nav_order != sorted(nav_order) or section_order != sorted(section_order):
     fail("Orden de navegación o secciones incorrecto")
 if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
     fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
+store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
+if "<th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
+    fail("La tabla Tiendas todavía muestra la columna DM")
 for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\"", "id=\"active-scope\"", "id=\"toggle-dates\"", "id=\"commitment-dates\"", "renderActiveScope"]:
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
+stability_controls = data.get("quality", {}).get("stabilityControls", {})
+if len(stability_controls) != 10 or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
+    fail("Los 10 controles Python de estabilidad no están activos")
 for required in [".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"]:
     if required not in css:
         fail(f"Actividades no está adaptada a móvil: {required}")

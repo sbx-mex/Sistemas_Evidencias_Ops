@@ -123,7 +123,7 @@ def main() -> None:
         save_book(hidden, hidden_headers, [
             [6, start1, finish1, "", "Prueba", f"{allowed}/rollout.jpg", "38115", "", "Roll Out"],
             [7, start2, finish2, "", "Prueba", "", "38115", f"{allowed}/nueva.jpg", "Nueva Actividad Forms"],
-            [8, start3, finish3, "", "Prueba", "", "38115", f"{allowed}/repetida.jpg", "Nueva Actividad Forms"],
+            [8, start3, finish3, "", "Prueba", "", "99999", f"{allowed}/repetida.jpg", "Nueva Actividad Forms"],
         ])
         payload = build_payload(
             hidden,
@@ -137,10 +137,36 @@ def main() -> None:
         assert payload["submissions"] == []
         assert payload["quality"]["hiddenActivities"] == ["Nueva Actividad Forms", "Roll Out"]
         assert payload["quality"]["hiddenActivityRows"] == [2, 3, 4]
+        assert payload["quality"]["unknownCeCos"] == []
         assert payload["summary"]["validResponses"] == 0
         assert payload["summary"]["completedCompletions"] == 0
         assert payload["lastUpdated"] is None and payload["lastUpdatedDisplay"] == "Sin respuestas"
         cms_activities, _, _, _ = load_cms(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
+
+        # Escenario 6b: Roll Out se enlaza con Evidencia_RollOut por nombre,
+        # aunque cambie el orden. Dos respuestas del mismo par publican sólo la última.
+        repeated = temp / "repeated-rollout.xlsx"
+        old_start, old_finish = timestamps(11)
+        new_start, new_finish = timestamps(12)
+        repeated_headers = BASE + ["Evidencia_RollOut", ACTIVITY, "CeCo"]
+        save_book(repeated, repeated_headers, [
+            [11, old_start, old_finish, "", "Prueba", f"{allowed}/rollout-anterior.jpg", "Roll Out", "38115"],
+            [12, new_start, new_finish, "", "Prueba", f"{allowed}/rollout-vigente.jpg", "Roll Out", "38115"],
+        ])
+        repeated_payload = build_payload(
+            repeated,
+            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        assert repeated_payload["summary"]["completedCompletions"] == 1
+        assert repeated_payload["summary"]["validResponses"] == 1
+        assert repeated_payload["quality"]["duplicateValidResponses"] == 1
+        assert len(repeated_payload["submissions"]) == 1
+        assert repeated_payload["submissions"][0]["evidenceUrl"].endswith("rollout-vigente.jpg")
+        assert repeated_payload["quality"]["responseSchema"]["evidenceHeaderMap"]["Evidencia_RollOut"] == "rollout"
+        assert repeated_payload["quality"]["stabilityScore"] == "10/10"
+        assert len(repeated_payload["quality"]["stabilityControls"]) == 10
 
         # Escenario 7: portada previa, encabezado desplazado y campos personales ausentes.
         shifted = temp / "shifted.xlsx"

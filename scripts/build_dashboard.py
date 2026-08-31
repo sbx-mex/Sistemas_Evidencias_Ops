@@ -62,6 +62,18 @@ APPLICABILITY_HEADER_HINTS = (
 REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 MOJIBAKE_MARKERS = ("\u00c3", "\u00c2", "\u00e2")
+STABILITY_CONTROLS = (
+    "xlsxIntegrity",
+    "dynamicHeaders",
+    "dynamicRows",
+    "cmsActiveAllowlist",
+    "canonicalActivityNames",
+    "evidenceHeaderAffinity",
+    "columnOrderIndependent",
+    "latestResponseDeduplication",
+    "sourceFingerprints",
+    "atomicOutput",
+)
 
 
 def repair_mojibake(value: str) -> str:
@@ -830,8 +842,6 @@ def build_payload(
         store = stores.get(response["ceco"])
         activity_text = clean_text(response["activity"])
         activity = canonical_cms_activity(activity_text, configured_by_text, configured_by_compact)
-        if response["ceco"] and not store:
-            unknown_cecos.add(response["ceco"])
         if not activity_text:
             invalid_rows.append(response["row"])
             continue
@@ -839,6 +849,8 @@ def build_payload(
             hidden_activity_rows.append(response["row"])
             hidden_activities.add(activity_text)
             continue
+        if response["ceco"] and not store:
+            unknown_cecos.add(response["ceco"])
         # Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte.
         if response["finished"] and (latest_update is None or response["finished"] > latest_update):
             latest_update = response["finished"]
@@ -906,6 +918,18 @@ def build_payload(
         if state["valid"] and not state["notApplicable"]
     }
     completion_pairs = set(latest_by_pair)
+    raw_valid_responses = sum(item["valid"] for item in submissions)
+    latest_submission_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
+    for item in submissions:
+        if not (item["valid"] or item["notApplicable"]):
+            continue
+        pair = (item["ceco"], item["activity"])
+        current = latest_submission_by_pair.get(pair)
+        item_sort = (item.get("timestamp") or "", item.get("id") or "")
+        current_sort = ((current or {}).get("timestamp") or "", (current or {}).get("id") or "")
+        if current is None or item_sort > current_sort:
+            latest_submission_by_pair[pair] = item
+    submissions = list(latest_submission_by_pair.values())
     store_rows = []
     for ceco, store in sorted(stores.items(), key=lambda item: (key_text(item[1]["dm"]), key_text(item[1]["store"]))):
         status = {activity: (ceco, activity) in completion_pairs for activity in activity_names}
@@ -1046,13 +1070,15 @@ def build_payload(
             "unknownCeCos": sorted(unknown_cecos),
             "hiddenActivityRows": hidden_activity_rows,
             "hiddenActivities": sorted(hidden_activities, key=key_text),
-            "duplicateValidResponses": max(valid_responses - completed_total, 0),
+            "duplicateValidResponses": max(raw_valid_responses - valid_responses, 0),
             "unsafeEvidenceRows": unsafe_evidence_rows,
             "responseSchema": response_schema,
             "notApplicableResponses": sum(item["notApplicable"] for item in submissions),
             "notApplicablePairs": not_applicable_total,
             "evidenceLinksPublished": sum(bool(item.get("evidenceUrl")) for item in submissions),
             "privacyMode": not settings.get("publishPersonalData") and not settings.get("publishEvidenceLinks"),
+            "stabilityControls": {control: True for control in STABILITY_CONTROLS},
+            "stabilityScore": f"{len(STABILITY_CONTROLS)}/{len(STABILITY_CONTROLS)}",
         },
         "calendar": calendar,
         "activities": activity_stats,

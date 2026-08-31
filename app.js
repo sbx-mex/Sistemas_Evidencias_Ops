@@ -223,12 +223,12 @@ function renderStores() {
   $("#store-table").innerHTML = rows.length ? rows.map((store, index) => {
     const signal = semaphore(store.compliance);
     return `<tr>
-      <td><span class="table-rank">${index + 1}</span></td><td><strong>${esc(store.ceco)}</strong></td><td>${esc(store.store)}</td><td>${esc(store.dm)}</td>
+      <td><span class="table-rank">${index + 1}</span></td><td><strong>${esc(store.ceco)}</strong></td><td>${esc(store.store)}</td>
       <td><strong>${store.completed}/${store.expected}</strong></td>
       <td><div class="table-progress ${signal.tone}"><span><i style="--progress:${Math.min(store.compliance, 100)}%"></i></span><b>${percent(store.compliance)}</b></div></td>
       <td><span class="status ${signal.tone}">${signal.label}</span></td>
     </tr>`;
-  }).join("") : '<tr><td colspan="7"><div class="empty-state">Sin tiendas para mostrar.</div></td></tr>';
+  }).join("") : '<tr><td colspan="6"><div class="empty-state">Sin tiendas para mostrar.</div></td></tr>';
 }
 
 function syncFilterUrl() {
