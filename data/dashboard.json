@@ -1,9 +1,9 @@
 {
   "schemaVersion": 11,
-  "buildVersion": "f30251ebe12e85cd",
+  "buildVersion": "43b0a5591b0df100",
   "project": "Sistema de Evidencias OPS",
   "region": "Centro Norte",
-  "generatedAt": "2026-08-30T23:59:32+00:00",
+  "generatedAt": "2026-08-31T00:05:16+00:00",
   "lastUpdated": "2026-08-30T17:57:43",
   "lastUpdatedDisplay": "30/08/2026 17:57",
   "report": {
@@ -20,7 +20,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "4361072735639184831beeb9b57495bd2dfb40f413f7841b077ddd7f9760a4c9",
+    "responsesSha256": "9018c1c2e9250d1be407538e88ae0eee3d39d307037b6873ba0fc080a4958724",
     "directory": "Centro Norte_Directorio.xlsx",
     "directorySha256": "38ec7e5cd00b3ec9f6a5c4d24b1ac3015c4fdab97badbacd1538c5c6c77d92d1",
     "directorySheet": "72 T",
@@ -131,9 +131,9 @@
       "notApplicableStores": 0,
       "pendingStores": 31,
       "compliance": 56.9,
-      "deadlineLabel": "Vence en 1 días",
-      "deadlineTone": "amber",
-      "daysRemaining": 1,
+      "deadlineLabel": "Vence hoy",
+      "deadlineTone": "red",
+      "daysRemaining": 0,
       "focusRank": 1
     },
     {
@@ -153,9 +153,9 @@
       "notApplicableStores": 0,
       "pendingStores": 61,
       "compliance": 15.3,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 2
     },
     {
@@ -175,9 +175,9 @@
       "notApplicableStores": 0,
       "pendingStores": 71,
       "compliance": 1.4,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 3
     },
     {
@@ -197,9 +197,9 @@
       "notApplicableStores": 0,
       "pendingStores": 71,
       "compliance": 1.4,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 4
     },
     {
@@ -219,9 +219,9 @@
       "notApplicableStores": 1,
       "pendingStores": 71,
       "compliance": 0.0,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 5
     },
     {
@@ -241,9 +241,9 @@
       "notApplicableStores": 0,
       "pendingStores": 67,
       "compliance": 6.9,
-      "deadlineLabel": "Vence en 7 días",
+      "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
-      "daysRemaining": 7,
+      "daysRemaining": 6,
       "focusRank": 6
     },
     {
@@ -263,9 +263,9 @@
       "notApplicableStores": 0,
       "pendingStores": 70,
       "compliance": 2.8,
-      "deadlineLabel": "Vence en 7 días",
+      "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
-      "daysRemaining": 7,
+      "daysRemaining": 6,
       "focusRank": 7
     },
     {
@@ -285,9 +285,9 @@
       "notApplicableStores": 0,
       "pendingStores": 70,
       "compliance": 2.8,
-      "deadlineLabel": "Vence en 7 días",
+      "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
-      "daysRemaining": 7,
+      "daysRemaining": 6,
       "focusRank": 8
     },
     {
@@ -307,9 +307,9 @@
       "notApplicableStores": 0,
       "pendingStores": 68,
       "compliance": 5.6,
-      "deadlineLabel": "Vence en 7 días",
+      "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
-      "daysRemaining": 7,
+      "daysRemaining": 6,
       "focusRank": 9
     },
     {
@@ -329,9 +329,9 @@
       "notApplicableStores": 0,
       "pendingStores": 69,
       "compliance": 4.2,
-      "deadlineLabel": "En 14 días",
+      "deadlineLabel": "En 13 días",
       "deadlineTone": "green",
-      "daysRemaining": 14,
+      "daysRemaining": 13,
       "focusRank": 10
     }
   ],
