@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v20";
+const CACHE_NAME = "sistema-evidencias-ops-v21";
 const CORE = [
   "./",
   "./index.html",
@@ -13,7 +13,7 @@ const CORE = [
   "./exports/Resumen_Evidencias_OPS.xlsx",
   "./exports/Resumen_Evidencias_OPS.pdf",
   "./assets/icons/icon-64.webp",
-  "./assets/icons/icon-192.png",
+  "./assets/icons/icon-192.webp",
   "./assets/icons/icon-512.png",
   "./assets/director/jorge-alcantar.webp",
   "./assets/dm/enrique-cesar.webp",

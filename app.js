@@ -245,19 +245,7 @@ function readFilterUrl() {
 }
 
 function renderAll() {
-  renderFilterSummary(); renderSummary(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
-}
-
-function renderFilterSummary() {
-  const item = metrics();
-  const tags = [
-    reportScope(),
-    exportActivityLabel(),
-    `${number(item.stores)} tiendas`,
-    `${number(item.pending)} pendientes`,
-  ];
-  const active = Boolean(state.filters.dm || state.filters.store || state.filters.activity);
-  $("#filter-summary").innerHTML = `<div class="filter-tags">${tags.map((tag) => `<span class="filter-tag">${esc(tag)}</span>`).join("")}</div>${active ? '<button type="button" data-clear-dashboard-filters>Restablecer filtros</button>' : ""}`;
+  renderSummary(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
 }
 
 function clearDashboardFilters() {
@@ -417,9 +405,9 @@ async function renderPdfPages() {
     context.fillStyle = "#006241"; context.fillRect(0, 0, 1600, 205);
     if (logo) context.drawImage(logo, 45, 48, 112, 112);
     context.textAlign = "center";
-    context.fillStyle = "#ffffff"; context.font = "800 37px Segoe UI, sans-serif"; context.fillText(meta.title, 730, 52);
-    context.font = "650 17px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 760), 730, 87);
-    context.fillStyle = "#ffffff"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 760), 730, 135);
+    context.fillStyle = "#ffffff"; context.font = "800 37px Segoe UI, sans-serif"; context.fillText(meta.title, 730, 56);
+    context.fillStyle = "#ffffff"; context.font = "850 30px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 760), 730, 116);
+    context.fillStyle = "#b9e1d0"; context.font = "650 14px Segoe UI, sans-serif"; context.fillText(`Corte ${cutStamp()}`, 730, 154);
     context.textAlign = "left";
 
     if (profilePhoto) {
@@ -430,17 +418,16 @@ async function renderPdfPages() {
     context.fillStyle = "#ffffff"; context.globalAlpha = .13; context.fillRect(1320, 41, 225, 122); context.globalAlpha = 1;
     context.textAlign = "center"; context.fillStyle = "#b9e1d0"; context.font = "800 13px Segoe UI, sans-serif"; context.fillText(exportAdvanceLabel(), 1432, 69);
     context.fillStyle = "#ffffff"; context.font = "900 45px Segoe UI, sans-serif"; context.fillText(percent(current.compliance), 1432, 121);
-    context.fillStyle = "#b9e1d0"; context.font = "700 12px Segoe UI, sans-serif"; context.fillText(state.filters.dm || state.filters.store ? currentScope() : state.data.region, 1432, 147); context.textAlign = "left";
+    context.textAlign = "left";
     const cards = [
-      ["AVANCE REALIZADO", `${number(current.completed)} / ${number(current.expected)}`, 55, 355],
-      ["PENDIENTES", number(current.pending), 425, 355],
-      [exportAdvanceLabel(), percent(current.compliance), 795, 750],
+      ["AVANCE REALIZADO", `${number(current.completed)} / ${number(current.expected)}`, 55, 730],
+      ["PENDIENTES", number(current.pending), 815, 730],
     ];
     cards.forEach(([label, value, x, width], cardIndex) => {
-      context.fillStyle = cardIndex === 2 ? "#e0f2e9" : "#ffffff"; context.fillRect(x, 225, width, 82);
+      context.fillStyle = "#ffffff"; context.fillRect(x, 225, width, 82);
       context.textAlign = "center";
       context.fillStyle = "#5d7067"; context.font = "750 14px Segoe UI, sans-serif"; context.fillText(label, x + width / 2, 252);
-      context.fillStyle = "#1e3932"; context.font = `850 ${cardIndex === 2 ? 38 : 28}px Segoe UI, sans-serif`; context.fillText(value, x + width / 2, 289);
+      context.fillStyle = "#1e3932"; context.font = "850 28px Segoe UI, sans-serif"; context.fillText(value, x + width / 2, 289);
       context.textAlign = "left";
     });
 
@@ -494,9 +481,9 @@ async function exportImage() {
     const [logo, profilePhoto, ...photos] = assets;
     if (logo) context.drawImage(logo, 48, 55, 112, 112);
     context.textAlign = "center";
-    context.fillStyle = "#ffffff"; context.font = "700 40px Segoe UI, sans-serif"; context.fillText(meta.title, 730, 55);
-    context.font = "600 18px Segoe UI, sans-serif"; context.fillText(fitText(context, `${exportScopeSummary()} · Corte ${cutStamp()}`, 760), 730, 91);
-    context.font = "850 31px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 760), 730, 145);
+    context.fillStyle = "#ffffff"; context.font = "700 40px Segoe UI, sans-serif"; context.fillText(meta.title, 730, 58);
+    context.font = "850 32px Segoe UI, sans-serif"; context.fillText(fitText(context, exportActivityLabel(), 760), 730, 119);
+    context.fillStyle = "#b9e1d0"; context.font = "650 14px Segoe UI, sans-serif"; context.fillText(`Corte ${cutStamp()}`, 730, 158);
     context.textAlign = "left";
     if (profilePhoto) {
       context.save(); context.beginPath(); context.arc(1220, 91, 43, 0, Math.PI * 2); context.clip(); drawCover(context, profilePhoto, 1177, 48, 86, 86); context.restore();
@@ -506,7 +493,7 @@ async function exportImage() {
     context.fillStyle = "#ffffff"; context.globalAlpha = .13; context.fillRect(1320, 42, 225, 132); context.globalAlpha = 1;
     context.textAlign = "center"; context.fillStyle = "#b9e1d0"; context.font = "800 13px Segoe UI, sans-serif"; context.fillText(exportAdvanceLabel(), 1432, 72);
     context.fillStyle = "#ffffff"; context.font = "900 48px Segoe UI, sans-serif"; context.fillText(percent(current.compliance), 1432, 127);
-    context.fillStyle = "#b9e1d0"; context.font = "700 12px Segoe UI, sans-serif"; context.fillText(state.filters.dm || state.filters.store ? currentScope() : state.data.region, 1432, 153); context.textAlign = "left";
+    context.textAlign = "left";
     context.textAlign = "left";
     const top = headerHeight; context.fillStyle = "#e5efea"; context.fillRect(0, top, width, tableHeader);
     context.fillStyle = "#42564d"; context.font = "700 17px Segoe UI, sans-serif";
@@ -759,7 +746,6 @@ function bindEvents() {
   $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#clear-filters").addEventListener("click", clearDashboardFilters);
-  $("#filter-summary").addEventListener("click", (event) => { if (event.target.closest("[data-clear-dashboard-filters]")) clearDashboardFilters(); });
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
   $("#evidence-filter-dm").addEventListener("change", (event) => {
     state.evidenceFilters.dm = event.target.value; state.evidenceFilters.store = ""; state.showAllEvidence = false;
