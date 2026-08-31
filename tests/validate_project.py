@@ -20,7 +20,7 @@ REQUIRED = [
     "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
     "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/validate_sources.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
     "scripts/audit_project.py", "config/settings.json", "INSTRUCCION_FORMS.md", "MEJORAS.md",
-    "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx", ".gitignore",
+    "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
     "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
@@ -303,9 +303,12 @@ if any(path in core_cache for path in ("/exports/", "/assets/dm/", "/assets/ui/"
     fail("La instalación PWA todavía precarga archivos pesados no esenciales")
 if 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html or "Date.now()" in js[js.index("async function loadData"):js.index("async function refreshApplicationData")]:
     fail("La carga inicial conserva motores pesados o genera entradas de caché únicas")
-for ignored in ("__pycache__/", "*.py[cod]", "*.tmp", "cms/~$*.xlsx"):
-    if ignored not in (ROOT / ".gitignore").read_text(encoding="utf-8"):
-        fail(f"La limpieza local no ignora {ignored}")
+gitignore_path = ROOT / ".gitignore"
+if gitignore_path.is_file():
+    gitignore = gitignore_path.read_text(encoding="utf-8")
+    for ignored in ("__pycache__/", "*.py[cod]", "*.tmp", "cms/~$*.xlsx"):
+        if ignored not in gitignore:
+            fail(f"La limpieza local no ignora {ignored}")
 if "window.print" in js or "Tiendas realizadas" in js:
     fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
 if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
