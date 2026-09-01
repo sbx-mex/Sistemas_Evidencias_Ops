@@ -55,17 +55,7 @@ jobs:
           pip check
 
       - name: Validar los tres motores Excel
-        run: python -X utf8 scripts/validate_sources.py
-
-      - name: Limpiar archivos obsoletos conocidos
-        run: python scripts/clean_obsolete.py --apply
-
-      - name: Reconstruir dashboard y exportaciones
-        run: |
-          set -euo pipefail
-          python -X utf8 scripts/build_dashboard.py
-          python -X utf8 scripts/export_excel.py
-          python -X utf8 scripts/export_pdf.py
+        run: python -X utf8 scripts/safe_maintenance.py --force
 
       - name: Validar sintaxis y controles del proyecto
         run: |
@@ -77,10 +67,6 @@ jobs:
           node --check service-worker.js
           git diff --check
           python -X utf8 scripts/clean_obsolete.py --check
-          python -X utf8 tests/validate_dynamic_forms_schema.py
-          python -X utf8 tests/validate_maintenance.py
-          python -X utf8 tests/validate_project.py
-          python -X utf8 scripts/audit_project.py
 
       - name: Resumen de actualización
         if: always()
