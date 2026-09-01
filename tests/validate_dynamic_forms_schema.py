@@ -246,11 +246,11 @@ def main() -> None:
         similar_headers = BASE + [
             "CeCo", ACTIVITY,
             "Evidencia_Programacion_Hornos_Merry_Focaccia",
-            "Evidencia_Señaletica_Back",
+            "Evidencia_Actividad_Externa_Forms",
         ]
         save_book(similar_activity, similar_headers, [
             [13, start1, finish1, "", "Prueba", "38333", "Programacion Horno Merry - Focaccia", f"{allowed}/horno-similar.jpg", ""],
-            [14, start2, finish2, "", "Prueba", "38339", "Señaletica Back", "", f"{allowed}/senal-back.jpg"],
+            [14, start2, finish2, "", "Prueba", "38339", "Actividad Externa Forms", "", f"{allowed}/externa.jpg"],
         ])
         payload = build_payload(
             similar_activity,
@@ -260,7 +260,7 @@ def main() -> None:
         )
         assert payload["summary"]["completedCompletions"] == 1
         assert payload["quality"]["canonicalizedActivityRows"] == [2]
-        assert payload["quality"]["hiddenActivities"] == ["Señaletica Back"]
+        assert payload["quality"]["hiddenActivities"] == ["Actividad Externa Forms"]
         assert payload["quality"]["hiddenActivityRows"] == [3]
         assert payload["submissions"][0]["activity"] == "Programacion Hornos Merry - Focaccia"
 
