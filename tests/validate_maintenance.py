@@ -143,6 +143,10 @@ def test_structural_guards(temp: Path) -> None:
 
 
 def test_flexible_cms(temp: Path) -> None:
+    baseline_activities, _, _, _ = load_cms(
+        ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
+    )
+    expected_count = len(baseline_activities)
     cms = temp / "cms_editado.xlsx"
     shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", cms)
     workbook = load_workbook(cms)
@@ -184,7 +188,7 @@ def test_flexible_cms(temp: Path) -> None:
     workbook.save(cms)
 
     audit = validate_cms_engine(cms)
-    assert audit["activities"] == 10
+    assert audit["activities"] == expected_count
     assert audit["drafts"] >= 1
     assert audit["fallbackOrders"] == 1
     assert audit["manualStatuses"] == 1
@@ -193,7 +197,7 @@ def test_flexible_cms(temp: Path) -> None:
     assert audit["safeDefaults"] >= 3
 
     loaded, _, cms_settings, _ = load_cms(cms)
-    assert len(loaded) == 10
+    assert len(loaded) == expected_count
     assert "Borrador sin publicar" not in {item["name"] for item in loaded}
     edited = next(item for item in loaded if item["name"] == "Roll Out")
     assert edited["description"] == "Descripción actualizada desde CMS"
@@ -209,9 +213,52 @@ def test_flexible_cms(temp: Path) -> None:
         cms,
     )
     assert payload["project"] == "Sistema de Evidencias OPS"
-    assert payload["summary"]["activities"] == 10
+    assert payload["summary"]["activities"] == expected_count
     assert tuple(payload["quality"]["stabilityControls"]) == STABILITY_CONTROLS
     assert all(payload["quality"]["stabilityControls"].values())
+
+
+def test_activity_row_count_independence(temp: Path) -> None:
+    """Agregar o borrar filas válidas no cambia el contrato basado en encabezados."""
+    original = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
+    baseline, _, _, _ = load_cms(original)
+    baseline_names = {item["name"] for item in baseline}
+
+    reduced = temp / "cms_una_fila_menos.xlsx"
+    shutil.copy2(original, reduced)
+    workbook = load_workbook(reduced)
+    sheet = workbook["Actividades"]
+    header_row, cols = find_header(sheet, {
+        "orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo",
+    })
+    removable = next(
+        row for row in range(header_row + 1, sheet.max_row + 1)
+        if sheet.cell(row, cols["actividad"] + 1).value
+        and str(sheet.cell(row, cols["activo"] + 1).value).strip().casefold() in {"si", "sí"}
+    )
+    removed_name = str(sheet.cell(removable, cols["actividad"] + 1).value).strip()
+    sheet.delete_rows(removable, 1)
+    workbook.save(reduced)
+    reduced_activities, _, _, _ = load_cms(reduced)
+    assert len(reduced_activities) == len(baseline) - 1
+    assert {item["name"] for item in reduced_activities} == baseline_names - {removed_name}
+
+    expanded = temp / "cms_una_fila_mas.xlsx"
+    shutil.copy2(original, expanded)
+    workbook = load_workbook(expanded)
+    sheet = workbook["Actividades"]
+    header_row, cols = find_header(sheet, {
+        "orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo",
+    })
+    target = sheet.max_row + 1
+    sheet.cell(target, cols["orden"] + 1, 999)
+    sheet.cell(target, cols["actividad"] + 1, "Actividad de estabilidad")
+    sheet.cell(target, cols["descripcion"] + 1, "Prueba automática")
+    sheet.cell(target, cols["activo"] + 1, "Sí")
+    workbook.save(expanded)
+    expanded_activities, _, _, _ = load_cms(expanded)
+    assert len(expanded_activities) == len(baseline) + 1
+    assert {item["name"] for item in expanded_activities} == baseline_names | {"Actividad de estabilidad"}
 
 
 def main() -> None:
@@ -222,6 +269,7 @@ def main() -> None:
         test_source_and_host_guards(temp)
         test_structural_guards(temp)
         test_flexible_cms(temp)
+        test_activity_row_count_independence(temp)
     print("Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros")
 
 
