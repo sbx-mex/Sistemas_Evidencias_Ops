@@ -19,6 +19,10 @@
   <div id="error-banner" class="notice error" role="alert" hidden></div>
 
   <header class="app-header">
+    <a class="header-brand" href="#main" aria-label="Sistema de Evidencias OPS · Inicio">
+      <img src="./assets/icons/icon-64.webp" alt="" width="36" height="36">
+      <span><strong>Evidencias OPS</strong><small>Seguimiento operativo</small></span>
+    </a>
     <nav class="main-nav" aria-label="Navegación principal">
       <a href="#resumen" aria-current="page">Resumen</a>
       <a href="#organigrama">Organigrama</a>
@@ -53,6 +57,7 @@
     </section>
 
     <section class="filters" aria-label="Filtros del dashboard">
+      <div class="filter-intro"><span>Vista personalizada</span><strong>Filtra, revisa y exporta en un solo flujo</strong></div>
       <label><span>Región</span><select id="filter-region"><option value="">Todas las regiones</option></select></label>
       <label><span>Gerente de Distrito</span><select id="filter-dm"><option value="">Todos</option></select></label>
       <label><span>Tienda / CeCo</span><select id="filter-store"><option value="">Todas</option></select></label>
@@ -140,7 +145,13 @@
 
   <footer>
     <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong></span></div>
-    <small>Starbucks México · Operaciones</small>
+    <div class="footer-meta">
+      <small>Diseñado por Jorge Alcántar &amp; Enrique César</small>
+      <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Enviar comentarios y sugerencias por WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 9.5c.7 2 2 3.3 4 4l1.1-1.1c.2-.2.5-.3.8-.2l2 .7"/></svg>
+        Comentarios y sugerencias
+      </a>
+    </div>
   </footer>
 
   <button id="back-to-top" class="back-to-top" type="button" aria-label="Volver al inicio" hidden>↑ Arriba</button>
