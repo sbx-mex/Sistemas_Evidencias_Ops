@@ -139,7 +139,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v22", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v23", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -198,7 +198,7 @@ if data.get("summary", {}).get("notApplicableCompletions") != calculated_exclusi
     issues.append("La resta implícita de actividades no coincide con las respuestas Sí/No")
 report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
-if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":
+if report_meta.get("motto") != "JUNTÉMONOS MÁS" or report_meta.get("footerLabel") != "Starbucks México · Operaciones" or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
 organization = data.get("organization", {})
 if organization.get("nationalDirector", {}).get("name") != "Raúl Sierra" or len(organization.get("regionalDirectors", [])) != 4:
