@@ -14,7 +14,7 @@ try:
     from .build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
-        find_header, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
+        find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
         directory_sheet,
         normalize_ceco, normalize_dm, parse_date, validate_xlsx,
     )
@@ -22,14 +22,14 @@ except ImportError:  # Ejecución directa: python scripts/validate_sources.py
     from build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
-        find_header, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
+        find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
         directory_sheet,
         normalize_ceco, normalize_dm, parse_date, validate_xlsx,
     )
 
-CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion"}
+CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion", "Tiendas Abiertas"}
 CMS_CONFIG_KEYS = {
-    "projectName", "region", "directorySheet", "onlyOpenStores",
+    "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
 }
@@ -113,6 +113,21 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     if duplicates(managers):
         raise ValueError("Gerentes CMS duplicados: " + ", ".join(duplicates(managers)))
 
+    stores_ws = workbook["Tiendas Abiertas"]
+    stores_header, stores_cols = find_header(stores_ws, {"cc", "cc nombre", "region", "estatus", "dm"})
+    cms_open_stores = 0
+    cms_cecos: list[str] = []
+    for row in stores_ws.iter_rows(min_row=stores_header + 1, values_only=True):
+        ceco = normalize_ceco(row[stores_cols["cc"]])
+        if not ceco:
+            continue
+        if key_text(row[stores_cols["estatus"]]) != "abierta":
+            raise ValueError(f"CMS Tiendas Abiertas contiene un estatus no permitido: {ceco}")
+        cms_cecos.append(ceco)
+        cms_open_stores += 1
+    if duplicates(cms_cecos):
+        raise ValueError("CeCo duplicados en CMS Tiendas Abiertas: " + ", ".join(duplicates(cms_cecos)))
+
     config_ws = workbook["Configuracion"]
     config_header, config_cols = find_header(config_ws, {"clave", "valor"})
     config_keys: list[str] = []
@@ -132,6 +147,7 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     return {
         "activities": activity_rows,
         "managers": len(managers),
+        "openStores": cms_open_stores,
         "settings": len(config_keys),
         "drafts": drafts,
         "fallbackOrders": fallback_orders,
@@ -157,6 +173,10 @@ def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -
         raise ValueError("Directorio incompleto: " + ", ".join(sorted(missing_columns)))
     active_cecos: list[str] = []
     missing_dm: list[str] = []
+    excluded_stores = 0
+    allowed_statuses = included_store_statuses(settings)
+    if settings.get("onlyOpenStores") and "estatus" not in cols:
+        raise ValueError("El Directorio debe incluir la columna Estatus para publicar sólo tiendas abiertas")
     for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
         ceco = normalize_ceco(row[cols["cc"]])
         if not ceco:
@@ -166,7 +186,8 @@ def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -
         status = key_text(row[status_col]) if status_col is not None else ""
         if not is_all_regions(settings.get("region")) and key_text(region) != key_text(settings["region"]):
             continue
-        if status_col is not None and settings.get("onlyOpenStores") and status not in {"abierta", "abierto", "activa", "activo"}:
+        if settings.get("onlyOpenStores") and status not in allowed_statuses:
+            excluded_stores += 1
             continue
         active_cecos.append(ceco)
         if normalize_dm(row[cols["dm"]]) == "DM pendiente":
@@ -181,7 +202,7 @@ def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -
     }
     return {
         "stores": len(active_cecos), "sheet": sheet_name, "hiddenSheets": hidden_sheets,
-        "regions": len(regions), "missingDm": len(missing_dm),
+        "regions": len(regions), "missingDm": len(missing_dm), "excludedStores": excluded_stores,
     }
 
 
@@ -236,9 +257,10 @@ def main() -> None:
     )
     print(
         "Motores auditados · "
-        f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['settings']} parámetros · "
+        f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['openStores']} tiendas abiertas / {cms_audit['settings']} parámetros · "
         f"Directorio {directory_audit['stores']} tiendas / {directory_audit['regions']} regiones en {directory_audit['sheet']} · "
         f"{directory_audit['missingDm']} asignaciones DM pendientes · "
+        f"{directory_audit['excludedStores']} tiendas fuera por Estatus · "
         f"{directory_audit['hiddenSheets']} hoja histórica fuera del cálculo"
     )
     print(

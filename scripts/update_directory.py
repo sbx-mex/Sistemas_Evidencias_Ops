@@ -36,7 +36,7 @@ def atomic_copy(source: Path, target: Path) -> None:
         temporary.unlink(missing_ok=True)
 
 
-def directory_people(path: Path) -> tuple[list[dict[str, str]], int, list[str], list[str]]:
+def directory_people(path: Path) -> tuple[list[dict[str, str]], int, int, list[str], list[str]]:
     validate_xlsx(path, "el nuevo Directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)
     candidates = []
@@ -46,10 +46,10 @@ def directory_people(path: Path) -> tuple[list[dict[str, str]], int, list[str], 
         except ValueError:
             continue
         cols = {key_text(value): index for index, value in enumerate(headers) if clean_text(value)}
-        if {"cc", "cc nombre", "region", "dm"}.issubset(cols):
+        if {"cc", "cc nombre", "region", "estatus", "dm"}.issubset(cols):
             candidates.append((ws.max_row, ws, header_row, cols))
     if not candidates:
-        raise ValueError("El archivo no contiene CC, CC Nombre, Región y DM")
+        raise ValueError("El archivo no contiene CC, CC Nombre, Región, Estatus y DM")
     _, ws, header_row, cols = max(candidates, key=lambda item: item[0])
 
     stores: list[dict[str, str]] = []
@@ -65,13 +65,15 @@ def directory_people(path: Path) -> tuple[list[dict[str, str]], int, list[str], 
             "ceco": ceco,
             "store": clean_text(row[cols["cc nombre"]]),
             "region": clean_text(row[cols["region"]]),
+            "status": clean_text(row[cols["estatus"]]),
             "dm": normalize_dm(row[cols["dm"]]),
         })
     if not stores:
         raise ValueError("El nuevo Directorio no contiene tiendas")
     regions = sorted({item["region"] for item in stores if item["region"]}, key=key_text)
-    missing_dm = [item["ceco"] for item in stores if item["dm"] == "DM pendiente"]
-    return stores, len(stores), regions, missing_dm
+    open_stores = [item for item in stores if key_text(item["status"]) == "abierta"]
+    missing_dm = [item["ceco"] for item in open_stores if item["dm"] == "DM pendiente"]
+    return stores, len(open_stores), len(stores) - len(open_stores), regions, missing_dm
 
 
 def existing_profiles(workbook) -> dict[str, dict[str, str]]:
@@ -98,6 +100,8 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
     profiles = existing_profiles(workbook)
     managers: dict[str, dict[str, str]] = {}
     for store in stores:
+        if key_text(store["status"]) != "abierta":
+            continue
         dm = store["dm"]
         if dm == "DM pendiente":
             continue
@@ -164,16 +168,61 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
         FormulaRule(formula=["E5=\"Pendiente\""], fill=PatternFill("solid", fgColor="FFF1D6")),
     )
 
+    if "Tiendas Abiertas" in workbook.sheetnames:
+        del workbook["Tiendas Abiertas"]
+    stores_ws = workbook.create_sheet("Tiendas Abiertas", 2)
+    stores_ws.merge_cells("A1:E1")
+    stores_ws.merge_cells("A2:E2")
+    stores_ws["A1"] = "CMS · Tiendas Abiertas"
+    stores_ws["A2"] = "Vista generada desde Directorio.xlsx. Sólo Estatus = Abierta alimenta tiendas, conteos y avance."
+    stores_ws.append([])
+    stores_ws.append(["CC", "CC Nombre", "Región", "Estatus", "DM"])
+    open_stores = sorted(
+        (item for item in stores if key_text(item["status"]) == "abierta"),
+        key=lambda item: (key_text(item["region"]), key_text(item["dm"]), key_text(item["store"])),
+    )
+    for item in open_stores:
+        stores_ws.append([item["ceco"], item["store"], item["region"], item["status"], item["dm"]])
+    for cell in stores_ws[1]:
+        cell.fill = green
+        cell.font = Font(name="Aptos Display", size=12, bold=True, color="FFFFFF")
+    stores_ws["A2"].fill = PatternFill("solid", fgColor="E6F2ED")
+    stores_ws["A2"].font = Font(name="Aptos", size=10, italic=True, color="36574D")
+    for cell in stores_ws[4]:
+        cell.fill = dark
+        cell.font = Font(name="Aptos", size=10, bold=True, color="FFFFFF")
+    for row in stores_ws.iter_rows(min_row=5, max_row=4 + len(open_stores), min_col=1, max_col=5):
+        for cell in row:
+            cell.fill = PatternFill("solid", fgColor="F4F8F6")
+            cell.font = Font(name="Aptos", size=10, color="24443A")
+            cell.alignment = Alignment(vertical="center")
+    stores_ws.freeze_panes = "A5"
+    stores_ws.auto_filter.ref = f"A4:E{4 + len(open_stores)}"
+    for column, width in {"A": 12, "B": 34, "C": 22, "D": 16, "E": 40}.items():
+        stores_ws.column_dimensions[column].width = width
+    stores_ws.sheet_view.showGridLines = False
+
     config = workbook["Configuracion"]
     config_header = next(row for row in range(1, min(config.max_row, 12) + 1) if key_text(config.cell(row, 1).value) == "clave")
     config_rows = {clean_text(config.cell(row, 1).value): row for row in range(config_header + 1, config.max_row + 1)}
     changes = {
         "region": ("Todas", "Incluir todas las regiones presentes en Directorio.xlsx"),
         "directorySheet": ("Directorio", "Hoja preferida; Python detecta otra hoja válida si cambia el nombre"),
-        "onlyOpenStores": ("No", "Sin columna Estatus, se incluyen todas las tiendas del Directorio"),
+        "onlyOpenStores": ("Si", "Aplicar el filtro de estatus definido en includedStoreStatuses"),
+        "includedStoreStatuses": ("Abierta", "Único estatus incluido en tiendas, conteos y avance"),
     }
     for key, (value, description) in changes.items():
-        row = config_rows[key]
+        row = config_rows.get(key)
+        if row is None:
+            row = config.max_row + 1
+            config.cell(row, 1).value = key
+            config_rows[key] = row
+            for column in range(1, 4):
+                source = config.cell(row - 1, column)
+                target = config.cell(row, column)
+                if source.has_style:
+                    target._style = copy(source._style)
+                target.alignment = copy(source.alignment)
         config.cell(row, 2).value = value
         config.cell(row, 3).value = description
 
@@ -194,10 +243,10 @@ def main() -> None:
     parser.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
     parser.add_argument("--cms", type=Path, default=DEFAULT_CMS)
     args = parser.parse_args()
-    stores, store_count, regions, missing_dm = directory_people(args.source)
+    stores, open_count, excluded_count, regions, missing_dm = directory_people(args.source)
     atomic_copy(args.source, args.directory)
     managers, pending_photos = sync_cms(args.cms, stores)
-    print(f"Directorio actualizado · {store_count} tiendas · {len(regions)} regiones · {managers} DM")
+    print(f"Directorio actualizado · {open_count} tiendas Abierta · {excluded_count} excluidas · {len(regions)} regiones · {managers} DM")
     print(f"Fotos DM · {managers - pending_photos} disponibles · {pending_photos} pendientes")
     if missing_dm:
         print("Asignación DM pendiente · " + ", ".join(missing_dm))

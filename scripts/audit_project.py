@@ -156,6 +156,9 @@ if data.get("schemaVersion") != 12:
     issues.append("Contrato JSON distinto de la versión 12")
 if len(data.get("regions", [])) < 1 or data.get("summary", {}).get("regions") != len(data.get("regions", [])):
     issues.append("El alcance regional no es auditable")
+directory_status = data.get("sources", {}).get("directoryStatus", {})
+if directory_status.get("includedStatuses") != ["Abierta"] or any(store.get("status") != "Abierta" for store in data.get("stores", [])):
+    issues.append("El filtro CMS de tiendas abiertas no se aplicó")
 if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})

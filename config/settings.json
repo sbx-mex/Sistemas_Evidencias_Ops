@@ -2,7 +2,8 @@
   "projectName": "Sistema de Evidencias OPS",
   "region": "Todas",
   "directorySheet": "Directorio",
-  "onlyOpenStores": false,
+  "onlyOpenStores": true,
+  "includedStoreStatuses": "Abierta",
   "requireEvidence": true,
   "publishEvidenceLinks": true,
   "publishPersonalData": false
