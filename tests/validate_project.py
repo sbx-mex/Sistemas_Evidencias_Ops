@@ -131,8 +131,13 @@ for store in data.get("stores", []):
         fail(f"CeCo {store.get('ceco')} contabiliza una actividad excluida")
 if summary.get("notApplicableCompletions") != calculated_exclusions:
     fail("La resta implícita de actividades no coincide con las respuestas Sí/No")
-if len(data.get("regions", [])) != 4 or summary.get("regions") != 4 or summary.get("stores") != 372:
+if len(data.get("regions", [])) != 4 or summary.get("regions") != 4 or summary.get("stores") != 357:
     fail("El alcance multirregión del Directorio no quedó publicado")
+directory_status = data.get("sources", {}).get("directoryStatus", {})
+if directory_status.get("includedStatuses") != ["Abierta"] or directory_status.get("includedStores") != 357 or directory_status.get("excludedStores") != 15:
+    fail("El CMS no controla de forma auditable las tiendas abiertas")
+if any(store.get("status") != "Abierta" for store in data.get("stores", [])):
+    fail("Una tienda no abierta entró en los conteos del dashboard")
 if sum(item.get("photoStatus") == "Disponible" for item in data.get("dms", [])) != 6:
     fail("Las seis fotografías existentes no quedaron vinculadas")
 if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):

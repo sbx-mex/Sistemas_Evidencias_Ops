@@ -30,7 +30,7 @@ El correo y el nombre del respondente no se publican. Por autorización operativ
 ## Actualización inmediata
 
 1. Reemplaza `cms/Sistema de Evidencias OPS.xlsx` con la descarga más reciente de Forms.
-2. Cuando cambie el directorio, ejecuta `python scripts/update_directory.py Directorio.xlsx`; regiones, DM y tiendas se agrupan automáticamente.
+2. Cuando cambie el directorio, ejecuta `python scripts/update_directory.py Directorio.xlsx`; regiones, DM y tiendas abiertas se agrupan automáticamente.
 3. Ejecuta:
 
 ```bash
@@ -112,7 +112,9 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 ## Fuente inicial validada
 
-- 372 tiendas de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes y tres tiendas conservan el aviso `DM pendiente`.
+- 357 tiendas `Abierta` de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes. Las 15 tiendas con `Cierre Temporal` o `Cierre Definitivo` permanecen en el Directorio, pero no entran en conteos ni avance.
+- El CMS controla el alcance con `onlyOpenStores = Si` e `includedStoreStatuses = Abierta`.
+- La pestaña CMS `Tiendas Abiertas` se regenera con CC, tienda, región, estatus y DM para revisar visualmente las 357 tiendas publicadas.
 - 8 actividades activas.
 - Última actualización: `29/08/2026 09:43`.
 - CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.

@@ -75,7 +75,7 @@ STABILITY_CONTROLS = (
     "atomicPublication",
 )
 KNOWN_SETTING_KEYS = (
-    "projectName", "region", "directorySheet", "onlyOpenStores",
+    "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
 )
@@ -727,6 +727,13 @@ def is_all_regions(value: Any) -> bool:
     return key_text(value) in {"", "todas", "todos", "todas las regiones", "*"}
 
 
+def included_store_statuses(settings: dict[str, Any]) -> set[str]:
+    """Devuelve el alcance CMS; si no se indica, el único estatus válido es Abierta."""
+    configured = setting_list(settings.get("includedStoreStatuses", "Abierta"))
+    statuses = {key_text(value) for value in configured if clean_text(value)}
+    return statuses or {"abierta"}
+
+
 def directory_sheet(workbook, requested: Any) -> tuple[Any, int, list[Any]]:
     """Elige por encabezados, no por un nombre o un número de filas congelado."""
     candidates = []
@@ -746,7 +753,7 @@ def directory_sheet(workbook, requested: Any) -> tuple[Any, int, list[Any]]:
     return ws, header_row, headers
 
 
-def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str]:
+def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str, dict[str, Any]]:
     validate_xlsx(path, "el directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)
     ws, header_row, headers = directory_sheet(workbook, settings.get("directorySheet"))
@@ -763,17 +770,26 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
     if missing:
         raise ValueError("Directorio incompleto: " + ", ".join(missing))
 
+    status_index = normalized.get("estatus")
+    filter_by_status = bool(settings.get("onlyOpenStores"))
+    allowed_statuses = included_store_statuses(settings)
+    if filter_by_status and status_index is None:
+        raise ValueError("El Directorio debe incluir la columna Estatus para publicar sólo tiendas abiertas")
+
     stores: dict[str, dict[str, str]] = {}
+    status_counts: Counter[str] = Counter()
+    excluded_status_counts: Counter[str] = Counter()
     for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
         ceco = normalize_ceco(row[normalized["cc"]])
         if not ceco:
             continue
         region = clean_text(row[normalized["region"]])
-        status_index = normalized.get("estatus")
         status = clean_text(row[status_index]) if status_index is not None else "Sin estatus en fuente"
+        status_counts[status] += 1
         if not is_all_regions(settings.get("region")) and key_text(region) != key_text(settings["region"]):
             continue
-        if status_index is not None and settings.get("onlyOpenStores") and key_text(status) not in {"abierta", "abierto", "activa", "activo"}:
+        if filter_by_status and key_text(status) not in allowed_statuses:
+            excluded_status_counts[status] += 1
             continue
         if ceco in stores:
             raise ValueError(f"CeCo duplicado en el directorio operativo: {ceco}")
@@ -786,7 +802,15 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
         }
     if not stores:
         raise ValueError("El directorio no contiene tiendas activas para el alcance configurado")
-    return stores, ws.title
+    return stores, ws.title, {
+        "includedStatuses": sorted(
+            {status for status in status_counts if key_text(status) in allowed_statuses}, key=key_text
+        ),
+        "includedStores": len(stores),
+        "excludedStores": sum(excluded_status_counts.values()),
+        "sourceStatusCounts": dict(sorted(status_counts.items(), key=lambda item: key_text(item[0]))),
+        "excludedStatusCounts": dict(sorted(excluded_status_counts.items(), key=lambda item: key_text(item[0]))),
+    }
 
 
 def find_response_source(workbook, activity_names: list[str] | None = None) -> tuple[Any, int, list[Any]]:
@@ -948,7 +972,7 @@ def build_payload(
     regional_director_photo = clean_text(settings.get("regionalDirectorPhoto", "assets/director/jorge-alcantar.webp"))
     if regional_director_photo and not (ROOT / regional_director_photo).is_file():
         raise ValueError(f"No existe la fotografía del Director Regional: {regional_director_photo}")
-    stores, directory_sheet = load_directory(directory_path, settings)
+    stores, directory_sheet, directory_status = load_directory(directory_path, settings)
     responses, response_schema = load_responses(responses_path, [item["name"] for item in activities])
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
@@ -1217,6 +1241,7 @@ def build_payload(
             "directory": directory_path.name,
             "directorySha256": source_hashes["directorySha256"],
             "directorySheet": directory_sheet,
+            "directoryStatus": directory_status,
             "cms": cms_path.name,
             "cmsSha256": source_hashes["cmsSha256"],
         },

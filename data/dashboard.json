@@ -1,6 +1,6 @@
 {
   "schemaVersion": 12,
-  "buildVersion": "8205fb5d7d447712",
+  "buildVersion": "c37b8d57bf1ab767",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-03T20:27:00+00:00",
-  "lastUpdated": "2026-09-03T13:49:37",
-  "lastUpdatedDisplay": "03/09/2026 13:49",
+  "generatedAt": "2026-09-03T16:20:38-04:00",
+  "lastUpdated": "2026-09-03T13:44:12",
+  "lastUpdatedDisplay": "03/09/2026 13:44",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "JUNTÉMONOS MÁS",
     "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
-    "cutOffDisplay": "03/09/26 · 13:49 h",
+    "cutOffDisplay": "03/09/26 · 13:44 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -26,28 +26,44 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "660b556c58535f8417f93ad862af6e3544f53d4b972e45645126d9144ee9cb13",
+    "responsesSha256": "f1ccbb3fae24517f7fcfc43119e8a87980fd0991cf6b61c5de69ecf173125e07",
     "directory": "Directorio.xlsx",
     "directorySha256": "d0192bbcc08b1e4a9e2afbb8bcbb5eea48899c78bb898469a4a762493ec0629d",
     "directorySheet": "Directorio",
+    "directoryStatus": {
+      "includedStatuses": [
+        "Abierta"
+      ],
+      "includedStores": 357,
+      "excludedStores": 15,
+      "sourceStatusCounts": {
+        "Abierta": 357,
+        "Cierre Definitivo": 9,
+        "Cierre Temporal": 6
+      },
+      "excludedStatusCounts": {
+        "Cierre Definitivo": 9,
+        "Cierre Temporal": 6
+      }
+    },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "a0f1051b574f2dc83b613dbc3693c92ab4c8694ee37245db45092c6418a6a88c"
+    "cmsSha256": "857a8526bf47e9ce100d8a36d4a3b6fd02361c71ec9ff5991f7f956e84ca7f0a"
   },
   "summary": {
     "regions": 4,
-    "dms": 29,
-    "stores": 372,
+    "dms": 28,
+    "stores": 357,
     "activities": 11,
-    "expectedCompletions": 4081,
-    "completedCompletions": 271,
-    "compliance": 6.6,
-    "validResponses": 271,
+    "expectedCompletions": 3916,
+    "completedCompletions": 266,
+    "compliance": 6.8,
+    "validResponses": 266,
     "storesComplete": 1,
-    "pendingCompletions": 3810,
+    "pendingCompletions": 3650,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 300,
+    "responsesRead": 295,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -125,7 +141,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 271,
+    "evidenceLinksPublished": 266,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -161,10 +177,10 @@
       "autoDetected": false,
       "conditionalApplicability": false,
       "completedStores": 72,
-      "applicableStores": 372,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 300,
-      "compliance": 19.4,
+      "pendingStores": 285,
+      "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -3,
@@ -182,11 +198,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 35,
-      "applicableStores": 372,
+      "completedStores": 34,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 337,
-      "compliance": 9.4,
+      "pendingStores": 323,
+      "compliance": 9.5,
       "deadlineLabel": "Vence hoy",
       "deadlineTone": "red",
       "daysRemaining": 0,
@@ -204,11 +220,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": true,
-      "completedStores": 67,
-      "applicableStores": 368,
+      "completedStores": 66,
+      "applicableStores": 353,
       "notApplicableStores": 4,
-      "pendingStores": 301,
-      "compliance": 18.2,
+      "pendingStores": 287,
+      "compliance": 18.7,
       "deadlineLabel": "Vence hoy",
       "deadlineTone": "red",
       "daysRemaining": 0,
@@ -226,11 +242,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": true,
-      "completedStores": 17,
-      "applicableStores": 365,
+      "completedStores": 16,
+      "applicableStores": 350,
       "notApplicableStores": 7,
-      "pendingStores": 348,
-      "compliance": 4.7,
+      "pendingStores": 334,
+      "compliance": 4.6,
       "deadlineLabel": "Vence hoy",
       "deadlineTone": "red",
       "daysRemaining": 0,
@@ -248,10 +264,10 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 25,
-      "applicableStores": 372,
+      "completedStores": 24,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 347,
+      "pendingStores": 333,
       "compliance": 6.7,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
@@ -271,10 +287,10 @@
       "autoDetected": false,
       "conditionalApplicability": false,
       "completedStores": 7,
-      "applicableStores": 372,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 365,
-      "compliance": 1.9,
+      "pendingStores": 350,
+      "compliance": 2.0,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -293,10 +309,10 @@
       "autoDetected": false,
       "conditionalApplicability": false,
       "completedStores": 7,
-      "applicableStores": 372,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 365,
-      "compliance": 1.9,
+      "pendingStores": 350,
+      "compliance": 2.0,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -315,10 +331,10 @@
       "autoDetected": false,
       "conditionalApplicability": false,
       "completedStores": 16,
-      "applicableStores": 372,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 4.3,
+      "pendingStores": 341,
+      "compliance": 4.5,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -337,10 +353,10 @@
       "autoDetected": false,
       "conditionalApplicability": false,
       "completedStores": 15,
-      "applicableStores": 372,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 357,
-      "compliance": 4.0,
+      "pendingStores": 342,
+      "compliance": 4.2,
       "deadlineLabel": "En 10 días",
       "deadlineTone": "green",
       "daysRemaining": 10,
@@ -359,10 +375,10 @@
       "autoDetected": false,
       "conditionalApplicability": false,
       "completedStores": 5,
-      "applicableStores": 372,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 367,
-      "compliance": 1.3,
+      "pendingStores": 352,
+      "compliance": 1.4,
       "deadlineLabel": "En 27 días",
       "deadlineTone": "green",
       "daysRemaining": 27,
@@ -380,11 +396,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 5,
-      "applicableStores": 372,
+      "completedStores": 4,
+      "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 367,
-      "compliance": 1.3,
+      "pendingStores": 353,
+      "compliance": 1.1,
       "deadlineLabel": "En 27 días",
       "deadlineTone": "green",
       "daysRemaining": 27,
@@ -419,12 +435,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 71,
+      "completed": 66,
       "expected": 138,
       "notApplicable": 5,
-      "pending": 67,
+      "pending": 72,
       "pendingStores": 13,
-      "compliance": 51.4,
+      "compliance": 47.8,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -508,12 +524,12 @@
       "regions": [
         "Centro Poniente"
       ],
-      "stores": 14,
+      "stores": 12,
       "completed": 0,
-      "expected": 154,
+      "expected": 132,
       "notApplicable": 0,
-      "pending": 154,
-      "pendingStores": 14,
+      "pending": 132,
+      "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 7
@@ -526,12 +542,12 @@
       "regions": [
         "Centro Centro"
       ],
-      "stores": 14,
+      "stores": 13,
       "completed": 0,
-      "expected": 154,
+      "expected": 143,
       "notApplicable": 0,
-      "pending": 154,
-      "pendingStores": 14,
+      "pending": 143,
+      "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 8
@@ -562,12 +578,12 @@
       "regions": [
         "Centro Poniente"
       ],
-      "stores": 15,
+      "stores": 13,
       "completed": 0,
-      "expected": 165,
+      "expected": 143,
       "notApplicable": 0,
-      "pending": 165,
-      "pendingStores": 15,
+      "pending": 143,
+      "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 10
@@ -627,25 +643,6 @@
       "rank": 13
     },
     {
-      "dm": "DM pendiente",
-      "shortName": "DM pendiente",
-      "photo": "",
-      "photoStatus": "Pendiente",
-      "regions": [
-        "Centro Centro",
-        "Centro Poniente"
-      ],
-      "stores": 3,
-      "completed": 0,
-      "expected": 33,
-      "notApplicable": 0,
-      "pending": 33,
-      "pendingStores": 3,
-      "compliance": 0.0,
-      "status": "Atención",
-      "rank": 14
-    },
-    {
       "dm": "Erika Julieta Contreras Aguilera",
       "shortName": "Erika Julieta Contreras Aguilera",
       "photo": "",
@@ -661,7 +658,7 @@
       "pendingStores": 15,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 15
+      "rank": 14
     },
     {
       "dm": "Fernando Eduardo Verdugo Saldaña",
@@ -679,7 +676,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 16
+      "rank": 15
     },
     {
       "dm": "Guadalupe Ibarra Martínez",
@@ -689,15 +686,15 @@
       "regions": [
         "Centro Centro"
       ],
-      "stores": 14,
+      "stores": 12,
       "completed": 0,
-      "expected": 154,
+      "expected": 132,
       "notApplicable": 0,
-      "pending": 154,
-      "pendingStores": 14,
+      "pending": 132,
+      "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 17
+      "rank": 16
     },
     {
       "dm": "Hazar Susim Trejo Hernandez",
@@ -707,15 +704,15 @@
       "regions": [
         "Centro Sur"
       ],
-      "stores": 14,
+      "stores": 12,
       "completed": 0,
-      "expected": 154,
+      "expected": 132,
       "notApplicable": 0,
-      "pending": 154,
-      "pendingStores": 14,
+      "pending": 132,
+      "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 18
+      "rank": 17
     },
     {
       "dm": "Jaqueline Cortes Ayala",
@@ -733,7 +730,7 @@
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 19
+      "rank": 18
     },
     {
       "dm": "Jesus Antonio Elguera Flores",
@@ -751,7 +748,7 @@
       "pendingStores": 10,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 20
+      "rank": 19
     },
     {
       "dm": "Jose De Jesus Magos Arzaluz",
@@ -769,7 +766,7 @@
       "pendingStores": 15,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 21
+      "rank": 20
     },
     {
       "dm": "Juan Jesus Zuñiga Flores",
@@ -787,7 +784,7 @@
       "pendingStores": 11,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 22
+      "rank": 21
     },
     {
       "dm": "Luis Alberto Quevedo Rodriguez",
@@ -805,7 +802,7 @@
       "pendingStores": 14,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 23
+      "rank": 22
     },
     {
       "dm": "Luis Manuel Neri Saldaña",
@@ -823,7 +820,7 @@
       "pendingStores": 15,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 24
+      "rank": 23
     },
     {
       "dm": "Manuel Alejandro Avila Molina",
@@ -841,7 +838,7 @@
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 25
+      "rank": 24
     },
     {
       "dm": "Maria Anallely Sanchez Garcia",
@@ -851,15 +848,15 @@
       "regions": [
         "Centro Centro"
       ],
-      "stores": 18,
+      "stores": 16,
       "completed": 0,
-      "expected": 198,
+      "expected": 176,
       "notApplicable": 0,
-      "pending": 198,
-      "pendingStores": 18,
+      "pending": 176,
+      "pendingStores": 16,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 26
+      "rank": 25
     },
     {
       "dm": "Monica Selene Morales Ibarra",
@@ -877,7 +874,7 @@
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 27
+      "rank": 26
     },
     {
       "dm": "Nora Caracas Saldaña",
@@ -895,7 +892,7 @@
       "pendingStores": 17,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 28
+      "rank": 27
     },
     {
       "dm": "Vacante",
@@ -905,15 +902,15 @@
       "regions": [
         "Centro Centro"
       ],
-      "stores": 13,
+      "stores": 12,
       "completed": 0,
-      "expected": 143,
+      "expected": 132,
       "notApplicable": 0,
-      "pending": 143,
-      "pendingStores": 13,
+      "pending": 132,
+      "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 29
+      "rank": 28
     }
   ],
   "attention": [
@@ -995,30 +992,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38135",
-      "store": "Monte Everest",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43142",
       "store": "Montes Urales",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38104",
-      "store": "Olivar",
       "dm": "Adriana Alejandra Tanus Buhler",
       "completed": 0,
       "expected": 11,
@@ -1129,17 +1104,6 @@
     {
       "ceco": "38382",
       "store": "Homero",
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38202",
-      "store": "Horacio",
       "dm": "Alberto Torrado Aguilar Cauz",
       "completed": 0,
       "expected": 11,
@@ -1349,28 +1313,6 @@
     {
       "ceco": "38815",
       "store": "Central Interlomas",
-      "dm": "Areli Anahi Lazcano Lezama",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38914",
-      "store": "Cinemex Terraza Interlomas",
-      "dm": "Areli Anahi Lazcano Lezama",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38772",
-      "store": "Hospital Ángeles Interlomas",
       "dm": "Areli Anahi Lazcano Lezama",
       "completed": 0,
       "expected": 11,
@@ -1908,39 +1850,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38915",
-      "store": "Cinemex Galerias Insurgentes",
-      "dm": "DM pendiente",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38156",
-      "store": "Condesa II Tamaulipas",
-      "dm": "DM pendiente",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38455",
-      "store": "Torre Diamante",
-      "dm": "DM pendiente",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38508",
       "store": "Ampliacion Santa Fe",
       "dm": "Erika Julieta Contreras Aguilera",
@@ -2238,17 +2147,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38240",
-      "store": "Amberes",
-      "dm": "Guadalupe Ibarra Martínez",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38101",
       "store": "Angel",
       "dm": "Guadalupe Ibarra Martínez",
@@ -2381,17 +2279,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38613",
-      "store": "Xola",
-      "dm": "Guadalupe Ibarra Martínez",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38784",
       "store": "Artz Pedregal PB CC",
       "dm": "Hazar Susim Trejo Hernandez",
@@ -2414,17 +2301,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38856",
-      "store": "Cinemex Artz",
-      "dm": "Hazar Susim Trejo Hernandez",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38172",
       "store": "Gran Sur",
       "dm": "Hazar Susim Trejo Hernandez",
@@ -2438,17 +2314,6 @@
     {
       "ceco": "38406",
       "store": "Medica Sur",
-      "dm": "Hazar Susim Trejo Hernandez",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38771",
-      "store": "Medica SurTlalpan",
       "dm": "Hazar Susim Trejo Hernandez",
       "completed": 0,
       "expected": 11,
@@ -3668,30 +3533,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38652",
-      "store": "T1 S21",
-      "dm": "Maria Anallely Sanchez Garcia",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38299",
       "store": "T2 Llegadas",
-      "dm": "Maria Anallely Sanchez Garcia",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38168",
-      "store": "T2 Planta Alta",
       "dm": "Maria Anallely Sanchez Garcia",
       "completed": 0,
       "expected": 11,
@@ -4141,17 +3984,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38632",
-      "store": "Madero II",
-      "dm": "Vacante",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38762",
       "store": "Patio Boturini",
       "dm": "Vacante",
@@ -4215,6 +4047,17 @@
       "notApplicable": 0,
       "pending": 11,
       "compliance": 0.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38176",
+      "store": "Periferico Satélite DT",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 1,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 9.1,
       "status": "Atención"
     },
     {
@@ -4812,17 +4655,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 5,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 45.5,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "43193",
       "store": "Cosmopol N1",
       "dm": "Enrique Cesar Flores",
@@ -4955,6 +4787,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 8,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 72.7,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38458",
       "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
@@ -4980,17 +4823,6 @@
       "ceco": "38719",
       "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
-      "completed": 9,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 2,
-      "compliance": 81.8,
-      "status": "En meta"
-    },
-    {
-      "ceco": "38695",
-      "store": "Cetram 4 Caminos",
-      "dm": "Yazmin Chabela Guadarrama",
       "completed": 9,
       "expected": 11,
       "notApplicable": 0,
@@ -5267,87 +5099,11 @@
       }
     },
     {
-      "ceco": "38135",
-      "store": "Monte Everest",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "region": "Centro Poniente",
-      "status": "Cierre Definitivo",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
       "ceco": "43142",
       "store": "Montes Urales",
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38104",
-      "store": "Olivar",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "region": "Centro Poniente",
-      "status": "Cierre Temporal",
       "completed": 0,
       "expected": 11,
       "notApplicable": 0,
@@ -5728,44 +5484,6 @@
       "dm": "Alberto Torrado Aguilar Cauz",
       "region": "Centro Centro",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38202",
-      "store": "Horacio",
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "region": "Centro Centro",
-      "status": "Cierre Definitivo",
       "completed": 0,
       "expected": 11,
       "notApplicable": 0,
@@ -6488,82 +6206,6 @@
       "dm": "Areli Anahi Lazcano Lezama",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38914",
-      "store": "Cinemex Terraza Interlomas",
-      "dm": "Areli Anahi Lazcano Lezama",
-      "region": "Centro Poniente",
-      "status": "Cierre Definitivo",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38772",
-      "store": "Hospital Ángeles Interlomas",
-      "dm": "Areli Anahi Lazcano Lezama",
-      "region": "Centro Poniente",
-      "status": "Cierre Definitivo",
       "completed": 0,
       "expected": 11,
       "notApplicable": 0,
@@ -8388,120 +8030,6 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38915",
-      "store": "Cinemex Galerias Insurgentes",
-      "dm": "DM pendiente",
-      "region": "Centro Centro",
-      "status": "Cierre Definitivo",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38156",
-      "store": "Condesa II Tamaulipas",
-      "dm": "DM pendiente",
-      "region": "Centro Centro",
-      "status": "Cierre Definitivo",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38455",
-      "store": "Torre Diamante",
-      "dm": "DM pendiente",
-      "region": "Centro Poniente",
-      "status": "Cierre Definitivo",
       "completed": 0,
       "expected": 11,
       "notApplicable": 0,
@@ -9941,44 +9469,6 @@
       }
     },
     {
-      "ceco": "38240",
-      "store": "Amberes",
-      "dm": "Guadalupe Ibarra Martínez",
-      "region": "Centro Centro",
-      "status": "Cierre Temporal",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
       "ceco": "38101",
       "store": "Angel",
       "dm": "Guadalupe Ibarra Martínez",
@@ -10435,44 +9925,6 @@
       }
     },
     {
-      "ceco": "38613",
-      "store": "Xola",
-      "dm": "Guadalupe Ibarra Martínez",
-      "region": "Centro Centro",
-      "status": "Cierre Temporal",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
       "ceco": "38784",
       "store": "Artz Pedregal PB CC",
       "dm": "Hazar Susim Trejo Hernandez",
@@ -10549,44 +10001,6 @@
       }
     },
     {
-      "ceco": "38856",
-      "store": "Cinemex Artz",
-      "dm": "Hazar Susim Trejo Hernandez",
-      "region": "Centro Sur",
-      "status": "Cierre Definitivo",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
       "ceco": "38172",
       "store": "Gran Sur",
       "dm": "Hazar Susim Trejo Hernandez",
@@ -10630,44 +10044,6 @@
       "dm": "Hazar Susim Trejo Hernandez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38771",
-      "store": "Medica SurTlalpan",
-      "dm": "Hazar Susim Trejo Hernandez",
-      "region": "Centro Sur",
-      "status": "Cierre Temporal",
       "completed": 0,
       "expected": 11,
       "notApplicable": 0,
@@ -14881,87 +14257,11 @@
       }
     },
     {
-      "ceco": "38652",
-      "store": "T1 S21",
-      "dm": "Maria Anallely Sanchez Garcia",
-      "region": "Centro Centro",
-      "status": "Cierre Temporal",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
       "ceco": "38299",
       "store": "T2 Llegadas",
       "dm": "Maria Anallely Sanchez Garcia",
       "region": "Centro Centro",
       "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38168",
-      "store": "T2 Planta Alta",
-      "dm": "Maria Anallely Sanchez Garcia",
-      "region": "Centro Centro",
-      "status": "Cierre Temporal",
       "completed": 0,
       "expected": 11,
       "notApplicable": 0,
@@ -15128,59 +14428,7 @@
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
-      "ceco": "38375",
-      "store": "Americas Ecatepec",
-      "dm": "Monica Selene Morales Ibarra",
-      "region": "Centro Sur",
-      "status": "Abierta",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
+        "Acti�Nvo+^����ם  "Señaletica Back": true,
         "Señaletica Lobby": true
       }
     },
@@ -16971,44 +16219,6 @@
       }
     },
     {
-      "ceco": "38632",
-      "store": "Madero II",
-      "dm": "Vacante",
-      "region": "Centro Centro",
-      "status": "Cierre Definitivo",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
-      "activities": {
-        "Roll Out": false,
-        "Programacion Hornos Merry - Focaccia": false,
-        "Rack FHW": false,
-        "Max & Min": false,
-        "Fotografia - SM": false,
-        "Mandil Verde": false,
-        "Lay Out": false,
-        "Community Board": false,
-        "Activacion PSL Sharpie": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false
-      },
-      "applicableActivities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
-        "Max & Min": true,
-        "Fotografia - SM": true,
-        "Mandil Verde": true,
-        "Lay Out": true,
-        "Community Board": true,
-        "Activacion PSL Sharpie": true,
-        "Señaletica Back": true,
-        "Señaletica Lobby": true
-      }
-    },
-    {
       "ceco": "38762",
       "store": "Patio Boturini",
       "dm": "Vacante",
@@ -18154,11 +17364,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 9,
+      "completed": 8,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 81.8,
-      "lastUpdate": "2026-09-03T13:46:23",
+      "compliance": 72.7,
+      "lastUpdate": "2026-09-03T13:37:54",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18170,7 +17380,7 @@
         "Community Board": true,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": false,
-        "Señaletica Lobby": true
+        "Señaletica Lobby": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -18382,20 +17592,20 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 1,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 45.5,
-      "lastUpdate": "2026-09-03T13:49:37",
+      "compliance": 9.1,
+      "lastUpdate": "2026-08-30T22:50:05",
       "activities": {
-        "Roll Out": true,
-        "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": true,
+        "Roll Out": false,
+        "Programacion Hornos Merry - Focaccia": false,
+        "Rack FHW": false,
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
-        "Community Board": true,
+        "Community Board": false,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": false,
         "Señaletica Lobby": false
@@ -19138,116 +18348,6 @@
     }
   ],
   "submissions": [
-    {
-      "id": "respuesta-0e24f017837c56b7",
-      "timestamp": "2026-09-03T13:49:37",
-      "timestampDisplay": "03/09/2026 13:49",
-      "activity": "Rack FHW",
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Rack_FHW_38176",
-      "evidenceLinkLabel": "Link_Rack_FHW_38176",
-      "evidenceFileName": "17884649537715577155901761431956_Starbucks DT Perifer.jpg",
-      "evidenceSourceHeader": "Evidencia_Rack_FHW",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/17884649537715577155901761431956_Starbucks%20DT%20Perifer.jpg"
-    },
-    {
-      "id": "respuesta-1991d724dc745ea4",
-      "timestamp": "2026-09-03T13:48:45",
-      "timestampDisplay": "03/09/2026 13:48",
-      "activity": "Community Board",
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Community_Board_38176",
-      "evidenceLinkLabel": "Link_Community_Board_38176",
-      "evidenceFileName": "17884649102538417106894466458342_Starbucks DT Perifer.jpg",
-      "evidenceSourceHeader": "Evidencia_Community_Board",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Lay_Out%201/17884649102538417106894466458342_Starbucks%20DT%20Perifer.jpg"
-    },
-    {
-      "id": "respuesta-d01eedf287aa99bf",
-      "timestamp": "2026-09-03T13:48:09",
-      "timestampDisplay": "03/09/2026 13:48",
-      "activity": "Programacion Hornos Merry - Focaccia",
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Programacion_Hornos_Merry_Focaccia_38176",
-      "evidenceLinkLabel": "Link_Programacion_Hornos_Merry_Focaccia_38176",
-      "evidenceFileName": "17884648749153020018020140049704_Starbucks DT Perifer.jpg",
-      "evidenceSourceHeader": "Evidencia_Programacion_Hornos_Merry_Focaccia",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%201/17884648749153020018020140049704_Starbucks%20DT%20Perifer.jpg"
-    },
-    {
-      "id": "respuesta-813e8f24c1c59e15",
-      "timestamp": "2026-09-03T13:46:23",
-      "timestampDisplay": "03/09/2026 13:46",
-      "activity": "Señaletica Lobby",
-      "ceco": "38695",
-      "store": "Cetram 4 Caminos",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Senaletica_Lobby_38695",
-      "evidenceLinkLabel": "Link_Senaletica_Lobby_38695",
-      "evidenceFileName": "IMG_3923_Starbucks CEMTRAM 4.jpeg",
-      "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Back/IMG_3923_Starbucks%20CEMTRAM%204.jpeg"
-    },
-    {
-      "id": "respuesta-f5219d209030bf64",
-      "timestamp": "2026-09-03T13:46:02",
-      "timestampDisplay": "03/09/2026 13:46",
-      "activity": "Roll Out",
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Roll_Out_38176",
-      "evidenceLinkLabel": "Link_Roll_Out_38176",
-      "evidenceFileName": "IMG-20260903-WA0017_Starbucks DT Perifer.jpg",
-      "evidenceSourceHeader": "Evidencia_RollOut",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia/IMG-20260903-WA0017_Starbucks%20DT%20Perifer.jpg"
-    },
     {
       "id": "respuesta-afce671c5e376194",
       "timestamp": "2026-09-03T13:44:12",
