@@ -24,7 +24,7 @@ REQUIRED = [
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
     "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
-    "assets/director/jorge-alcantar.webp",
+    "assets/director/jorge-alcantar.webp", "assets/director/raul-sierra.webp",
     "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
     "tests/validate_dynamic_forms_schema.py", "tests/validate_maintenance.py", "scripts/io_utils.py",
 ]
@@ -252,7 +252,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Organigrama", "Región | Centro's", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sierra", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -348,7 +348,8 @@ approve("08 · PWA, descarga directa y mensaje final simplificados")
 if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.get("dms", [])) + 1)):
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
-if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+organization = data.get("organization", {})
+if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sierra" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 focus = data.get("activities", [])
 if [item.get("focusRank") for item in focus] != list(range(1, len(focus) + 1)):

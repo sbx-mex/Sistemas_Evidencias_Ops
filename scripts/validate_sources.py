@@ -10,6 +10,8 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
+ROOT = Path(__file__).resolve().parents[1]
+
 try:
     from .build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
@@ -27,7 +29,7 @@ except ImportError:  # Ejecución directa: python scripts/validate_sources.py
         normalize_ceco, normalize_dm, parse_date, validate_xlsx,
     )
 
-CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion", "Tiendas Abiertas"}
+CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion", "Tiendas Abiertas", "Organigrama"}
 CMS_CONFIG_KEYS = {
     "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
@@ -113,6 +115,26 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     if duplicates(managers):
         raise ValueError("Gerentes CMS duplicados: " + ", ".join(duplicates(managers)))
 
+    org_ws = workbook["Organigrama"]
+    org_header, org_cols = find_header(org_ws, {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"})
+    organization: list[tuple[int, str]] = []
+    for row in org_ws.iter_rows(min_row=org_header + 1, values_only=True):
+        name = clean_text(row[org_cols["nombre"]])
+        if not name or not is_yes(row[org_cols["activo"]]):
+            continue
+        try:
+            level = int(float(row[org_cols["nivel"]]))
+        except (TypeError, ValueError):
+            raise ValueError(f"Nivel inválido en Organigrama: {name}")
+        photo = clean_text(row[org_cols["foto webp"]])
+        if photo and not (ROOT / photo).is_file():
+            raise ValueError(f"Foto de Organigrama inexistente: {photo}")
+        organization.append((level, name))
+    if sum(level == 1 for level, _ in organization) != 1:
+        raise ValueError("Organigrama requiere exactamente un Director Starbucks México activo")
+    if sum(level == 2 for level, _ in organization) != 4:
+        raise ValueError("Organigrama requiere cuatro Directores Regionales activos")
+
     stores_ws = workbook["Tiendas Abiertas"]
     stores_header, stores_cols = find_header(stores_ws, {"cc", "cc nombre", "region", "estatus", "dm"})
     cms_open_stores = 0
@@ -147,6 +169,7 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     return {
         "activities": activity_rows,
         "managers": len(managers),
+        "organization": len(organization),
         "openStores": cms_open_stores,
         "settings": len(config_keys),
         "drafts": drafts,
@@ -162,6 +185,7 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
 def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -> dict[str, int | str]:
     """Audita únicamente la hoja operativa configurada; las históricas no alimentan el tablero."""
     _, _, cms_settings, _ = load_cms(cms_path)
+    cms_settings.pop("_organization", None)
     settings = load_settings(settings_path, cms_settings)
     validate_xlsx(path, "el directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)

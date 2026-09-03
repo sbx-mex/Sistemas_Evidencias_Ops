@@ -11,7 +11,7 @@
 | `manifest.webmanifest` | Instalación como aplicación. |
 | `cms/Sistema de Evidencias OPS.xlsx` | Respuestas exportadas desde Microsoft Forms. |
 | `cms/Directorio.xlsx` | Directorio multirregión con Estatus; sólo las tiendas permitidas por el CMS alimentan el tablero. |
-| `cms/Sistema_Evidencias_OPS_CMS.xlsx` | Actividades, fechas, gerentes y configuración editable por encabezados. |
+| `cms/Sistema_Evidencias_OPS_CMS.xlsx` | Actividades, tiendas abiertas, gerentes, organigrama y configuración editable por encabezados. |
 | `assets/dm/*.webp` | Fotografías optimizadas para las tarjetas DM. |
 | `assets/director/jorge-alcantar.webp` | Fotografía del Director Regional. |
 | `assets/ui/Damos_Seguimiento.webp` | Aviso visual previo a la exportación. |

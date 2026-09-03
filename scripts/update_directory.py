@@ -24,6 +24,14 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DIRECTORY = ROOT / "cms" / "Directorio.xlsx"
 DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 
+ORGANIZATION = [
+    (1, "Centro's", "Raúl Sierra", "Director Starbucks México", "assets/director/raul-sierra.webp", "Si", 1),
+    (2, "Centro Centro", "Oliver Roberto Perez Briones", "Director Regional", "", "Si", 2),
+    (2, "Centro Poniente", "Jorge Farrera Pinal", "Director Regional", "", "Si", 3),
+    (2, "Centro Sur", "Cielo Aide Morera Urrego", "Director Regional", "", "Si", 4),
+    (2, "Centro Norte", "Jorge Antonio Alcantar Aguiar", "Director Regional", "assets/director/jorge-alcantar.webp", "Si", 5),
+]
+
 
 def atomic_copy(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -201,6 +209,41 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
     for column, width in {"A": 12, "B": 34, "C": 22, "D": 16, "E": 40}.items():
         stores_ws.column_dimensions[column].width = width
     stores_ws.sheet_view.showGridLines = False
+
+    if "Organigrama" not in workbook.sheetnames:
+        org_ws = workbook.create_sheet("Organigrama", 2)
+        org_ws.merge_cells("A1:G1")
+        org_ws.merge_cells("A2:G2")
+        org_ws["A1"] = "CMS · Organigrama Región | Centro's"
+        org_ws["A2"] = "Edita nombre, rol, foto y Activo. Python publica únicamente las filas con Activo = Si."
+        org_ws.append([])
+        org_ws.append(["Nivel", "Región", "Nombre", "Rol", "Foto WebP", "Activo", "Orden"])
+        for item in ORGANIZATION:
+            org_ws.append(list(item))
+    else:
+        org_ws = workbook["Organigrama"]
+    for cell in org_ws[1]:
+        cell.fill = green
+        cell.font = Font(name="Aptos Display", size=12, bold=True, color="FFFFFF")
+    org_ws["A2"].fill = PatternFill("solid", fgColor="FFF2BF")
+    org_ws["A2"].font = Font(name="Aptos", size=10, italic=True, color="5C4A00")
+    for cell in org_ws[4]:
+        cell.fill = dark
+        cell.font = Font(name="Aptos", size=10, bold=True, color="FFFFFF")
+    for row in org_ws.iter_rows(min_row=5, max_row=org_ws.max_row, min_col=1, max_col=7):
+        for cell in row:
+            cell.fill = PatternFill("solid", fgColor="F4F8F6")
+            cell.font = Font(name="Aptos", size=10, color="24443A")
+            cell.alignment = Alignment(vertical="center")
+    org_ws.freeze_panes = "A5"
+    org_ws.auto_filter.ref = f"A4:G{org_ws.max_row}"
+    for column, width in {"A": 10, "B": 22, "C": 36, "D": 27, "E": 38, "F": 12, "G": 10}.items():
+        org_ws.column_dimensions[column].width = width
+    org_ws.sheet_view.showGridLines = False
+    org_ws.data_validations.dataValidation = []
+    org_active = DataValidation(type="list", formula1='"Si,No"', allow_blank=False)
+    org_ws.add_data_validation(org_active)
+    org_active.add("F5:F100")
 
     config = workbook["Configuracion"]
     config_header = next(row for row in range(1, min(config.max_row, 12) + 1) if key_text(config.cell(row, 1).value) == "clave")

@@ -115,12 +115,31 @@ function reportMeta() {
 }
 
 function exportProfile() {
-  const director = reportMeta().regionalDirector || {
-    name: "Jorge Alcantar", role: "Director Regional", photo: "assets/director/jorge-alcantar.webp",
+  const organization = state.data.organization || {};
+  const director = organization.nationalDirector || reportMeta().regionalDirector || {
+    name: "Raúl Sierra", role: "Director Starbucks México", photo: "assets/director/raul-sierra.webp",
   };
   const dmName = state.filters.dm || (state.filters.store ? filteredStores()[0]?.dm : "");
   const dm = dmName ? state.data.dms.find((item) => item.dm === dmName) : null;
-  return dm ? { name: dm.shortName || dm.dm, role: "DM", photo: dm.photo || "assets/icons/icon-192.webp" } : director;
+  if (dm) return { name: dm.shortName || dm.dm, role: "DM", photo: dm.photo || "assets/icons/icon-192.webp" };
+  if (state.filters.region) {
+    const regional = (organization.regionalDirectors || []).find((item) => item.region === state.filters.region);
+    if (regional) return { ...regional, photo: regional.photo || "assets/icons/icon-192.webp" };
+  }
+  return director;
+}
+
+function renderOrganization() {
+  const organization = state.data.organization || {};
+  const lead = organization.nationalDirector;
+  const regionals = organization.regionalDirectors || [];
+  const people = lead ? [lead, ...regionals] : regionals;
+  $("#organization-grid").innerHTML = people.length ? people.map((person) => {
+    const portrait = person.photo
+      ? `<img src="./${esc(person.photo)}" alt="${esc(person.name)}, ${esc(person.role)}" width="80" height="96" loading="lazy">`
+      : `<span class="organization-avatar" aria-hidden="true">${esc(initials(person.name))}</span>`;
+    return `<article class="organization-card ${person.level === 1 ? "lead" : ""}">${portrait}<div><small>${esc(person.region || "Centro's")}</small><strong>${esc(person.name)}</strong><span>${esc(person.role)}</span></div></article>`;
+  }).join("") : '<div class="empty-state">Sin responsables activos en el CMS.</div>';
 }
 
 function renderSummary() {
@@ -276,7 +295,7 @@ function readFilterUrl() {
 }
 
 function renderAll() {
-  renderSummary(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
+  renderSummary(); renderOrganization(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
 }
 
 function clearDashboardFilters() {
@@ -880,7 +899,7 @@ async function loadData(announce = false) {
     state.data = latestData;
     readFilterUrl();
     $("#last-updated").textContent = cutStamp();
-    const director = state.data.report?.regionalDirector;
+    const director = state.data.organization?.nationalDirector || state.data.report?.regionalDirector;
     if (director) {
       $("#director-name").textContent = director.name;
       $("#director-role").textContent = director.role;

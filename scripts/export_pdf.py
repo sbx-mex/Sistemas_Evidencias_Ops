@@ -77,12 +77,13 @@ def build_pdf(data: dict, output: Path) -> None:
     region = data.get("region", "Centro Norte")
     summary = data.get("summary", {})
     report = data.get("report", {})
-    director = report.get("regionalDirector", {})
+    organization = data.get("organization", {})
+    director = organization.get("nationalDirector") or report.get("regionalDirector", {})
     rows = sorted(data.get("dms", []), key=lambda item: (item.get("rank", 999), item.get("shortName", "")))
     rows_per_page = 6
     total_pages = max(1, (len(rows) + rows_per_page - 1) // rows_per_page)
     logo = image_reader(ROOT / "assets" / "icons" / "icon-64.webp", (80, 80))
-    director_photo = image_reader(ROOT / director.get("photo", "assets/director/jorge-alcantar.webp"), (96, 112))
+    director_photo = image_reader(ROOT / director.get("photo", "assets/director/raul-sierra.webp"), (96, 112))
 
     for page_index in range(total_pages):
         page_rows = rows[page_index * rows_per_page:(page_index + 1) * rows_per_page]

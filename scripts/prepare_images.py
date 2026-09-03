@@ -18,6 +18,7 @@ PHOTOS = {
 
 DIRECTOR_PHOTOS = {
     "Jorge Alcantar.png": "jorge-alcantar.webp",
+    "Raul Sierra.png": "raul-sierra.webp",
 }
 
 

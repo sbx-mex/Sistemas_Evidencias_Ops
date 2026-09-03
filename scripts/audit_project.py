@@ -59,7 +59,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Regional", "Jorge Alcantar", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Organigrama", "Región | Centro's", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sierra", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -200,6 +200,9 @@ report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or "Jorge Alcantar" not in report_meta.get("credits", "") or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
+organization = data.get("organization", {})
+if organization.get("nationalDirector", {}).get("name") != "Raúl Sierra" or len(organization.get("regionalDirectors", [])) != 4:
+    issues.append("Organigrama CMS incompleto")
 published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
 published_pairs = [(item.get("ceco"), item.get("activity")) for item in published_evidence]
 if len(published_pairs) != len(set(published_pairs)):

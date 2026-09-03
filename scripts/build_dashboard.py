@@ -574,7 +574,7 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     """Lee actividades, fechas, gerentes y configuración desde un solo Excel CMS."""
     validate_xlsx(path, "el CMS maestro")
     workbook = load_workbook(path, read_only=True, data_only=False)
-    required_sheets = {"Actividades", "Gerentes", "Configuracion"}
+    required_sheets = {"Actividades", "Gerentes", "Configuracion", "Organigrama"}
     missing = required_sheets.difference(workbook.sheetnames)
     if missing:
         raise ValueError("Faltan hojas CMS: " + ", ".join(sorted(missing)))
@@ -687,6 +687,42 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             "shortName": clean_text(row[manager_cols["nombre corto"]]) or dm,
             "photo": photo,
         }
+    org_ws = workbook["Organigrama"]
+    org_header, org_cols = find_header(org_ws, {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"})
+    organization_rows = []
+    for row_number, row in enumerate(org_ws.iter_rows(min_row=org_header + 1, values_only=True), org_header + 1):
+        name = clean_text(row[org_cols["nombre"]])
+        if not name or not is_yes(row[org_cols["activo"]]):
+            continue
+        photo = clean_text(row[org_cols["foto webp"]])
+        if photo and not (ROOT / photo).is_file():
+            raise ValueError(f"No existe la fotografía del organigrama para {name}: {photo}")
+        try:
+            level = int(float(row[org_cols["nivel"]]))
+        except (TypeError, ValueError):
+            level = 2
+        try:
+            order = int(float(row[org_cols["orden"]]))
+        except (TypeError, ValueError):
+            order = row_number
+        organization_rows.append({
+            "level": level,
+            "region": clean_text(row[org_cols["region"]]),
+            "name": name,
+            "role": clean_text(row[org_cols["rol"]]),
+            "photo": photo,
+            "order": order,
+        })
+    organization_rows.sort(key=lambda item: (item["level"], item["order"], key_text(item["name"])))
+    national = next((item for item in organization_rows if item["level"] == 1), None)
+    if not national:
+        raise ValueError("El CMS debe incluir un Director Starbucks México activo en Organigrama")
+    organization = {
+        "scopeLabel": "Región | Centro's",
+        "nationalDirector": national,
+        "regionalDirectors": [item for item in organization_rows if item["level"] == 2],
+    }
+    cms_settings["_organization"] = organization
     return sorted(activities, key=lambda item: (item["order"], key_text(item["name"]))), managers, cms_settings, calendar
 
 
@@ -965,6 +1001,7 @@ def build_payload(
     }
     initial_source_hashes = source_fingerprints(source_paths)
     activities, managers, cms_settings, calendar = load_cms(cms_path)
+    organization = cms_settings.pop("_organization")
     settings = load_settings(settings_path, cms_settings)
     allowed_hosts = normalize_allowed_hosts(
         settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")
@@ -1235,6 +1272,7 @@ def build_payload(
                 "photo": regional_director_photo,
             },
         },
+        "organization": organization,
         "sources": {
             "responses": responses_path.name,
             "responsesSha256": source_hashes["responsesSha256"],
