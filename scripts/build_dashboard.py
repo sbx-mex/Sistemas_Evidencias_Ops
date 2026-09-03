@@ -1264,7 +1264,7 @@ def build_payload(
             "title": "Sistema de Evidencia OPS",
             "subtitle": "Dashboard de Avance de Actividades",
             "motto": "JUNTÉMONOS MÁS",
-            "credits": "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
+            "footerLabel": "Starbucks México · Operaciones",
             "cutOffDisplay": latest_update.strftime("%d/%m/%y · %H:%M h") if latest_update else "Sin datos",
             "regionalDirector": {
                 "name": clean_text(settings.get("regionalDirectorName", "Jorge Alcantar")),
