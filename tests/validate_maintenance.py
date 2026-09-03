@@ -128,7 +128,7 @@ def test_structural_guards(temp: Path) -> None:
     expect_error(lambda: load_cms(no_active), "no contiene actividades activas")
 
     duplicate_directory = temp / "directorio_duplicado.xlsx"
-    shutil.copy2(ROOT / "cms" / "Centro Norte_Directorio.xlsx", duplicate_directory)
+    shutil.copy2(ROOT / "cms" / "Directorio.xlsx", duplicate_directory)
     _, _, cms_settings, _ = load_cms(original_cms)
     settings = load_settings(ROOT / "config" / "settings.json", cms_settings)
     workbook = load_workbook(duplicate_directory)
@@ -208,7 +208,7 @@ def test_flexible_cms(temp: Path) -> None:
 
     payload = build_payload(
         ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
-        ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+        ROOT / "cms" / "Directorio.xlsx",
         ROOT / "config" / "settings.json",
         cms,
     )

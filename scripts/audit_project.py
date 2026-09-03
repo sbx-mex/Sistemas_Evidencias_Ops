@@ -127,7 +127,7 @@ data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8")
 source_fingerprints = {}
 for source_key, source_path, label in (
     ("responsesSha256", ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", "Forms"),
-    ("directorySha256", ROOT / "cms" / "Centro Norte_Directorio.xlsx", "Directorio"),
+    ("directorySha256", ROOT / "cms" / "Directorio.xlsx", "Directorio"),
     ("cmsSha256", ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", "CMS"),
 ):
     try:
@@ -152,8 +152,10 @@ if "git add -A -- tests/validate_horno_applicability.py" in workflow:
 if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 11:
-    issues.append("Contrato JSON distinto de la versión 11")
+if data.get("schemaVersion") != 12:
+    issues.append("Contrato JSON distinto de la versión 12")
+if len(data.get("regions", [])) < 1 or data.get("summary", {}).get("regions") != len(data.get("regions", [])):
+    issues.append("El alcance regional no es auditable")
 if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})

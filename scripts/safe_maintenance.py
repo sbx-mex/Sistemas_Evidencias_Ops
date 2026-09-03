@@ -88,7 +88,7 @@ def outputs_current(fingerprints: dict[str, str]) -> bool:
         return False
     expected = {
         "responsesSha256": fingerprints.get("Sistema de Evidencias OPS.xlsx"),
-        "directorySha256": fingerprints.get("Centro Norte_Directorio.xlsx"),
+        "directorySha256": fingerprints.get("Directorio.xlsx"),
         "cmsSha256": fingerprints.get("Sistema_Evidencias_OPS_CMS.xlsx"),
     }
     return all(expected.values()) and saved == expected

@@ -1,7 +1,7 @@
 const state = {
   data: null,
-  filters: { dm: "", store: "", activity: "" },
-  evidenceFilters: { dm: "", store: "", activity: "" },
+  filters: { region: "", dm: "", store: "", activity: "" },
+  evidenceFilters: { region: "", dm: "", store: "", activity: "" },
   showAllEvidence: false,
   exporting: false,
   exportDecision: null,
@@ -15,6 +15,7 @@ const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
 })[char]);
 const number = (value) => Number(value || 0).toLocaleString("es-MX");
 const percent = (value) => `${Number(value || 0).toLocaleString("es-MX", { maximumFractionDigits: 1 })}%`;
+const initials = (value) => String(value || "DM").split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
 const engineLoads = new Map();
 
 function loadScriptOnce(source, globalName) {
@@ -47,6 +48,7 @@ function selectedActivities() {
 
 function filteredStores() {
   return state.data.stores.filter((store) =>
+    (!state.filters.region || store.region === state.filters.region) &&
     (!state.filters.dm || store.dm === state.filters.dm) &&
     (!state.filters.store || store.ceco === state.filters.store));
 }
@@ -68,6 +70,7 @@ function metrics() {
   const notApplicable = storeProgress.reduce((sum, item) => sum + item.notApplicable, 0);
   return {
     dms: new Set(stores.map((store) => store.dm)).size,
+    regions: new Set(stores.map((store) => store.region)).size,
     stores: stores.length,
     activities: activities.length,
     completed,
@@ -82,7 +85,7 @@ function metrics() {
 
 function currentScope() {
   if (state.filters.store) return filteredStores()[0]?.store || "Tienda";
-  return state.filters.dm || state.data.region;
+  return state.filters.dm || state.filters.region || state.data.region;
 }
 
 function semaphore(value) {
@@ -117,7 +120,7 @@ function exportProfile() {
   };
   const dmName = state.filters.dm || (state.filters.store ? filteredStores()[0]?.dm : "");
   const dm = dmName ? state.data.dms.find((item) => item.dm === dmName) : null;
-  return dm ? { name: dm.shortName || dm.dm, role: "DM", photo: dm.photo } : director;
+  return dm ? { name: dm.shortName || dm.dm, role: "DM", photo: dm.photo || "assets/icons/icon-192.webp" } : director;
 }
 
 function renderSummary() {
@@ -133,10 +136,10 @@ function renderSummary() {
       ? `${number(item.completed)} realizadas · ${number(item.pending)} pendientes · ${signal.label}.`
       : "El alcance seleccionado está completo.";
   $("#kpi-grid").innerHTML = [
+    [number(item.regions), item.regions === 1 ? "Región" : "Regiones"],
     [number(item.dms), "DM"],
     [number(item.activities), "Actividades"],
     [number(item.stores), "Tiendas"],
-    [number(item.pending), "Pendientes"],
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
 
@@ -171,6 +174,7 @@ function renderActivities() {
 function filteredEvidence() {
   return state.data.submissions.filter((item) =>
     item.valid && item.evidenceAvailable &&
+    (!state.evidenceFilters.region || item.region === state.evidenceFilters.region) &&
     (!state.evidenceFilters.dm || item.dm === state.evidenceFilters.dm) &&
     (!state.evidenceFilters.store || item.ceco === state.evidenceFilters.store) &&
     (!state.evidenceFilters.activity || item.activity === state.evidenceFilters.activity));
@@ -234,8 +238,10 @@ function renderTeam() {
     const rank = index < 3 ? ["🥇", "🥈", "🥉"][index] : `#${index + 1}`;
     return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}">
       <span class="rank-icon" aria-label="Posición ${index + 1}">${rank}</span>
-      <img src="./${esc(dm.photo)}" alt="Fotografía de ${esc(dm.shortName)}" loading="lazy">
-      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.expected - dm.completed} pendientes</em></span>
+      ${dm.photo
+        ? `<img src="./${esc(dm.photo)}" alt="Fotografía de ${esc(dm.shortName)}" loading="lazy">`
+        : `<span class="dm-avatar pending" aria-label="Fotografía pendiente">${esc(initials(dm.shortName))}</span>`}
+      <span class="dm-copy"><strong>${esc(dm.shortName)}</strong><em>${dm.dmStores.length} tiendas · ${dm.expected - dm.completed} pendientes${dm.photo ? "" : " · Foto pendiente"}</em></span>
       <span class="dm-result"><strong>${percent(dm.value)}</strong><small class="status ${signal.tone}">${signal.label}</small></span>
     </button>`;
   }).join("") || '<div class="empty-state">Sin gerentes para el filtro seleccionado.</div>';
@@ -258,7 +264,7 @@ function renderStores() {
 
 function syncFilterUrl() {
   const url = new URL(location.href);
-  [["dm", state.filters.dm], ["store", state.filters.store], ["activity", state.filters.activity]].forEach(([key, value]) => {
+  [["region", state.filters.region], ["dm", state.filters.dm], ["store", state.filters.store], ["activity", state.filters.activity]].forEach(([key, value]) => {
     if (value) url.searchParams.set(key, value); else url.searchParams.delete(key);
   });
   history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
@@ -266,7 +272,7 @@ function syncFilterUrl() {
 
 function readFilterUrl() {
   const params = new URLSearchParams(location.search);
-  state.filters = { dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "" };
+  state.filters = { region: params.get("region") || "", dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "" };
 }
 
 function renderAll() {
@@ -274,18 +280,23 @@ function renderAll() {
 }
 
 function clearDashboardFilters() {
-  state.filters = { dm: "", store: "", activity: "" };
+  state.filters = { region: "", dm: "", store: "", activity: "" };
   state.showAllEvidence = false;
   populateFilters();
   renderAll();
 }
 
 function populateFilters() {
-  const dms = [...new Set(state.data.stores.map((store) => store.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
+  const regions = state.data.regions || [...new Set(state.data.stores.map((store) => store.region))];
+  $("#filter-region").innerHTML = '<option value="">Todas las regiones</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
+  if (!regions.includes(state.filters.region)) state.filters.region = "";
+  $("#filter-region").value = state.filters.region;
+  const regionalStores = state.data.stores.filter((store) => !state.filters.region || store.region === state.filters.region);
+  const dms = [...new Set(regionalStores.map((store) => store.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
   $("#filter-dm").innerHTML = '<option value="">Todos los DM</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
   if (!dms.includes(state.filters.dm)) state.filters.dm = "";
   $("#filter-dm").value = state.filters.dm;
-  const stores = state.data.stores.filter((store) => !state.filters.dm || store.dm === state.filters.dm);
+  const stores = regionalStores.filter((store) => !state.filters.dm || store.dm === state.filters.dm);
   $("#filter-store").innerHTML = '<option value="">Todas las tiendas</option>' + stores.map((store) => `<option value="${esc(store.ceco)}">${esc(store.ceco)} · ${esc(store.store)}</option>`).join("");
   if (!stores.some((store) => store.ceco === state.filters.store)) state.filters.store = "";
   $("#filter-store").value = state.filters.store;
@@ -296,17 +307,22 @@ function populateFilters() {
 
 function populateEvidenceFilters() {
   const source = state.data.submissions.filter((item) => item.valid && item.evidenceAvailable);
-  const dms = [...new Set(source.map((item) => item.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
+  const regions = [...new Set(source.map((item) => item.region))].sort((a, b) => a.localeCompare(b, "es-MX"));
+  $("#evidence-filter-region").innerHTML = '<option value="">Todas las regiones</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
+  if (!regions.includes(state.evidenceFilters.region)) state.evidenceFilters.region = "";
+  $("#evidence-filter-region").value = state.evidenceFilters.region;
+  const regionalSource = source.filter((item) => !state.evidenceFilters.region || item.region === state.evidenceFilters.region);
+  const dms = [...new Set(regionalSource.map((item) => item.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
   $("#evidence-filter-dm").innerHTML = '<option value="">Todos los DM</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
   if (!dms.includes(state.evidenceFilters.dm)) state.evidenceFilters.dm = "";
   $("#evidence-filter-dm").value = state.evidenceFilters.dm;
 
-  const activities = [...new Set(source.map((item) => item.activity))].sort((a, b) => a.localeCompare(b, "es-MX"));
+  const activities = [...new Set(regionalSource.map((item) => item.activity))].sort((a, b) => a.localeCompare(b, "es-MX"));
   $("#evidence-filter-activity").innerHTML = '<option value="">Todas las actividades</option>' + activities.map((activity) => `<option value="${esc(activity)}">${esc(activity)}</option>`).join("");
   if (!activities.includes(state.evidenceFilters.activity)) state.evidenceFilters.activity = "";
   $("#evidence-filter-activity").value = state.evidenceFilters.activity;
 
-  const stores = source.filter((item) => !state.evidenceFilters.dm || item.dm === state.evidenceFilters.dm)
+  const stores = regionalSource.filter((item) => !state.evidenceFilters.dm || item.dm === state.evidenceFilters.dm)
     .map((item) => ({ ceco: item.ceco, store: item.store }))
     .filter((item, index, rows) => rows.findIndex((row) => row.ceco === item.ceco) === index)
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
@@ -331,7 +347,7 @@ function spreadsheetColumn(column) {
 }
 
 function reportScope() {
-  return state.filters.store ? `Tienda · ${currentScope()}` : state.filters.dm ? `DM · ${state.filters.dm}` : `Región · ${state.data.region}`;
+  return state.filters.store ? `Tienda · ${currentScope()}` : state.filters.dm ? `DM · ${state.filters.dm}` : `Región · ${state.filters.region || state.data.region}`;
 }
 
 function exportActivityLabel() {
@@ -352,14 +368,14 @@ function exportScopeSummary() {
   if (state.filters.dm) {
     return `DM · ${state.filters.dm} · ${number(item.stores)} tiendas · ${number(item.pending)} pendientes`;
   }
-  return `Región · ${state.data.region} · ${number(item.stores)} tiendas · ${number(item.pending)} pendientes`;
+  return `Región · ${state.filters.region || state.data.region} · ${number(item.stores)} tiendas · ${number(item.pending)} pendientes`;
 }
 
 function exportContext(format) {
   const item = metrics();
   const activity = exportActivityLabel();
   const type = state.filters.store ? "Tienda" : state.filters.dm ? "DM" : "Regional";
-  const name = state.filters.store ? currentScope() : state.filters.dm || state.data.region;
+  const name = state.filters.store ? currentScope() : state.filters.dm || state.filters.region || state.data.region;
   const filename = `Sistema_Evidencia_OPS_${type}_${fileSafe(name)}_${fileSafe(activity)}_Corte_${cutDate().replaceAll("/", "-")}.${format}`;
   return {
     item, activity, type, name, filename,
@@ -782,11 +798,16 @@ function initNavigation() {
 }
 
 function bindEvents() {
+  $("#filter-region").addEventListener("change", (event) => { state.filters.region = event.target.value; state.filters.dm = ""; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-dm").addEventListener("change", (event) => { state.filters.dm = event.target.value; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#clear-filters").addEventListener("click", clearDashboardFilters);
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
+  $("#evidence-filter-region").addEventListener("change", (event) => {
+    state.evidenceFilters.region = event.target.value; state.evidenceFilters.dm = ""; state.evidenceFilters.store = ""; state.showAllEvidence = false;
+    populateEvidenceFilters(); renderEvidence();
+  });
   $("#evidence-filter-dm").addEventListener("change", (event) => {
     state.evidenceFilters.dm = event.target.value; state.evidenceFilters.store = ""; state.showAllEvidence = false;
     populateEvidenceFilters(); renderEvidence();

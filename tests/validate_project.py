@@ -18,9 +18,9 @@ from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
     "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
-    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/validate_sources.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
+    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/update_directory.py", "scripts/validate_sources.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
     "scripts/audit_project.py", "config/settings.json", "INSTRUCCION_FORMS.md", "MEJORAS.md",
-    "cms/Centro Norte_Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
+    "cms/Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
     "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
     "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
@@ -88,13 +88,13 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 11:
+if data.get("schemaVersion") != 12:
     fail("Versión del contrato JSON incorrecta")
-if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Centro Norte":
+if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Todas las regiones":
     fail("Identidad del proyecto incorrecta")
 if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     fail("La versión Python para invalidar caché es incorrecta")
-if data.get("sources", {}).get("directorySheet") != "72 T":
+if data.get("sources", {}).get("directorySheet") != "Directorio":
     fail("No se utilizó la hoja configurada del directorio")
 if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
     fail("Python no está leyendo el Excel CMS")
@@ -109,7 +109,7 @@ if data.get("calendar", {}).get("active") != len(data["activities"]):
     fail("Las actividades vigentes del CMS no fueron calculadas")
 for source_key, path in (
     ("responsesSha256", ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"),
-    ("directorySha256", ROOT / "cms" / "Centro Norte_Directorio.xlsx"),
+    ("directorySha256", ROOT / "cms" / "Directorio.xlsx"),
     ("cmsSha256", ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"),
 ):
     if data.get("sources", {}).get(source_key) != file_sha256(path):
@@ -131,8 +131,12 @@ for store in data.get("stores", []):
         fail(f"CeCo {store.get('ceco')} contabiliza una actividad excluida")
 if summary.get("notApplicableCompletions") != calculated_exclusions:
     fail("La resta implícita de actividades no coincide con las respuestas Sí/No")
-if len(data.get("dms", [])) != 6 or any(not item.get("photo", "").endswith(".webp") for item in data.get("dms", [])):
-    fail("Las seis fotografías WebP no quedaron vinculadas")
+if len(data.get("regions", [])) != 4 or summary.get("regions") != 4 or summary.get("stores") != 372:
+    fail("El alcance multirregión del Directorio no quedó publicado")
+if sum(item.get("photoStatus") == "Disponible" for item in data.get("dms", [])) != 6:
+    fail("Las seis fotografías existentes no quedaron vinculadas")
+if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):
+    fail("Los DM nuevos no quedaron marcados con foto pendiente")
 if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
     fail("Calidad inicial incorrecta")
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
@@ -243,7 +247,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Regional", "Jorge Alcantar", "Diseñado por Jorge Alcantar Aguiar"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]

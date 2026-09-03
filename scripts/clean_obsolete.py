@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Lista cerrada: sin patrones, globs ni directorios recursivos.
 OBSOLETE_FILES = (
+    "cms/Centro Norte_Directorio.xlsx",
     "config/actividades.csv",
     "config/gerentes.csv",
     "assets/dm/enrique-cesar.jpeg",

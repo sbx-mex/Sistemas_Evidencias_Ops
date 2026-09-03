@@ -14,15 +14,17 @@ try:
     from .build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
-        find_header, is_no, is_yes, key_text, load_cms, load_settings,
-        normalize_ceco, parse_date, validate_xlsx,
+        find_header, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
+        directory_sheet,
+        normalize_ceco, normalize_dm, parse_date, validate_xlsx,
     )
 except ImportError:  # Ejecución directa: python scripts/validate_sources.py
     from build_dashboard import (
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
-        find_header, is_no, is_yes, key_text, load_cms, load_settings,
-        normalize_ceco, parse_date, validate_xlsx,
+        find_header, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
+        directory_sheet,
+        normalize_ceco, normalize_dm, parse_date, validate_xlsx,
     )
 
 CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion"}
@@ -147,13 +149,10 @@ def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -
     settings = load_settings(settings_path, cms_settings)
     validate_xlsx(path, "el directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)
-    sheet_name = clean_text(settings.get("directorySheet"))
-    if sheet_name not in workbook.sheetnames:
-        raise ValueError(f"La hoja operativa del Directorio no existe: {sheet_name}")
-    ws = workbook[sheet_name]
-    header_row, headers = find_directory_header(ws)
+    ws, header_row, headers = directory_sheet(workbook, settings.get("directorySheet"))
+    sheet_name = ws.title
     cols = {key_text(value): index for index, value in enumerate(headers) if clean_text(value)}
-    missing_columns = {"cc", "cc nombre", "region", "estatus", "dm"}.difference(cols)
+    missing_columns = {"cc", "cc nombre", "region", "dm"}.difference(cols)
     if missing_columns:
         raise ValueError("Directorio incompleto: " + ", ".join(sorted(missing_columns)))
     active_cecos: list[str] = []
@@ -163,20 +162,27 @@ def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -
         if not ceco:
             continue
         region = clean_text(row[cols["region"]])
-        status = key_text(row[cols["estatus"]])
-        if settings.get("region") and key_text(region) != key_text(settings["region"]):
+        status_col = cols.get("estatus")
+        status = key_text(row[status_col]) if status_col is not None else ""
+        if not is_all_regions(settings.get("region")) and key_text(region) != key_text(settings["region"]):
             continue
-        if settings.get("onlyOpenStores") and status not in {"abierta", "abierto", "activa", "activo"}:
+        if status_col is not None and settings.get("onlyOpenStores") and status not in {"abierta", "abierto", "activa", "activo"}:
             continue
         active_cecos.append(ceco)
-        if not clean_text(row[cols["dm"]]):
+        if normalize_dm(row[cols["dm"]]) == "DM pendiente":
             missing_dm.append(ceco)
     if duplicates(active_cecos):
         raise ValueError("CeCo duplicados en la hoja operativa: " + ", ".join(duplicates(active_cecos)))
-    if missing_dm:
-        raise ValueError("Tiendas abiertas sin DM: " + ", ".join(missing_dm))
     hidden_sheets = sum(sheet.sheet_state != "visible" for sheet in workbook.worksheets)
-    return {"stores": len(active_cecos), "sheet": sheet_name, "hiddenSheets": hidden_sheets}
+    regions = {
+        clean_text(row[cols["region"]])
+        for row in ws.iter_rows(min_row=header_row + 1, values_only=True)
+        if normalize_ceco(row[cols["cc"]])
+    }
+    return {
+        "stores": len(active_cecos), "sheet": sheet_name, "hiddenSheets": hidden_sheets,
+        "regions": len(regions), "missingDm": len(missing_dm),
+    }
 
 
 def main() -> None:
@@ -231,7 +237,8 @@ def main() -> None:
     print(
         "Motores auditados · "
         f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['settings']} parámetros · "
-        f"Directorio {directory_audit['stores']} tiendas en {directory_audit['sheet']} · "
+        f"Directorio {directory_audit['stores']} tiendas / {directory_audit['regions']} regiones en {directory_audit['sheet']} · "
+        f"{directory_audit['missingDm']} asignaciones DM pendientes · "
         f"{directory_audit['hiddenSheets']} hoja histórica fuera del cálculo"
     )
     print(

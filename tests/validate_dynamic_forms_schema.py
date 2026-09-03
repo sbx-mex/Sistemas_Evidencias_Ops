@@ -127,7 +127,7 @@ def main() -> None:
         ])
         payload = build_payload(
             hidden,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             hidden_cms,
         )
@@ -161,7 +161,7 @@ def main() -> None:
         ])
         repeated_payload = build_payload(
             repeated,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
@@ -254,7 +254,7 @@ def main() -> None:
         ])
         payload = build_payload(
             similar_activity,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
@@ -275,7 +275,7 @@ def main() -> None:
         cms_book.save(reordered_cms)
         payload = build_payload(
             flexible,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             reordered_cms,
         )
@@ -325,7 +325,7 @@ def main() -> None:
         save_book(conditional, conditional_headers, conditional_rows)
         payload = build_payload(
             conditional,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
@@ -387,7 +387,7 @@ def main() -> None:
         save_book(actual, actual_headers, actual_rows)
         payload = build_payload(
             actual,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
@@ -422,7 +422,7 @@ def main() -> None:
         save_book(empty, ["CeCo", ACTIVITY, "Evidencia_RollOut"], [])
         payload = build_payload(
             empty,
-            ROOT / "cms" / "Centro Norte_Directorio.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Construye el dashboard estático desde Forms + Directorio Centro Norte.
+"""Construye el dashboard estático desde Forms + Directorio multirregión.
 
 Fuentes editoriales:
   - cms/Sistema de Evidencias OPS.xlsx
-  - cms/Centro Norte_Directorio.xlsx
+  - cms/Directorio.xlsx
   - cms/Sistema_Evidencias_OPS_CMS.xlsx
 
 El navegador nunca procesa los Excel. Este motor valida encabezados, cruza CeCo,
@@ -34,7 +34,7 @@ except ImportError:  # Ejecución directa: python scripts/build_dashboard.py
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
-DEFAULT_DIRECTORY = ROOT / "cms" / "Centro Norte_Directorio.xlsx"
+DEFAULT_DIRECTORY = ROOT / "cms" / "Directorio.xlsx"
 DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
 DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
@@ -111,6 +111,13 @@ def key_text(value: Any) -> str:
 def compact_key(value: Any) -> str:
     """Clave tolerante a espacios, guiones, &, acentos y cambios de mayúsculas."""
     return re.sub(r"[^a-z0-9]+", "", key_text(value))
+
+
+def normalize_dm(value: Any) -> str:
+    dm = clean_text(value)
+    if key_text(dm) in {"", "na", "n/a", "sin dm", "cierre de ceco"}:
+        return "DM pendiente"
+    return dm
 
 
 def active_activity_catalog(activities: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, str]]:
@@ -716,15 +723,34 @@ def find_directory_header(ws) -> tuple[int, list[Any]]:
     raise ValueError(f"No se encontró encabezado CC / CC Nombre / DM en {ws.title}")
 
 
+def is_all_regions(value: Any) -> bool:
+    return key_text(value) in {"", "todas", "todos", "todas las regiones", "*"}
+
+
+def directory_sheet(workbook, requested: Any) -> tuple[Any, int, list[Any]]:
+    """Elige por encabezados, no por un nombre o un número de filas congelado."""
+    candidates = []
+    requested_name = clean_text(requested)
+    for index, ws in enumerate(workbook.worksheets):
+        try:
+            header_row, headers = find_directory_header(ws)
+        except ValueError:
+            continue
+        keys = {key_text(value) for value in headers if clean_text(value)}
+        score = sum(field in keys for field in ("cc", "cc nombre", "region", "dm", "estatus"))
+        preferred = int(ws.title == requested_name)
+        candidates.append((preferred, score, ws.max_row, -index, ws, header_row, headers))
+    if not candidates:
+        raise ValueError("No existe una hoja con encabezados CC / CC Nombre / Región / DM")
+    _, _, _, _, ws, header_row, headers = max(candidates, key=lambda item: item[:4])
+    return ws, header_row, headers
+
+
 def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str]:
     validate_xlsx(path, "el directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)
-    requested = settings.get("directorySheet")
-    if requested not in workbook.sheetnames:
-        requested = max(workbook.sheetnames, key=lambda name: workbook[name].max_row)
-    ws = workbook[requested]
-    header_row, headers = find_directory_header(ws)
-    required = ("cc", "cc nombre", "region", "estatus", "dm")
+    ws, header_row, headers = directory_sheet(workbook, settings.get("directorySheet"))
+    required = ("cc", "cc nombre", "region", "dm")
     positions: dict[str, list[int]] = defaultdict(list)
     for index, value in enumerate(headers):
         if clean_text(value):
@@ -743,23 +769,24 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
         if not ceco:
             continue
         region = clean_text(row[normalized["region"]])
-        status = clean_text(row[normalized["estatus"]])
-        if settings.get("region") and key_text(region) != key_text(settings["region"]):
+        status_index = normalized.get("estatus")
+        status = clean_text(row[status_index]) if status_index is not None else "Sin estatus en fuente"
+        if not is_all_regions(settings.get("region")) and key_text(region) != key_text(settings["region"]):
             continue
-        if settings.get("onlyOpenStores") and key_text(status) not in {"abierta", "abierto", "activa", "activo"}:
+        if status_index is not None and settings.get("onlyOpenStores") and key_text(status) not in {"abierta", "abierto", "activa", "activo"}:
             continue
         if ceco in stores:
             raise ValueError(f"CeCo duplicado en el directorio operativo: {ceco}")
         stores[ceco] = {
             "ceco": ceco,
             "store": clean_text(row[normalized["cc nombre"]]) or f"Tienda {ceco}",
-            "dm": clean_text(row[normalized["dm"]]) or "Sin DM",
+            "dm": normalize_dm(row[normalized["dm"]]),
             "region": region,
             "status": status,
         }
     if not stores:
         raise ValueError("El directorio no contiene tiendas activas para el alcance configurado")
-    return stores, requested
+    return stores, ws.title
 
 
 def find_response_source(workbook, activity_names: list[str] | None = None) -> tuple[Any, int, list[Any]]:
@@ -984,6 +1011,7 @@ def build_payload(
             "ceco": response["ceco"] or "Inválido",
             "store": store["store"] if store else "CeCo sin cruce",
             "dm": store["dm"] if store else "Sin asignar",
+            "region": store["region"] if store else "Sin región",
             "evidenceKey": key,
             "evidenceLinkLabel": f"Link_{key}",
             "evidenceFileName": evidence_filename(evidence_url),
@@ -1099,6 +1127,8 @@ def build_payload(
             "dm": dm,
             "shortName": profile.get("shortName", dm),
             "photo": profile.get("photo", ""),
+            "photoStatus": "Disponible" if profile.get("photo") else "Pendiente",
+            "regions": sorted({store["region"] for store in dm_stores}, key=key_text),
             "stores": len(dm_stores),
             "completed": completed,
             "expected": expected,
@@ -1157,11 +1187,15 @@ def build_payload(
     }
     stability_passed = sum(stability_controls.values())
 
+    regions = sorted({store["region"] for store in store_rows}, key=key_text)
+    region_label = regions[0] if len(regions) == 1 else "Todas las regiones"
+
     return {
-        "schemaVersion": 11,
+        "schemaVersion": 12,
         "buildVersion": build_version,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
-        "region": settings.get("region", "Centro Norte"),
+        "region": region_label,
+        "regions": regions,
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
         "lastUpdated": iso_or_none(latest_update),
         "lastUpdatedDisplay": latest_update.strftime("%d/%m/%Y %H:%M") if latest_update else "Sin respuestas",
@@ -1187,6 +1221,7 @@ def build_payload(
             "cmsSha256": source_hashes["cmsSha256"],
         },
         "summary": {
+            "regions": len(regions),
             "dms": len(dm_stats),
             "stores": len(stores),
             "activities": len(activity_names),

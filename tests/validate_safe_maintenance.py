@@ -18,7 +18,7 @@ def main() -> None:
     files = safe.cms_sources()
     assert {path.name for path in files} >= {
         "Sistema de Evidencias OPS.xlsx",
-        "Centro Norte_Directorio.xlsx",
+        "Directorio.xlsx",
         "Sistema_Evidencias_OPS_CMS.xlsx",
     }
     fingerprints = safe.validate_all_xlsx(files)

@@ -7,7 +7,7 @@ PWA ejecutiva de Centro Norte para medir el cumplimiento de actividades registra
 ```text
 Sistema de Evidencias OPS.xlsx
              +
-Centro Norte_Directorio.xlsx
+Directorio.xlsx
 Sistema_Evidencias_OPS_CMS.xlsx + assets/dm/ + assets/director/
              ↓
 scripts/build_dashboard.py
@@ -30,7 +30,7 @@ El correo y el nombre del respondente no se publican. Por autorización operativ
 ## Actualización inmediata
 
 1. Reemplaza `cms/Sistema de Evidencias OPS.xlsx` con la descarga más reciente de Forms.
-2. Cuando cambie el directorio, reemplaza `cms/Centro Norte_Directorio.xlsx`.
+2. Cuando cambie el directorio, ejecuta `python scripts/update_directory.py Directorio.xlsx`; regiones, DM y tiendas se agrupan automáticamente.
 3. Ejecuta:
 
 ```bash
@@ -65,7 +65,7 @@ En `Configuracion` se administran región, privacidad, dominios autorizados y Di
 
 ## Fotografías y liderazgo regional
 
-La hoja `Gerentes` relaciona el nombre exacto del directorio con su fotografía en `assets/dm/`. La hoja `Configuracion` publica a **Jorge Alcantar** como **Director Regional** mediante `assets/director/jorge-alcantar.webp`. Python detiene la generación si falta una imagen configurada.
+La hoja `Gerentes` relaciona el nombre exacto del directorio con su región y fotografía en `assets/dm/`. Los DM nuevos se agregan con estado **Foto pendiente** y el dashboard muestra sus iniciales hasta recibir el WebP. Python sólo detiene la generación cuando una ruta de imagen configurada no existe.
 
 ## 10 mejoras de navegación, cálculo y exportación
 
@@ -112,7 +112,7 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 ## Fuente inicial validada
 
-- 72 tiendas abiertas de la hoja `72 T`, alineadas con las seis fotografías proporcionadas.
+- 372 tiendas de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes y tres tiendas conservan el aviso `DM pendiente`.
 - 8 actividades activas.
 - Última actualización: `29/08/2026 09:43`.
 - CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.
