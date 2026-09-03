@@ -178,11 +178,11 @@ def build_pdf(data: dict, output: Path) -> None:
         pdf.drawString(40, 35, report.get("motto", "JUNTÉMONOS MÁS"))
         pdf.setFillColor(HexColor("#CCE0D7"))
         pdf.setFont("Helvetica", 6.5)
-        pdf.drawRightString(page_width - 40, 35, report.get("credits", ""))
+        pdf.drawRightString(page_width - 40, 35, report.get("footerLabel", "Starbucks México · Operaciones"))
         pdf.showPage()
 
     pdf.setTitle(f"Sistema de Evidencia OPS · {region}")
-    pdf.setAuthor("Centro Norte")
+    pdf.setAuthor("Starbucks México · Operaciones")
     pdf.setSubject("Avance realizado / Pendientes / % Avance")
     pdf.save()
 
