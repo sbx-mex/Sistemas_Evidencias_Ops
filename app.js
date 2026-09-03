@@ -110,7 +110,7 @@ function cutStamp() {
 function reportMeta() {
   return state.data.report || {
     title: "Sistema de Evidencia OPS", subtitle: "Dashboard de Avance de Actividades",
-    motto: "JUNTÉMONOS MÁS", credits: "Diseñado por Jorge Alcantar Aguiar & Enrique César Flores",
+    motto: "JUNTÉMONOS MÁS", footerLabel: "Starbucks México · Operaciones",
   };
 }
 
@@ -520,7 +520,7 @@ async function renderPdfPages() {
 
     context.fillStyle = "#1e3932"; context.fillRect(55, 1055, 1490, 50);
     context.fillStyle = "#ffffff"; context.font = "750 15px Segoe UI, sans-serif"; context.fillText(meta.motto, 75, 1086);
-    context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "500 13px Segoe UI, sans-serif"; context.fillText(meta.credits, 1525, 1086); context.textAlign = "left";
+    context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "500 13px Segoe UI, sans-serif"; context.fillText(meta.footerLabel || "Starbucks México · Operaciones", 1525, 1086); context.textAlign = "left";
     return canvas;
   });
 }
@@ -578,7 +578,7 @@ async function exportImage() {
     });
     const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
     context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
-    context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.credits, 1525, footerY + 64); context.textAlign = "left";
+    context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.footerLabel || "Starbucks México · Operaciones", 1525, footerY + 64); context.textAlign = "left";
     const exportInfo = exportContext("png");
     const blob = await new Promise((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error("No fue posible crear la imagen.")), "image/png"));
     const url = URL.createObjectURL(blob);
