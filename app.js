@@ -801,8 +801,15 @@ async function exportExcel() {
 
 function initNavigation() {
   const links = [...document.querySelectorAll(".main-nav a")];
+  const navigation = document.querySelector(".main-nav");
   const sections = links.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
-  const setCurrent = (id) => links.forEach((link) => link.setAttribute("aria-current", link.getAttribute("href") === `#${id}` ? "page" : "false"));
+  const setCurrent = (id) => links.forEach((link) => {
+    const selected = link.getAttribute("href") === `#${id}`;
+    link.setAttribute("aria-current", selected ? "page" : "false");
+    if (selected && navigation.scrollWidth > navigation.clientWidth) {
+      link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  });
   links.forEach((link) => link.addEventListener("click", () => {
     const id = link.getAttribute("href").slice(1);
     setCurrent(id);
