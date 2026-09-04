@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "792baa52fdb0e90d",
+  "buildVersion": "913c734dbe0e7190",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T05:16:24+00:00",
-  "lastUpdated": "2026-09-03T20:28:37",
-  "lastUpdatedDisplay": "03/09/2026 20:28",
+  "generatedAt": "2026-09-04T19:57:17+00:00",
+  "lastUpdated": "2026-09-04T11:51:33",
+  "lastUpdatedDisplay": "04/09/2026 11:51",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "03/09/26 · 20:28 h",
+    "cutOffDisplay": "04/09/26 · 11:51 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 290,
+        "completed": 292,
         "expected": 781,
-        "pending": 491,
-        "compliance": 37.1,
+        "pending": 489,
+        "compliance": 37.4,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "aaaf8215cc55c77c97778d28acc263762d7da285fd3019ee9e293d663246219e",
+    "responsesSha256": "84bcfb29096caa7247bbe461777e8b80bbfa6d6406d0e00bf374c4c35aad03c5",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -121,7 +121,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "69ab69621e070843e85a7108da1fd713e6aa96d79592b4a32b0d85c4a0fa0479"
+    "cmsSha256": "71948b46247a89bce16ecbb0fee7f1931313f2521e2cb69aad427d7c9e56ef86"
   },
   "summary": {
     "regions": 4,
@@ -129,15 +129,15 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3916,
-    "completedCompletions": 290,
-    "compliance": 7.4,
-    "validResponses": 290,
+    "completedCompletions": 292,
+    "compliance": 7.5,
+    "validResponses": 292,
     "storesComplete": 1,
-    "pendingCompletions": 3626,
+    "pendingCompletions": 3624,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 323,
+    "responsesRead": 325,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -150,12 +150,9 @@
       "QR - Qualtrics"
     ],
     "canonicalizedActivityRows": [],
-    "ignoredResponseRows": [
-      324
-    ],
-    "ignoredResponseSourceIds": [
-      "353"
-    ],
+    "ignoredResponseRows": [],
+    "ignoredResponseSourceIds": [],
+    "unusedIgnoredResponseSourceIds": [],
     "duplicateValidResponses": 17,
     "unsafeEvidenceRows": [],
     "responseSchema": {
@@ -169,6 +166,11 @@
         "CeCo",
         "CeCo1"
       ],
+      "cecoSourceUsage": {
+        "CeCo": 322,
+        "CeCo1": 3
+      },
+      "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
       "applicabilityHeaders": [
         "¿ Tienes Horno Merry Chef ?",
@@ -222,7 +224,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 290,
+    "evidenceLinksPublished": 292,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -323,11 +325,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": true,
-      "completedStores": 18,
+      "completedStores": 19,
       "applicableStores": 350,
       "notApplicableStores": 7,
-      "pendingStores": 332,
-      "compliance": 5.1,
+      "pendingStores": 331,
+      "compliance": 5.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -345,11 +347,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 28,
+      "completedStores": 29,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 329,
-      "compliance": 7.8,
+      "pendingStores": 328,
+      "compliance": 8.1,
       "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
       "daysRemaining": 2,
@@ -498,12 +500,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 85,
+      "completed": 86,
       "expected": 138,
       "notApplicable": 5,
-      "pending": 53,
+      "pending": 52,
       "pendingStores": 13,
-      "compliance": 61.6,
+      "compliance": 62.3,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -534,12 +536,12 @@
         "Centro Norte"
       ],
       "stores": 11,
-      "completed": 52,
+      "completed": 53,
       "expected": 121,
       "notApplicable": 0,
-      "pending": 69,
+      "pending": 68,
       "pendingStores": 11,
-      "compliance": 43.0,
+      "compliance": 43.8,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -4505,17 +4507,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38811",
-      "store": "Plaza Tepeyac",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 3,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 27.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38604",
       "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
@@ -4626,6 +4617,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38811",
+      "store": "Plaza Tepeyac",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 4,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 36.4,
+      "status": "Atención"
+    },
+    {
       "ceco": "38992",
       "store": "Tapo Puerta Oriente",
       "dm": "Veronica Garcia Ortega",
@@ -4692,17 +4694,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38656",
-      "store": "Viveros de la Loma",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 5,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 45.5,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "43193",
       "store": "Cosmopol N1",
       "dm": "Enrique Cesar Flores",
@@ -4760,6 +4751,17 @@
     {
       "ceco": "38176",
       "store": "Periferico Satélite DT",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 6,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 5,
+      "compliance": 54.5,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38656",
+      "store": "Viveros de la Loma",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 6,
       "expected": 11,
@@ -17421,15 +17423,15 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 27.3,
-      "lastUpdate": "2026-09-02T11:09:03",
+      "compliance": 36.4,
+      "lastUpdate": "2026-09-04T11:51:33",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": false,
+        "Rack FHW": true,
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
@@ -17953,11 +17955,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 45.5,
-      "lastUpdate": "2026-09-03T14:52:08",
+      "compliance": 54.5,
+      "lastUpdate": "2026-09-04T10:47:57",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -17966,7 +17968,7 @@
         "Fotografia - SM": false,
         "Mandil Verde": true,
         "Lay Out": false,
-        "Community Board": false,
+        "Community Board": true,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": false,
         "Señaletica Lobby": false
@@ -18481,6 +18483,71 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-8b921b30e1fe8721",
+      "timestamp": "2026-09-04T11:51:33",
+      "timestampDisplay": "04/09/2026 11:51",
+      "activity": "Rack FHW",
+      "ceco": "38811",
+      "store": "Plaza Tepeyac",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Rack_FHW_38811",
+      "evidenceLinkLabel": "Link_Rack_FHW_38811",
+      "evidenceFileName": "image_Starbucks Plaza Tepe.jpg",
+      "evidenceSourceHeader": "Evidencia_Rack_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/image_Starbucks%20Plaza%20Tepe.jpg"
+    },
+    {
+      "id": "respuesta-993fa9c53d222cb3",
+      "timestamp": "2026-09-04T10:47:57",
+      "timestampDisplay": "04/09/2026 10:47",
+      "activity": "Community Board",
+      "ceco": "38656",
+      "store": "Viveros de la Loma",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Community_Board_38656",
+      "evidenceLinkLabel": "Link_Community_Board_38656",
+      "evidenceFileName": "3ef79706-6d09-4977-a999-b307fe89830d_Starbucks Viveros Sa.jpeg",
+      "evidenceSourceHeader": "Evidencia_Community_Board",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Lay_Out%201/3ef79706-6d09-4977-a999-b307fe89830d_Starbucks%20Viveros%20Sa.jpeg"
+    },
+    {
+      "id": "respuesta-6766feddd99b0c8b",
+      "timestamp": "2026-09-04T10:18:48",
+      "timestampDisplay": "04/09/2026 10:18",
+      "activity": "Community Board",
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Community_Board_38859",
+      "evidenceLinkLabel": "Link_Community_Board_38859",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": true,
+      "status": "Pendiente",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": false
+    },
     {
       "id": "respuesta-87e118726e9813d9",
       "timestamp": "2026-09-03T20:28:37",
@@ -19108,27 +19175,6 @@
       "region": "Centro Norte",
       "evidenceKey": "Community_Board_38117",
       "evidenceLinkLabel": "Link_Community_Board_38117",
-      "evidenceFileName": "Sin archivo",
-      "evidenceSourceHeader": "",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": true,
-      "status": "Pendiente",
-      "evidenceAvailable": false,
-      "evidenceLinkPublished": false,
-      "valid": false
-    },
-    {
-      "id": "respuesta-8a45a907ccdd873f",
-      "timestamp": "2026-09-03T13:30:40",
-      "timestampDisplay": "03/09/2026 13:30",
-      "activity": "Community Board",
-      "ceco": "38859",
-      "store": "Plaza Satelite II N1",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Community_Board_38859",
-      "evidenceLinkLabel": "Link_Community_Board_38859",
       "evidenceFileName": "Sin archivo",
       "evidenceSourceHeader": "",
       "confirmed": true,
