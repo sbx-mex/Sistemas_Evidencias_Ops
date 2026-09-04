@@ -162,10 +162,27 @@ if response_schema.get("cecoHeaders") != ["CeCo", "CeCo1"]:
     fail("El motor no consolidó exactamente las columnas CeCo y CeCo1")
 if "Ceco12" in response_schema.get("cecoHeaders", []):
     fail("Una columna ajena Ceco12 fue interpretada como CeCo")
-if response_schema.get("cecoSourceUsage") != {"CeCo": 322, "CeCo1": 3}:
-    fail("La migración CeCo → CeCo1 no coincide con las filas reales de Forms")
-if response_schema.get("cecoRowsUsingBoth") != 0:
-    fail("Una respuesta real contiene CeCo y CeCo1 simultáneamente")
+ceco_usage = response_schema.get("cecoSourceUsage", {})
+ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
+if set(ceco_usage) != {"CeCo", "CeCo1"} or any(
+    isinstance(count, bool) or not isinstance(count, int) or count < 0
+    for count in ceco_usage.values()
+):
+    fail("El uso dinámico de CeCo/CeCo1 no quedó auditado correctamente")
+if (
+    isinstance(ceco_rows_using_both, bool)
+    or not isinstance(ceco_rows_using_both, int)
+    or ceco_rows_using_both < 0
+    or ceco_rows_using_both > min(ceco_usage.values())
+):
+    fail("El traslape entre CeCo y CeCo1 es inválido")
+# Cada respuesta debe aportar una sola llave lógica. Si una fila contiene ambas
+# columnas con el mismo CeCo, se cuenta una vez; si difieren, el motor la rechaza
+# antes de llegar a esta validación. No se fijan cantidades históricas porque
+# Forms seguirá agregando filas nuevas en CeCo1.
+effective_ceco_rows = sum(ceco_usage.values()) - ceco_rows_using_both
+if effective_ceco_rows != data.get("quality", {}).get("responsesRead"):
+    fail("La cobertura dinámica de CeCo/CeCo1 no coincide con las respuestas de Forms")
 if data.get("quality", {}).get("ignoredResponseSourceIds") or data.get("quality", {}).get("ignoredResponseRows"):
     fail("El proyecto conserva exclusiones históricas activas")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
