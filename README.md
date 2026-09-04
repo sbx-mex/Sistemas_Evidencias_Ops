@@ -27,6 +27,16 @@ También admite el formato largo: si las respuestas nuevas aparecen hacia abajo 
 
 El correo y el nombre del respondente no se publican. Por autorización operativa, el dashboard muestra el nombre real del archivo y el vínculo directo de SharePoint exactamente como viene en Forms, después de validar HTTPS y el dominio permitido.
 
+## Identidad visual Fall 26
+
+La experiencia conserva la estructura de verificación y aplica el lenguaje cálido de la campaña Fall 26 en todo el sistema: naranja calabaza, crema, verde Starbucks, acentos de trazo oscuro, tarjetas, tablas, filtros, modal y firma Peanuts en el pie. Los recursos WebP optimizados se generan desde el arte oficial proporcionado con:
+
+```bash
+python scripts/prepare_campaign_theme.py --source ruta/al/arte-oficial.png
+```
+
+El arte acompaña la lectura; no sustituye indicadores, estados ni evidencia operativa.
+
 ## Actualización inmediata
 
 1. Reemplaza `cms/Sistema de Evidencias OPS.xlsx` con la descarga más reciente de Forms.

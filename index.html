@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="theme-color" content="#006241">
+  <meta name="theme-color" content="#d9471c">
   <meta name="description" content="Sistema de Evidencias OPS para seguimiento de actividades, tiendas abiertas y organigrama regional.">
   <title>Sistema de Evidencia OPS</title>
   <link rel="manifest" href="./manifest.webmanifest">
@@ -47,6 +47,10 @@
         <h1>Sistema de Evidencia OPS</h1>
         <p>Dashboard de Avance de Actividades · Región | Centro's</p>
       </div>
+      <figure class="campaign-hero-art">
+        <img src="./assets/campaign/fall-peanuts-card.webp" alt="Personajes de Peanuts acompañando el inicio de la campaña Fall 26" width="720" height="720">
+        <figcaption>Fall 26 · Juntémonos más</figcaption>
+      </figure>
       <div class="hero-status">
         <div class="director-chip">
           <img id="director-photo" src="./assets/director/raul-sierra.webp" alt="Raúl Sinohe Sierra Santa Maria, Director Starbucks México" width="58" height="70">
@@ -68,6 +72,12 @@
         <button id="export-excel" class="button quiet" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10l4 4v14H5zM15 3v5h4M8 12l5 6M13 12l-5 6"/></svg>Exportar Excel</button>
       </div>
     </section>
+
+    <aside class="campaign-verification-note" aria-label="Enfoque de verificación Fall 26">
+      <span class="campaign-note-mark" aria-hidden="true">✓</span>
+      <div><small>FALL 26 · PEANUTS</small><strong>Verificamos juntos cada detalle de campaña.</strong><p>Datos claros para reconocer lo que funciona y dar seguimiento a lo pendiente.</p></div>
+      <span class="campaign-note-tag">Sistema de verificación</span>
+    </aside>
 
     <section id="resumen" class="dashboard-section" aria-labelledby="summary-heading">
       <header class="section-title"><div><h2 id="summary-heading">Resumen</h2></div></header>
@@ -142,14 +152,17 @@
     </article>
   </section>
 
-  <footer>
-    <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong></span></div>
-    <div class="footer-meta">
-      <small>Diseñado por Jorge Alcántar &amp; Enrique César</small>
-      <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Enviar comentarios y sugerencias por WhatsApp">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 9.5c.7 2 2 3.3 4 4l1.1-1.1c.2-.2.5-.3.8-.2l2 .7"/></svg>
-        Comentarios y sugerencias
-      </a>
+  <footer class="campaign-footer">
+    <div class="footer-campaign-art" aria-hidden="true"><img src="./assets/campaign/fall-peanuts-footer.webp" alt="" width="1160" height="420" loading="lazy" decoding="async"></div>
+    <div class="footer-content">
+      <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong><small>Fall 26 · Verificamos juntos</small></span></div>
+      <div class="footer-meta">
+        <small>Diseñado por Jorge Alcántar &amp; Enrique César</small>
+        <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Enviar comentarios y sugerencias por WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 9.5c.7 2 2 3.3 4 4l1.1-1.1c.2-.2.5-.3.8-.2l2 .7"/></svg>
+          Comentarios y sugerencias
+        </a>
+      </div>
     </div>
   </footer>
 

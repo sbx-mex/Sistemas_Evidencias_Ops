@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "c608b6edccb1b150",
+  "buildVersion": "b647fe6b56e072fe",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T04:06:40+00:00",
+  "generatedAt": "2026-09-04T11:09:48+07:00",
   "lastUpdated": "2026-09-03T20:28:37",
   "lastUpdatedDisplay": "03/09/2026 20:28",
   "report": {

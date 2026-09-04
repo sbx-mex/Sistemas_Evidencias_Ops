@@ -3,11 +3,15 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 from PIL import Image
+
+# La auditoría no debe crear residuos que después ella misma reporte.
+sys.dont_write_bytecode = True
 
 from build_dashboard import STABILITY_CONTROLS, compact_key, file_sha256, short_dm_name, validate_xlsx
 from clean_obsolete import existing_obsolete_files
@@ -59,7 +63,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-hero-art", "campaign-verification-note", "campaign-footer", "fall-peanuts-card.webp", "fall-peanuts-footer.webp"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -67,6 +71,9 @@ for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-ta
         issues.append(f"Actividades no está adaptada a móvil: {required}")
 if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
     issues.append("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
+for required in ("--fall-orange", "--fall-gold", ".campaign-verification-note", "body > footer.campaign-footer", ".footer-campaign-art", "thead { background: #2d2630"):
+    if required not in css:
+        issues.append(f"El tema Fall 26 no llega a todo el sistema: {required}")
 for required in (
     "active_activity_catalog",
     "canonical_cms_activity",
@@ -139,7 +146,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v26", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v27", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "fall-peanuts-card.webp", "fall-peanuts-footer.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")

@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 from openpyxl import load_workbook
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -28,6 +29,7 @@ REQUIRED = [
     "assets/director/oliver-perez.webp", "assets/director/jorge-farrera.webp", "assets/director/cielo-morera.webp",
     "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
     "tests/validate_dynamic_forms_schema.py", "tests/validate_maintenance.py", "scripts/io_utils.py",
+    "scripts/prepare_campaign_theme.py", "assets/campaign/fall-peanuts-card.webp", "assets/campaign/fall-peanuts-footer.webp",
 ]
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
     "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
@@ -80,6 +82,14 @@ for source in ROOT.rglob("*"):
 if encoding_issues:
     fail("Archivos con codificación dañada: " + ", ".join(sorted(encoding_issues)))
 approve("01 · Archivos requeridos y limpieza de obsoletos")
+
+for relative, expected_size in (
+    ("assets/campaign/fall-peanuts-card.webp", (720, 720)),
+    ("assets/campaign/fall-peanuts-footer.webp", (1160, 420)),
+):
+    with Image.open(ROOT / relative) as campaign_image:
+        if campaign_image.format != "WEBP" or campaign_image.size != expected_size:
+            fail(f"Recurso de campaña inválido: {relative}")
 
 data = json.loads((ROOT / "data/dashboard.json").read_text(encoding="utf-8"))
 manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
@@ -262,7 +272,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-hero-art", "campaign-verification-note", "campaign-footer", "fall-peanuts-card.webp", "fall-peanuts-footer.webp"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -284,6 +294,9 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
+for theme_token in ("--fall-orange", "--fall-gold", ".campaign-verification-note", "body > footer.campaign-footer", ".footer-campaign-art", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
+    if theme_token not in css:
+        fail(f"El lenguaje visual Fall 26 no se aplicó fuera del hero: {theme_token}")
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
 if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
     fail("Los 10 controles Python de estabilidad no están activos")
@@ -326,7 +339,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v26", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
+for cache_control in ("sistema-evidencias-ops-v27", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "fall-peanuts-card.webp", "fall-peanuts-footer.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
