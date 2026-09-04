@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 12,
-  "buildVersion": "156bfc40bf3914ef",
+  "schemaVersion": 13,
+  "buildVersion": "8652f393c0efd4c1",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-03T21:25:00+00:00",
+  "generatedAt": "2026-09-04T01:46:45+00:00",
   "lastUpdated": "2026-09-03T13:44:12",
   "lastUpdatedDisplay": "03/09/2026 13:44",
   "report": {
@@ -29,7 +29,7 @@
     "nationalDirector": {
       "level": 1,
       "region": "Centro's",
-      "name": "Raúl Sierra",
+      "name": "Raúl Sinohe Sierra Santa Maria",
       "role": "Director Starbucks México",
       "photo": "assets/director/raul-sierra.webp",
       "order": 1
@@ -41,7 +41,13 @@
         "name": "Oliver Roberto Perez Briones",
         "role": "Director Regional",
         "photo": "",
-        "order": 2
+        "order": 2,
+        "stores": 85,
+        "completed": 0,
+        "expected": 935,
+        "pending": 935,
+        "compliance": 0.0,
+        "status": "Atención"
       },
       {
         "level": 2,
@@ -49,7 +55,13 @@
         "name": "Jorge Farrera Pinal",
         "role": "Director Regional",
         "photo": "",
-        "order": 3
+        "order": 3,
+        "stores": 100,
+        "completed": 0,
+        "expected": 1100,
+        "pending": 1100,
+        "compliance": 0.0,
+        "status": "Atención"
       },
       {
         "level": 2,
@@ -57,7 +69,13 @@
         "name": "Cielo Aide Morera Urrego",
         "role": "Director Regional",
         "photo": "",
-        "order": 4
+        "order": 4,
+        "stores": 100,
+        "completed": 0,
+        "expected": 1100,
+        "pending": 1100,
+        "compliance": 0.0,
+        "status": "Atención"
       },
       {
         "level": 2,
@@ -65,7 +83,13 @@
         "name": "Jorge Antonio Alcantar Aguiar",
         "role": "Director Regional",
         "photo": "assets/director/jorge-alcantar.webp",
-        "order": 5
+        "order": 5,
+        "stores": 72,
+        "completed": 266,
+        "expected": 781,
+        "pending": 515,
+        "compliance": 34.1,
+        "status": "Atención"
       }
     ]
   },
@@ -92,7 +116,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "b633cebbb6dc58b426819813605189f780676b2e779cdb8460c1799d4b4415ce"
+    "cmsSha256": "8db809ec376a55440169b0ede37faf5a0b9db1ac24a359400ca0a02e0f0a3506"
   },
   "summary": {
     "regions": 4,
@@ -205,7 +229,7 @@
   "calendar": {
     "active": 11,
     "scheduled": 0,
-    "expired": 1,
+    "expired": 4,
     "inactive": 0
   },
   "activities": [
@@ -228,7 +252,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -4,
       "focusRank": 1
     },
     {
@@ -238,7 +262,7 @@
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
       "commitmentDateDisplay": "03/09/26",
-      "dateStatus": "Vigente",
+      "dateStatus": "Vencida",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -248,9 +272,9 @@
       "notApplicableStores": 0,
       "pendingStores": 323,
       "compliance": 9.5,
-      "deadlineLabel": "Vence hoy",
+      "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": 0,
+      "daysRemaining": -1,
       "focusRank": 2
     },
     {
@@ -260,7 +284,7 @@
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
       "commitmentDateDisplay": "03/09/26",
-      "dateStatus": "Vigente",
+      "dateStatus": "Vencida",
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -270,9 +294,9 @@
       "notApplicableStores": 4,
       "pendingStores": 287,
       "compliance": 18.7,
-      "deadlineLabel": "Vence hoy",
+      "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": 0,
+      "daysRemaining": -1,
       "focusRank": 3
     },
     {
@@ -282,7 +306,7 @@
       "startDate": "2026-08-28",
       "endDate": "2026-09-03",
       "commitmentDateDisplay": "03/09/26",
-      "dateStatus": "Vigente",
+      "dateStatus": "Vencida",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -292,9 +316,9 @@
       "notApplicableStores": 7,
       "pendingStores": 334,
       "compliance": 4.6,
-      "deadlineLabel": "Vence hoy",
+      "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": 0,
+      "daysRemaining": -1,
       "focusRank": 4
     },
     {
@@ -314,9 +338,9 @@
       "notApplicableStores": 0,
       "pendingStores": 333,
       "compliance": 6.7,
-      "deadlineLabel": "Vence en 3 días",
+      "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
-      "daysRemaining": 3,
+      "daysRemaining": 2,
       "focusRank": 5
     },
     {
@@ -336,9 +360,9 @@
       "notApplicableStores": 0,
       "pendingStores": 350,
       "compliance": 2.0,
-      "deadlineLabel": "Vence en 3 días",
+      "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
-      "daysRemaining": 3,
+      "daysRemaining": 2,
       "focusRank": 6
     },
     {
@@ -358,9 +382,9 @@
       "notApplicableStores": 0,
       "pendingStores": 350,
       "compliance": 2.0,
-      "deadlineLabel": "Vence en 3 días",
+      "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
-      "daysRemaining": 3,
+      "daysRemaining": 2,
       "focusRank": 7
     },
     {
@@ -380,9 +404,9 @@
       "notApplicableStores": 0,
       "pendingStores": 341,
       "compliance": 4.5,
-      "deadlineLabel": "Vence en 3 días",
+      "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
-      "daysRemaining": 3,
+      "daysRemaining": 2,
       "focusRank": 8
     },
     {
@@ -402,9 +426,9 @@
       "notApplicableStores": 0,
       "pendingStores": 342,
       "compliance": 4.2,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 9
     },
     {
@@ -424,9 +448,9 @@
       "notApplicableStores": 0,
       "pendingStores": 352,
       "compliance": 1.4,
-      "deadlineLabel": "En 27 días",
+      "deadlineLabel": "En 26 días",
       "deadlineTone": "green",
-      "daysRemaining": 27,
+      "daysRemaining": 26,
       "focusRank": 10
     },
     {
@@ -446,9 +470,9 @@
       "notApplicableStores": 0,
       "pendingStores": 353,
       "compliance": 1.1,
-      "deadlineLabel": "En 27 días",
+      "deadlineLabel": "En 26 días",
       "deadlineTone": "green",
-      "daysRemaining": 27,
+      "daysRemaining": 26,
       "focusRank": 11
     }
   ],
