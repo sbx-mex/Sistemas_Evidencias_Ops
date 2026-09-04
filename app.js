@@ -117,7 +117,7 @@ function reportMeta() {
 function exportProfile() {
   const organization = state.data.organization || {};
   const director = organization.nationalDirector || reportMeta().regionalDirector || {
-    name: "Raúl Sierra", role: "Director Starbucks México", photo: "assets/director/raul-sierra.webp",
+    name: "Raúl Sinohe Sierra Santa Maria", role: "Director Starbucks México", photo: "assets/director/raul-sierra.webp",
   };
   const dmName = state.filters.dm || (state.filters.store ? filteredStores()[0]?.dm : "");
   const dm = dmName ? state.data.dms.find((item) => item.dm === dmName) : null;
@@ -131,14 +131,10 @@ function exportProfile() {
 
 function renderOrganization() {
   const organization = state.data.organization || {};
-  const lead = organization.nationalDirector;
   const regionals = organization.regionalDirectors || [];
-  const people = lead ? [lead, ...regionals] : regionals;
-  $("#organization-grid").innerHTML = people.length ? people.map((person) => {
-    const portrait = person.photo
-      ? `<img src="./${esc(person.photo)}" alt="${esc(person.name)}, ${esc(person.role)}" width="80" height="96" loading="lazy">`
-      : `<span class="organization-avatar" aria-hidden="true">${esc(initials(person.name))}</span>`;
-    return `<article class="organization-card ${person.level === 1 ? "lead" : ""}">${portrait}<div><small>${esc(person.region || "Centro's")}</small><strong>${esc(person.name)}</strong><span>${esc(person.role)}</span></div></article>`;
+  $("#organization-grid").innerHTML = regionals.length ? regionals.map((person) => {
+    const compliance = Number(person.compliance || 0);
+    return `<article class="organization-card"><div class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong><span>${esc(person.role)}</span></div><div class="director-progress"><strong>${percent(compliance)}</strong><span>avance regional</span></div><div class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)} de avance"><i style="--progress:${Math.min(compliance, 100)}%"></i></div></article>`;
   }).join("") : '<div class="empty-state">Sin responsables activos en el CMS.</div>';
 }
 

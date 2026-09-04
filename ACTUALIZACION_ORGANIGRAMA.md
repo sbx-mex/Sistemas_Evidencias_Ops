@@ -3,7 +3,7 @@
 ## Resultado
 
 - El portal publica únicamente tiendas con `Estatus = Abierta`.
-- El CMS incluye la hoja `Organigrama` con Raúl Sierra y cuatro Directores Regionales.
+- El CMS incluye la hoja `Organigrama` con Raúl Sinohe Sierra Santa Maria y cuatro Directores Regionales.
 - La fotografía `Raul Sierra.png` fue optimizada a `assets/director/raul-sierra.webp` (640 × 800 px).
 - El diseño conserva el enfoque operativo y añade un acento discreto amarillo/verde inspirado en la campaña Peanuts × Starbucks.
 - Las personas sin fotografía se muestran con iniciales; al agregar la ruta WebP en el CMS, la imagen aparece automáticamente.
@@ -12,7 +12,7 @@
 
 | Alcance | Responsable | Rol |
 | --- | --- | --- |
-| Centro's | Raúl Sierra | Director Starbucks México |
+| Centro's | Raúl Sinohe Sierra Santa Maria | Director Starbucks México |
 | Centro Centro | Oliver Roberto Perez Briones | Director Regional |
 | Centro Poniente | Jorge Farrera Pinal | Director Regional |
 | Centro Sur | Cielo Aide Morera Urrego | Director Regional |
