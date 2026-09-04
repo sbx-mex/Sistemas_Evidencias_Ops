@@ -914,6 +914,13 @@ async function loadData(announce = false) {
     state.data = latestData;
     readFilterUrl();
     $("#last-updated").textContent = cutStamp();
+    const director = state.data.organization?.nationalDirector || state.data.report?.regionalDirector;
+    if (director) {
+      $("#director-name").textContent = director.name;
+      $("#director-role").textContent = director.role;
+      $("#director-photo").src = `./${director.heroPhoto || director.photo}`;
+      $("#director-photo").alt = `${director.name}, ${director.role}`;
+    }
     populateFilters(); populateEvidenceFilters(); renderAll(); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
   } catch (error) {

@@ -51,6 +51,17 @@ def main() -> None:
             crop.save(director_dir / target_name, "WEBP", quality=86, method=6)
             generated_photos += 1
 
+    # Variante ligera para el hero: evita descargar la fotografía de 640×800
+    # durante la carga inicial y conserva la versión completa para exportaciones.
+    hero_source = director_dir / "raul-sierra.webp"
+    if hero_source.is_file():
+        with Image.open(hero_source) as image:
+            hero = ImageOps.fit(
+                image.convert("RGB"), (160, 200), method=Image.Resampling.LANCZOS,
+                centering=(0.5, 0.30),
+            )
+            hero.save(director_dir / "raul-sierra-hero.webp", "WEBP", quality=80, method=6)
+
     logo_source = UPLOAD / "c5813ed5-3e30-4360-b3d9-b8423332c71e.png"
     if logo_source.is_file():
       with Image.open(logo_source) as logo:
@@ -72,7 +83,7 @@ def main() -> None:
               canvas.save(icon_dir / f"icon-{size}.png", "PNG", optimize=True)
               canvas.save(icon_dir / f"icon-{size}.webp", "WEBP", quality=92, method=6)
 
-    print(f"{generated_photos} fotografías WebP generadas; recursos de logo conservados")
+    print(f"{generated_photos} fotografías WebP generadas; variante hero ligera y recursos de logo conservados")
 
 
 if __name__ == "__main__":

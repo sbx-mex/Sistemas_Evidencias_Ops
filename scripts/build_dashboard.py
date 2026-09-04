@@ -1038,6 +1038,10 @@ def build_payload(
     initial_source_hashes = source_fingerprints(source_paths)
     activities, managers, cms_settings, calendar = load_cms(cms_path)
     organization = cms_settings.pop("_organization")
+    national_photo = Path(organization["nationalDirector"].get("photo", ""))
+    hero_photo = national_photo.with_name(f"{national_photo.stem}-hero.webp").as_posix()
+    if hero_photo and (ROOT / hero_photo).is_file():
+        organization["nationalDirector"]["heroPhoto"] = hero_photo
     settings = load_settings(settings_path, cms_settings)
     allowed_hosts = normalize_allowed_hosts(
         settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")

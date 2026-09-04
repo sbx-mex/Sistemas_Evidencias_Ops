@@ -48,6 +48,10 @@
         <p>Dashboard de Avance de Actividades · Región | Centro's</p>
       </div>
       <div class="hero-status">
+        <article class="hero-director" aria-label="Director Starbucks México">
+          <img id="director-photo" src="./assets/director/raul-sierra-hero.webp" alt="Raúl Sinohe Sierra Santa Maria, Director Starbucks México" width="64" height="80" fetchpriority="high" decoding="async">
+          <span><small id="director-role">Director Starbucks México</small><strong id="director-name">Raúl Sinohe Sierra Santa Maria</strong></span>
+        </article>
         <div class="cut-chip"><span>Fecha de corte</span><strong id="last-updated">—</strong></div>
       </div>
     </section>
@@ -55,8 +59,8 @@
     <section class="filters" aria-label="Filtros del dashboard">
       <label><span>Región</span><select id="filter-region"><option value="">Todos</option></select></label>
       <label><span>Gerente de Distrito</span><select id="filter-dm"><option value="">Todos</option></select></label>
-      <label><span>Tienda / CeCo</span><select id="filter-store"><option value="">Todas</option></select></label>
-      <label><span>Actividad</span><select id="filter-activity"><option value="">Todas</option></select></label>
+      <label><span>Tienda / CeCo</span><select id="filter-store"><option value="">Todos</option></select></label>
+      <label><span>Actividad</span><select id="filter-activity"><option value="">Todos</option></select></label>
       <button id="clear-filters" class="button quiet" type="button">Limpiar</button>
       <div class="export-actions" aria-label="Exportar reporte">
         <button id="export-image" class="button primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 2-2 5 5"/></svg>Exportar imagen</button>
@@ -107,10 +111,10 @@
         <summary><span>Consultar evidencias</span><small id="evidence-count">—</small></summary>
         <div class="evidence-content">
           <div class="evidence-filters" aria-label="Filtros de evidencias">
-            <label><span>Región</span><select id="evidence-filter-region"><option value="">Todas</option></select></label>
+            <label><span>Región</span><select id="evidence-filter-region"><option value="">Todos</option></select></label>
             <label><span>DM</span><select id="evidence-filter-dm"><option value="">Todos</option></select></label>
-            <label><span>Actividad</span><select id="evidence-filter-activity"><option value="">Todas</option></select></label>
-            <label><span>Tienda</span><select id="evidence-filter-store"><option value="">Todas</option></select></label>
+            <label><span>Actividad</span><select id="evidence-filter-activity"><option value="">Todos</option></select></label>
+            <label><span>Tienda</span><select id="evidence-filter-store"><option value="">Todos</option></select></label>
           </div>
           <button id="evidence-toggle" class="button compact" type="button" hidden>Ver todas</button>
           <div class="evidence-head" aria-hidden="true"><span>Actividad</span><span>Tienda</span><span>Link del archivo</span></div>
@@ -141,7 +145,7 @@
   <footer class="campaign-footer">
     <img class="footer-peanuts" src="./assets/campaign/linus-fall.webp" alt="" width="164" height="124" aria-hidden="true" loading="lazy" decoding="async">
     <div class="footer-content">
-      <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong><small>Fall 26 · Cada detalle cuenta</small></span></div>
+      <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong></span></div>
       <div class="footer-meta">
         <small>Diseñado por Jorge Alcántar &amp; Enrique César</small>
         <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Enviar comentarios y sugerencias por WhatsApp">

@@ -29,13 +29,15 @@ El correo y el nombre del respondente no se publican. Por autorización operativ
 
 ## Identidad visual Fall 26
 
-La experiencia conserva la estructura de verificación y aplica el lenguaje cálido de Fall 26: naranja calabaza, crema, verde Starbucks y acentos de trazo oscuro. El hero permanece limpio, sin póster; los personajes aparecen únicamente como detalles pequeños en encabezados y pie de página. Los WebP optimizados se generan desde los recortes oficiales proporcionados con:
+La experiencia conserva la estructura de verificación y aplica el lenguaje cálido de Fall 26: naranja calabaza, crema, verde Starbucks y acentos de trazo oscuro. El hero permanece limpio, sin póster, e identifica al Director Starbucks México mediante una fotografía WebP ligera; los personajes aparecen únicamente como detalles pequeños en encabezados y pie de página. Los WebP optimizados se generan desde los recortes oficiales proporcionados con:
 
 ```bash
 python scripts/prepare_campaign_theme.py --lucy ruta/lucy.png --snoopy ruta/snoopy.png --linus ruta/linus.png
 ```
 
 Las fotografías de Directores Regionales funcionan como filtros accesibles: un toque limita el tablero a sus tiendas y un segundo toque restaura el alcance general. Python publica el `filterValue` desde el Directorio/CMS para que la navegación no dependa de nombres escritos manualmente.
+
+`scripts/prepare_images.py` conserva la fotografía completa para exportaciones y crea `raul-sierra-hero.webp` de 160×200 para acelerar la portada.
 
 El arte acompaña la lectura; no sustituye indicadores, estados ni evidencia operativa.
 

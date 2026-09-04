@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v29";
+const CACHE_NAME = "sistema-evidencias-ops-v30";
 const CORE = [
   "./",
   "./index.html",
@@ -11,7 +11,7 @@ const CORE = [
   "./assets/campaign/lucy-fall.webp",
   "./assets/campaign/snoopy-fall.webp",
   "./assets/campaign/linus-fall.webp",
-  "./assets/director/raul-sierra.webp",
+  "./assets/director/raul-sierra-hero.webp",
   "./assets/director/jorge-alcantar.webp"
 ];
 
