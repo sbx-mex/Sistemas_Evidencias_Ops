@@ -42,6 +42,8 @@ jobs:
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Preparar Python
         uses: actions/setup-python@v5
@@ -77,13 +79,14 @@ jobs:
           echo "- Validación: UTF-8, fórmulas CMS, CeCo, actividad, evidencia y limpieza" >> "$GITHUB_STEP_SUMMARY"
           echo "- Publicación: sólo datos y exportaciones generadas" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Publicar únicamente datos generados
+      - name: Publicar datos y limpieza obsoleta
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
           git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
           git add -A -- config assets/dm assets/icons
+          git add -u
 
           obsolete_test="tests/validate_horno_applicability.py"
           if git ls-files --error-unmatch "$obsolete_test" >/dev/null 2>&1 || test -e "$obsolete_test"; then
