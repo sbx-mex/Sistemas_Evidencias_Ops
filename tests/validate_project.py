@@ -162,10 +162,14 @@ if response_schema.get("cecoHeaders") != ["CeCo", "CeCo1"]:
     fail("El motor no consolidó exactamente las columnas CeCo y CeCo1")
 if "Ceco12" in response_schema.get("cecoHeaders", []):
     fail("Una columna ajena Ceco12 fue interpretada como CeCo")
-if data.get("quality", {}).get("ignoredResponseSourceIds") != ["353"]:
-    fail("La respuesta de prueba Id 353 no quedó aislada por configuración")
-if data.get("quality", {}).get("ignoredResponseRows") != [324]:
-    fail("La fila de prueba CeCo 38651 no quedó fuera de todo cálculo")
+if response_schema.get("cecoSourceUsage") != {"CeCo": 322, "CeCo1": 3}:
+    fail("La migración CeCo → CeCo1 no coincide con las filas reales de Forms")
+if response_schema.get("cecoRowsUsingBoth") != 0:
+    fail("Una respuesta real contiene CeCo y CeCo1 simultáneamente")
+if data.get("quality", {}).get("ignoredResponseSourceIds") or data.get("quality", {}).get("ignoredResponseRows"):
+    fail("El proyecto conserva exclusiones históricas activas")
+if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
+    fail("El proyecto conserva Id de Forms obsoletos en configuración")
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
     fail("El JSON público expone correo o respondente")
 published = [row for row in data.get("submissions", []) if row.get("valid")]

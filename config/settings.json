@@ -6,6 +6,5 @@
   "includedStoreStatuses": "Abierta",
   "requireEvidence": true,
   "publishEvidenceLinks": true,
-  "publishPersonalData": false,
-  "ignoredResponseIds": ["353"]
+  "publishPersonalData": false
 }

@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*.tmp
+*.inspect.ndjson
+cms/~$*.xlsx
+.safe-maintenance.lock

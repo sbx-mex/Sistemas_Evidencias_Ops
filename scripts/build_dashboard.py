@@ -16,6 +16,7 @@ import argparse
 from difflib import SequenceMatcher
 import hashlib
 import json
+import math
 import re
 import unicodedata
 import zipfile
@@ -295,13 +296,26 @@ def setting_list(value: Any) -> list[str]:
 
 
 def normalize_ceco(value: Any) -> str:
+    """Normaliza un CeCo de cinco dígitos sin extraer números de texto ajeno.
+
+    Forms/Excel puede entregar el identificador como entero, flotante integral o
+    texto con sufijo decimal cero. Cualquier fracción, fórmula, fecha o texto que
+    sólo *contenga* cinco dígitos se rechaza para evitar cruces falsos.
+    """
     if value is None:
         return ""
-    if isinstance(value, (int, float)):
-        value = str(int(value))
-    text = clean_text(value).replace(".0", "")
-    digits = re.sub(r"\D", "", text)
-    return digits if len(digits) == 5 else ""
+    if isinstance(value, bool):
+        return ""
+    if isinstance(value, int):
+        text = str(value)
+    elif isinstance(value, float):
+        if not math.isfinite(value) or not value.is_integer():
+            return ""
+        text = str(int(value))
+    else:
+        text = clean_text(value)
+    match = re.fullmatch(r"([0-9]{5})(?:[.,]0+)?", text)
+    return match.group(1) if match else ""
 
 
 def evidence_key(activity: str, ceco: str) -> str:
@@ -507,6 +521,32 @@ def coalesce_row_value(row: tuple[Any, ...], indices: list[int]) -> tuple[str, b
         if value and value not in values:
             values.append(value)
     return (values[0] if len(values) == 1 else "", len(values) > 1)
+
+
+def coalesce_ceco_value(
+    row: tuple[Any, ...], indices: list[int]
+) -> tuple[str, bool, list[int]]:
+    """Consolida CeCo/CeCo1 por su valor canónico y registra sus fuentes.
+
+    Dos representaciones equivalentes (por ejemplo, 38859 y ``38859.0``) no son
+    un conflicto. Un valor poblado pero inválido o dos CeCo distintos sí bloquean
+    la fila completa para que nunca se asigne evidencia a la tienda incorrecta.
+    """
+    values: list[str] = []
+    populated_indices: list[int] = []
+    invalid = False
+    for index in indices:
+        raw = row[index] if index < len(row) else None
+        if raw in (None, ""):
+            continue
+        populated_indices.append(index)
+        normalized = normalize_ceco(raw)
+        if not normalized:
+            invalid = True
+        elif normalized not in values:
+            values.append(normalized)
+    conflict = invalid or len(values) > 1
+    return (values[0] if len(values) == 1 and not conflict else "", conflict, populated_indices)
 
 
 def resolve_evidence_value(
@@ -893,8 +933,12 @@ def find_response_source(workbook, activity_names: list[str] | None = None) -> t
             headers = list(row)
             activity_columns = matching_columns(headers, RESPONSE_FIELDS["activity"])
             ceco_columns = matching_columns(headers, RESPONSE_FIELDS["ceco"])
+            # La detección de evidencias es la operación más costosa. Sólo se
+            # ejecuta en filas que ya parecen encabezados Forms completos.
+            if not activity_columns or not ceco_columns:
+                continue
             evidence_group = evidence_columns(headers, activity_names)
-            if activity_columns and ceco_columns and evidence_group:
+            if evidence_group:
                 score = len(evidence_group) * 100 + sum(
                     bool(matching_columns(headers, aliases)) for aliases in RESPONSE_FIELDS.values()
                 )
@@ -936,6 +980,8 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
 
     responses = []
     conflicts = []
+    ceco_source_usage: Counter[str] = Counter()
+    ceco_rows_using_both = 0
     evidence_issues: dict[str, list[int]] = defaultdict(list)
     applicability_issues: dict[str, list[int]] = defaultdict(list)
     for row_number, row in enumerate(rows, header_row + 1):
@@ -944,7 +990,14 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         values: dict[str, str] = {}
         row_has_conflict = False
         for field, indices in column_groups.items():
-            values[field], conflict = coalesce_row_value(row, indices)
+            if field == "ceco":
+                values[field], conflict, populated_indices = coalesce_ceco_value(row, indices)
+                source_headers = [clean_text(headers[index]) for index in populated_indices]
+                ceco_source_usage.update(source_headers)
+                if len(source_headers) > 1:
+                    ceco_rows_using_both += 1
+            else:
+                values[field], conflict = coalesce_row_value(row, indices)
             if conflict:
                 conflicts.append({"row": row_number, "field": field})
                 row_has_conflict = True
@@ -984,7 +1037,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "email": values["email"],
             "name": values["name"],
             "activity": values["activity"],
-            "ceco": normalize_ceco(values["ceco"]),
+            "ceco": values["ceco"],
             "confirmedAnswer": "Sí" if values["activity"] else "",
             "confirmed": confirmed and not row_has_conflict,
             "applicabilityAnswer": "Sí" if applicability is True else ("No" if applicability is False else ""),
@@ -1002,6 +1055,11 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         "columns": len(headers),
         "activityHeaders": [clean_text(headers[index]) for index in column_groups["activity"]],
         "cecoHeaders": [clean_text(headers[index]) for index in column_groups["ceco"]],
+        "cecoSourceUsage": {
+            clean_text(headers[index]): ceco_source_usage.get(clean_text(headers[index]), 0)
+            for index in column_groups["ceco"]
+        },
+        "cecoRowsUsingBoth": ceco_rows_using_both,
         "confirmationHeaders": [clean_text(headers[index]) for index in confirmation_columns],
         "applicabilityHeaders": [item["header"] for item in applicability_group],
         "evidenceHeaders": [item["header"] for item in evidence_group],
@@ -1067,12 +1125,14 @@ def build_payload(
     hidden_activities = set()
     canonicalized_activity_rows = []
     ignored_response_rows = []
-    ignored_response_source_ids = set(setting_list(settings.get("ignoredResponseIds")))
+    configured_ignored_response_ids = set(setting_list(settings.get("ignoredResponseIds")))
+    ignored_response_source_ids = set()
     latest_update = None
 
     for response in responses:
-        if response.get("sourceId") in ignored_response_source_ids:
+        if response.get("sourceId") in configured_ignored_response_ids:
             ignored_response_rows.append(response["row"])
+            ignored_response_source_ids.add(response["sourceId"])
             continue
         store = stores.get(response["ceco"])
         activity_text = clean_text(response["activity"])
@@ -1372,6 +1432,9 @@ def build_payload(
             "canonicalizedActivityRows": canonicalized_activity_rows,
             "ignoredResponseRows": ignored_response_rows,
             "ignoredResponseSourceIds": sorted(ignored_response_source_ids, key=key_text),
+            "unusedIgnoredResponseSourceIds": sorted(
+                configured_ignored_response_ids - ignored_response_source_ids, key=key_text
+            ),
             "duplicateValidResponses": max(raw_valid_responses - valid_responses, 0),
             "unsafeEvidenceRows": unsafe_evidence_rows,
             "responseSchema": response_schema,
