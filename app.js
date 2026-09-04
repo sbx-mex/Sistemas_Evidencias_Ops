@@ -137,7 +137,9 @@ function renderOrganization() {
     const portrait = person.photo
       ? `<img src="./${esc(person.photo)}" alt="Fotografía de ${esc(person.name)}" width="72" height="88" loading="lazy">`
       : `<span class="organization-avatar" aria-label="Fotografía pendiente">${esc(initials(person.name))}</span>`;
-    return `<article class="organization-card">${portrait}<div class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong></div><div class="director-progress"><strong>${percent(compliance)}</strong><span>avance regional</span></div><div class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)} de avance"><i style="--progress:${Math.min(compliance, 100)}%"></i></div></article>`;
+    const filterValue = person.filterValue || person.region;
+    const selected = state.filters.region === filterValue;
+    return `<button class="organization-card${selected ? " selected" : ""}" type="button" data-region-focus="${esc(filterValue)}" aria-pressed="${selected}" aria-label="${selected ? "Quitar filtro" : "Filtrar"} de ${esc(person.region)}; ${number(person.stores)} tiendas">${portrait}<span class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong></span><span class="director-progress"><strong>${percent(compliance)}</strong></span><span class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)}"><i style="--progress:${Math.min(compliance, 100)}%"></i></span></button>`;
   }).join("") : '<div class="empty-state">Sin responsables activos en el CMS.</div>';
 }
 
@@ -306,19 +308,19 @@ function clearDashboardFilters() {
 
 function populateFilters() {
   const regions = state.data.regions || [...new Set(state.data.stores.map((store) => store.region))];
-  $("#filter-region").innerHTML = '<option value="">Todas las regiones</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
+  $("#filter-region").innerHTML = '<option value="">Todos</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
   if (!regions.includes(state.filters.region)) state.filters.region = "";
   $("#filter-region").value = state.filters.region;
   const regionalStores = state.data.stores.filter((store) => !state.filters.region || store.region === state.filters.region);
   const dms = [...new Set(regionalStores.map((store) => store.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
-  $("#filter-dm").innerHTML = '<option value="">Todos los DM</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
+  $("#filter-dm").innerHTML = '<option value="">Todos</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
   if (!dms.includes(state.filters.dm)) state.filters.dm = "";
   $("#filter-dm").value = state.filters.dm;
   const stores = regionalStores.filter((store) => !state.filters.dm || store.dm === state.filters.dm);
-  $("#filter-store").innerHTML = '<option value="">Todas las tiendas</option>' + stores.map((store) => `<option value="${esc(store.ceco)}">${esc(store.ceco)} · ${esc(store.store)}</option>`).join("");
+  $("#filter-store").innerHTML = '<option value="">Todos</option>' + stores.map((store) => `<option value="${esc(store.ceco)}">${esc(store.ceco)} · ${esc(store.store)}</option>`).join("");
   if (!stores.some((store) => store.ceco === state.filters.store)) state.filters.store = "";
   $("#filter-store").value = state.filters.store;
-  $("#filter-activity").innerHTML = '<option value="">Todas las actividades</option>' + state.data.activities.map((item) => `<option value="${esc(item.name)}">${esc(item.name)}</option>`).join("");
+  $("#filter-activity").innerHTML = '<option value="">Todos</option>' + state.data.activities.map((item) => `<option value="${esc(item.name)}">${esc(item.name)}</option>`).join("");
   if (!state.data.activities.some((item) => item.name === state.filters.activity)) state.filters.activity = "";
   $("#filter-activity").value = state.filters.activity;
 }
@@ -326,17 +328,17 @@ function populateFilters() {
 function populateEvidenceFilters() {
   const source = state.data.submissions.filter((item) => item.valid && item.evidenceAvailable);
   const regions = [...new Set(source.map((item) => item.region))].sort((a, b) => a.localeCompare(b, "es-MX"));
-  $("#evidence-filter-region").innerHTML = '<option value="">Todas las regiones</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
+  $("#evidence-filter-region").innerHTML = '<option value="">Todos</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
   if (!regions.includes(state.evidenceFilters.region)) state.evidenceFilters.region = "";
   $("#evidence-filter-region").value = state.evidenceFilters.region;
   const regionalSource = source.filter((item) => !state.evidenceFilters.region || item.region === state.evidenceFilters.region);
   const dms = [...new Set(regionalSource.map((item) => item.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
-  $("#evidence-filter-dm").innerHTML = '<option value="">Todos los DM</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
+  $("#evidence-filter-dm").innerHTML = '<option value="">Todos</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
   if (!dms.includes(state.evidenceFilters.dm)) state.evidenceFilters.dm = "";
   $("#evidence-filter-dm").value = state.evidenceFilters.dm;
 
   const activities = [...new Set(regionalSource.map((item) => item.activity))].sort((a, b) => a.localeCompare(b, "es-MX"));
-  $("#evidence-filter-activity").innerHTML = '<option value="">Todas las actividades</option>' + activities.map((activity) => `<option value="${esc(activity)}">${esc(activity)}</option>`).join("");
+  $("#evidence-filter-activity").innerHTML = '<option value="">Todos</option>' + activities.map((activity) => `<option value="${esc(activity)}">${esc(activity)}</option>`).join("");
   if (!activities.includes(state.evidenceFilters.activity)) state.evidenceFilters.activity = "";
   $("#evidence-filter-activity").value = state.evidenceFilters.activity;
 
@@ -344,7 +346,7 @@ function populateEvidenceFilters() {
     .map((item) => ({ ceco: item.ceco, store: item.store }))
     .filter((item, index, rows) => rows.findIndex((row) => row.ceco === item.ceco) === index)
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
-  $("#evidence-filter-store").innerHTML = '<option value="">Todas las tiendas</option>' + stores.map((item) => `<option value="${esc(item.ceco)}">${esc(item.ceco)} · ${esc(item.store)}</option>`).join("");
+  $("#evidence-filter-store").innerHTML = '<option value="">Todos</option>' + stores.map((item) => `<option value="${esc(item.ceco)}">${esc(item.ceco)} · ${esc(item.store)}</option>`).join("");
   if (!stores.some((item) => item.ceco === state.evidenceFilters.store)) state.evidenceFilters.store = "";
   $("#evidence-filter-store").value = state.evidenceFilters.store;
 }
@@ -847,6 +849,13 @@ function bindEvents() {
   $("#export-modal-close").addEventListener("click", closeExportModal);
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("#export-modal").hidden && !state.exporting) closeExportModal(); });
   document.addEventListener("click", (event) => {
+    const regionButton = event.target.closest("[data-region-focus]");
+    if (regionButton) {
+      state.filters.region = state.filters.region === regionButton.dataset.regionFocus ? "" : regionButton.dataset.regionFocus;
+      state.filters.dm = ""; state.filters.store = ""; state.showAllEvidence = false;
+      populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
     const button = event.target.closest("[data-dm-focus]");
     if (!button) return;
     state.filters.dm = state.filters.dm === button.dataset.dmFocus ? "" : button.dataset.dmFocus;
@@ -905,13 +914,6 @@ async function loadData(announce = false) {
     state.data = latestData;
     readFilterUrl();
     $("#last-updated").textContent = cutStamp();
-    const director = state.data.organization?.nationalDirector || state.data.report?.regionalDirector;
-    if (director) {
-      $("#director-name").textContent = director.name;
-      $("#director-role").textContent = director.role;
-      $("#director-photo").src = `./${director.photo}`;
-      $("#director-photo").alt = `${director.name}, ${director.role}`;
-    }
     populateFilters(); populateEvidenceFilters(); renderAll(); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
   } catch (error) {

@@ -273,7 +273,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Cada detalle cuenta"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Cada detalle cuenta", "Peanuts × Starbucks"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -283,8 +283,14 @@ if nav_order != sorted(nav_order) or section_order != sorted(section_order):
 if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
     fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
 organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
-if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer:
-    fail("La vista regional debe mostrar cuatro fotografías, sin repetir el rol y con avance dinámico")
+if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer or "data-region-focus" not in organization_renderer or "aria-pressed" not in organization_renderer or "avance regional" in organization_renderer:
+    fail("La vista regional debe filtrar por fotografía, mostrar sólo el porcentaje y exponer su estado accesible")
+filter_source = js[js.index("function populateFilters"):js.index("function populateEvidenceFilters")]
+evidence_filter_source = js[js.index("function populateEvidenceFilters"):js.index("function fileSafe")]
+if any(label in filter_source + evidence_filter_source for label in ("Todas las regiones", "Todos los DM", "Todas las tiendas", "Todas las actividades")) or (filter_source + evidence_filter_source).count('<option value="">Todos</option>') != 8:
+    fail("Los filtros no usan la etiqueta breve Todos")
+if "data-region-focus" not in js[js.index("function bindEvents"):js.index("async function loadData")]:
+    fail("La fotografía regional no activa el filtro dinámico")
 for removed_copy in ("Vista personalizada", "Filtra, revisa y exporta en un solo flujo", "Lectura rápida del avance seleccionado.", "JUNTÉMONOS MÁS", "Verificamos juntos cada detalle de campaña.", "Sistema de verificación"):
     if removed_copy in html:
         fail(f"La navegación conserva texto redundante: {removed_copy}")
@@ -340,7 +346,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v28", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp"):
+for cache_control in ("sistema-evidencias-ops-v29", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
@@ -379,7 +385,7 @@ if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
 organization = data.get("organization", {})
-if data.get("report", {}).get("motto") != "CADA DETALLE CUENTA" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+if data.get("report", {}).get("motto") != "CADA DETALLE CUENTA" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"filterValue", "stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") or item.get("filterValue") != item.get("region") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 expected_short_names = {
     "Luis Manuel Neri Saldaña": "Luis Neri",

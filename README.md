@@ -35,6 +35,8 @@ La experiencia conserva la estructura de verificación y aplica el lenguaje cál
 python scripts/prepare_campaign_theme.py --lucy ruta/lucy.png --snoopy ruta/snoopy.png --linus ruta/linus.png
 ```
 
+Las fotografías de Directores Regionales funcionan como filtros accesibles: un toque limita el tablero a sus tiendas y un segundo toque restaura el alcance general. Python publica el `filterValue` desde el Directorio/CMS para que la navegación no dependa de nombres escritos manualmente.
+
 El arte acompaña la lectura; no sustituye indicadores, estados ni evidencia operativa.
 
 ## Actualización inmediata

@@ -1257,6 +1257,7 @@ def build_payload(
         metric = regional_metrics[key_text(director["region"])]
         compliance = round(metric["completed"] / metric["expected"] * 100, 1) if metric["expected"] else 0
         director.update({
+            "filterValue": director["region"],
             "stores": metric["stores"],
             "completed": metric["completed"],
             "expected": metric["expected"],

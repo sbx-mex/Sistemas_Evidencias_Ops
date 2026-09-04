@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "5aa39a7b7cc2f486",
+  "buildVersion": "103ccb21da7090a1",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T04:33:33+00:00",
+  "generatedAt": "2026-09-04T11:45:41+07:00",
   "lastUpdated": "2026-09-03T20:28:37",
   "lastUpdatedDisplay": "03/09/2026 20:28",
   "report": {
@@ -42,6 +42,7 @@
         "role": "Director Regional",
         "photo": "assets/director/oliver-perez.webp",
         "order": 2,
+        "filterValue": "Centro Centro",
         "stores": 85,
         "completed": 0,
         "expected": 935,
@@ -56,6 +57,7 @@
         "role": "Director Regional",
         "photo": "assets/director/jorge-farrera.webp",
         "order": 3,
+        "filterValue": "Centro Poniente",
         "stores": 100,
         "completed": 0,
         "expected": 1100,
@@ -70,6 +72,7 @@
         "role": "Director Regional",
         "photo": "assets/director/cielo-morera.webp",
         "order": 4,
+        "filterValue": "Centro Sur",
         "stores": 100,
         "completed": 0,
         "expected": 1100,
@@ -84,6 +87,7 @@
         "role": "Director Regional",
         "photo": "assets/director/jorge-alcantar.webp",
         "order": 5,
+        "filterValue": "Centro Norte",
         "stores": 72,
         "completed": 290,
         "expected": 781,

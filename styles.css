@@ -41,12 +41,10 @@ main { display: grid; max-width: 1280px; gap: 22px; margin: auto; padding: 30px 
 .hero .eyebrow { color: #9fd2bd; }
 .hero h1 { max-width: 650px; margin: 0 0 8px; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1; letter-spacing: -.045em; }
 .hero-copy > p:last-child { max-width: 620px; margin: 0; color: #cce0d7; font-size: .9rem; line-height: 1.55; }
-.hero-status { display: grid; min-width: 290px; gap: 13px; border-left: 1px solid rgba(255,255,255,.22); padding-left: 24px; }
-.director-chip { display: grid; grid-template-columns: 52px 1fr; gap: 11px; align-items: center; }
-.director-chip img { width: 52px; height: 62px; border: 2px solid rgba(255,255,255,.72); border-radius: 13px; object-fit: cover; object-position: center 22%; background: white; }
-.director-chip > span, .cut-chip { display: grid; gap: 3px; }
-.director-chip small, .cut-chip > span { color: #9fd2bd; font-size: .6rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
-.director-chip strong { font-size: .9rem; }.cut-chip strong { font-size: 1.13rem; }
+.hero-status { display: grid; min-width: 230px; gap: 13px; border-left: 1px solid rgba(255,255,255,.22); padding-left: 24px; }
+.cut-chip { display: grid; gap: 5px; }
+.cut-chip > span { color: #9fd2bd; font-size: .6rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+.cut-chip strong { font-size: 1.13rem; }
 
 .filters { position: sticky; z-index: 15; top: 72px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto; gap: 10px; align-items: end; border: 1px solid #cfe0d8; border-radius: 20px; background: rgba(255,255,255,.96); padding: 14px; box-shadow: 0 12px 34px rgba(30,57,50,.07); backdrop-filter: blur(12px); }
 .filters label { display: grid; gap: 6px; }.filters label span { color: var(--muted); font-size: .64rem; font-weight: 800; }
@@ -70,12 +68,12 @@ select { width: 100%; min-height: 42px; border: 1px solid var(--line); border-ra
 .panel, .section-block { border: 1px solid var(--line); border-radius: 20px; background: white; padding: 22px; }
 .tag { border-radius: 999px; background: var(--soft); color: var(--green); padding: 7px 10px; font-size: .63rem; font-weight: 800; }
 .organization-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
-.organization-card { display: grid; min-width: 0; grid-template-columns: 72px minmax(0,1fr) auto; gap: 11px 14px; align-items: center; border: 1px solid #d7e5df; border-radius: 17px; background: linear-gradient(145deg, #fff, #f8fbf9); padding: 12px; box-shadow: 0 8px 24px rgba(30,57,50,.045); }
+.organization-card { display: grid; min-width: 0; grid-template-columns: 72px minmax(0,1fr) auto; gap: 11px 14px; align-items: center; border: 1px solid #d7e5df; border-radius: 17px; background: linear-gradient(145deg, #fff, #f8fbf9); color: inherit; padding: 12px; font: inherit; text-align: left; cursor: pointer; box-shadow: 0 8px 24px rgba(30,57,50,.045); transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
 .organization-card img, .organization-avatar { width: 72px; height: 88px; border-radius: 13px; object-fit: cover; object-position: center 18%; background: white; }
 .organization-card img { border: 1px solid #d7e5df; }
 .organization-avatar { display: grid; place-items: center; border: 1px dashed #c58b29; background: #fff4dc; color: #80550b; font-size: 1rem; font-weight: 900; }
 .organization-copy { display: grid; min-width: 0; gap: 5px; }.organization-copy small { color: var(--green); font-size: .55rem; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }.organization-copy strong { color: var(--dark); font-size: .76rem; line-height: 1.28; }
-.director-progress { display: grid; justify-items: end; gap: 2px; }.director-progress strong { color: var(--green); font-size: 1.15rem; letter-spacing: -.04em; }.director-progress span { color: var(--muted); font-size: .48rem; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
+.director-progress { display: grid; justify-items: end; }.director-progress strong { color: var(--green); font-size: 1.15rem; letter-spacing: -.04em; }
 .region-progress { grid-column: 2/-1; height: 6px; overflow: hidden; border-radius: 999px; background: #e4ece8; }.region-progress i { display: block; width: var(--progress); height: 100%; border-radius: inherit; background: linear-gradient(90deg, #006241, #3fa278); }
 .button.compact { min-height: 34px; border-color: #bfd8cc; background: #f3f8f5; color: var(--green); padding: 0 11px; font-size: .62rem; }
 .activities-panel { padding: 0; overflow: hidden; }
@@ -254,7 +252,7 @@ body {
 .hero h1 { color: var(--dark); font-size: clamp(2rem, 4vw, 3.4rem); text-transform: uppercase; }
 .hero-copy > p:last-child { color: #5e534e; font-weight: 700; }
 .hero-status { border-left-color: rgba(55,40,58,.28); border-radius: 18px; background: rgba(0,59,45,.94); color: white; padding: 18px; }
-.director-chip small, .cut-chip > span { color: #ffd39f; }
+.cut-chip > span { color: #ffd39f; }
 
 .filters { border-color: #d8bea2; background: rgba(255,253,248,.97); box-shadow: 5px 6px 0 rgba(55,40,58,.055), 0 16px 36px rgba(88,49,30,.07); }
 .filters label span { color: #68584f; }
@@ -274,7 +272,11 @@ select:focus-visible { outline-color: var(--fall-orange); }
 .kpi::after { position: absolute; right: -13px; bottom: -14px; width: 42px; height: 42px; border: 7px solid rgba(243,189,59,.24); border-radius: 50%; content: ""; }
 .tag, .status.amber { background: #ffead1; color: #9f3b18; }
 .organization-card, .dm-card { border-color: #ddccb9; background: linear-gradient(145deg, #fffdf8, #faf1e5); box-shadow: 3px 4px 0 rgba(55,40,58,.05); }
-.organization-card:hover, .dm-card:hover, .dm-card.selected { border-color: #e48a59; background: #fff5e8; }
+.organization-card:hover, .organization-card:focus-visible, .organization-card.selected, .dm-card:hover, .dm-card.selected { border-color: #e48a59; background: #fff5e8; }
+.organization-card:hover { transform: translateY(-2px); box-shadow: 4px 6px 0 rgba(55,40,58,.07), 0 12px 28px rgba(91,52,32,.08); }
+.organization-card.selected { border-color: var(--fall-orange); box-shadow: inset 4px 0 var(--fall-orange), 4px 5px 0 rgba(55,40,58,.07); }
+.organization-card.selected .organization-copy small::after { margin-left: 6px; border-radius: 999px; background: var(--fall-orange); color: white; padding: 3px 6px; content: "Filtrando"; font-size: .43rem; letter-spacing: .04em; }
+.organization-hint { background: #fff0d9; color: #a23d1c; }
 .activity-table-shell, .table-shell { border-color: #ddc8b2; background: #fffdf8; }
 thead { background: #2d2630; }
 tbody tr:nth-child(even) { background: #fff8ec; }
