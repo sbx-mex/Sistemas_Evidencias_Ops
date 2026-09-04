@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "8652f393c0efd4c1",
+  "buildVersion": "8f1bd69538f8fad4",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T01:46:45+00:00",
+  "generatedAt": "2026-09-04T09:52:43+07:00",
   "lastUpdated": "2026-09-03T13:44:12",
   "lastUpdatedDisplay": "03/09/2026 13:44",
   "report": {
@@ -40,7 +40,7 @@
         "region": "Centro Centro",
         "name": "Oliver Roberto Perez Briones",
         "role": "Director Regional",
-        "photo": "",
+        "photo": "assets/director/oliver-perez.webp",
         "order": 2,
         "stores": 85,
         "completed": 0,
@@ -54,7 +54,7 @@
         "region": "Centro Poniente",
         "name": "Jorge Farrera Pinal",
         "role": "Director Regional",
-        "photo": "",
+        "photo": "assets/director/jorge-farrera.webp",
         "order": 3,
         "stores": 100,
         "completed": 0,
@@ -68,7 +68,7 @@
         "region": "Centro Sur",
         "name": "Cielo Aide Morera Urrego",
         "role": "Director Regional",
-        "photo": "",
+        "photo": "assets/director/cielo-morera.webp",
         "order": 4,
         "stores": 100,
         "completed": 0,
@@ -97,7 +97,7 @@
     "responses": "Sistema de Evidencias OPS.xlsx",
     "responsesSha256": "f1ccbb3fae24517f7fcfc43119e8a87980fd0991cf6b61c5de69ecf173125e07",
     "directory": "Directorio.xlsx",
-    "directorySha256": "d0192bbcc08b1e4a9e2afbb8bcbb5eea48899c78bb898469a4a762493ec0629d",
+    "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
     "directoryStatus": {
       "includedStatuses": [
@@ -116,7 +116,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "8db809ec376a55440169b0ede37faf5a0b9db1ac24a359400ca0a02e0f0a3506"
+    "cmsSha256": "9ee9ebdd1b8b9735e8ed9838ced176d2e3f72b8aaa8b78f9d47eb3281cbef569"
   },
   "summary": {
     "regions": 4,
@@ -479,7 +479,7 @@
   "dms": [
     {
       "dm": "Enrique Cesar Flores",
-      "shortName": "Enrique Cesar",
+      "shortName": "Enrique Flores",
       "photo": "assets/dm/enrique-cesar.webp",
       "photoStatus": "Disponible",
       "regions": [
@@ -497,7 +497,7 @@
     },
     {
       "dm": "Yazmin Chabela Guadarrama",
-      "shortName": "Yazmin Chabela",
+      "shortName": "Yazmin Guadarrama",
       "photo": "assets/dm/yazmin-chabela.webp",
       "photoStatus": "Disponible",
       "regions": [
@@ -533,7 +533,7 @@
     },
     {
       "dm": "Nancy Carolina Rodriguez Medina",
-      "shortName": "Nancy Carolina",
+      "shortName": "Nancy Rodriguez",
       "photo": "assets/dm/nancy-carolina.webp",
       "photoStatus": "Disponible",
       "regions": [
@@ -587,7 +587,7 @@
     },
     {
       "dm": "Adriana Alejandra Tanus Buhler",
-      "shortName": "Adriana Alejandra Tanus Buhler",
+      "shortName": "Adriana Tanus",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -605,7 +605,7 @@
     },
     {
       "dm": "Alberto Torrado Aguilar Cauz",
-      "shortName": "Alberto Torrado Aguilar Cauz",
+      "shortName": "Alberto Torrado",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -623,7 +623,7 @@
     },
     {
       "dm": "Andrea Nava Guzman",
-      "shortName": "Andrea Nava Guzman",
+      "shortName": "Andrea Nava",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -641,7 +641,7 @@
     },
     {
       "dm": "Areli Anahi Lazcano Lezama",
-      "shortName": "Areli Anahi Lazcano Lezama",
+      "shortName": "Areli Lazcano",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -659,7 +659,7 @@
     },
     {
       "dm": "Ariana Janet Gutierrez Martinez",
-      "shortName": "Ariana Janet Gutierrez Martinez",
+      "shortName": "Ariana Gutierrez",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -677,7 +677,7 @@
     },
     {
       "dm": "Cesar Alfonso Castillo Romero",
-      "shortName": "Cesar Alfonso Castillo Romero",
+      "shortName": "Cesar Castillo",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -695,7 +695,7 @@
     },
     {
       "dm": "Daniel Flores Maldonado",
-      "shortName": "Daniel Flores Maldonado",
+      "shortName": "Daniel Flores",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -713,7 +713,7 @@
     },
     {
       "dm": "Erika Julieta Contreras Aguilera",
-      "shortName": "Erika Julieta Contreras Aguilera",
+      "shortName": "Erika Contreras",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -731,7 +731,7 @@
     },
     {
       "dm": "Fernando Eduardo Verdugo Saldaña",
-      "shortName": "Fernando Eduardo Verdugo Saldaña",
+      "shortName": "Fernando Verdugo",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -749,7 +749,7 @@
     },
     {
       "dm": "Guadalupe Ibarra Martínez",
-      "shortName": "Guadalupe Ibarra Martínez",
+      "shortName": "Guadalupe Ibarra",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -767,7 +767,7 @@
     },
     {
       "dm": "Hazar Susim Trejo Hernandez",
-      "shortName": "Hazar Susim Trejo Hernandez",
+      "shortName": "Hazar Trejo",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -785,7 +785,7 @@
     },
     {
       "dm": "Jaqueline Cortes Ayala",
-      "shortName": "Jaqueline Cortes Ayala",
+      "shortName": "Jaqueline Cortes",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -803,7 +803,7 @@
     },
     {
       "dm": "Jesus Antonio Elguera Flores",
-      "shortName": "Jesus Antonio Elguera Flores",
+      "shortName": "Jesus Elguera",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -821,7 +821,7 @@
     },
     {
       "dm": "Jose De Jesus Magos Arzaluz",
-      "shortName": "Jose De Jesus Magos Arzaluz",
+      "shortName": "Jose Magos",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -839,7 +839,7 @@
     },
     {
       "dm": "Juan Jesus Zuñiga Flores",
-      "shortName": "Juan Jesus Zuñiga Flores",
+      "shortName": "Juan Zuñiga",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -856,26 +856,8 @@
       "rank": 21
     },
     {
-      "dm": "Luis Alberto Quevedo Rodriguez",
-      "shortName": "Luis Alberto Quevedo Rodriguez",
-      "photo": "",
-      "photoStatus": "Pendiente",
-      "regions": [
-        "Centro Sur"
-      ],
-      "stores": 14,
-      "completed": 0,
-      "expected": 154,
-      "notApplicable": 0,
-      "pending": 154,
-      "pendingStores": 14,
-      "compliance": 0.0,
-      "status": "Atención",
-      "rank": 22
-    },
-    {
       "dm": "Luis Manuel Neri Saldaña",
-      "shortName": "Luis Manuel Neri Saldaña",
+      "shortName": "Luis Neri",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -889,11 +871,29 @@
       "pendingStores": 15,
       "compliance": 0.0,
       "status": "Atención",
+      "rank": 22
+    },
+    {
+      "dm": "Luis Alberto Quevedo Rodriguez",
+      "shortName": "Luis Quevedo",
+      "photo": "",
+      "photoStatus": "Pendiente",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 14,
+      "completed": 0,
+      "expected": 154,
+      "notApplicable": 0,
+      "pending": 154,
+      "pendingStores": 14,
+      "compliance": 0.0,
+      "status": "Atención",
       "rank": 23
     },
     {
       "dm": "Manuel Alejandro Avila Molina",
-      "shortName": "Manuel Alejandro Avila Molina",
+      "shortName": "Manuel Avila",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -911,7 +911,7 @@
     },
     {
       "dm": "Maria Anallely Sanchez Garcia",
-      "shortName": "Maria Anallely Sanchez Garcia",
+      "shortName": "Maria Sanchez",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -929,7 +929,7 @@
     },
     {
       "dm": "Monica Selene Morales Ibarra",
-      "shortName": "Monica Selene Morales Ibarra",
+      "shortName": "Monica Morales",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [
@@ -947,7 +947,7 @@
     },
     {
       "dm": "Nora Caracas Saldaña",
-      "shortName": "Nora Caracas Saldaña",
+      "shortName": "Nora Caracas",
       "photo": "",
       "photoStatus": "Pendiente",
       "regions": [

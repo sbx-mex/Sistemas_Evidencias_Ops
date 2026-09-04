@@ -13,7 +13,7 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, safe_evidence_url
+from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, safe_evidence_url, short_dm_name
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -25,6 +25,7 @@ REQUIRED = [
     "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
     "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
     "assets/director/jorge-alcantar.webp", "assets/director/raul-sierra.webp",
+    "assets/director/oliver-perez.webp", "assets/director/jorge-farrera.webp", "assets/director/cielo-morera.webp",
     "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
     "tests/validate_dynamic_forms_schema.py", "tests/validate_maintenance.py", "scripts/io_utils.py",
 ]
@@ -252,7 +253,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "filter-intro"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -262,8 +263,11 @@ if nav_order != sorted(nav_order) or section_order != sorted(section_order):
 if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
     fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
 organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
-if "nationalDirector" in organization_renderer or "<img" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer:
-    fail("La vista regional debe mostrar sólo cuatro Directores Regionales con avance dinámico")
+if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer:
+    fail("La vista regional debe mostrar cuatro fotografías, sin repetir el rol y con avance dinámico")
+for removed_copy in ("Vista personalizada", "Filtra, revisa y exporta en un solo flujo", "Lectura rápida del avance seleccionado."):
+    if removed_copy in html:
+        fail(f"La navegación conserva texto redundante: {removed_copy}")
 store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
 if "<th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
     fail("La tabla Tiendas todavía muestra la columna DM")
@@ -313,7 +317,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v25", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
+for cache_control in ("sistema-evidencias-ops-v26", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
@@ -352,8 +356,18 @@ if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
 organization = data.get("organization", {})
-if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status"}.issubset(item) for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
+expected_short_names = {
+    "Luis Manuel Neri Saldaña": "Luis Neri",
+    "Nancy Carolina Rodriguez Medina": "Nancy Rodriguez",
+    "Jose De Jesus Magos Arzaluz": "Jose Magos",
+}
+if any(short_dm_name(full_name) != short_name for full_name, short_name in expected_short_names.items()):
+    fail("Python no calcula primer nombre + primer apellido")
+published_short_names = {item.get("dm"): item.get("shortName") for item in data.get("dms", [])}
+if any(published_short_names.get(full_name) != short_name for full_name, short_name in expected_short_names.items()):
+    fail("El CMS no publica correctamente los nombres cortos DM")
 focus = data.get("activities", [])
 if [item.get("focusRank") for item in focus] != list(range(1, len(focus) + 1)):
     fail("El foco de actividades no es consecutivo")

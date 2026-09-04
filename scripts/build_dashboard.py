@@ -120,6 +120,30 @@ def normalize_dm(value: Any) -> str:
     return dm
 
 
+SECOND_GIVEN_NAMES = {
+    "alejandra", "alejandro", "alfonso", "anahi", "anallely", "antonio",
+    "carolina", "cesar", "eduardo", "haydee", "janet", "jesus", "manuel",
+    "selene", "susim",
+}
+
+
+def short_dm_name(value: Any) -> str:
+    """Entrega primer nombre + primer apellido sin alterar la llave completa del DM."""
+    full_name = normalize_dm(value)
+    if full_name in {"DM pendiente", "Vacante"}:
+        return full_name
+    parts = full_name.split()
+    if len(parts) <= 2:
+        return full_name
+    if len(parts) >= 4 and key_text(" ".join(parts[1:3])) == "de jesus":
+        surname_index = 3
+    elif key_text(parts[1]) in SECOND_GIVEN_NAMES:
+        surname_index = 2
+    else:
+        surname_index = 1
+    return f"{parts[0]} {parts[min(surname_index, len(parts) - 1)]}"
+
+
 def active_activity_catalog(activities: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, str]]:
     """Crea el catálogo autorizado por CMS y rechaza nombres activos ambiguos.
 
@@ -586,6 +610,8 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     canonical_setting_keys = {key_text(key): key for key in KNOWN_SETTING_KEYS}
     seen_setting_keys: set[str] = set()
     for row in config_ws.iter_rows(min_row=config_header + 1, values_only=True):
+        if len(row) <= max(config_cols.values()):
+            continue
         raw_key = clean_text(row[config_cols["clave"]])
         if not raw_key:
             continue
@@ -615,6 +641,8 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         activity_ws.iter_rows(min_row=header_row + 1, values_only=True),
         header_row + 1,
     ):
+        if len(row) <= max(cols.values()):
+            continue
         name = clean_text(row[cols["actividad"]])
         if not name:
             continue
@@ -674,6 +702,8 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
     managers: dict[str, dict[str, str]] = {}
     for row in manager_ws.iter_rows(min_row=manager_header + 1, values_only=True):
+        if len(row) <= max(manager_cols.values()):
+            continue
         dm = clean_text(row[manager_cols["dm"]])
         if not dm or not is_yes(row[manager_cols["activo"]]):
             continue
@@ -684,13 +714,15 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         if photo and not (ROOT / photo).is_file():
             raise ValueError(f"No existe la fotografía configurada para {dm}: {photo}")
         managers[manager_key] = {
-            "shortName": clean_text(row[manager_cols["nombre corto"]]) or dm,
+            "shortName": clean_text(row[manager_cols["nombre corto"]]) or short_dm_name(dm),
             "photo": photo,
         }
     org_ws = workbook["Organigrama"]
     org_header, org_cols = find_header(org_ws, {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"})
     organization_rows = []
     for row_number, row in enumerate(org_ws.iter_rows(min_row=org_header + 1, values_only=True), org_header + 1):
+        if len(row) <= max(org_cols.values()):
+            continue
         name = clean_text(row[org_cols["nombre"]])
         if not name or not is_yes(row[org_cols["activo"]]):
             continue
@@ -752,7 +784,7 @@ def deadline_focus(end_date: str | None, pending: int) -> dict[str, Any]:
 
 
 def find_directory_header(ws) -> tuple[int, list[Any]]:
-    for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=min(ws.max_row, 12), values_only=True), 1):
+    for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=min(ws.max_row or 12, 12), values_only=True), 1):
         keys = {key_text(value) for value in row if clean_text(value)}
         if {"cc", "cc nombre", "dm"}.issubset(keys):
             return row_number, list(row)
@@ -782,7 +814,7 @@ def directory_sheet(workbook, requested: Any) -> tuple[Any, int, list[Any]]:
         keys = {key_text(value) for value in headers if clean_text(value)}
         score = sum(field in keys for field in ("cc", "cc nombre", "region", "dm", "estatus"))
         preferred = int(ws.title == requested_name)
-        candidates.append((preferred, score, ws.max_row, -index, ws, header_row, headers))
+        candidates.append((preferred, score, ws.max_row or 0, -index, ws, header_row, headers))
     if not candidates:
         raise ValueError("No existe una hoja con encabezados CC / CC Nombre / Región / DM")
     _, _, _, _, ws, header_row, headers = max(candidates, key=lambda item: item[:4])

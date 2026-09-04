@@ -117,7 +117,7 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
 
     org_ws = workbook["Organigrama"]
     org_header, org_cols = find_header(org_ws, {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"})
-    organization: list[tuple[int, str]] = []
+    organization: list[tuple[int, str, str]] = []
     for row in org_ws.iter_rows(min_row=org_header + 1, values_only=True):
         name = clean_text(row[org_cols["nombre"]])
         if not name or not is_yes(row[org_cols["activo"]]):
@@ -129,11 +129,13 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
         photo = clean_text(row[org_cols["foto webp"]])
         if photo and not (ROOT / photo).is_file():
             raise ValueError(f"Foto de Organigrama inexistente: {photo}")
-        organization.append((level, name))
-    if sum(level == 1 for level, _ in organization) != 1:
+        organization.append((level, name, photo))
+    if sum(level == 1 for level, _, _ in organization) != 1:
         raise ValueError("Organigrama requiere exactamente un Director Starbucks México activo")
-    if sum(level == 2 for level, _ in organization) != 4:
+    if sum(level == 2 for level, _, _ in organization) != 4:
         raise ValueError("Organigrama requiere cuatro Directores Regionales activos")
+    if any(not photo for level, _, photo in organization if level == 2):
+        raise ValueError("Los cuatro Directores Regionales requieren una fotografía WebP")
 
     stores_ws = workbook["Tiendas Abiertas"]
     stores_header, stores_cols = find_header(stores_ws, {"cc", "cc nombre", "region", "estatus", "dm"})

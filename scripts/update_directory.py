@@ -16,9 +16,9 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.worksheet.datavalidation import DataValidation
 
 try:
-    from .build_dashboard import clean_text, find_directory_header, key_text, normalize_ceco, normalize_dm, validate_xlsx
+    from .build_dashboard import clean_text, find_directory_header, key_text, normalize_ceco, normalize_dm, short_dm_name, validate_xlsx
 except ImportError:
-    from build_dashboard import clean_text, find_directory_header, key_text, normalize_ceco, normalize_dm, validate_xlsx
+    from build_dashboard import clean_text, find_directory_header, key_text, normalize_ceco, normalize_dm, short_dm_name, validate_xlsx
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DIRECTORY = ROOT / "cms" / "Directorio.xlsx"
@@ -26,9 +26,9 @@ DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 
 ORGANIZATION = [
     (1, "Centro's", "Raúl Sinohe Sierra Santa Maria", "Director Starbucks México", "assets/director/raul-sierra.webp", "Si", 1),
-    (2, "Centro Centro", "Oliver Roberto Perez Briones", "Director Regional", "", "Si", 2),
-    (2, "Centro Poniente", "Jorge Farrera Pinal", "Director Regional", "", "Si", 3),
-    (2, "Centro Sur", "Cielo Aide Morera Urrego", "Director Regional", "", "Si", 4),
+    (2, "Centro Centro", "Oliver Roberto Perez Briones", "Director Regional", "assets/director/oliver-perez.webp", "Si", 2),
+    (2, "Centro Poniente", "Jorge Farrera Pinal", "Director Regional", "assets/director/jorge-farrera.webp", "Si", 3),
+    (2, "Centro Sur", "Cielo Aide Morera Urrego", "Director Regional", "assets/director/cielo-morera.webp", "Si", 4),
     (2, "Centro Norte", "Jorge Antonio Alcantar Aguiar", "Director Regional", "assets/director/jorge-alcantar.webp", "Si", 5),
 ]
 
@@ -97,7 +97,7 @@ def existing_profiles(workbook) -> dict[str, dict[str, str]]:
         if dm == "DM pendiente":
             continue
         profiles[key_text(dm)] = {
-            "short": clean_text(ws.cell(row, headers.get("nombre corto", 2)).value) or dm,
+            "short": clean_text(ws.cell(row, headers.get("nombre corto", 2)).value) or short_dm_name(dm),
             "photo": clean_text(ws.cell(row, headers.get("foto webp", 3)).value),
         }
     return profiles
@@ -123,7 +123,7 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
     ws.merge_cells("A1:F1")
     ws.merge_cells("A2:F2")
     ws["A1"] = "CMS · Gerentes de Distrito"
-    ws["A2"] = "Los DM se sincronizan desde Directorio.xlsx. Foto vacía = pendiente; agrega el WebP en assets/dm/ cuando esté disponible."
+    ws["A2"] = "Nombre corto: primer nombre + primer apellido. El nombre completo permanece en DM; Foto WebP vacía indica pendiente."
     ws["A4"] = "DM"
     ws["B4"] = "Región"
     ws["C4"] = "Nombre corto"
@@ -139,7 +139,7 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
         photo = profile.get("photo", "")
         ws.append([
             item["dm"], " · ".join(sorted(item["regions"], key=key_text)),
-            profile.get("short", item["dm"]), photo,
+            profile.get("short") or short_dm_name(item["dm"]), photo,
             "Disponible" if photo else "Pendiente", "Si",
         ])
         for cell in ws[row_number]:
@@ -215,7 +215,7 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
         org_ws.merge_cells("A1:G1")
         org_ws.merge_cells("A2:G2")
         org_ws["A1"] = "CMS · Organigrama Región | Centro's"
-        org_ws["A2"] = "Edita nombre, rol, foto y Activo. Python publica únicamente las filas con Activo = Si."
+        org_ws["A2"] = "Edita nombre, fotografía, estado y orden. La web muestra sólo los cuatro RD activos; el rol no se repite en la tarjeta."
         org_ws.append([])
         org_ws.append(["Nivel", "Región", "Nombre", "Rol", "Foto WebP", "Activo", "Orden"])
         for item in ORGANIZATION:

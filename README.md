@@ -39,7 +39,6 @@ python scripts/build_dashboard.py
 python scripts/export_excel.py
 python scripts/export_pdf.py
 python tests/validate_dynamic_forms_schema.py
-python tests/validate_horno_applicability.py
 python tests/validate_project.py
 python scripts/audit_project.py
 ```
@@ -48,8 +47,10 @@ python scripts/audit_project.py
 
 Edita `cms/Sistema_Evidencias_OPS_CMS.xlsx`:
 
-- `Organigrama`: controla Director Starbucks México y los cuatro Directores Regionales. Sólo se publican filas con `Activo = Si`.
+- `Organigrama`: controla Director Starbucks México y los cuatro Directores Regionales. Los cuatro RD activos requieren fotografía WebP.
 - `Tiendas Abiertas`: vista automática; únicamente `Estatus = Abierta` alimenta el portal.
+- `Gerentes`: conserva el nombre completo como llave y usa `primer nombre + primer apellido` en `Nombre corto`.
+- `Directorio.xlsx > Instrucciones`: documenta CC, Región, Estatus y DM sin modificar la hoja operativa.
 
 - `Orden`: posición visual.
 - `Actividad`: debe coincidir con la opción configurada en Forms.
@@ -118,7 +119,8 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 - 357 tiendas `Abierta` de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes. Las 15 tiendas con `Cierre Temporal` o `Cierre Definitivo` permanecen en el Directorio, pero no entran en conteos ni avance.
 - El CMS controla el alcance con `onlyOpenStores = Si` e `includedStoreStatuses = Abierta`.
 - La pestaña CMS `Tiendas Abiertas` se regenera con CC, tienda, región, estatus y DM para revisar visualmente las 357 tiendas publicadas.
-- La pestaña `Organigrama` publica a Raúl Sinohe Sierra Santa Maria como Director Starbucks México y a los responsables de Centro Centro, Centro Poniente, Centro Sur y Centro Norte.
+- La pestaña `Organigrama` publica a Raúl Sinohe Sierra Santa Maria como Director Starbucks México y a los responsables de Centro Centro, Centro Poniente, Centro Sur y Centro Norte con fotografía.
+- La navegación identifica el apartado como `RD's Centro's`; las tarjetas omiten el rol repetitivo y mantienen el avance regional dinámico.
 - 8 actividades activas.
 - Última actualización: `29/08/2026 09:43`.
 - CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.

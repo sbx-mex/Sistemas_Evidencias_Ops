@@ -134,7 +134,10 @@ function renderOrganization() {
   const regionals = organization.regionalDirectors || [];
   $("#organization-grid").innerHTML = regionals.length ? regionals.map((person) => {
     const compliance = Number(person.compliance || 0);
-    return `<article class="organization-card"><div class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong><span>${esc(person.role)}</span></div><div class="director-progress"><strong>${percent(compliance)}</strong><span>avance regional</span></div><div class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)} de avance"><i style="--progress:${Math.min(compliance, 100)}%"></i></div></article>`;
+    const portrait = person.photo
+      ? `<img src="./${esc(person.photo)}" alt="Fotografía de ${esc(person.name)}" width="72" height="88" loading="lazy">`
+      : `<span class="organization-avatar" aria-label="Fotografía pendiente">${esc(initials(person.name))}</span>`;
+    return `<article class="organization-card">${portrait}<div class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong></div><div class="director-progress"><strong>${percent(compliance)}</strong><span>avance regional</span></div><div class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)} de avance"><i style="--progress:${Math.min(compliance, 100)}%"></i></div></article>`;
   }).join("") : '<div class="empty-state">Sin responsables activos en el CMS.</div>';
 }
 
