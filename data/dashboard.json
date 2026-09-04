@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "ccc8352af45fb5f1",
+  "buildVersion": "d27c56fec34cf420",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T21:09:04+00:00",
-  "lastUpdated": "2026-09-04T14:30:51",
-  "lastUpdatedDisplay": "04/09/2026 14:30",
+  "generatedAt": "2026-09-04T21:36:44+00:00",
+  "lastUpdated": "2026-09-04T14:49:31",
+  "lastUpdatedDisplay": "04/09/2026 14:49",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "04/09/26 · 14:30 h",
+    "cutOffDisplay": "04/09/26 · 14:49 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -100,7 +100,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "7fa351d65f5c80582d0afea29068b22fca501bff58986ac5ca99b6ef4c10b591",
+    "responsesSha256": "4a1524cdbdb88339878cee37940eafc8bd093185f03ccb52eb2875f4f110c021",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -137,7 +137,7 @@
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 330,
+    "responsesRead": 331,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -153,7 +153,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 17,
+    "duplicateValidResponses": 18,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -168,7 +168,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 8
+        "CeCo1": 9
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -17683,7 +17683,7 @@
       "expected": 11,
       "notApplicable": 0,
       "compliance": 81.8,
-      "lastUpdate": "2026-09-03T19:35:47",
+      "lastUpdate": "2026-09-04T14:49:31",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18511,6 +18511,28 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-fdbbe1bc2d3038fb",
+      "timestamp": "2026-09-04T14:49:31",
+      "timestampDisplay": "04/09/2026 14:49",
+      "activity": "Rack FHW",
+      "ceco": "38561",
+      "store": "Parque Toreo",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Rack_FHW_38561",
+      "evidenceLinkLabel": "Link_Rack_FHW_38561",
+      "evidenceFileName": "1788554948149872242229798504483_Sergio Daniel Parra.jpg",
+      "evidenceSourceHeader": "Evidencia_Rack_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/1788554948149872242229798504483_Sergio%20Daniel%20Parra.jpg"
+    },
     {
       "id": "respuesta-a9d104338800ba06",
       "timestamp": "2026-09-04T14:30:51",
@@ -24967,28 +24989,6 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Community_Board/image_Starbucks%20CEMTRAM%204.jpg"
-    },
-    {
-      "id": "respuesta-2dfac3c411b6f631",
-      "timestamp": "2026-08-30T11:03:23",
-      "timestampDisplay": "30/08/2026 11:03",
-      "activity": "Rack FHW",
-      "ceco": "38561",
-      "store": "Parque Toreo",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Rack_FHW_38561",
-      "evidenceLinkLabel": "Link_Rack_FHW_38561",
-      "evidenceFileName": "17881093687519018223576355074947_Sergio Daniel Parra.jpg",
-      "evidenceSourceHeader": "Evidencia_Rack_FHW",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/17881093687519018223576355074947_Sergio%20Daniel%20Parra.jpg"
     },
     {
       "id": "respuesta-3854306f67852aca",
