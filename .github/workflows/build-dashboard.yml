@@ -86,7 +86,7 @@ jobs:
         run: |
           set -euo pipefail
           git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
-          git add -A -- config assets/dm assets/icons assets/campaign
+          git add -A -- config assets/dm assets/icons assets/director assets/campaign
           git add -u
 
           obsolete_test="tests/validate_horno_applicability.py"
