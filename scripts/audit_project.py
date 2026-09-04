@@ -187,6 +187,10 @@ if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls
     issues.append("Los 10 controles Python de estabilidad no están activos")
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
+if set(response_schema.get("cecoSourceUsage", {})) != set(response_schema.get("cecoHeaders", [])):
+    issues.append("El uso de CeCo/CeCo1 no quedó auditado por columna")
+if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
+    issues.append("La configuración conserva Id de Forms obsoletos")
 active_activity_keys = {compact_key(item.get("name")) for item in data.get("activities", [])}
 evidence_header_matches = response_schema.get("evidenceHeaderMatch", {})
 evidence_header_map = response_schema.get("evidenceHeaderMap", {})

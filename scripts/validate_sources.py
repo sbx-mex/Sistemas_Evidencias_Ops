@@ -268,6 +268,7 @@ def main() -> None:
         "conflictosEvidencia": conflicting_evidence,
         "conflictosAplicabilidad": schema.get("applicabilityIssues", {}),
         "cecosDesconocidos": quality.get("unknownCeCos", []),
+        "exclusionesObsoletas": quality.get("unusedIgnoredResponseSourceIds", []),
         "vinculosInseguros": quality.get("unsafeEvidenceRows", []),
     }
     if any(blocking_issues.values()):

@@ -80,12 +80,27 @@ def main() -> None:
         assert rows[0]["ceco"] == "38965" and rows[0]["activity"] == "QR - Qualtrics"
         assert rows[0]["sourceId"] == "4"
         assert schema["cecoHeaders"] == ["CeCo", "CeCo1"]
+        assert schema["cecoSourceUsage"] == {"CeCo": 0, "CeCo1": 1}
         assert schema["rowConflicts"] == []
+
+        # Dos formatos equivalentes de la misma llave no crean un falso conflicto.
+        equivalent = temp / "ceco-equivalent.xlsx"
+        save_book(equivalent, duplicate_headers, [[5, start, finish, "", "Prueba", 38965, "38965.0", "", "QR - Qualtrics", "", f"{allowed}/qr.jpg"]])
+        rows, schema = load_responses(equivalent)
+        assert rows[0]["ceco"] == "38965" and rows[0]["confirmed"] is True
+        assert schema["cecoRowsUsingBoth"] == 1 and schema["rowConflicts"] == []
 
         # Dos CeCo distintos en la misma fila se rechazan sin adivinar.
         conflict = temp / "ceco-conflict.xlsx"
-        save_book(conflict, duplicate_headers, [[5, start, finish, "", "Prueba", "38115", "38965", "", "QR - Qualtrics", "", f"{allowed}/qr.jpg"]])
+        save_book(conflict, duplicate_headers, [[6, start, finish, "", "Prueba", "38115", "38965", "", "QR - Qualtrics", "", f"{allowed}/qr.jpg"]])
         rows, schema = load_responses(conflict)
+        assert rows[0]["ceco"] == "" and rows[0]["confirmed"] is False
+        assert schema["rowConflicts"] == [{"row": 2, "field": "ceco"}]
+
+        # No extrae cinco dígitos desde texto, fechas, fórmulas ni decimales.
+        invalid_ceco = temp / "ceco-invalid.xlsx"
+        save_book(invalid_ceco, duplicate_headers, [[7, start, finish, "", "Prueba", "CeCo 38115", "", "", "QR - Qualtrics", "", f"{allowed}/qr.jpg"]])
+        rows, schema = load_responses(invalid_ceco)
         assert rows[0]["ceco"] == "" and rows[0]["confirmed"] is False
         assert schema["rowConflicts"] == [{"row": 2, "field": "ceco"}]
 
