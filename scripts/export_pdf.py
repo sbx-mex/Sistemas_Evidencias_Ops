@@ -95,7 +95,7 @@ def build_pdf(data: dict, output: Path) -> None:
             pdf.drawImage(logo, 30, page_height - 94, 52, 52, mask="auto")
         pdf.setFillColor(HexColor("#A9DBC5"))
         pdf.setFont("Helvetica-Bold", 8)
-        pdf.drawCentredString(page_width / 2, page_height - 27, report.get("motto", "CADA DETALLE CUENTA"))
+        pdf.drawCentredString(page_width / 2, page_height - 27, report.get("motto", "JUNTÉMONOS MÁS"))
         pdf.setFillColor(white)
         pdf.setFont("Helvetica-Bold", 21)
         pdf.drawCentredString(page_width / 2, page_height - 57, report.get("title", "Sistema de Evidencia OPS"))
