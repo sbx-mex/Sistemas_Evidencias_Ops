@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "913c734dbe0e7190",
+  "buildVersion": "2c4d0b90bf719c65",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T19:57:17+00:00",
-  "lastUpdated": "2026-09-04T11:51:33",
-  "lastUpdatedDisplay": "04/09/2026 11:51",
+  "generatedAt": "2026-09-04T20:09:11+00:00",
+  "lastUpdated": "2026-09-04T13:56:34",
+  "lastUpdatedDisplay": "04/09/2026 13:56",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "04/09/26 · 11:51 h",
+    "cutOffDisplay": "04/09/26 · 13:56 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 292,
+        "completed": 295,
         "expected": 781,
-        "pending": 489,
-        "compliance": 37.4,
+        "pending": 486,
+        "compliance": 37.8,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "84bcfb29096caa7247bbe461777e8b80bbfa6d6406d0e00bf374c4c35aad03c5",
+    "responsesSha256": "5782d663ed62ac05b3dfc2a5b482e00dfe4164c4c668c622363758930634b8cb",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -129,15 +129,15 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3916,
-    "completedCompletions": 292,
+    "completedCompletions": 295,
     "compliance": 7.5,
-    "validResponses": 292,
+    "validResponses": 295,
     "storesComplete": 1,
-    "pendingCompletions": 3624,
+    "pendingCompletions": 3621,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 325,
+    "responsesRead": 328,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -168,7 +168,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 3
+        "CeCo1": 6
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -224,7 +224,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 292,
+    "evidenceLinksPublished": 295,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -347,11 +347,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 29,
+      "completedStores": 30,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 328,
-      "compliance": 8.1,
+      "pendingStores": 327,
+      "compliance": 8.4,
       "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
       "daysRemaining": 2,
@@ -457,11 +457,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 7,
+      "completedStores": 9,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 350,
-      "compliance": 2.0,
+      "pendingStores": 348,
+      "compliance": 2.5,
       "deadlineLabel": "En 26 días",
       "deadlineTone": "green",
       "daysRemaining": 26,
@@ -500,12 +500,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 86,
+      "completed": 89,
       "expected": 138,
       "notApplicable": 5,
-      "pending": 52,
+      "pending": 49,
       "pendingStores": 13,
-      "compliance": 62.3,
+      "compliance": 64.5,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -4540,17 +4540,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "43152",
-      "store": "Samara Satélite",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 3,
-      "expected": 10,
-      "notApplicable": 1,
-      "pending": 7,
-      "compliance": 30.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38230",
       "store": "ITEMS Edo de Mexico",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4705,6 +4694,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 5,
+      "expected": 10,
+      "notApplicable": 1,
+      "pending": 5,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38401",
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
@@ -4826,17 +4826,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38859",
-      "store": "Plaza Satelite II N1",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 7,
-      "expected": 10,
-      "notApplicable": 1,
-      "pending": 3,
-      "compliance": 70.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38903",
       "store": "Encuentro Oceania",
       "dm": "Veronica Garcia Ortega",
@@ -4868,6 +4857,17 @@
       "pending": 3,
       "compliance": 72.7,
       "status": "Seguimiento"
+    },
+    {
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 8,
+      "expected": 10,
+      "notApplicable": 1,
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
     },
     {
       "ceco": "38719",
@@ -17803,11 +17803,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 1,
-      "compliance": 70.0,
-      "lastUpdate": "2026-09-02T16:30:05",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-04T13:56:34",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -17818,7 +17818,7 @@
         "Lay Out": true,
         "Community Board": false,
         "Activacion PSL Sharpie": true,
-        "Señaletica Back": false,
+        "Señaletica Back": true,
         "Señaletica Lobby": true
       },
       "applicableActivities": {
@@ -17841,22 +17841,22 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 5,
       "expected": 10,
       "notApplicable": 1,
-      "compliance": 30.0,
-      "lastUpdate": "2026-09-02T17:56:41",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-04T13:52:06",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": false,
+        "Rack FHW": true,
         "Max & Min": false,
         "Fotografia - SM": false,
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
         "Activacion PSL Sharpie": true,
-        "Señaletica Back": false,
+        "Señaletica Back": true,
         "Señaletica Lobby": false
       },
       "applicableActivities": {
@@ -18483,6 +18483,72 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-4c41e76c992a7065",
+      "timestamp": "2026-09-04T13:56:34",
+      "timestampDisplay": "04/09/2026 13:56",
+      "activity": "Señaletica Back",
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Senaletica_Back_38859",
+      "evidenceLinkLabel": "Link_Senaletica_Back_38859",
+      "evidenceFileName": "D4C03A94-E2C6-4852-BCE9-9B1022A8FC2F_Starbucks Plaza Sate.jpeg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Back",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/D4C03A94-E2C6-4852-BCE9-9B1022A8FC2F_Starbucks%20Plaza%20Sate.jpeg"
+    },
+    {
+      "id": "respuesta-9166ec2006331485",
+      "timestamp": "2026-09-04T13:52:06",
+      "timestampDisplay": "04/09/2026 13:52",
+      "activity": "Señaletica Back",
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Senaletica_Back_43152",
+      "evidenceLinkLabel": "Link_Senaletica_Back_43152",
+      "evidenceFileName": "77637881-DC91-45B6-AB36-93908365CBED-17812-00_Starbucks Samara Sat.jpeg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Back",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/77637881-DC91-45B6-AB36-93908365CBED-17812-00_Starbucks%20Samara%20Sat.jpeg"
+    },
+    {
+      "id": "respuesta-0d6d7173ebc5245e",
+      "timestamp": "2026-09-04T13:45:08",
+      "timestampDisplay": "04/09/2026 13:45",
+      "activity": "Rack FHW",
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Rack_FHW_43152",
+      "evidenceLinkLabel": "Link_Rack_FHW_43152",
+      "evidenceFileName": "image_Starbucks Samara Sat.jpg",
+      "evidenceSourceHeader": "Evidencia_Rack_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/image_Starbucks%20Samara%20Sat.jpg"
+    },
     {
       "id": "respuesta-8b921b30e1fe8721",
       "timestamp": "2026-09-04T11:51:33",
