@@ -13,7 +13,7 @@ from openpyxl import load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import build_payload, find_header, load_cms
+from scripts.build_dashboard import build_payload, find_header, key_text, load_cms
 from scripts.build_dashboard import (
     STABILITY_CONTROLS, ensure_source_stability, find_directory_header,
     load_directory, load_settings, normalize_allowed_hosts, source_fingerprints,
@@ -261,6 +261,27 @@ def test_activity_row_count_independence(temp: Path) -> None:
     assert {item["name"] for item in expanded_activities} == baseline_names | {"Actividad de estabilidad"}
 
 
+def test_manager_photo_auto_detection(temp: Path) -> None:
+    """Una ruta CMS vacía detecta el WebP canónico sin coincidencias difusas."""
+    cms = temp / "cms_foto_autodetectada.xlsx"
+    shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", cms)
+    workbook = load_workbook(cms)
+    sheet = workbook["Gerentes"]
+    header_row, cols = find_header(sheet, {"dm", "nombre corto", "foto webp", "activo"})
+    target_dm = "Adriana Alejandra Tanus Buhler"
+    target_row = next(
+        row for row in range(header_row + 1, sheet.max_row + 1)
+        if key_text(sheet.cell(row, cols["dm"] + 1).value) == key_text(target_dm)
+    )
+    sheet.cell(target_row, cols["foto webp"] + 1).value = None
+    workbook.save(cms)
+
+    _, managers, _, _ = load_cms(cms)
+    profile = managers[key_text(target_dm)]
+    assert profile["photo"] == "assets/dm/adriana-tanus.webp"
+    assert profile["photoSource"] == "Detectada"
+
+
 def main() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         temp = Path(temp_dir)
@@ -270,6 +291,7 @@ def main() -> None:
         test_structural_guards(temp)
         test_flexible_cms(temp)
         test_activity_row_count_independence(temp)
+        test_manager_photo_auto_detection(temp)
     print("Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros")
 
 

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 from difflib import SequenceMatcher
+from functools import lru_cache
 import hashlib
 import json
 import math
@@ -146,6 +147,43 @@ def short_dm_name(value: Any) -> str:
     else:
         surname_index = 1
     return f"{parts[0]} {parts[min(surname_index, len(parts) - 1)]}"
+
+
+def photo_slug(value: Any) -> str:
+    """Convierte un nombre corto en el nombre de archivo WebP canónico."""
+    return re.sub(r"[^a-z0-9]+", "-", key_text(value)).strip("-")
+
+
+@lru_cache(maxsize=128)
+def validate_webp_asset(relative_path: str, label: str = "fotografía") -> str:
+    """Valida ruta local y firma WebP leyendo sólo 12 bytes del recurso."""
+    photo = clean_text(relative_path).replace("\\", "/")
+    if not photo or Path(photo).is_absolute() or Path(photo).suffix.casefold() != ".webp":
+        raise ValueError(f"Ruta WebP inválida para {label}: {photo or '(vacía)'}")
+    resolved = (ROOT / photo).resolve()
+    try:
+        resolved.relative_to(ROOT.resolve())
+    except ValueError as error:
+        raise ValueError(f"La fotografía sale del proyecto para {label}: {photo}") from error
+    if not resolved.is_file():
+        raise ValueError(f"No existe la fotografía para {label}: {photo}")
+    with resolved.open("rb") as source:
+        signature = source.read(12)
+    if len(signature) != 12 or signature[:4] != b"RIFF" or signature[8:] != b"WEBP":
+        raise ValueError(f"El archivo no es un WebP válido para {label}: {photo}")
+    return photo
+
+
+def manager_photo(dm: str, short_name: str, configured_photo: Any) -> tuple[str, str]:
+    """Usa la ruta CMS o detecta el WebP canónico por nombre corto."""
+    photo = clean_text(configured_photo)
+    if photo:
+        return validate_webp_asset(photo, dm), "CMS"
+    slug = photo_slug(short_name)
+    candidate = f"assets/dm/{slug}.webp" if slug else ""
+    if candidate and (ROOT / candidate).is_file():
+        return validate_webp_asset(candidate, dm), "Detectada"
+    return "", "Pendiente"
 
 
 def active_activity_catalog(activities: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, str]]:
@@ -753,12 +791,12 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         manager_key = key_text(dm)
         if manager_key in managers:
             raise ValueError(f"El CMS contiene un gerente activo duplicado: {dm}")
-        photo = clean_text(row[manager_cols["foto webp"]])
-        if photo and not (ROOT / photo).is_file():
-            raise ValueError(f"No existe la fotografía configurada para {dm}: {photo}")
+        short_name = clean_text(row[manager_cols["nombre corto"]]) or short_dm_name(dm)
+        photo, photo_source = manager_photo(dm, short_name, row[manager_cols["foto webp"]])
         managers[manager_key] = {
-            "shortName": clean_text(row[manager_cols["nombre corto"]]) or short_dm_name(dm),
+            "shortName": short_name,
             "photo": photo,
+            "photoSource": photo_source,
         }
     org_ws = workbook["Organigrama"]
     org_header, org_cols = find_header(org_ws, {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"})
@@ -770,8 +808,8 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         if not name or not is_yes(row[org_cols["activo"]]):
             continue
         photo = clean_text(row[org_cols["foto webp"]])
-        if photo and not (ROOT / photo).is_file():
-            raise ValueError(f"No existe la fotografía del organigrama para {name}: {photo}")
+        if photo:
+            photo = validate_webp_asset(photo, f"organigrama {name}")
         try:
             level = int(float(row[org_cols["nivel"]]))
         except (TypeError, ValueError):
@@ -1293,6 +1331,7 @@ def build_payload(
             "dm": dm,
             "shortName": profile.get("shortName", dm),
             "photo": profile.get("photo", ""),
+            "photoSource": profile.get("photoSource", "Pendiente"),
             "photoStatus": "Disponible" if profile.get("photo") else "Pendiente",
             "regions": sorted({store["region"] for store in dm_stores}, key=key_text),
             "stores": len(dm_stores),

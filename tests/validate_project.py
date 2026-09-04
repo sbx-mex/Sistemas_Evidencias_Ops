@@ -14,7 +14,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, safe_evidence_url, short_dm_name
+from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, photo_slug, safe_evidence_url, short_dm_name, validate_webp_asset
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -32,7 +32,8 @@ REQUIRED = [
     "scripts/prepare_campaign_theme.py", "assets/campaign/lucy-fall.webp", "assets/campaign/snoopy-fall.webp", "assets/campaign/linus-fall.webp",
 ]
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
-    "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
+    "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia",
+    "adriana-tanus", "andrea-nava", "areli-lazcano", "daniel-flores", "erika-contreras", "jose-magos", "juan-zuniga", "manuel-avila",
 )]
 TEXT_SUFFIXES = {".py", ".js", ".css", ".html", ".md", ".yml", ".yaml", ".json"}
 
@@ -151,8 +152,19 @@ if directory_status.get("includedStatuses") != ["Abierta"] or directory_status.g
     fail("El CMS no controla de forma auditable las tiendas abiertas")
 if any(store.get("status") != "Abierta" for store in data.get("stores", [])):
     fail("Una tienda no abierta entró en los conteos del dashboard")
-if sum(item.get("photoStatus") == "Disponible" for item in data.get("dms", [])) != 6:
-    fail("Las seis fotografías existentes no quedaron vinculadas")
+available_photos = [item for item in data.get("dms", []) if item.get("photoStatus") == "Disponible"]
+for item in available_photos:
+    validate_webp_asset(item.get("photo", ""), item.get("dm", "DM"))
+poniente_names = {
+    "Adriana Alejandra Tanus Buhler", "Andrea Nava Guzman", "Areli Anahi Lazcano Lezama",
+    "Daniel Flores Maldonado", "Erika Julieta Contreras Aguilera", "Jose De Jesus Magos Arzaluz",
+    "Juan Jesus Zuñiga Flores", "Manuel Alejandro Avila Molina",
+}
+poniente = [item for item in data.get("dms", []) if item.get("dm") in poniente_names]
+if len(poniente) != 8 or any(item.get("photoStatus") != "Disponible" for item in poniente):
+    fail("Las ocho fotografías de Centro Poniente no quedaron vinculadas")
+if any(item.get("photo") != f"assets/dm/{photo_slug(item.get('shortName'))}.webp" for item in poniente):
+    fail("Las rutas de fotografía de Centro Poniente no siguen el nombre canónico")
 if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):
     fail("Los DM nuevos no quedaron marcados con foto pendiente")
 if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):

@@ -18,7 +18,7 @@ try:
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
         directory_sheet,
-        normalize_ceco, normalize_dm, parse_date, validate_xlsx,
+        normalize_ceco, normalize_dm, parse_date, validate_webp_asset, validate_xlsx,
     )
 except ImportError:  # Ejecución directa: python scripts/validate_sources.py
     from build_dashboard import (
@@ -26,7 +26,7 @@ except ImportError:  # Ejecución directa: python scripts/validate_sources.py
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
         directory_sheet,
-        normalize_ceco, normalize_dm, parse_date, validate_xlsx,
+        normalize_ceco, normalize_dm, parse_date, validate_webp_asset, validate_xlsx,
     )
 
 CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion", "Tiendas Abiertas", "Organigrama"}
@@ -108,11 +108,16 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     manager_ws = workbook["Gerentes"]
     manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
     managers: list[str] = []
+    manager_photos = 0
     for row_number in range(manager_header + 1, manager_ws.max_row + 1):
         dm = clean_text(manager_ws.cell(row_number, manager_cols["dm"] + 1).value)
         if not dm or not is_yes(manager_ws.cell(row_number, manager_cols["activo"] + 1).value):
             continue
         managers.append(key_text(dm))
+        photo = clean_text(manager_ws.cell(row_number, manager_cols["foto webp"] + 1).value)
+        if photo:
+            validate_webp_asset(photo, dm)
+            manager_photos += 1
     if duplicates(managers):
         raise ValueError("Gerentes CMS duplicados: " + ", ".join(duplicates(managers)))
 
@@ -184,6 +189,7 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     return {
         "activities": activity_rows,
         "managers": len(managers),
+        "managerPhotos": manager_photos,
         "organization": len(organization),
         "openStores": cms_open_stores,
         "settings": len(config_keys),

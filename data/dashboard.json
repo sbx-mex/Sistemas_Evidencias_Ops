@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "688116f132a7c18e",
+  "buildVersion": "737437f3e0b6226b",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T20:35:05+00:00",
-  "lastUpdated": "2026-09-04T14:02:52",
-  "lastUpdatedDisplay": "04/09/2026 14:02",
+  "generatedAt": "2026-09-04T14:45:19-06:00",
+  "lastUpdated": "2026-09-04T14:30:51",
+  "lastUpdatedDisplay": "04/09/2026 14:30",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "04/09/26 · 14:02 h",
+    "cutOffDisplay": "04/09/26 · 14:30 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 296,
+        "completed": 297,
         "expected": 781,
-        "pending": 485,
-        "compliance": 37.9,
+        "pending": 484,
+        "compliance": 38.0,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "144a4cf8ce1841950b596f780bcd9bc2b7c351094425c1c73e0249ddaf46dbdb",
+    "responsesSha256": "7fa351d65f5c80582d0afea29068b22fca501bff58986ac5ca99b6ef4c10b591",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -121,7 +121,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "71948b46247a89bce16ecbb0fee7f1931313f2521e2cb69aad427d7c9e56ef86"
+    "cmsSha256": "b405fb4c21991da036e7b79a84266e0365905125ca251ff3194db788d62f518e"
   },
   "summary": {
     "regions": 4,
@@ -129,15 +129,15 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3916,
-    "completedCompletions": 296,
+    "completedCompletions": 297,
     "compliance": 7.6,
-    "validResponses": 296,
+    "validResponses": 297,
     "storesComplete": 1,
-    "pendingCompletions": 3620,
+    "pendingCompletions": 3619,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 329,
+    "responsesRead": 330,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -168,7 +168,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 7
+        "CeCo1": 8
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -224,7 +224,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 296,
+    "evidenceLinksPublished": 297,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -347,11 +347,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 30,
+      "completedStores": 31,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 327,
-      "compliance": 8.4,
+      "pendingStores": 326,
+      "compliance": 8.7,
       "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
       "daysRemaining": 2,
@@ -495,6 +495,7 @@
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Guadarrama",
       "photo": "assets/dm/yazmin-chabela.webp",
+      "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
@@ -513,6 +514,7 @@
       "dm": "Enrique Cesar Flores",
       "shortName": "Enrique Flores",
       "photo": "assets/dm/enrique-cesar.webp",
+      "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
@@ -531,6 +533,7 @@
       "dm": "Veronica Garcia Ortega",
       "shortName": "Veronica Garcia",
       "photo": "assets/dm/veronica-garcia.webp",
+      "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
@@ -549,17 +552,18 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "shortName": "Nancy Rodriguez",
       "photo": "assets/dm/nancy-carolina.webp",
+      "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
       ],
       "stores": 12,
-      "completed": 42,
+      "completed": 43,
       "expected": 131,
       "notApplicable": 1,
-      "pending": 89,
+      "pending": 88,
       "pendingStores": 12,
-      "compliance": 32.1,
+      "compliance": 32.8,
       "status": "Atención",
       "rank": 4
     },
@@ -567,6 +571,7 @@
       "dm": "Vanessa Carreño Rios",
       "shortName": "Vanessa Carreño",
       "photo": "assets/dm/vanessa-carreno.webp",
+      "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
@@ -585,6 +590,7 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "shortName": "Yazmin Garcia",
       "photo": "assets/dm/yazmin-garcia.webp",
+      "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
@@ -602,8 +608,9 @@
     {
       "dm": "Adriana Alejandra Tanus Buhler",
       "shortName": "Adriana Tanus",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/adriana-tanus.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -621,6 +628,7 @@
       "dm": "Alberto Torrado Aguilar Cauz",
       "shortName": "Alberto Torrado",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Centro"
@@ -638,8 +646,9 @@
     {
       "dm": "Andrea Nava Guzman",
       "shortName": "Andrea Nava",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/andrea-nava.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -656,8 +665,9 @@
     {
       "dm": "Areli Anahi Lazcano Lezama",
       "shortName": "Areli Lazcano",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/areli-lazcano.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -675,6 +685,7 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "shortName": "Ariana Gutierrez",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -693,6 +704,7 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "shortName": "Cesar Castillo",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -710,8 +722,9 @@
     {
       "dm": "Daniel Flores Maldonado",
       "shortName": "Daniel Flores",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/daniel-flores.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -728,8 +741,9 @@
     {
       "dm": "Erika Julieta Contreras Aguilera",
       "shortName": "Erika Contreras",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/erika-contreras.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -747,6 +761,7 @@
       "dm": "Fernando Eduardo Verdugo Saldaña",
       "shortName": "Fernando Verdugo",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -765,6 +780,7 @@
       "dm": "Guadalupe Ibarra Martínez",
       "shortName": "Guadalupe Ibarra",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Centro"
@@ -783,6 +799,7 @@
       "dm": "Hazar Susim Trejo Hernandez",
       "shortName": "Hazar Trejo",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -801,6 +818,7 @@
       "dm": "Jaqueline Cortes Ayala",
       "shortName": "Jaqueline Cortes",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -819,6 +837,7 @@
       "dm": "Jesus Antonio Elguera Flores",
       "shortName": "Jesus Elguera",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -836,8 +855,9 @@
     {
       "dm": "Jose De Jesus Magos Arzaluz",
       "shortName": "Jose Magos",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/jose-magos.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -854,8 +874,9 @@
     {
       "dm": "Juan Jesus Zuñiga Flores",
       "shortName": "Juan Zuñiga",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/juan-zuniga.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -873,6 +894,7 @@
       "dm": "Luis Manuel Neri Saldaña",
       "shortName": "Luis Neri",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Centro"
@@ -891,6 +913,7 @@
       "dm": "Luis Alberto Quevedo Rodriguez",
       "shortName": "Luis Quevedo",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -908,8 +931,9 @@
     {
       "dm": "Manuel Alejandro Avila Molina",
       "shortName": "Manuel Avila",
-      "photo": "",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/manuel-avila.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
       ],
@@ -927,6 +951,7 @@
       "dm": "Maria Anallely Sanchez Garcia",
       "shortName": "Maria Sanchez",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Centro"
@@ -945,6 +970,7 @@
       "dm": "Monica Selene Morales Ibarra",
       "shortName": "Monica Morales",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Sur"
@@ -963,6 +989,7 @@
       "dm": "Nora Caracas Saldaña",
       "shortName": "Nora Caracas",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Centro"
@@ -981,6 +1008,7 @@
       "dm": "Vacante",
       "shortName": "Vacante",
       "photo": "",
+      "photoSource": "Pendiente",
       "photoStatus": "Pendiente",
       "regions": [
         "Centro Centro"
@@ -4650,17 +4678,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38606",
-      "store": "TlalnepantlaCarso",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 5,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 45.5,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38374",
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4740,6 +4757,17 @@
     {
       "ceco": "38661",
       "store": "Jinetes",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 6,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 5,
+      "compliance": 54.5,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 6,
       "expected": 11,
@@ -15371,15 +15399,15 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 45.5,
-      "lastUpdate": "2026-09-02T15:03:01",
+      "compliance": 54.5,
+      "lastUpdate": "2026-09-04T14:30:51",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
-        "Rack FHW": false,
+        "Rack FHW": true,
         "Max & Min": true,
         "Fotografia - SM": false,
         "Mandil Verde": false,
@@ -18483,6 +18511,28 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-a9d104338800ba06",
+      "timestamp": "2026-09-04T14:30:51",
+      "timestampDisplay": "04/09/2026 14:30",
+      "activity": "Rack FHW",
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Rack_FHW_38606",
+      "evidenceLinkLabel": "Link_Rack_FHW_38606",
+      "evidenceFileName": "tempImage4GFBTV_Starbucks Tlalnepant.jpg",
+      "evidenceSourceHeader": "Evidencia_Rack_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/tempImage4GFBTV_Starbucks%20Tlalnepant.jpg"
+    },
     {
       "id": "respuesta-36ad7fdd22eaf70c",
       "timestamp": "2026-09-04T14:02:52",
