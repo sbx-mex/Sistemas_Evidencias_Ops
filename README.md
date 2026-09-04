@@ -118,7 +118,7 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 - 357 tiendas `Abierta` de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes. Las 15 tiendas con `Cierre Temporal` o `Cierre Definitivo` permanecen en el Directorio, pero no entran en conteos ni avance.
 - El CMS controla el alcance con `onlyOpenStores = Si` e `includedStoreStatuses = Abierta`.
 - La pestaña CMS `Tiendas Abiertas` se regenera con CC, tienda, región, estatus y DM para revisar visualmente las 357 tiendas publicadas.
-- La pestaña `Organigrama` publica a Raúl Sierra como Director Starbucks México y a los responsables de Centro Centro, Centro Poniente, Centro Sur y Centro Norte.
+- La pestaña `Organigrama` publica a Raúl Sinohe Sierra Santa Maria como Director Starbucks México y a los responsables de Centro Centro, Centro Poniente, Centro Sur y Centro Norte.
 - 8 actividades activas.
 - Última actualización: `29/08/2026 09:43`.
 - CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.

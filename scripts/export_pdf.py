@@ -105,14 +105,18 @@ def build_pdf(data: dict, output: Path) -> None:
 
         if director_photo:
             pdf.setFillColor(white)
-            pdf.roundRect(page_width - 145, page_height - 103, 48, 61, 8, stroke=0, fill=1)
-            pdf.drawImage(director_photo, page_width - 142, page_height - 100, 42, 55, mask="auto")
+            pdf.roundRect(page_width - 240, page_height - 103, 48, 61, 8, stroke=0, fill=1)
+            pdf.drawImage(director_photo, page_width - 237, page_height - 100, 42, 55, mask="auto")
         pdf.setFillColor(white)
-        pdf.setFont("Helvetica-Bold", 8)
-        pdf.drawString(page_width - 90, page_height - 65, director.get("name", "Jorge Alcantar"))
+        pdf.setFont("Helvetica-Bold", 7.5)
+        pdf.drawString(
+            page_width - 180,
+            page_height - 65,
+            fit_text(director.get("name", "Jorge Alcantar"), "Helvetica-Bold", 7.5, 140),
+        )
         pdf.setFillColor(HexColor("#B9E1D0"))
         pdf.setFont("Helvetica", 7)
-        pdf.drawString(page_width - 90, page_height - 79, director.get("role", "Director Regional"))
+        pdf.drawString(page_width - 180, page_height - 79, director.get("role", "Director Regional"))
 
         cards = [
             ("AVANCE REALIZADO", f"{number(summary.get('completedCompletions', 0))} / {number(summary.get('expectedCompletions', 0))}"),

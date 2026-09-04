@@ -1203,6 +1203,27 @@ def build_payload(
     for rank, item in enumerate(dm_stats, 1):
         item["rank"] = rank
 
+    # Publica un indicador ejecutivo por Director Regional sin recalcular en el navegador.
+    regional_metrics: dict[str, dict[str, int]] = defaultdict(
+        lambda: {"stores": 0, "completed": 0, "expected": 0}
+    )
+    for store in store_rows:
+        metric = regional_metrics[key_text(store["region"])]
+        metric["stores"] += 1
+        metric["completed"] += store["completed"]
+        metric["expected"] += store["expected"]
+    for director in organization["regionalDirectors"]:
+        metric = regional_metrics[key_text(director["region"])]
+        compliance = round(metric["completed"] / metric["expected"] * 100, 1) if metric["expected"] else 0
+        director.update({
+            "stores": metric["stores"],
+            "completed": metric["completed"],
+            "expected": metric["expected"],
+            "pending": metric["expected"] - metric["completed"],
+            "compliance": compliance,
+            "status": status_label(compliance),
+        })
+
     not_applicable_total = len(not_applicable_pairs)
     expected_total = len(stores) * len(activity_names) - not_applicable_total
     completed_total = len(completion_pairs)
@@ -1252,7 +1273,7 @@ def build_payload(
     region_label = regions[0] if len(regions) == 1 else "Todas las regiones"
 
     return {
-        "schemaVersion": 12,
+        "schemaVersion": 13,
         "buildVersion": build_version,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": region_label,

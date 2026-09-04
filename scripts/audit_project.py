@@ -59,7 +59,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Organigrama", "Región | Centro's", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sierra", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "filter-intro"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "filter-intro"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -139,7 +139,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v24", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v25", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -152,7 +152,7 @@ if "git add -A -- tests/validate_horno_applicability.py" in workflow:
 if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 12:
+if data.get("schemaVersion") != 13:
     issues.append("Contrato JSON distinto de la versión 12")
 if len(data.get("regions", [])) < 1 or data.get("summary", {}).get("regions") != len(data.get("regions", [])):
     issues.append("El alcance regional no es auditable")
@@ -201,8 +201,13 @@ director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "JUNTÉMONOS MÁS" or report_meta.get("footerLabel") != "Starbucks México · Operaciones" or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
 organization = data.get("organization", {})
-if organization.get("nationalDirector", {}).get("name") != "Raúl Sierra" or len(organization.get("regionalDirectors", [])) != 4:
+if organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status"}.issubset(item) for item in organization.get("regionalDirectors", [])):
     issues.append("Organigrama CMS incompleto")
+if any(text in html for text in ("Organigrama vigente controlado desde el CMS.", "Comparativo regional de mayor a menor avance.")):
+    issues.append("La interfaz conserva textos redundantes solicitados para ocultar")
+organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
+if "nationalDirector" in organization_renderer or "<img" in organization_renderer or "director-progress" not in organization_renderer:
+    issues.append("La sección regional no separa correctamente el Hero de los cuatro Directores Regionales")
 published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
 published_pairs = [(item.get("ceco"), item.get("activity")) for item in published_evidence]
 if len(published_pairs) != len(set(published_pairs)):

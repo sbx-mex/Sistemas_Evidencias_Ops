@@ -88,7 +88,7 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 12:
+if data.get("schemaVersion") != 13:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Todas las regiones":
     fail("Identidad del proyecto incorrecta")
@@ -252,7 +252,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Organigrama", "Región | Centro's", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sierra", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "filter-intro"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "filter-intro"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -261,6 +261,9 @@ if nav_order != sorted(nav_order) or section_order != sorted(section_order):
     fail("Orden de navegación o secciones incorrecto")
 if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
     fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
+organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
+if "nationalDirector" in organization_renderer or "<img" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer:
+    fail("La vista regional debe mostrar sólo cuatro Directores Regionales con avance dinámico")
 store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
 if "<th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
     fail("La tabla Tiendas todavía muestra la columna DM")
@@ -310,7 +313,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v24", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
+for cache_control in ("sistema-evidencias-ops-v25", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
@@ -349,7 +352,7 @@ if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
 organization = data.get("organization", {})
-if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sierra" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status"}.issubset(item) for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 focus = data.get("activities", [])
 if [item.get("focusRank") for item in focus] != list(range(1, len(focus) + 1)):
