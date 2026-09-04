@@ -34,6 +34,7 @@ CMS_CONFIG_KEYS = {
     "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
+    "ignoredResponseIds",
 }
 
 
@@ -166,6 +167,18 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
         if not clean_text(value) or (key in boolean_keys and not (is_yes(value) or is_no(value))):
             config_defaults += 1
     missing_keys = CMS_CONFIG_KEYS.difference(config_keys)
+    ignored_values = [
+        config_ws.cell(row, config_cols["valor"] + 1).value
+        for row in range(config_header + 1, config_ws.max_row + 1)
+        if clean_text(config_ws.cell(row, config_cols["clave"] + 1).value) == "ignoredResponseIds"
+    ]
+    ignored_ids = {
+        item.strip()
+        for item in clean_text(ignored_values[0] if ignored_values else "").split(",")
+        if item.strip()
+    }
+    if any(not item.isdigit() for item in ignored_ids):
+        raise ValueError("ignoredResponseIds sólo acepta Id numéricos de Forms")
     if duplicates(config_keys):
         raise ValueError("Claves CMS duplicadas: " + ", ".join(duplicates(config_keys)))
     return {

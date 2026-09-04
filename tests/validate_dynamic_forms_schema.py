@@ -70,14 +70,54 @@ def main() -> None:
         assert clean_text(mojibake_yes) == "Sí"
         assert boolean_answer(mojibake_yes) is True
 
-        # Escenario 3: encabezados base duplicados; se toma el único valor poblado.
+        # Escenario 3: Forms conserva CeCo y crea CeCo1 al cambiar la pregunta.
+        # Se toma el único valor poblado y no se confunde con Ceco12.
         duplicate = temp / "duplicate.xlsx"
         start, finish = timestamps(4)
-        duplicate_headers = BASE + ["CeCo", "CeCo", ACTIVITY, ACTIVITY, "Evidencia_QR_Qualtrics"]
-        save_book(duplicate, duplicate_headers, [[4, start, finish, "", "Prueba", "", "38965", "", "QR - Qualtrics", f"{allowed}/qr.jpg"]])
+        duplicate_headers = BASE + ["CeCo", "CeCo1", "Ceco12", ACTIVITY, ACTIVITY, "Evidencia_QR_Qualtrics"]
+        save_book(duplicate, duplicate_headers, [[4, start, finish, "", "Prueba", "", "38965", "ignorar", "", "QR - Qualtrics", f"{allowed}/qr.jpg"]])
         rows, schema = load_responses(duplicate)
         assert rows[0]["ceco"] == "38965" and rows[0]["activity"] == "QR - Qualtrics"
+        assert rows[0]["sourceId"] == "4"
+        assert schema["cecoHeaders"] == ["CeCo", "CeCo1"]
         assert schema["rowConflicts"] == []
+
+        # Dos CeCo distintos en la misma fila se rechazan sin adivinar.
+        conflict = temp / "ceco-conflict.xlsx"
+        save_book(conflict, duplicate_headers, [[5, start, finish, "", "Prueba", "38115", "38965", "", "QR - Qualtrics", "", f"{allowed}/qr.jpg"]])
+        rows, schema = load_responses(conflict)
+        assert rows[0]["ceco"] == "" and rows[0]["confirmed"] is False
+        assert schema["rowConflicts"] == [{"row": 2, "field": "ceco"}]
+
+        # Simulación integral: cualquier CeCo abierto escrito en CeCo1 debe
+        # cruzar exactamente igual que el histórico almacenado en CeCo.
+        current_payload = build_payload(
+            ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        all_cecos = [store["ceco"] for store in current_payload["stores"]]
+        all_ceco1 = temp / "all-ceco1.xlsx"
+        simulation_headers = BASE + ["CeCo", "CeCo1", ACTIVITY, "Evidencia_RollOut"]
+        simulation_rows = []
+        for index, ceco in enumerate(all_cecos, 1):
+            simulated_start, simulated_finish = timestamps(1000 + index)
+            simulation_rows.append([
+                9000 + index, simulated_start, simulated_finish, "", "Simulación",
+                "", ceco, "Roll Out", f"{allowed}/{ceco}.jpg",
+            ])
+        save_book(all_ceco1, simulation_headers, simulation_rows)
+        simulated_payload = build_payload(
+            all_ceco1,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        assert simulated_payload["quality"]["unknownCeCos"] == []
+        assert simulated_payload["summary"]["validResponses"] == len(all_cecos)
+        assert simulated_payload["summary"]["completedCompletions"] == len(all_cecos)
+        assert {item["ceco"] for item in simulated_payload["submissions"]} == set(all_cecos)
 
         # Escenario 4: dos evidencias incompatibles no se mezclan ni se adivinan.
         ambiguous = temp / "ambiguous.xlsx"

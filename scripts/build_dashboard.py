@@ -46,7 +46,9 @@ RESPONSE_FIELDS = {
     "email": ("Correo electrónico", "Correo electronico"),
     "name": ("Nombre",),
     "activity": ("Selecciona la actividad que deseas registrar", "Actividad"),
-    "ceco": ("CeCo", "CC", "Centro de costo"),
+    # Forms conserva la pregunta anterior como CeCo y crea CeCo1 al cambiarla
+    # de lista desplegable a captura numérica. Ambas son la misma llave lógica.
+    "ceco": ("CeCo", "CeCo1", "CC", "Centro de costo"),
 }
 
 CONFIRMATION_HEADERS = (
@@ -78,6 +80,7 @@ KNOWN_SETTING_KEYS = (
     "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
+    "ignoredResponseIds",
 )
 
 
@@ -975,6 +978,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         responses.append({
             "row": row_number,
             "id": response_id,
+            "sourceId": values["id"],
             "started": parse_datetime(values["started"]),
             "finished": finished,
             "email": values["email"],
@@ -1058,9 +1062,14 @@ def build_payload(
     hidden_activity_rows = []
     hidden_activities = set()
     canonicalized_activity_rows = []
+    ignored_response_rows = []
+    ignored_response_source_ids = set(setting_list(settings.get("ignoredResponseIds")))
     latest_update = None
 
     for response in responses:
+        if response.get("sourceId") in ignored_response_source_ids:
+            ignored_response_rows.append(response["row"])
+            continue
         store = stores.get(response["ceco"])
         activity_text = clean_text(response["activity"])
         activity = canonical_cms_activity(activity_text, configured_by_text, configured_by_compact)
@@ -1356,6 +1365,8 @@ def build_payload(
             "hiddenActivityRows": hidden_activity_rows,
             "hiddenActivities": sorted(hidden_activities, key=key_text),
             "canonicalizedActivityRows": canonicalized_activity_rows,
+            "ignoredResponseRows": ignored_response_rows,
+            "ignoredResponseSourceIds": sorted(ignored_response_source_ids, key=key_text),
             "duplicateValidResponses": max(raw_valid_responses - valid_responses, 0),
             "unsafeEvidenceRows": unsafe_evidence_rows,
             "responseSchema": response_schema,

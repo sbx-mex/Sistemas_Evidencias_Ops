@@ -16,6 +16,9 @@ import tempfile
 import time
 from typing import Iterator
 
+# El mantenimiento debe ser limpio también fuera de GitHub Actions.
+sys.dont_write_bytecode = True
+
 from build_dashboard import file_sha256, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
@@ -30,7 +33,13 @@ LOCK = ROOT / ".safe-maintenance.lock"
 
 
 def run(*command: str) -> None:
-    subprocess.run(command, cwd=ROOT, check=True)
+    environment = os.environ.copy()
+    environment.update({
+        "PYTHONUTF8": "1",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPYCACHEPREFIX": "/tmp/evidencias-ops-pycache",
+    })
+    subprocess.run(command, cwd=ROOT, check=True, env=environment)
 
 
 @contextmanager
@@ -168,6 +177,9 @@ def main() -> None:
             run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
             run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
             run(sys.executable, "-X", "utf8", "tests/validate_project.py")
+            # Las pruebas y exportadores también pueden dejar residuos si un
+            # proceso externo interrumpe una escritura; se limpia antes de auditar.
+            removed += clean_obsolete()
             run(sys.executable, "-X", "utf8", "scripts/audit_project.py")
             run(sys.executable, "scripts/clean_obsolete.py", "--check")
 

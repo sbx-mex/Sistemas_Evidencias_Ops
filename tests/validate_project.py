@@ -145,6 +145,15 @@ if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", []
     fail("Los DM nuevos no quedaron marcados con foto pendiente")
 if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
     fail("Calidad inicial incorrecta")
+response_schema = data.get("quality", {}).get("responseSchema", {})
+if response_schema.get("cecoHeaders") != ["CeCo", "CeCo1"]:
+    fail("El motor no consolidó exactamente las columnas CeCo y CeCo1")
+if "Ceco12" in response_schema.get("cecoHeaders", []):
+    fail("Una columna ajena Ceco12 fue interpretada como CeCo")
+if data.get("quality", {}).get("ignoredResponseSourceIds") != ["353"]:
+    fail("La respuesta de prueba Id 353 no quedó aislada por configuración")
+if data.get("quality", {}).get("ignoredResponseRows") != [324]:
+    fail("La fila de prueba CeCo 38651 no quedó fuera de todo cálculo")
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
     fail("El JSON público expone correo o respondente")
 published = [row for row in data.get("submissions", []) if row.get("valid")]
@@ -379,7 +388,7 @@ approve("09 · Ranking, fotografía DM e identidad ejecutiva")
 for text in ["pip check", "python -X utf8 scripts/safe_maintenance.py --force", "python -X utf8 scripts/clean_obsolete.py --check", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
-for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"']:
+for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"', "git add -u"]:
     if text not in workflow:
         fail(f"Publicación no idempotente: falta {text}")
 if "git add -A -- tests/validate_horno_applicability.py" in workflow:

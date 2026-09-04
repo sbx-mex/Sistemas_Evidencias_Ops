@@ -27,4 +27,6 @@ Ejemplo: Enrique tiene 10 tiendas. Si 2 responden `No`, el ideal de Hornos es 8.
 
 El motor acepta una columna genérica `Evidencia del avance` o una columna por actividad con el formato `Evidencia_<Actividad>`. La actividad seleccionada en Forms determina cuál evidencia se utiliza; el orden de las columnas no afecta el cruce.
 
+Al sustituir la pregunta desplegable de tienda por captura numérica, Microsoft Forms conserva el histórico en `CeCo` y agrega la pregunta nueva como `CeCo1`. El motor consolida ambas columnas, exige exactamente cinco dígitos y rechaza cualquier fila donde las dos tengan valores diferentes. Encabezados parecidos como `Ceco12` no se usan como CeCo.
+
 Las actividades pueden seguir agregándose o retirándose en Forms. El CMS es quien decide cuáles se muestran y forman parte del cálculo; una actividad no habilitada en el CMS permanece en el archivo fuente y se reporta en la auditoría sin publicarse.

@@ -19,7 +19,7 @@ El motor identifica estos encabezados aunque cambie su orden o existan columnas 
 
 1. `Hora de finalización` → **Última actualización**.
 2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
-3. `CeCo` → cruce automático con nombre de tienda y DM.
+3. `CeCo` o `CeCo1` → cruce automático con nombre de tienda y DM. Forms puede conservar ambas columnas al cambiar la pregunta de lista desplegable a captura numérica; Python toma el único valor informado y rechaza filas con valores contradictorios.
 4. `¿Confirmas que realizaste la actividad seleccionada?` → es opcional; cuando no existe, una evidencia válida confirma el registro. Únicamente en Hornos, un `No` explícito significa **No aplica**.
 5. `Evidencia del avance` o `Evidencia_<Actividad>` → Python elige la columna que coincide con la actividad seleccionada, valida HTTPS y dominio autorizado y genera una etiqueta `Actividad_CeCo`.
 
@@ -91,6 +91,8 @@ Una combinación tienda–actividad cuenta una sola vez cuando:
 - la actividad está activa y vigente en el CMS.
 
 Envíos repetidos se conservan como registros, pero el cumplimiento se deduplica por `CeCo + Actividad`, utilizando el más reciente.
+
+Las respuestas operativas de prueba pueden excluirse temporalmente por el `Id` original de Forms mediante `ignoredResponseIds` en la hoja `Configuracion` del CMS. La exclusión ocurre antes de calcular fecha de corte, aplicabilidad, evidencias o avance; no bloquea el CeCo para respuestas reales.
 
 ### Excepción exclusiva de Hornos
 
