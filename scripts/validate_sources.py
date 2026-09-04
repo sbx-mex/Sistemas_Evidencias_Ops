@@ -18,7 +18,8 @@ try:
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
         directory_sheet,
-        normalize_ceco, normalize_dm, parse_date, validate_webp_asset, validate_xlsx,
+        manager_photo, normalize_ceco, normalize_dm, parse_date, short_dm_name,
+        validate_webp_asset, validate_xlsx,
     )
 except ImportError:  # Ejecución directa: python scripts/validate_sources.py
     from build_dashboard import (
@@ -26,7 +27,8 @@ except ImportError:  # Ejecución directa: python scripts/validate_sources.py
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
         directory_sheet,
-        normalize_ceco, normalize_dm, parse_date, validate_webp_asset, validate_xlsx,
+        manager_photo, normalize_ceco, normalize_dm, parse_date, short_dm_name,
+        validate_webp_asset, validate_xlsx,
     )
 
 CMS_SHEETS = {"Actividades", "Gerentes", "Configuracion", "Tiendas Abiertas", "Organigrama"}
@@ -109,15 +111,19 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
     managers: list[str] = []
     manager_photos = 0
+    auto_detected_manager_photos = 0
     for row_number in range(manager_header + 1, manager_ws.max_row + 1):
         dm = clean_text(manager_ws.cell(row_number, manager_cols["dm"] + 1).value)
         if not dm or not is_yes(manager_ws.cell(row_number, manager_cols["activo"] + 1).value):
             continue
         managers.append(key_text(dm))
-        photo = clean_text(manager_ws.cell(row_number, manager_cols["foto webp"] + 1).value)
+        short_name = clean_text(manager_ws.cell(row_number, manager_cols["nombre corto"] + 1).value) or short_dm_name(dm)
+        photo, photo_source = manager_photo(
+            dm, short_name, manager_ws.cell(row_number, manager_cols["foto webp"] + 1).value
+        )
         if photo:
-            validate_webp_asset(photo, dm)
             manager_photos += 1
+            auto_detected_manager_photos += photo_source == "Detectada"
     if duplicates(managers):
         raise ValueError("Gerentes CMS duplicados: " + ", ".join(duplicates(managers)))
 
@@ -190,6 +196,7 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
         "activities": activity_rows,
         "managers": len(managers),
         "managerPhotos": manager_photos,
+        "autoDetectedManagerPhotos": auto_detected_manager_photos,
         "organization": len(organization),
         "openStores": cms_open_stores,
         "settings": len(config_keys),
@@ -303,7 +310,9 @@ def main() -> None:
     )
     print(
         "Motores auditados · "
-        f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / {cms_audit['openStores']} tiendas abiertas / {cms_audit['settings']} parámetros · "
+        f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / "
+        f"{cms_audit['managerPhotos']} fotos DM ({cms_audit['autoDetectedManagerPhotos']} detectadas) / "
+        f"{cms_audit['openStores']} tiendas abiertas / {cms_audit['settings']} parámetros · "
         f"Directorio {directory_audit['stores']} tiendas / {directory_audit['regions']} regiones en {directory_audit['sheet']} · "
         f"{directory_audit['missingDm']} asignaciones DM pendientes · "
         f"{directory_audit['excludedStores']} tiendas fuera por Estatus · "
