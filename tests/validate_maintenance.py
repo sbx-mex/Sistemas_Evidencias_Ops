@@ -13,7 +13,7 @@ from openpyxl import load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import build_payload, find_header, key_text, load_cms
+from scripts.build_dashboard import build_payload, find_header, key_text, load_cms, validate_webp_asset
 from scripts.build_dashboard import (
     STABILITY_CONTROLS, ensure_source_stability, find_directory_header,
     load_directory, load_settings, normalize_allowed_hosts, source_fingerprints,
@@ -261,8 +261,8 @@ def test_activity_row_count_independence(temp: Path) -> None:
     assert {item["name"] for item in expanded_activities} == baseline_names | {"Actividad de estabilidad"}
 
 
-def test_manager_photo_auto_detection(temp: Path) -> None:
-    """Una ruta CMS vacía detecta el WebP canónico sin coincidencias difusas."""
+def test_manager_photo_guards(temp: Path) -> None:
+    """Detecta el WebP canónico y bloquea rutas o contenidos inseguros."""
     cms = temp / "cms_foto_autodetectada.xlsx"
     shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", cms)
     workbook = load_workbook(cms)
@@ -281,6 +281,20 @@ def test_manager_photo_auto_detection(temp: Path) -> None:
     assert profile["photo"] == "assets/dm/adriana-tanus.webp"
     assert profile["photoSource"] == "Detectada"
 
+    invalid_root = ROOT / "assets" / ".photo-validation"
+    invalid_root.mkdir(exist_ok=True)
+    invalid_photo = invalid_root / "contenido-falso.webp"
+    try:
+        invalid_photo.write_text("esto no es una imagen", encoding="utf-8")
+        relative = invalid_photo.relative_to(ROOT).as_posix()
+        expect_error(lambda: validate_webp_asset(relative, "prueba"), "no es un WebP válido")
+        expect_error(lambda: validate_webp_asset("../fuera.webp", "prueba"), "sale del proyecto")
+        expect_error(lambda: validate_webp_asset("assets/dm/adriana-tanus.jpg", "prueba"), "Ruta WebP inválida")
+        expect_error(lambda: validate_webp_asset("assets/dm/no-existe.webp", "prueba"), "No existe")
+    finally:
+        invalid_photo.unlink(missing_ok=True)
+        invalid_root.rmdir()
+
 
 def main() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -291,7 +305,7 @@ def main() -> None:
         test_structural_guards(temp)
         test_flexible_cms(temp)
         test_activity_row_count_independence(temp)
-        test_manager_photo_auto_detection(temp)
+        test_manager_photo_guards(temp)
     print("Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros")
 
 

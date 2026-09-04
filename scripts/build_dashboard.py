@@ -155,8 +155,17 @@ def photo_slug(value: Any) -> str:
 
 
 @lru_cache(maxsize=128)
+def _valid_webp_signature(path: str, modified_ns: int, size: int) -> bool:
+    """Cachea la firma por archivo y versión, sin mezclarla con el nombre del DM."""
+    if size < 12:
+        return False
+    with Path(path).open("rb") as source:
+        signature = source.read(12)
+    return signature[:4] == b"RIFF" and signature[8:] == b"WEBP"
+
+
 def validate_webp_asset(relative_path: str, label: str = "fotografía") -> str:
-    """Valida ruta local y firma WebP leyendo sólo 12 bytes del recurso."""
+    """Valida ruta local y firma WebP con caché sensible a cambios del archivo."""
     photo = clean_text(relative_path).replace("\\", "/")
     if not photo or Path(photo).is_absolute() or Path(photo).suffix.casefold() != ".webp":
         raise ValueError(f"Ruta WebP inválida para {label}: {photo or '(vacía)'}")
@@ -167,9 +176,8 @@ def validate_webp_asset(relative_path: str, label: str = "fotografía") -> str:
         raise ValueError(f"La fotografía sale del proyecto para {label}: {photo}") from error
     if not resolved.is_file():
         raise ValueError(f"No existe la fotografía para {label}: {photo}")
-    with resolved.open("rb") as source:
-        signature = source.read(12)
-    if len(signature) != 12 or signature[:4] != b"RIFF" or signature[8:] != b"WEBP":
+    metadata = resolved.stat()
+    if not _valid_webp_signature(str(resolved), metadata.st_mtime_ns, metadata.st_size):
         raise ValueError(f"El archivo no es un WebP válido para {label}: {photo}")
     return photo
 
@@ -1143,8 +1151,10 @@ def build_payload(
         settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")
     )
     regional_director_photo = clean_text(settings.get("regionalDirectorPhoto", "assets/director/jorge-alcantar.webp"))
-    if regional_director_photo and not (ROOT / regional_director_photo).is_file():
-        raise ValueError(f"No existe la fotografía del Director Regional: {regional_director_photo}")
+    if regional_director_photo:
+        regional_director_photo = validate_webp_asset(
+            regional_director_photo, "Director Regional"
+        )
     stores, directory_sheet, directory_status = load_directory(directory_path, settings)
     responses, response_schema = load_responses(responses_path, [item["name"] for item in activities])
 
