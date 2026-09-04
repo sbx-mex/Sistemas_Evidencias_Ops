@@ -117,7 +117,7 @@ function reportMeta() {
 function exportProfile() {
   const organization = state.data.organization || {};
   const director = organization.nationalDirector || reportMeta().regionalDirector || {
-    name: "Raúl Sinohe Sierra Santa Maria", role: "Director Starbucks México", photo: "assets/director/raul-sierra.webp",
+    name: "Raúl Sinohe Sierra Santamaria", role: "Director Starbucks México", photo: "assets/director/raul-sierra.webp",
   };
   const dmName = state.filters.dm || (state.filters.store ? filteredStores()[0]?.dm : "");
   const dm = dmName ? state.data.dms.find((item) => item.dm === dmName) : null;
@@ -139,7 +139,7 @@ function renderOrganization() {
       : `<span class="organization-avatar" aria-label="Fotografía pendiente">${esc(initials(person.name))}</span>`;
     const filterValue = person.filterValue || person.region;
     const selected = state.filters.region === filterValue;
-    return `<button class="organization-card${selected ? " selected" : ""}" type="button" data-region-focus="${esc(filterValue)}" aria-pressed="${selected}" aria-label="${selected ? "Quitar filtro" : "Filtrar"} de ${esc(person.region)}; ${number(person.stores)} tiendas">${portrait}<span class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong></span><span class="director-progress"><strong>${percent(compliance)}</strong></span><span class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)}"><i style="--progress:${Math.min(compliance, 100)}%"></i></span></button>`;
+    return `<button class="organization-card${selected ? " selected" : ""}" type="button" data-region-focus="${esc(filterValue)}" aria-pressed="${selected}" aria-label="${selected ? "Quitar filtro" : "Filtrar"} de ${esc(person.region)}; ${number(person.stores)} tiendas">${portrait}<span class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong><em>${number(person.stores)} tiendas</em></span><span class="director-progress"><strong>${percent(compliance)}</strong></span><span class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)}"><i style="--progress:${Math.min(compliance, 100)}%"></i></span></button>`;
   }).join("") : '<div class="empty-state">Sin responsables activos en el CMS.</div>';
 }
 
@@ -256,7 +256,7 @@ function renderTeam() {
   $("#dm-team").innerHTML = rows.map((dm, index) => {
     const signal = semaphore(dm.value);
     const rank = index < 3 ? ["🥇", "🥈", "🥉"][index] : `#${index + 1}`;
-    return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}">
+    return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}" aria-pressed="${state.filters.dm === dm.dm}" aria-label="${state.filters.dm === dm.dm ? "Quitar filtro" : "Filtrar"} de ${esc(dm.shortName)}; ${dm.dmStores.length} tiendas">
       <span class="rank-icon" aria-label="Posición ${index + 1}">${rank}</span>
       ${dm.photo
         ? `<img src="./${esc(dm.photo)}" alt="Fotografía de ${esc(dm.shortName)}" loading="lazy">`
@@ -296,7 +296,28 @@ function readFilterUrl() {
 }
 
 function renderAll() {
-  renderSummary(); renderOrganization(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); syncFilterUrl();
+  renderSummary(); renderOrganization(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
+}
+
+function filterDisplayValue(key, value) {
+  if (key === "store") {
+    const store = state.data.stores.find((item) => item.ceco === value);
+    return store ? `${store.ceco} · ${store.store}` : value;
+  }
+  return value;
+}
+
+function renderFilterToolbar() {
+  const labels = { region: "Región", dm: "DM", store: "Tienda", activity: "Actividad" };
+  const active = Object.entries(state.filters).filter(([, value]) => value);
+  const toolbar = $("#filter-toolbar");
+  toolbar.hidden = active.length === 0;
+  $("#selected-filter-list").innerHTML = active.map(([key, value]) =>
+    `<button class="filter-chip" type="button" data-remove-filter="${key}" aria-label="Quitar ${labels[key]}: ${esc(filterDisplayValue(key, value))}"><span>${labels[key]}</span>${esc(filterDisplayValue(key, value))}<b aria-hidden="true">×</b></button>`
+  ).join("");
+  Object.entries(labels).forEach(([key]) => {
+    $("#filter-" + key)?.closest("label")?.classList.toggle("has-value", Boolean(state.filters[key]));
+  });
 }
 
 function clearDashboardFilters() {
@@ -304,6 +325,13 @@ function clearDashboardFilters() {
   state.showAllEvidence = false;
   populateFilters();
   renderAll();
+}
+
+function focusDynamicCard(attribute, value) {
+  requestAnimationFrame(() => {
+    const card = [...document.querySelectorAll(`[${attribute}]`)].find((item) => item.dataset[attribute.replace("data-", "").replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] === value);
+    card?.focus({ preventScroll: true });
+  });
 }
 
 function populateFilters() {
@@ -847,20 +875,36 @@ function bindEvents() {
   $("#export-modal-accept").addEventListener("click", acceptExportConfirmation);
   $("#export-modal-cancel").addEventListener("click", cancelExportConfirmation);
   $("#export-modal-close").addEventListener("click", closeExportModal);
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !$("#export-modal").hidden && !state.exporting) closeExportModal(); });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (!$("#export-modal").hidden && !state.exporting) closeExportModal();
+    else if (Object.values(state.filters).some(Boolean)) { clearDashboardFilters(); $("#filter-region").focus(); }
+  });
   document.addEventListener("click", (event) => {
+    const removeFilter = event.target.closest("[data-remove-filter]");
+    if (removeFilter) {
+      const key = removeFilter.dataset.removeFilter;
+      state.filters[key] = "";
+      if (key === "region") { state.filters.dm = ""; state.filters.store = ""; }
+      if (key === "dm") state.filters.store = "";
+      state.showAllEvidence = false; populateFilters(); renderAll(); $("#filter-" + key)?.focus({ preventScroll: true });
+      return;
+    }
     const regionButton = event.target.closest("[data-region-focus]");
     if (regionButton) {
-      state.filters.region = state.filters.region === regionButton.dataset.regionFocus ? "" : regionButton.dataset.regionFocus;
+      const value = regionButton.dataset.regionFocus;
+      state.filters.region = state.filters.region === value ? "" : value;
       state.filters.dm = ""; state.filters.store = ""; state.showAllEvidence = false;
-      populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
+      populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" }); focusDynamicCard("data-region-focus", value);
       return;
     }
     const button = event.target.closest("[data-dm-focus]");
     if (!button) return;
-    state.filters.dm = state.filters.dm === button.dataset.dmFocus ? "" : button.dataset.dmFocus;
-    state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" });
+    const value = button.dataset.dmFocus;
+    state.filters.dm = state.filters.dm === value ? "" : value;
+    state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); $("#resumen")?.scrollIntoView({ behavior: "smooth" }); focusDynamicCard("data-dm-focus", value);
   });
+  $("#scope-reset").addEventListener("click", () => { clearDashboardFilters(); $("#filter-region").focus(); });
   $("#refresh-button").addEventListener("click", refreshApplicationData);
   $("#back-to-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   window.addEventListener("scroll", () => { $("#back-to-top").hidden = window.scrollY < 520; }, { passive: true });
@@ -921,11 +965,11 @@ async function loadData(announce = false) {
       $("#director-photo").src = `./${director.heroPhoto || director.photo}`;
       $("#director-photo").alt = `${director.name}, ${director.role}`;
     }
-    populateFilters(); populateEvidenceFilters(); renderAll(); $("#error-banner").hidden = true;
+    populateFilters(); populateEvidenceFilters(); renderAll(); $("#main").setAttribute("aria-busy", "false"); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
   } catch (error) {
     $("#error-banner").textContent = `${error.message} Ejecuta python scripts/build_dashboard.py.`; $("#error-banner").hidden = false;
-  } finally { $("#refresh-button").disabled = false; }
+  } finally { $("#main").setAttribute("aria-busy", "false"); $("#refresh-button").disabled = false; }
 }
 
 async function refreshApplicationData() {

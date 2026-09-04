@@ -25,7 +25,7 @@ DEFAULT_DIRECTORY = ROOT / "cms" / "Directorio.xlsx"
 DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 
 ORGANIZATION = [
-    (1, "Centro's", "Raúl Sinohe Sierra Santa Maria", "Director Starbucks México", "assets/director/raul-sierra.webp", "Si", 1),
+    (1, "Centro's", "Raúl Sinohe Sierra Santamaria", "Director Starbucks México", "assets/director/raul-sierra.webp", "Si", 1),
     (2, "Centro Centro", "Oliver Roberto Perez Briones", "Director Regional", "assets/director/oliver-perez.webp", "Si", 2),
     (2, "Centro Poniente", "Jorge Farrera Pinal", "Director Regional", "assets/director/jorge-farrera.webp", "Si", 3),
     (2, "Centro Sur", "Cielo Aide Morera Urrego", "Director Regional", "assets/director/cielo-morera.webp", "Si", 4),

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "3d11c3d21a766371",
+  "buildVersion": "792baa52fdb0e90d",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T05:02:03+00:00",
+  "generatedAt": "2026-09-04T12:13:24+07:00",
   "lastUpdated": "2026-09-03T20:28:37",
   "lastUpdatedDisplay": "03/09/2026 20:28",
   "report": {
@@ -29,7 +29,7 @@
     "nationalDirector": {
       "level": 1,
       "region": "Centro's",
-      "name": "Raúl Sinohe Sierra Santa Maria",
+      "name": "Raúl Sinohe Sierra Santamaria",
       "role": "Director Starbucks México",
       "photo": "assets/director/raul-sierra.webp",
       "order": 1,
@@ -121,7 +121,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "b2c5241f7e565de2d5cafd7c20333a6d0869b09d145b4918061eca959a7459e2"
+    "cmsSha256": "69ab69621e070843e85a7108da1fd713e6aa96d79592b4a32b0d85c4a0fa0479"
   },
   "summary": {
     "regions": 4,

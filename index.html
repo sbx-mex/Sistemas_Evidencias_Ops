@@ -40,7 +40,7 @@
     </div>
   </header>
 
-  <main id="main" tabindex="-1">
+  <main id="main" tabindex="-1" aria-busy="true">
     <section class="hero">
       <div class="hero-copy">
         <span class="campaign-mark">Peanuts × Starbucks</span>
@@ -49,8 +49,8 @@
       </div>
       <div class="hero-status">
         <article class="hero-director" aria-label="Director Starbucks México">
-          <img id="director-photo" src="./assets/director/raul-sierra-hero.webp" alt="Raúl Sinohe Sierra Santa Maria, Director Starbucks México" width="64" height="80" fetchpriority="high" decoding="async">
-          <span><small id="director-role">Director Starbucks México</small><strong id="director-name">Raúl Sinohe Sierra Santa Maria</strong></span>
+          <img id="director-photo" src="./assets/director/raul-sierra-hero.webp" alt="Raúl Sinohe Sierra Santamaria, Director Starbucks México" width="64" height="80" fetchpriority="high" decoding="async">
+          <span><small id="director-role">Director Starbucks México</small><strong id="director-name">Raúl Sinohe Sierra Santamaria</strong></span>
         </article>
         <div class="cut-chip"><span>Fecha de corte</span><strong id="last-updated">—</strong></div>
       </div>
@@ -68,6 +68,12 @@
         <button id="export-excel" class="button quiet" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10l4 4v14H5zM15 3v5h4M8 12l5 6M13 12l-5 6"/></svg>Exportar Excel</button>
       </div>
     </section>
+
+    <nav id="filter-toolbar" class="filter-toolbar" aria-label="Filtros aplicados" aria-live="polite" hidden>
+      <div><span class="filter-toolbar-label">Vista filtrada</span><div id="selected-filter-list" class="selected-filter-list"></div></div>
+      <a class="filter-results-link" href="#tiendas">Ver tiendas</a>
+      <button id="scope-reset" class="filter-reset" type="button">Restablecer</button>
+    </nav>
 
     <section id="resumen" class="dashboard-section" aria-labelledby="summary-heading">
       <header class="section-title"><div><h2 id="summary-heading">Resumen</h2></div><img class="section-character character-lucy" src="./assets/campaign/lucy-fall.webp" alt="" width="112" height="150" aria-hidden="true" loading="lazy" decoding="async"></header>
