@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "2c4d0b90bf719c65",
+  "buildVersion": "688116f132a7c18e",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-04T20:09:11+00:00",
-  "lastUpdated": "2026-09-04T13:56:34",
-  "lastUpdatedDisplay": "04/09/2026 13:56",
+  "generatedAt": "2026-09-04T20:10:16+00:00",
+  "lastUpdated": "2026-09-04T14:02:52",
+  "lastUpdatedDisplay": "04/09/2026 14:02",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "04/09/26 · 13:56 h",
+    "cutOffDisplay": "04/09/26 · 14:02 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 295,
+        "completed": 296,
         "expected": 781,
-        "pending": 486,
-        "compliance": 37.8,
+        "pending": 485,
+        "compliance": 37.9,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "5782d663ed62ac05b3dfc2a5b482e00dfe4164c4c668c622363758930634b8cb",
+    "responsesSha256": "144a4cf8ce1841950b596f780bcd9bc2b7c351094425c1c73e0249ddaf46dbdb",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -129,15 +129,15 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3916,
-    "completedCompletions": 295,
-    "compliance": 7.5,
-    "validResponses": 295,
+    "completedCompletions": 296,
+    "compliance": 7.6,
+    "validResponses": 296,
     "storesComplete": 1,
-    "pendingCompletions": 3621,
+    "pendingCompletions": 3620,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 328,
+    "responsesRead": 329,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -168,7 +168,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 6
+        "CeCo1": 7
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -224,7 +224,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 295,
+    "evidenceLinksPublished": 296,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -391,11 +391,11 @@
       "priority": "Baja",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 8,
+      "completedStores": 9,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 349,
-      "compliance": 2.2,
+      "pendingStores": 348,
+      "compliance": 2.5,
       "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
       "daysRemaining": 2,
@@ -500,12 +500,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 89,
+      "completed": 90,
       "expected": 138,
       "notApplicable": 5,
-      "pending": 49,
+      "pending": 48,
       "pendingStores": 13,
-      "compliance": 64.5,
+      "compliance": 65.2,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -4859,17 +4859,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38859",
-      "store": "Plaza Satelite II N1",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 8,
-      "expected": 10,
-      "notApplicable": 1,
-      "pending": 2,
-      "compliance": 80.0,
-      "status": "En meta"
-    },
-    {
       "ceco": "38719",
       "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
@@ -4900,6 +4889,17 @@
       "notApplicable": 0,
       "pending": 2,
       "compliance": 81.8,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 9,
+      "expected": 10,
+      "notApplicable": 1,
+      "pending": 1,
+      "compliance": 90.0,
       "status": "En meta"
     },
     {
@@ -17803,17 +17803,17 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 8,
+      "completed": 9,
       "expected": 10,
       "notApplicable": 1,
-      "compliance": 80.0,
-      "lastUpdate": "2026-09-04T13:56:34",
+      "compliance": 90.0,
+      "lastUpdate": "2026-09-04T14:02:52",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
         "Rack FHW": true,
         "Max & Min": true,
-        "Fotografia - SM": false,
+        "Fotografia - SM": true,
         "Mandil Verde": false,
         "Lay Out": true,
         "Community Board": false,
@@ -18483,6 +18483,28 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-36ad7fdd22eaf70c",
+      "timestamp": "2026-09-04T14:02:52",
+      "timestampDisplay": "04/09/2026 14:02",
+      "activity": "Fotografia - SM",
+      "ceco": "38859",
+      "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Fotografia_SM_38859",
+      "evidenceLinkLabel": "Link_Fotografia_SM_38859",
+      "evidenceFileName": "image_Starbucks Plaza Sate.jpg",
+      "evidenceSourceHeader": "Evidencia_Fotografia_SM",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%205/image_Starbucks%20Plaza%20Sate.jpg"
+    },
     {
       "id": "respuesta-4c41e76c992a7065",
       "timestamp": "2026-09-04T13:56:34",
