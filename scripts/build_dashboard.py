@@ -1325,7 +1325,7 @@ def build_payload(
         "report": {
             "title": "Sistema de Evidencia OPS",
             "subtitle": "Dashboard de Avance de Actividades",
-            "motto": "JUNTÉMONOS MÁS",
+            "motto": "CADA DETALLE CUENTA",
             "footerLabel": "Starbucks México · Operaciones",
             "cutOffDisplay": latest_update.strftime("%d/%m/%y · %H:%M h") if latest_update else "Sin datos",
             "regionalDirector": {

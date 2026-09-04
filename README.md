@@ -29,10 +29,10 @@ El correo y el nombre del respondente no se publican. Por autorización operativ
 
 ## Identidad visual Fall 26
 
-La experiencia conserva la estructura de verificación y aplica el lenguaje cálido de la campaña Fall 26 en todo el sistema: naranja calabaza, crema, verde Starbucks, acentos de trazo oscuro, tarjetas, tablas, filtros, modal y firma Peanuts en el pie. Los recursos WebP optimizados se generan desde el arte oficial proporcionado con:
+La experiencia conserva la estructura de verificación y aplica el lenguaje cálido de Fall 26: naranja calabaza, crema, verde Starbucks y acentos de trazo oscuro. El hero permanece limpio, sin póster; los personajes aparecen únicamente como detalles pequeños en encabezados y pie de página. Los WebP optimizados se generan desde los recortes oficiales proporcionados con:
 
 ```bash
-python scripts/prepare_campaign_theme.py --source ruta/al/arte-oficial.png
+python scripts/prepare_campaign_theme.py --lucy ruta/lucy.png --snoopy ruta/snoopy.png --linus ruta/linus.png
 ```
 
 El arte acompaña la lectura; no sustituye indicadores, estados ni evidencia operativa.

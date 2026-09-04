@@ -29,7 +29,7 @@ REQUIRED = [
     "assets/director/oliver-perez.webp", "assets/director/jorge-farrera.webp", "assets/director/cielo-morera.webp",
     "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
     "tests/validate_dynamic_forms_schema.py", "tests/validate_maintenance.py", "scripts/io_utils.py",
-    "scripts/prepare_campaign_theme.py", "assets/campaign/fall-peanuts-card.webp", "assets/campaign/fall-peanuts-footer.webp",
+    "scripts/prepare_campaign_theme.py", "assets/campaign/lucy-fall.webp", "assets/campaign/snoopy-fall.webp", "assets/campaign/linus-fall.webp",
 ]
 REQUIRED += [f"assets/dm/{name}.webp" for name in (
     "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia"
@@ -84,8 +84,9 @@ if encoding_issues:
 approve("01 · Archivos requeridos y limpieza de obsoletos")
 
 for relative, expected_size in (
-    ("assets/campaign/fall-peanuts-card.webp", (720, 720)),
-    ("assets/campaign/fall-peanuts-footer.webp", (1160, 420)),
+    ("assets/campaign/lucy-fall.webp", (112, 150)),
+    ("assets/campaign/snoopy-fall.webp", (164, 124)),
+    ("assets/campaign/linus-fall.webp", (164, 124)),
 ):
     with Image.open(ROOT / relative) as campaign_image:
         if campaign_image.format != "WEBP" or campaign_image.size != expected_size:
@@ -272,7 +273,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-hero-art", "campaign-verification-note", "campaign-footer", "fall-peanuts-card.webp", "fall-peanuts-footer.webp"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Cada detalle cuenta"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -284,7 +285,7 @@ if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="e
 organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
 if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer:
     fail("La vista regional debe mostrar cuatro fotografías, sin repetir el rol y con avance dinámico")
-for removed_copy in ("Vista personalizada", "Filtra, revisa y exporta en un solo flujo", "Lectura rápida del avance seleccionado."):
+for removed_copy in ("Vista personalizada", "Filtra, revisa y exporta en un solo flujo", "Lectura rápida del avance seleccionado.", "JUNTÉMONOS MÁS", "Verificamos juntos cada detalle de campaña.", "Sistema de verificación"):
     if removed_copy in html:
         fail(f"La navegación conserva texto redundante: {removed_copy}")
 store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
@@ -294,7 +295,7 @@ for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "-
     if forbidden in html + js + css:
         fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
 approve("06 · Navegación lineal y sin bloques obsoletos")
-for theme_token in ("--fall-orange", "--fall-gold", ".campaign-verification-note", "body > footer.campaign-footer", ".footer-campaign-art", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
+for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".footer-peanuts", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
     if theme_token not in css:
         fail(f"El lenguaje visual Fall 26 no se aplicó fuera del hero: {theme_token}")
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
@@ -339,7 +340,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v27", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "fall-peanuts-card.webp", "fall-peanuts-footer.webp"):
+for cache_control in ("sistema-evidencias-ops-v28", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
@@ -378,7 +379,7 @@ if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
 organization = data.get("organization", {})
-if data.get("report", {}).get("motto") != "JUNTÉMONOS MÁS" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+if data.get("report", {}).get("motto") != "CADA DETALLE CUENTA" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 expected_short_names = {
     "Luis Manuel Neri Saldaña": "Luis Neri",

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v27";
+const CACHE_NAME = "sistema-evidencias-ops-v28";
 const CORE = [
   "./",
   "./index.html",
@@ -8,8 +8,9 @@ const CORE = [
   "./manifest.webmanifest",
   "./assets/icons/icon-64.png",
   "./assets/icons/icon-64.webp",
-  "./assets/campaign/fall-peanuts-card.webp",
-  "./assets/campaign/fall-peanuts-footer.webp",
+  "./assets/campaign/lucy-fall.webp",
+  "./assets/campaign/snoopy-fall.webp",
+  "./assets/campaign/linus-fall.webp",
   "./assets/director/raul-sierra.webp",
   "./assets/director/jorge-alcantar.webp"
 ];

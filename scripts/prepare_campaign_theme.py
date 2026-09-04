@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepara recursos web cálidos desde el arte oficial Fall 26 proporcionado."""
+"""Prepara acentos web discretos desde recortes oficiales Fall 26."""
 
 from __future__ import annotations
 
@@ -11,24 +11,34 @@ from PIL import Image, ImageEnhance, ImageOps
 
 def save_webp(image: Image.Image, target: Path, size: tuple[int, int], quality: int = 86) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
-    prepared = ImageOps.fit(image.convert("RGB"), size, method=Image.Resampling.LANCZOS)
+    source = image.convert("RGBA")
+    prepared = Image.new("RGBA", size, (255, 248, 236, 255))
+    fitted = ImageOps.contain(source, size, method=Image.Resampling.LANCZOS)
+    prepared.alpha_composite(fitted, ((size[0] - fitted.width) // 2, (size[1] - fitted.height) // 2))
+    prepared = prepared.convert("RGB")
     prepared = ImageEnhance.Color(prepared).enhance(1.03)
     prepared = ImageEnhance.Contrast(prepared).enhance(1.015)
     prepared.save(target, "WEBP", quality=quality, method=6)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Genera arte web Fall 26 para hero y pie de página.")
-    parser.add_argument("--source", type=Path, required=True, help="PNG oficial Fall 26 proporcionado.")
+    parser = argparse.ArgumentParser(description="Genera cuatro acentos pequeños Fall 26; no crea arte para el hero.")
+    parser.add_argument("--lucy", type=Path, required=True)
+    parser.add_argument("--snoopy", type=Path, required=True)
+    parser.add_argument("--linus", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, default=Path("assets/campaign"))
     args = parser.parse_args()
 
-    with Image.open(args.source) as source:
-        save_webp(source, args.output_dir / "fall-peanuts-card.webp", (720, 720), 88)
-        character_band = source.crop((55, 205, 1025, 585))
-        save_webp(character_band, args.output_dir / "fall-peanuts-footer.webp", (1160, 420), 88)
+    resources = (
+        (args.lucy, "lucy-fall.webp", (112, 150)),
+        (args.snoopy, "snoopy-fall.webp", (164, 124)),
+        (args.linus, "linus-fall.webp", (164, 124)),
+    )
+    for source_path, filename, size in resources:
+        with Image.open(source_path) as source:
+            save_webp(source, args.output_dir / filename, size, 86)
 
-    print("Recursos Fall 26 preparados: tarjeta 720×720 y firma 1160×420")
+    print("Acentos Fall 26 preparados: Lucy, Snoopy y Linus")
 
 
 if __name__ == "__main__":

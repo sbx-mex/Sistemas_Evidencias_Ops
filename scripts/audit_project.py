@@ -59,11 +59,14 @@ if obsolete_files:
 for forbidden in ("Guía rápida", "guide-steps", "Atención prioritaria", "priority-stores", "Estado de actualización y calidad de datos", "quality-strip", "De mayor a menor avance", "Detalle dinámico"):
     if forbidden in html:
         issues.append(f"Bloque repetitivo aún visible: {forbidden}")
+for removed_campaign_copy in ("JUNTÉMONOS MÁS", "Verificamos juntos cada detalle de campaña.", "Sistema de verificación"):
+    if removed_campaign_copy in html:
+        issues.append(f"El diseño conserva texto de campaña solicitado para retirar: {removed_campaign_copy}")
 for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-hero-art", "campaign-verification-note", "campaign-footer", "fall-peanuts-card.webp", "fall-peanuts-footer.webp"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "4 direcciones", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Director Starbucks México", "Raúl Sinohe Sierra Santa Maria", "Fecha de corte", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Cada detalle cuenta"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -71,7 +74,7 @@ for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-ta
         issues.append(f"Actividades no está adaptada a móvil: {required}")
 if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
     issues.append("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
-for required in ("--fall-orange", "--fall-gold", ".campaign-verification-note", "body > footer.campaign-footer", ".footer-campaign-art", "thead { background: #2d2630"):
+for required in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".footer-peanuts", "thead { background: #2d2630"):
     if required not in css:
         issues.append(f"El tema Fall 26 no llega a todo el sistema: {required}")
 for required in (
@@ -146,7 +149,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v27", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "fall-peanuts-card.webp", "fall-peanuts-footer.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v28", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -205,7 +208,7 @@ if data.get("summary", {}).get("notApplicableCompletions") != calculated_exclusi
     issues.append("La resta implícita de actividades no coincide con las respuestas Sí/No")
 report_meta = data.get("report", {})
 director = report_meta.get("regionalDirector", {})
-if report_meta.get("motto") != "JUNTÉMONOS MÁS" or report_meta.get("footerLabel") != "Starbucks México · Operaciones" or director.get("role") != "Director Regional":
+if report_meta.get("motto") != "CADA DETALLE CUENTA" or report_meta.get("footerLabel") != "Starbucks México · Operaciones" or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
 organization = data.get("organization", {})
 if organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santa Maria" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") for item in organization.get("regionalDirectors", [])):

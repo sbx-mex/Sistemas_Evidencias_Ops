@@ -110,7 +110,7 @@ function cutStamp() {
 function reportMeta() {
   return state.data.report || {
     title: "Sistema de Evidencia OPS", subtitle: "Dashboard de Avance de Actividades",
-    motto: "JUNTÉMONOS MÁS", footerLabel: "Starbucks México · Operaciones",
+    motto: "CADA DETALLE CUENTA", footerLabel: "Starbucks México · Operaciones",
   };
 }
 
