@@ -438,6 +438,11 @@ def main() -> None:
         assert payload["summary"]["notApplicableCompletions"] == 3
         assert payload["quality"]["responseSchema"]["applicabilityIssues"] == {}
         assert len(payload["quality"]["responseSchema"]["applicabilityHeaders"]) == 3
+        assert payload["quality"]["responseSchema"]["applicabilityHeaderMap"] == {
+            "¿ Tienes Horno Merry Chef ?": "Programacion Hornos Merry - Focaccia",
+            "¿Tienes Horno Merry Chef? (2)": "Programacion Hornos Merry - Focaccia",
+            "¿Cuentas con Community Board?": "Community Board",
+        }
         stores = {store["ceco"]: store for store in payload["stores"]}
         assert stores["38894"]["applicableActivities"][horno["name"]] is False
         assert stores["38119"]["applicableActivities"][community["name"]] is False
@@ -493,6 +498,64 @@ def main() -> None:
         assert (activity_map["Programacion Hornos Merry - Focaccia"]["completedStores"], activity_map["Programacion Hornos Merry - Focaccia"]["notApplicableStores"]) == (8, 2)
         assert (activity_map["Community Board"]["completedStores"], activity_map["Community Board"]["notApplicableStores"]) == (1, 1)
         assert payload["quality"]["responseSchema"]["applicabilityIssues"] == {}
+
+        # Escenario 11b: Rack FHW usa su pregunta previa como regla exclusiva.
+        # Sólo un No explícito descuenta el ideal; vacío sigue pendiente y una
+        # respuesta de otra actividad nunca contamina el resultado de Rack.
+        rack = temp / "rack-fhw-applicability.xlsx"
+        rack_headers = BASE + [
+            "CeCo", ACTIVITY,
+            "¿ Tu Tienda Aplica para Rack FHW?",
+            "¿Cuentas con Community Board?",
+            "Evidencia_Rack_FHW",
+        ]
+        rack_rows = []
+        rack_cases = [
+            ("38333", "No", "Sí", ""),
+            ("38339", "No aplica", "", ""),
+            ("38368", "Sí", "No", f"{allowed}/rack-38368.jpg"),
+            ("38401", "", "No", ""),
+            ("38456", "No", "", ""),
+            ("38456", "Sí", "", f"{allowed}/rack-38456.jpg"),
+            ("38515", "Sí", "", f"{allowed}/rack-38515.jpg"),
+            ("38515", "No", "", f"{allowed}/rack-38515-revision.jpg"),
+        ]
+        for index, (ceco, applies, community_answer, evidence) in enumerate(rack_cases, 80):
+            start, finish = timestamps(index)
+            rack_rows.append([
+                index, start, finish, "", "Prueba", ceco, "Rack FHW",
+                applies, community_answer, evidence,
+            ])
+        save_book(rack, rack_headers, rack_rows)
+        payload = build_payload(
+            rack,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        rack_activity = next(item for item in payload["activities"] if item["name"] == "Rack FHW")
+        assert rack_activity["completedStores"] == 2
+        assert rack_activity["notApplicableStores"] == 3
+        assert rack_activity["applicableStores"] == payload["summary"]["stores"] - 3
+        assert payload["summary"]["expectedCompletions"] == (
+            payload["summary"]["stores"] * payload["summary"]["activities"] - 3
+        )
+        rack_submissions = {
+            item["ceco"]: item for item in payload["submissions"] if item["activity"] == "Rack FHW"
+        }
+        assert rack_submissions["38333"]["status"] == "No aplica"
+        assert rack_submissions["38339"]["status"] == "No aplica"
+        assert rack_submissions["38368"]["status"] == "Realizada"
+        assert rack_submissions["38456"]["status"] == "Realizada"
+        assert rack_submissions["38515"]["status"] == "No aplica"
+        assert "38401" not in rack_submissions
+        assert payload["quality"]["responseSchema"]["applicabilityHeaderMap"] == {
+            "¿ Tu Tienda Aplica para Rack FHW?": "Rack FHW",
+            "¿Cuentas con Community Board?": "Community Board",
+        }
+        stores = {store["ceco"]: store for store in payload["stores"]}
+        assert stores["38333"]["applicableActivities"]["Rack FHW"] is False
+        assert stores["38401"]["applicableActivities"]["Rack FHW"] is True
 
         # Escenario 12: respuestas contradictorias se rechazan sin alterar conteos.
         conflicting = temp / "conflicting.xlsx"

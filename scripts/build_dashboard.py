@@ -63,6 +63,16 @@ APPLICABILITY_HEADER_HINTS = (
     "aplica", "aplican", "tienes", "tiene", "cuentas con", "cuenta con",
     "dispones", "dispone", "participa", "participan",
 )
+# Las preguntas de aplicabilidad sólo pueden afectar a la actividad que nombran.
+# Mantener este catálogo explícito evita que un "No" de otra pregunta operativa
+# descuente por accidente la actividad seleccionada en la misma fila de Forms.
+APPLICABILITY_ACTIVITY_ALIASES = {
+    "Programacion Hornos Merry - Focaccia": (
+        "horno merry", "merry chef", "horno merry chef", "focaccia",
+    ),
+    "Rack FHW": ("rack fhw",),
+    "Community Board": ("community board",),
+}
 REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 MOJIBAKE_MARKERS = ("\u00c3", "\u00c2", "\u00e2")
@@ -563,8 +573,12 @@ def evidence_columns(headers: list[Any], activity_names: list[str] | None = None
 def applicability_columns(
     headers: list[Any],
     excluded_indices: set[int],
+    activity_names: list[str] | None = None,
 ) -> list[dict[str, Any]]:
-    """Localiza preguntas operativas Sí/No sin depender de su posición."""
+    """Localiza preguntas Sí/No y las vincula a una actividad CMS concreta."""
+    configured_by_compact = {
+        compact_key(name): name for name in (activity_names or []) if clean_text(name)
+    }
     result = []
     for index, header in enumerate(headers):
         if index in excluded_indices:
@@ -575,18 +589,37 @@ def applicability_columns(
             continue
         is_question = "?" in raw or "¿" in raw
         has_hint = any(hint in normalized for hint in APPLICABILITY_HEADER_HINTS)
-        if is_question or has_hint:
-            result.append({"index": index, "header": raw})
+        if not (is_question or has_hint):
+            continue
+
+        header_key = compact_key(raw)
+        matches = []
+        for configured_name, aliases in APPLICABILITY_ACTIVITY_ALIASES.items():
+            activity = configured_by_compact.get(compact_key(configured_name))
+            if activity and any(compact_key(alias) in header_key for alias in aliases):
+                matches.append(activity)
+        if len(set(matches)) == 1:
+            activity = matches[0]
+            result.append({
+                "index": index,
+                "header": raw,
+                "activity": activity,
+                "activityKey": compact_key(activity),
+            })
     return result
 
 
 def resolve_applicability_answer(
     row: tuple[Any, ...],
     columns: list[dict[str, Any]],
+    activity: str,
 ) -> tuple[bool | None, list[str], str | None]:
-    """Consolida Sí/No duplicados; otras preguntas se ignoran de forma segura."""
+    """Consolida sólo los Sí/No que pertenecen a la actividad de la fila."""
     answers: list[tuple[bool, str]] = []
+    activity_key = compact_key(activity)
     for column in columns:
+        if column.get("activityKey") != activity_key:
+            continue
         index = column["index"]
         value = clean_text(row[index]) if index < len(row) else ""
         if not value:
@@ -1061,7 +1094,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
     excluded_indices = {
         index for indices in column_groups.values() for index in indices
     } | set(confirmation_columns) | {item["index"] for item in evidence_group}
-    applicability_group = applicability_columns(headers, excluded_indices)
+    applicability_group = applicability_columns(headers, excluded_indices, activity_names)
     response_activity_by_text: dict[str, str] = {}
     response_activity_by_compact: dict[str, str] = {}
     if activity_names:
@@ -1105,7 +1138,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         if evidence_issue:
             evidence_issues[evidence_issue].append(row_number)
         applicability, applicability_sources, applicability_issue = resolve_applicability_answer(
-            row, applicability_group
+            row, applicability_group, evidence_activity
         )
         if applicability_issue:
             applicability_issues[applicability_issue].append(row_number)
@@ -1153,6 +1186,9 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         "cecoRowsUsingBoth": ceco_rows_using_both,
         "confirmationHeaders": [clean_text(headers[index]) for index in confirmation_columns],
         "applicabilityHeaders": [item["header"] for item in applicability_group],
+        "applicabilityHeaderMap": {
+            item["header"]: item["activity"] for item in applicability_group
+        },
         "evidenceHeaders": [item["header"] for item in evidence_group],
         "evidenceHeaderMap": {
             item["header"]: item["activityKey"] or "generic"
@@ -1290,7 +1326,7 @@ def build_payload(
             "confirmed": response["confirmed"],
             "answer": response["confirmedAnswer"],
             "notApplicable": not_applicable,
-            "status": "Realizada" if valid else "Pendiente",
+            "status": "No aplica" if not_applicable else ("Realizada" if valid else "Pendiente"),
             "evidenceAvailable": evidence_available,
             "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
             "valid": valid,

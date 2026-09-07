@@ -20,7 +20,7 @@ El motor identifica estos encabezados aunque cambie su orden o existan columnas 
 1. `Hora de finalización` → **Última actualización**.
 2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
 3. `CeCo` o `CeCo1` → cruce automático con nombre de tienda y DM. Forms puede conservar ambas columnas al cambiar la pregunta de lista desplegable a captura numérica; Python toma el único valor informado y rechaza filas con valores contradictorios.
-4. `¿Confirmas que realizaste la actividad seleccionada?` → es opcional; cuando no existe, una evidencia válida confirma el registro. Únicamente en Hornos, un `No` explícito significa **No aplica**.
+4. Las preguntas previas de Hornos y Rack FHW → un `Sí` continúa hacia la evidencia; un `No` explícito significa **No aplica** sólo para la actividad nombrada y la descuenta del ideal.
 5. `Evidencia del avance` o `Evidencia_<Actividad>` → Python elige la columna que coincide con la actividad seleccionada, valida HTTPS y dominio autorizado y genera una etiqueta `Actividad_CeCo`.
 
 También admite el formato largo: si las respuestas nuevas aparecen hacia abajo como más filas y usan una columna genérica de evidencia, cada fila se procesa de forma independiente. Si una fila contiene valores contradictorios, evidencia en la columna de otra actividad o varias evidencias incompatibles, se marca en `quality.responseSchema` y no se publica como válida.
@@ -108,9 +108,9 @@ Envíos repetidos se conservan como registros, pero el cumplimiento se deduplica
 
 Las respuestas operativas de prueba pueden excluirse temporalmente por el `Id` original de Forms mediante `ignoredResponseIds` en la hoja `Configuracion` del CMS. La exclusión ocurre antes de calcular fecha de corte, aplicabilidad, evidencias o avance; no bloquea el CeCo para respuestas reales.
 
-### Excepción exclusiva de Hornos
+### Aplicabilidad de Hornos y Rack FHW
 
-Para `Programacion Hornos Merry - Focaccia`, la respuesta explícita `No` registra **No aplica** y elimina esa combinación tienda–actividad del denominador. Una respuesta vacía sigue pendiente. La regla se configura en `config/settings.json` y no modifica ninguna otra actividad. El texto exacto y la ramificación de Microsoft Forms están en [INSTRUCCION_FORMS.md](INSTRUCCION_FORMS.md).
+Para `Programacion Hornos Merry - Focaccia` y `Rack FHW`, la respuesta explícita `No` registra **No aplica** y elimina esa combinación tienda–actividad del denominador. Una respuesta vacía sigue pendiente. El motor vincula cada pregunta a su actividad concreta, por lo que un `No` de Community Board u otra sección no puede descontar Rack FHW. El texto exacto y la ramificación de Microsoft Forms están en [INSTRUCCION_FORMS.md](INSTRUCCION_FORMS.md).
 
 ## Publicación en GitHub Pages
 
