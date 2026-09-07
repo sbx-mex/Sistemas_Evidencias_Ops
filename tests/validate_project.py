@@ -94,6 +94,11 @@ for relative, expected_size in (
         if campaign_image.format != "WEBP" or campaign_image.size != expected_size:
             fail(f"Recurso de campaña inválido: {relative}")
 
+for name in ("Damos_Seguimiento.webp", "Un_placer_haber_Ayudado.webp"):
+    with Image.open(ROOT / "assets" / "ui" / name) as export_visual:
+        if export_visual.format != "WEBP" or export_visual.size != (768, 512):
+            fail(f"Visual de exportación inválido: {name}")
+
 data = json.loads((ROOT / "data/dashboard.json").read_text(encoding="utf-8"))
 manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
 html = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -395,11 +400,27 @@ for required_excel_context in ("const activityLabel = exportActivityLabel()", "e
         fail(f"Excel perdió el filtro dinámico: {required_excel_context}")
 if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
+export_card_rule = re.search(r"\.export-card\s*\{([^}]+)\}", css)
+export_image_rule = re.search(r"\.export-card\s*>\s*img\s*\{([^}]+)\}", css)
+if not export_card_rule or not export_image_rule:
+    fail("Falta el marco estable de exportación")
+for required_style in (
+    "width: min(1040px, 100%)",
+    "grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr)",
+    "align-items: center",
+):
+    if required_style not in export_card_rule.group(1):
+        fail(f"El marco de exportación perdió su proporción: {required_style}")
+for required_style in ("height: auto", "aspect-ratio: 3 / 2", "object-fit: contain", "object-position: center"):
+    if required_style not in export_image_rule.group(1):
+        fail(f"La imagen de exportación puede recortarse: {required_style}")
+if "object-fit: cover" in export_image_rule.group(1) or "height: 100%" in export_image_rule.group(1):
+    fail("La imagen de exportación conserva reglas que provocan recorte")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v31", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v32", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:

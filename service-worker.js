@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v31";
+const CACHE_NAME = "sistema-evidencias-ops-v32";
 const CORE = [
   "./",
   "./index.html",

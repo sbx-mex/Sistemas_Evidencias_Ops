@@ -160,7 +160,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v31", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v32", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -293,6 +293,24 @@ for name in ("Damos_Seguimiento.webp", "Un_placer_haber_Ayudado.webp"):
     with Image.open(ROOT / "assets" / "ui" / name) as visual:
         if visual.size != (768, 512) or visual.format != "WEBP":
             issues.append(f"Recurso de exportación inválido: {name}")
+export_card_rule = re.search(r"\.export-card\s*\{([^}]+)\}", texts["styles.css"])
+export_image_rule = re.search(r"\.export-card\s*>\s*img\s*\{([^}]+)\}", texts["styles.css"])
+if not export_card_rule or not export_image_rule:
+    issues.append("Falta el marco estable de exportación")
+else:
+    if not all(token in export_card_rule.group(1) for token in (
+        "width: min(1040px, 100%)",
+        "grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr)",
+        "align-items: center",
+    )):
+        issues.append("El marco de exportación perdió su proporción ejecutiva")
+    if not all(token in export_image_rule.group(1) for token in (
+        "height: auto",
+        "aspect-ratio: 3 / 2",
+        "object-fit: contain",
+        "object-position: center",
+    )) or any(token in export_image_rule.group(1) for token in ("object-fit: cover", "height: 100%")):
+        issues.append("La imagen de exportación puede recortarse")
 if not (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file():
     issues.append("No se generó el resumen XLSX de respaldo")
 if not (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file():
