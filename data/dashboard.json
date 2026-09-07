@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "e7935cc50b520e9c",
+  "buildVersion": "d1e87a9e2be3c39e",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-07T19:33:48+00:00",
+  "generatedAt": "2026-09-07T20:28:17+00:00",
   "lastUpdated": "2026-09-07T13:24:58",
   "lastUpdatedDisplay": "07/09/2026 13:24",
   "report": {
@@ -177,6 +177,10 @@
         "¿ Tienes Horno Merry Chef ?",
         "¿Cuentas con Community Board?"
       ],
+      "applicabilityHeaderMap": {
+        "¿ Tienes Horno Merry Chef ?": "Programacion Hornos Merry - Focaccia",
+        "¿Cuentas con Community Board?": "Community Board"
+      },
       "evidenceHeaders": [
         "Evidencia_RollOut",
         "Evidencia_Programacion_Hornos_Merry_Focaccia",
@@ -19364,7 +19368,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -20859,7 +20863,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -20946,7 +20950,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -21187,7 +21191,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -21626,7 +21630,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -22241,7 +22245,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -22438,7 +22442,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -23053,7 +23057,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -23118,7 +23122,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -24173,7 +24177,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -24414,7 +24418,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
@@ -24919,7 +24923,7 @@
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": true,
-      "status": "Pendiente",
+      "status": "No aplica",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
       "valid": false
