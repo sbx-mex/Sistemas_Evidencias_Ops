@@ -89,11 +89,6 @@ jobs:
           git add -A -- config assets/dm assets/icons assets/director assets/campaign
           git add -u
 
-          obsolete_test="tests/validate_horno_applicability.py"
-          if git ls-files --error-unmatch "$obsolete_test" >/dev/null 2>&1 || test -e "$obsolete_test"; then
-            git add -A -- "$obsolete_test"
-          fi
-
           if git diff --cached --quiet; then
             echo "Los datos, exportaciones y limpieza ya están actualizados."
             exit 0

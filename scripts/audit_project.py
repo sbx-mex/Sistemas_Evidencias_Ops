@@ -94,6 +94,7 @@ for required in (
     "normalize_allowed_hosts",
     "Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte",
     "latest_submission_by_pair",
+    "recover_response_ceco",
     "STABILITY_CONTROLS",
 ):
     if required not in build_engine:
@@ -165,10 +166,10 @@ if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or '
     issues.append("Los motores de exportación no se cargan bajo demanda")
 if "Date.now()" in js[js.index("async function loadData"):js.index("async function refreshApplicationData")]:
     issues.append("La consulta de datos crea claves de caché distintas en cada carga")
-if not all(token in workflow for token in ("set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch")):
+if not all(token in workflow for token in ("set -euo pipefail", "git diff --cached --quiet")):
     issues.append("El workflow no publica de forma idempotente")
-if "git add -A -- tests/validate_horno_applicability.py" in workflow:
-    issues.append("El workflow conserva un pathspec directo obsoleto")
+if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow:
+    issues.append("El workflow conserva lógica transitoria para una prueba obsoleta")
 if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
@@ -191,6 +192,14 @@ if set(response_schema.get("cecoSourceUsage", {})) != set(response_schema.get("c
     issues.append("El uso de CeCo/CeCo1 no quedó auditado por columna")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
     issues.append("La configuración conserva Id de Forms obsoletos")
+for correction in data.get("quality", {}).get("correctedCeCos", []):
+    if (
+        correction.get("sourceCeCo") == correction.get("resolvedCeCo")
+        or not re.fullmatch(r"[0-9]{5}", correction.get("sourceCeCo", ""))
+        or not re.fullmatch(r"[0-9]{5}", correction.get("resolvedCeCo", ""))
+        or correction.get("method") != "correo corporativo + nombre exacto"
+    ):
+        issues.append("La auditoría contiene una corrección CeCo insegura")
 active_activity_keys = {compact_key(item.get("name")) for item in data.get("activities", [])}
 evidence_header_matches = response_schema.get("evidenceHeaderMatch", {})
 evidence_header_map = response_schema.get("evidenceHeaderMap", {})
