@@ -306,7 +306,8 @@ def main() -> None:
     print(
         f"Estabilidad {quality.get('stabilityScore')} · encabezados dinámicos · filas dinámicas · "
         f"{quality.get('duplicateValidResponses', 0)} respuestas históricas deduplicadas · "
-        f"{len(quality.get('canonicalizedActivityRows', []))} nombres similares normalizados"
+        f"{len(quality.get('canonicalizedActivityRows', []))} nombres similares normalizados · "
+        f"{len(quality.get('correctedCeCos', []))} CeCo recuperados con doble coincidencia"
     )
     print(
         "Motores auditados · "

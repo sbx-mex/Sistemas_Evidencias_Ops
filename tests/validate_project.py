@@ -14,7 +14,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, photo_slug, safe_evidence_url, short_dm_name, validate_webp_asset
+from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, photo_slug, recover_response_ceco, safe_evidence_url, short_dm_name, validate_webp_asset
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -212,15 +212,23 @@ latest_excel_by_pair = {}
 for row in forms_responses:
     activity = active_by_key.get(compact_key(row["activity"]))
     evidence_url = safe_evidence_url(row["evidence"], allowed_hosts)
-    if not activity or row["ceco"] not in stores_by_ceco or not row["confirmed"] or row["explicitNo"] or not evidence_url:
+    resolved_ceco, _ = recover_response_ceco(row, stores_by_ceco)
+    if not activity or resolved_ceco not in stores_by_ceco or not row["confirmed"] or row["explicitNo"] or not evidence_url:
         continue
-    pair = (row["ceco"], activity)
+    pair = (resolved_ceco, activity)
     row_sort = (row["finished"].isoformat() if row["finished"] else "", row["row"])
     current = latest_excel_by_pair.get(pair)
     if current is None or row_sort > current[0]:
         latest_excel_by_pair[pair] = (row_sort, evidence_url)
 expected_excel_links = {pair: item[1] for pair, item in latest_excel_by_pair.items()}
 published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for row in published}
+for correction in data.get("quality", {}).get("correctedCeCos", []):
+    if (
+        correction.get("sourceCeCo") == correction.get("resolvedCeCo")
+        or correction.get("resolvedCeCo") not in stores_by_ceco
+        or correction.get("method") != "correo corporativo + nombre exacto"
+    ):
+        fail("La auditoría de CeCo recuperados contiene una corrección insegura")
 if data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
     fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
 if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
@@ -453,11 +461,11 @@ approve("09 · Ranking, fotografía DM e identidad ejecutiva")
 for text in ["pip check", "python -X utf8 scripts/safe_maintenance.py --force", "python -X utf8 scripts/clean_obsolete.py --check", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
-for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git ls-files --error-unmatch", 'obsolete_test="tests/validate_horno_applicability.py"', "git add -u", "assets/director"]:
+for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git add -u", "assets/director"]:
     if text not in workflow:
         fail(f"Publicación no idempotente: falta {text}")
-if "git add -A -- tests/validate_horno_applicability.py" in workflow:
-    fail("El workflow conserva el pathspec directo que falla si el archivo no existe")
+if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow:
+    fail("El workflow conserva lógica transitoria para una prueba obsoleta")
 approve("10 · Workflow completo: limpiar, generar, validar y publicar")
 
 if len(passed) != 12:

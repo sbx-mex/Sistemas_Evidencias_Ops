@@ -364,6 +364,51 @@ def normalize_ceco(value: Any) -> str:
     return match.group(1) if match else ""
 
 
+def store_name_key(value: Any) -> str:
+    """Normaliza el nombre de tienda sin la marca opcional usada por Forms."""
+    normalized = re.sub(r"^(?:starbucks|sbux)\s+", "", key_text(value))
+    return compact_key(normalized)
+
+
+def recover_response_ceco(
+    response: dict[str, Any], stores: dict[str, dict[str, str]]
+) -> tuple[str, dict[str, Any] | None]:
+    """Corrige un CeCo desconocido sólo con dos señales corporativas exactas.
+
+    El valor de Forms se conserva cuando ya cruza con Directorio. Si no cruza,
+    únicamente se recupera cuando el correo ``sbmx<CeCo>@starbucks.com.mx``
+    apunta a una tienda abierta y el nombre coincide exactamente (sin el prefijo
+    Starbucks). Casos incompletos, ambiguos o con conflicto de columnas siguen
+    rechazándose para evitar asignar evidencia a una tienda incorrecta.
+    """
+    source_ceco = normalize_ceco(response.get("ceco"))
+    if source_ceco in stores or not source_ceco or response.get("schemaConflict"):
+        return source_ceco, None
+
+    email_match = re.fullmatch(
+        r"sbmx([0-9]{5})@starbucks\.com\.mx",
+        clean_text(response.get("email")).casefold(),
+    )
+    if not email_match:
+        return source_ceco, None
+    resolved_ceco = email_match.group(1)
+    store = stores.get(resolved_ceco)
+    if (
+        not store
+        or not store_name_key(response.get("name"))
+        or store_name_key(response.get("name")) != store_name_key(store.get("store"))
+    ):
+        return source_ceco, None
+
+    return resolved_ceco, {
+        "row": response.get("row"),
+        "sourceCeCo": source_ceco,
+        "resolvedCeCo": resolved_ceco,
+        "store": store["store"],
+        "method": "correo corporativo + nombre exacto",
+    }
+
+
 def evidence_key(activity: str, ceco: str) -> str:
     """Crea una etiqueta estable para identificar la actividad y el CeCo."""
     normalized = unicodedata.normalize("NFD", clean_text(activity))
@@ -1172,6 +1217,7 @@ def build_payload(
     hidden_activity_rows = []
     hidden_activities = set()
     canonicalized_activity_rows = []
+    corrected_cecos = []
     ignored_response_rows = []
     configured_ignored_response_ids = set(setting_list(settings.get("ignoredResponseIds")))
     ignored_response_source_ids = set()
@@ -1182,6 +1228,17 @@ def build_payload(
             ignored_response_rows.append(response["row"])
             ignored_response_source_ids.add(response["sourceId"])
             continue
+        resolved_ceco, correction = recover_response_ceco(response, stores)
+        if correction:
+            corrected_cecos.append(correction)
+            response = {
+                **response,
+                "ceco": resolved_ceco,
+                "id": stable_response_id(
+                    response["started"], response["finished"], resolved_ceco,
+                    response["activity"], response["evidence"],
+                ),
+            }
         store = stores.get(response["ceco"])
         activity_text = clean_text(response["activity"])
         activity = canonical_cms_activity(activity_text, configured_by_text, configured_by_compact)
@@ -1479,6 +1536,7 @@ def build_payload(
             "hiddenActivityRows": hidden_activity_rows,
             "hiddenActivities": sorted(hidden_activities, key=key_text),
             "canonicalizedActivityRows": canonicalized_activity_rows,
+            "correctedCeCos": corrected_cecos,
             "ignoredResponseRows": ignored_response_rows,
             "ignoredResponseSourceIds": sorted(ignored_response_source_ids, key=key_text),
             "unusedIgnoredResponseSourceIds": sorted(

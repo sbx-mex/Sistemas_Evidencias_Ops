@@ -134,6 +134,49 @@ def main() -> None:
         assert simulated_payload["summary"]["completedCompletions"] == len(all_cecos)
         assert {item["ceco"] for item in simulated_payload["submissions"]} == set(all_cecos)
 
+        # Escenario 3b: una captura CeCo errónea no rompe la actualización si
+        # correo corporativo y nombre exacto identifican la misma tienda abierta.
+        recoverable = temp / "ceco-recoverable.xlsx"
+        recovery_start, recovery_finish = timestamps(2000)
+        save_book(recoverable, simulation_headers, [[
+            12000, recovery_start, recovery_finish,
+            "sbmx43152@starbucks.com.mx", "Starbucks Samara Satélite",
+            "", "44152", "Roll Out", f"{allowed}/samara.jpg",
+        ]])
+        recovered_payload = build_payload(
+            recoverable,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        assert recovered_payload["quality"]["unknownCeCos"] == []
+        assert recovered_payload["quality"]["correctedCeCos"] == [{
+            "row": 2,
+            "sourceCeCo": "44152",
+            "resolvedCeCo": "43152",
+            "store": "Samara Satélite",
+            "method": "correo corporativo + nombre exacto",
+        }]
+        assert recovered_payload["summary"]["validResponses"] == 1
+        assert recovered_payload["submissions"][0]["ceco"] == "43152"
+
+        # Una sola señal o un nombre distinto nunca autoriza la corrección.
+        untrusted = temp / "ceco-untrusted.xlsx"
+        save_book(untrusted, simulation_headers, [[
+            12001, recovery_start, recovery_finish,
+            "sbmx43152@starbucks.com.mx", "Otra tienda",
+            "", "44152", "Roll Out", f"{allowed}/otra.jpg",
+        ]])
+        untrusted_payload = build_payload(
+            untrusted,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        assert untrusted_payload["quality"]["unknownCeCos"] == ["44152"]
+        assert untrusted_payload["quality"]["correctedCeCos"] == []
+        assert untrusted_payload["summary"]["validResponses"] == 0
+
         # Escenario 4: dos evidencias incompatibles no se mezclan ni se adivinan.
         ambiguous = temp / "ambiguous.xlsx"
         start, finish = timestamps(5)
