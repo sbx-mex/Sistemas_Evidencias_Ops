@@ -28,6 +28,7 @@
       <a href="#organigrama">RD's Centro's</a>
       <a href="#ranking">Ranking DM</a>
       <a href="#actividades">Actividades</a>
+      <a id="quantity-nav" href="#inventario-jarras" hidden>Jarras</a>
       <a href="#tiendas">Tiendas</a>
       <a href="#evidencias">Evidencias</a>
     </nav>
@@ -104,6 +105,25 @@
           <tbody id="activity-progress"></tbody>
         </table></div>
       </article>
+    </section>
+
+    <section id="inventario-jarras" class="dashboard-section quantity-section" aria-labelledby="quantity-heading" hidden>
+      <header class="section-title"><div><p class="eyebrow">Actividad seleccionada</p><h2 id="quantity-heading">Jarras en buen estado</h2></div><span id="quantity-response-chip" class="tag">—</span></header>
+      <div class="quantity-layout">
+        <article class="panel quantity-responders">
+          <header class="quantity-panel-head"><div><span class="quantity-step">1</span><div><h3>Quiénes respondieron</h3><p>Ambas cantidades y evidencia aprobadas.</p></div></div><strong id="quantity-response-rate">0%</strong></header>
+          <div class="quantity-progress" aria-hidden="true"><i id="quantity-response-bar"></i></div>
+          <div class="table-shell quantity-table-shell"><table>
+            <thead><tr><th>Tienda</th><th>DM</th><th>Blender</th><th>Cold Foam</th><th>Evidencia</th></tr></thead>
+            <tbody id="quantity-response-table"></tbody>
+          </table></div>
+        </article>
+        <article class="panel quantity-consolidation">
+          <header class="quantity-panel-head"><div><span class="quantity-step">2</span><div><h3>Consolidado de piezas</h3><p id="quantity-scope">Vista actual</p></div></div></header>
+          <div id="quantity-totals" class="quantity-totals"></div>
+          <div id="quantity-bars" class="quantity-bars" aria-label="Comparativo de piezas"></div>
+        </article>
+      </div>
     </section>
 
     <section id="tiendas" class="dashboard-section" aria-labelledby="stores-heading">

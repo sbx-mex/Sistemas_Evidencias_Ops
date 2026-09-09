@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses
+from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_quantity
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -568,7 +568,53 @@ def main() -> None:
         assert rows[0]["confirmed"] is False and rows[0]["applicabilityConflict"] is True
         assert schema["applicabilityIssues"]["conflicting-applicability-answers"] == [2]
 
-        # Escenario 13: un archivo renombrado como XLSX se rechaza antes de procesarse.
+        # Escenario 13: las cantidades son enteros 0–5, requieren ambas
+        # respuestas y evidencia. El consolidado usa la última captura válida.
+        jars = temp / "jars.xlsx"
+        jars_headers = BASE + [
+            "CeCo", ACTIVITY, "Jarra Blender", "Jarras Cold Foam",
+            "Evidencia_Jarras_Blender_&_Cold_Foam",
+        ]
+        jar_rows = []
+        jar_cases = [
+            (130, "38115", 2, 1, "jarras-anterior.jpg"),
+            (131, "38115", 3, 2, "jarras-vigente.jpg"),
+            (132, "38119", 6, 1, "jarras-fuera-rango.jpg"),
+            (133, "38120", "", 1, "jarras-faltante.jpg"),
+        ]
+        for source_id, ceco, blender, cold_foam, filename in jar_cases:
+            start, finish = timestamps(source_id)
+            jar_rows.append([
+                source_id, start, finish, "", "Prueba", ceco,
+                "Jarras Blender | Cold Foam", blender, cold_foam,
+                f"{allowed}/{filename}",
+            ])
+        save_book(jars, jars_headers, jar_rows)
+        rows, schema = load_responses(jars, [item["name"] for item in cms_activities])
+        assert parse_quantity(0) == 0 and parse_quantity("5") == 5
+        assert parse_quantity(6) is None and parse_quantity("2.5") is None and parse_quantity("") is None
+        assert all(header not in schema["evidenceHeaders"] for header in ("Jarra Blender", "Jarras Cold Foam"))
+        assert schema["evidenceHeaders"] == ["Evidencia_Jarras_Blender_&_Cold_Foam"]
+        payload = build_payload(
+            jars,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        module = next(item for item in payload["quantityModules"] if item["activity"] == "Jarras Blender | Cold Foam")
+        assert module["answeredStores"] == 1
+        assert module["totals"] == {"blender": 3, "coldFoam": 2, "total": 5}
+        submissions = [item for item in payload["submissions"] if item["activity"] == "Jarras Blender | Cold Foam"]
+        assert len(submissions) == 1 and submissions[0]["ceco"] == "38115"
+        assert submissions[0]["quantities"] == {"blender": 3, "coldFoam": 2, "total": 5}
+        assert submissions[0]["evidenceUrl"].endswith("jarras-vigente.jpg")
+        assert payload["quality"]["duplicateValidResponses"] == 1
+        assert payload["quality"]["quantityResponseIssues"] == [
+            {"row": 4, "issue": "Jarras Blender: fuera de rango"},
+            {"row": 5, "issue": "Jarras Blender: faltante"},
+        ]
+
+        # Escenario 14: un archivo renombrado como XLSX se rechaza antes de procesarse.
         damaged = temp / "damaged.xlsx"
         damaged.write_bytes(b"archivo incompleto")
         try:
@@ -578,7 +624,7 @@ def main() -> None:
         else:
             raise AssertionError("El XLSX dañado no fue rechazado")
 
-        # Escenario 14: Forms puede quedar sólo con encabezados después de limpiar filas.
+        # Escenario 15: Forms puede quedar sólo con encabezados después de limpiar filas.
         empty = temp / "empty.xlsx"
         save_book(empty, ["CeCo", ACTIVITY, "Evidencia_RollOut"], [])
         payload = build_payload(

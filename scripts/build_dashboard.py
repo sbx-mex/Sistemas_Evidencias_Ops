@@ -51,6 +51,21 @@ RESPONSE_FIELDS = {
     # Forms conserva la pregunta anterior como CeCo y crea CeCo1 al cambiarla
     # de lista desplegable a captura numérica. Ambas son la misma llave lógica.
     "ceco": ("CeCo", "CeCo1", "CC", "Centro de costo"),
+    "blenderJars": ("Jarra Blender", "Jarras Blender"),
+    "coldFoamJars": ("Jarras Cold Foam", "Jarra Cold Foam"),
+}
+
+QUANTITY_ACTIVITY_CONFIG = {
+    "jarrasblendercoldfoam": {
+        "activity": "Jarras Blender | Cold Foam",
+        "title": "Jarras en buen estado",
+        "metrics": (
+            {"key": "blender", "field": "blenderJars", "label": "Jarras Blender"},
+            {"key": "coldFoam", "field": "coldFoamJars", "label": "Jarras Cold Foam"},
+        ),
+        "minimum": 0,
+        "maximum": 5,
+    },
 }
 
 CONFIRMATION_HEADERS = (
@@ -475,6 +490,19 @@ def parse_datetime(value: Any) -> datetime | None:
         except ValueError:
             continue
     return None
+
+
+def parse_quantity(value: Any, minimum: int = 0, maximum: int = 5) -> int | None:
+    """Acepta sólo piezas enteras dentro del rango ofrecido por Microsoft Forms."""
+    if isinstance(value, bool):
+        return None
+    # Cero es una respuesta válida; clean_text usa `value or ""` y por ello
+    # aquí se normaliza explícitamente antes de validar el entero.
+    text = "" if value is None else str(value).strip()
+    if not re.fullmatch(r"\d+", text):
+        return None
+    quantity = int(text)
+    return quantity if minimum <= quantity <= maximum else None
 
 
 def resolve_columns(headers: list[Any], contract: dict[str, tuple[str, ...]]) -> dict[str, int]:
@@ -1088,12 +1116,18 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
     if missing:
         raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
     confirmation_columns = matching_columns(headers, CONFIRMATION_HEADERS)
-    evidence_group = evidence_columns(headers, activity_names)
+    response_field_indices = {
+        index for indices in column_groups.values() for index in indices
+    }
+    evidence_group = [
+        item for item in evidence_columns(headers, activity_names)
+        if item["index"] not in response_field_indices
+    ]
     if not evidence_group:
         raise ValueError("No se encontró ninguna columna de evidencia")
-    excluded_indices = {
-        index for indices in column_groups.values() for index in indices
-    } | set(confirmation_columns) | {item["index"] for item in evidence_group}
+    excluded_indices = response_field_indices | set(confirmation_columns) | {
+        item["index"] for item in evidence_group
+    }
     applicability_group = applicability_columns(headers, excluded_indices, activity_names)
     response_activity_by_text: dict[str, str] = {}
     response_activity_by_compact: dict[str, str] = {}
@@ -1162,6 +1196,8 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "name": values["name"],
             "activity": values["activity"],
             "ceco": values["ceco"],
+            "blenderJars": values["blenderJars"],
+            "coldFoamJars": values["coldFoamJars"],
             "confirmedAnswer": "Sí" if values["activity"] else "",
             "confirmed": confirmed and not row_has_conflict,
             "applicabilityAnswer": "Sí" if applicability is True else ("No" if applicability is False else ""),
@@ -1253,6 +1289,7 @@ def build_payload(
     hidden_activity_rows = []
     hidden_activities = set()
     canonicalized_activity_rows = []
+    quantity_response_issues = []
     corrected_cecos = []
     ignored_response_rows = []
     configured_ignored_response_ids = set(setting_list(settings.get("ignoredResponseIds")))
@@ -1294,6 +1331,25 @@ def build_payload(
             latest_update = response["finished"]
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
+        quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
+        quantities: dict[str, int] = {}
+        quantity_issue = ""
+        if quantity_config:
+            for metric in quantity_config["metrics"]:
+                field = metric["field"]
+                raw_value = response.get(field, "")
+                quantity = parse_quantity(
+                    raw_value,
+                    quantity_config["minimum"],
+                    quantity_config["maximum"],
+                )
+                if quantity is None:
+                    issue_type = "faltante" if not clean_text(raw_value) else "fuera de rango"
+                    quantity_issue = f"{metric['label']}: {issue_type}"
+                    break
+                quantities[metric["key"]] = quantity
+            if quantity_issue:
+                quantity_response_issues.append({"row": response["row"], "issue": quantity_issue})
         not_applicable = bool(response["explicitNo"] and store and not response["applicabilityConflict"])
         if response["applicabilityAnswer"]:
             conditional_activities.add(activity)
@@ -1304,6 +1360,7 @@ def build_payload(
             and activity
             and response["confirmed"]
             and not not_applicable
+            and not quantity_issue
             and (evidence_available or not evidence_rules.get(key_text(activity), settings.get("requireEvidence", True)))
         )
         if not valid and not not_applicable:
@@ -1331,6 +1388,11 @@ def build_payload(
             "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
             "valid": valid,
         }
+        if quantity_config and not quantity_issue:
+            public["quantities"] = {
+                **quantities,
+                "total": sum(quantities.values()),
+            }
         if settings.get("publishEvidenceLinks") and evidence_url:
             public["evidenceUrl"] = evidence_url
         if settings.get("publishPersonalData"):
@@ -1369,6 +1431,28 @@ def build_payload(
         if current is None or item_sort > current_sort:
             latest_submission_by_pair[pair] = item
     submissions = list(latest_submission_by_pair.values())
+    quantity_modules = []
+    for config in QUANTITY_ACTIVITY_CONFIG.values():
+        records = [
+            item for item in submissions
+            if item.get("valid") and item.get("activity") == config["activity"] and item.get("quantities")
+        ]
+        totals = {
+            metric["key"]: sum(item["quantities"].get(metric["key"], 0) for item in records)
+            for metric in config["metrics"]
+        }
+        quantity_modules.append({
+            "activity": config["activity"],
+            "title": config["title"],
+            "minimum": config["minimum"],
+            "maximum": config["maximum"],
+            "metrics": [
+                {"key": metric["key"], "label": metric["label"]}
+                for metric in config["metrics"]
+            ],
+            "answeredStores": len(records),
+            "totals": {**totals, "total": sum(totals.values())},
+        })
     latest_timestamp_by_ceco: dict[str, datetime] = {}
     for (ceco, _), item in latest_by_pair.items():
         finished = item.get("finished")
@@ -1572,6 +1656,7 @@ def build_payload(
             "hiddenActivityRows": hidden_activity_rows,
             "hiddenActivities": sorted(hidden_activities, key=key_text),
             "canonicalizedActivityRows": canonicalized_activity_rows,
+            "quantityResponseIssues": quantity_response_issues,
             "correctedCeCos": corrected_cecos,
             "ignoredResponseRows": ignored_response_rows,
             "ignoredResponseSourceIds": sorted(ignored_response_source_ids, key=key_text),
@@ -1610,6 +1695,7 @@ def build_payload(
             key=lambda item: (item["compliance"], key_text(item["dm"]), key_text(item["store"])),
         ),
         "stores": store_rows,
+        "quantityModules": quantity_modules,
         "submissions": sorted(submissions, key=lambda item: item["timestamp"] or "", reverse=True),
     }
 

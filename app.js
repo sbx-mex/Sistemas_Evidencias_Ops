@@ -191,6 +191,58 @@ function renderActivities() {
   }).join("") : '<tr><td colspan="6"><div class="empty-state">No hay actividades para el filtro seleccionado.</div></td></tr>';
 }
 
+function activeQuantityModule() {
+  return (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity) || null;
+}
+
+function filteredQuantityResponses(module) {
+  return state.data.submissions.filter((item) =>
+    item.valid && item.activity === module.activity && item.quantities &&
+    (!state.filters.region || item.region === state.filters.region) &&
+    (!state.filters.dm || item.dm === state.filters.dm) &&
+    (!state.filters.store || item.ceco === state.filters.store));
+}
+
+function renderQuantityModule() {
+  const section = $("#inventario-jarras");
+  const nav = $("#quantity-nav");
+  const module = activeQuantityModule();
+  section.hidden = !module;
+  nav.hidden = !module;
+  if (!module) return;
+
+  const eligibleStores = filteredStores().length;
+  const responses = filteredQuantityResponses(module)
+    .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
+  const responseRate = eligibleStores ? responses.length / eligibleStores * 100 : 0;
+  const totals = Object.fromEntries(module.metrics.map((metric) => [
+    metric.key,
+    responses.reduce((sum, item) => sum + Number(item.quantities?.[metric.key] || 0), 0),
+  ]));
+  totals.total = Object.values(totals).reduce((sum, value) => sum + value, 0);
+
+  $("#quantity-response-chip").textContent = `${number(responses.length)} de ${number(eligibleStores)} tiendas`;
+  $("#quantity-response-rate").textContent = percent(responseRate);
+  $("#quantity-response-bar").style.setProperty("--progress", `${Math.min(responseRate, 100)}%`);
+  $("#quantity-scope").textContent = currentScope();
+  $("#quantity-response-table").innerHTML = responses.length ? responses.map((item) => `<tr>
+    <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></td>
+    <td>${esc(item.dm)}</td>
+    <td><strong>${number(item.quantities.blender)}</strong></td>
+    <td><strong>${number(item.quantities.coldFoam)}</strong></td>
+    <td>${item.evidenceLinkPublished && item.evidenceUrl
+      ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
+      : "Validada"}</td>
+  </tr>`).join("") : '<tr><td colspan="5"><div class="empty-state">Aún no hay respuestas completas en este filtro.</div></td></tr>';
+
+  $("#quantity-totals").innerHTML = [
+    ...module.metrics.map((metric) => [number(totals[metric.key]), metric.label]),
+    [number(totals.total), "Piezas totales"],
+  ].map(([value, label], index) => `<article class="quantity-total${index === module.metrics.length ? " total" : ""}"><strong>${value}</strong><span>${esc(label)}</span></article>`).join("");
+  const maximum = Math.max(...module.metrics.map((metric) => totals[metric.key]), 1);
+  $("#quantity-bars").innerHTML = module.metrics.map((metric) => `<div><span>${esc(metric.label)}</span><b>${number(totals[metric.key])}</b><i><em style="--progress:${totals[metric.key] / maximum * 100}%"></em></i></div>`).join("");
+}
+
 function filteredEvidence() {
   return state.data.submissions.filter((item) =>
     item.valid && item.evidenceAvailable &&
@@ -296,7 +348,7 @@ function readFilterUrl() {
 }
 
 function renderAll() {
-  renderSummary(); renderOrganization(); renderActivities(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
+  renderSummary(); renderOrganization(); renderActivities(); renderQuantityModule(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
 }
 
 function filterDisplayValue(key, value) {
@@ -776,6 +828,14 @@ function buildExcelSpec() {
     const decision = executiveDecision(value * 100);
     return [index + 1, activity.name, completed, pending, value, activity.commitmentDateDisplay || "Sin fecha", { value: decision.status, style: decision.style }, { value: decision.action, style: decision.style }];
   });
+  const quantityModule = activeQuantityModule();
+  const quantityRows = quantityModule ? filteredQuantityResponses(quantityModule)
+    .sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
+    .map((item) => [
+      item.ceco, item.store, item.dm,
+      Number(item.quantities.blender || 0), Number(item.quantities.coldFoam || 0),
+      Number(item.quantities.total || 0), item.evidenceLinkPublished ? item.evidenceUrl : "Validada",
+    ]) : [];
   return {
     title: `Sistema de Evidencias OPS · ${scope} · ${activityLabel}`,
     sheets: [
@@ -811,6 +871,11 @@ function buildExcelSpec() {
         rows: [["Avance por actividad", "", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "% Avance", "Fecha compromiso", "Estado", "Decisión"], ...activityRows],
         widths: [10, 40, 14, 14, 14, 20, 16, 20], merges: ["A1:H1", "A2:H2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:H${4 + activityRows.length}`, tabColor: "FF16845B",
       },
+      ...(quantityModule ? [{
+        name: "Jarras",
+        rows: [["Jarras en buen estado", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", ""], [], ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"], ...quantityRows],
+        widths: [13, 30, 32, 17, 19, 17, 42], merges: ["A1:G1", "A2:G2"], headerRows: [4], countColumns: [4, 5, 6], freezeRow: 4, autoFilter: `A4:G${4 + quantityRows.length}`, tabColor: "FFD8A243",
+      }] : []),
     ],
   };
 }
@@ -856,7 +921,12 @@ function bindEvents() {
   $("#filter-region").addEventListener("change", (event) => { state.filters.region = event.target.value; state.filters.dm = ""; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-dm").addEventListener("change", (event) => { state.filters.dm = event.target.value; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
-  $("#filter-activity").addEventListener("change", (event) => { state.filters.activity = event.target.value; state.showAllEvidence = false; renderAll(); });
+  $("#filter-activity").addEventListener("change", (event) => {
+    state.filters.activity = event.target.value;
+    state.showAllEvidence = false;
+    renderAll();
+    if (activeQuantityModule()) requestAnimationFrame(() => $("#inventario-jarras").scrollIntoView({ behavior: "smooth", block: "start" }));
+  });
   $("#clear-filters").addEventListener("click", clearDashboardFilters);
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
   $("#evidence-filter-region").addEventListener("change", (event) => {

@@ -68,7 +68,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -110,7 +110,7 @@ for required in (
         issues.append(f"Falta prueba de aislamiento CMS: {required}")
 store_table_html = html[html.index('<tbody id="store-table"'):]
 store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
-if "<th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
+if "<th>CeCo</th><th>Tienda</th><th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
     issues.append("La tabla Tiendas todavía muestra la columna DM")
 for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "clearDashboardFilters", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
@@ -160,7 +160,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v32", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v33", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")

@@ -131,6 +131,7 @@ def build_workbook(data: dict) -> Workbook:
     summary.title = "Resumen"
     stores_sheet = workbook.create_sheet("Tiendas")
     activities_sheet = workbook.create_sheet("Actividades")
+    jars_sheet = workbook.create_sheet("Jarras")
     source = data.get("summary", {})
     cut = data.get("lastUpdatedDisplay", "Sin datos")
     region = data.get("region", "Centro Norte")
@@ -225,9 +226,50 @@ def build_workbook(data: dict) -> Workbook:
     style_decision_column(activities_sheet, 5, activities_sheet.max_row, 8)
     set_widths(activities_sheet, [10, 40, 14, 14, 14, 20, 16, 20])
 
+    style_title(jars_sheet, 7, "Jarras en buen estado", f"{region} · Corte {cut}")
+    jars_headers = ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"]
+    jars_sheet.append(jars_headers)
+    jars_activity = "Jarras Blender | Cold Foam"
+    jar_rows = sorted(
+        (
+            item for item in data.get("submissions", [])
+            if item.get("valid") and item.get("activity") == jars_activity and item.get("quantities")
+        ),
+        key=lambda item: (item.get("region", ""), item.get("dm", ""), item.get("store", "")),
+    )
+    for item in jar_rows:
+        quantities = item.get("quantities", {})
+        jars_sheet.append([
+            item.get("ceco"), item.get("store"), item.get("dm"),
+            quantities.get("blender", 0), quantities.get("coldFoam", 0), quantities.get("total", 0),
+            item.get("evidenceUrl", "Validada"),
+        ])
+    first_jar_row = 5
+    last_jar_row = jars_sheet.max_row
+    total_row = last_jar_row + 1
+    jars_sheet.cell(total_row, 3, "Consolidado")
+    for column in (4, 5, 6):
+        letter = get_column_letter(column)
+        jars_sheet.cell(total_row, column, f"=SUM({letter}{first_jar_row}:{letter}{last_jar_row})" if last_jar_row >= first_jar_row else 0)
+    style_header(jars_sheet, 4, 1, 7)
+    style_table(jars_sheet, 5, total_row, 7)
+    for cell in jars_sheet[total_row][:7]:
+        cell.fill = PatternFill("solid", fgColor=SOFT)
+        cell.font = Font(name="Aptos", size=10, bold=True, color=GREEN)
+    jars_sheet.freeze_panes = "A5"
+    jars_sheet.auto_filter.ref = f"A4:G{last_jar_row}"
+    for row in range(first_jar_row, total_row + 1):
+        jars_sheet[f"A{row}"].number_format = "@"
+        for column in (4, 5, 6):
+            jars_sheet.cell(row=row, column=column).number_format = "#,##0"
+    set_widths(jars_sheet, [13, 28, 30, 18, 20, 17, 46])
+    jars_sheet.print_title_rows = "1:4"
+    jars_sheet.page_setup.orientation = "landscape"
+    jars_sheet.page_setup.fitToWidth = 1
+
     for index, ws in enumerate(workbook.worksheets):
         ws.sheet_properties.pageSetUpPr.fitToPage = True
-        ws.sheet_properties.tabColor = [ACCENT, GREEN, GOOD][index]
+        ws.sheet_properties.tabColor = [ACCENT, GREEN, GOOD, AMBER][index]
         ws.sheet_view.zoomScale = 90
     return workbook
 

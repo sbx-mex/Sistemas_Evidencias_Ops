@@ -14,7 +14,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, photo_slug, recover_response_ceco, safe_evidence_url, short_dm_name, validate_webp_asset
+from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url, short_dm_name, validate_webp_asset
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -191,6 +191,8 @@ if response_schema.get("cecoHeaders") != ["CeCo", "CeCo1"]:
     fail("El motor no consolidó exactamente las columnas CeCo y CeCo1")
 if "Ceco12" in response_schema.get("cecoHeaders", []):
     fail("Una columna ajena Ceco12 fue interpretada como CeCo")
+if any(header in response_schema.get("evidenceHeaders", []) for header in ("Jarra Blender", "Jarras Cold Foam")):
+    fail("Una pregunta numérica de jarras fue interpretada como evidencia")
 ceco_usage = response_schema.get("cecoSourceUsage", {})
 ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
 if set(ceco_usage) != {"CeCo", "CeCo1"} or any(
@@ -234,9 +236,16 @@ for row in forms_responses:
     if not activity or resolved_ceco not in stores_by_ceco or row["applicabilityConflict"]:
         continue
     not_applicable = bool(row["explicitNo"])
+    quantity_complete = True
+    if activity == "Jarras Blender | Cold Foam":
+        quantity_complete = all(
+            parse_quantity(row.get(field)) is not None
+            for field in ("blenderJars", "coldFoamJars")
+        )
     valid = bool(
         row["confirmed"]
         and not not_applicable
+        and quantity_complete
         and (evidence_url or not evidence_required.get(compact_key(activity), True))
     )
     if not (valid or row["applicabilityAnswer"]):
@@ -296,6 +305,20 @@ for submission in published:
         fail("La llave de evidencia no se construyó desde actividad y CeCo")
 approve("02 · CMS, conteos, CeCo y evidencias seguras")
 
+jar_activity = "Jarras Blender | Cold Foam"
+jar_module = next((item for item in data.get("quantityModules", []) if item.get("activity") == jar_activity), None)
+jar_submissions = [
+    item for item in published
+    if item.get("activity") == jar_activity and item.get("quantities")
+]
+if not jar_module or jar_module.get("answeredStores") != 2 or jar_module.get("totals") != {"blender": 4, "coldFoam": 2, "total": 6}:
+    fail("El consolidado de jarras no coincide con las dos respuestas de prueba")
+if len(jar_submissions) != 2 or any(item["quantities"] != {"blender": 2, "coldFoam": 1, "total": 3} for item in jar_submissions):
+    fail("Las respuestas de jarras no conservan ambas cantidades y su total")
+if data.get("quality", {}).get("quantityResponseIssues"):
+    fail("El archivo vigente contiene cantidades de jarras inválidas")
+approve("02A · Jarras: cumplimiento y piezas consolidadas por separado")
+
 with tempfile.TemporaryDirectory() as temp_dir:
     generated = Path(temp_dir) / "dashboard.json"
     subprocess.run([sys.executable, str(ROOT / "scripts/build_dashboard.py"), "--output", str(generated)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
@@ -307,8 +330,8 @@ if data != fresh:
 approve("03 · Python sincronizado con la última actualización")
 
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
-if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades"]:
-    fail("El Excel Python no contiene las tres vistas ejecutivas")
+if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Jarras"]:
+    fail("El Excel Python no contiene las cuatro vistas ejecutivas")
 if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("002E24") for sheet in static_excel.sheetnames):
     fail("Los títulos del Excel Python no conservan el verde oscuro")
 expected_summary_formula = "=IFERROR(A6/(A6+C6),0)"
@@ -318,6 +341,11 @@ for sheet_name, header_row in (("Resumen", 9), ("Tiendas", 4), ("Actividades", 4
     headers = [cell.value for cell in static_excel[sheet_name][header_row]]
     if "Pendientes" not in headers or "Decisión" not in headers or any(label in headers for label in ("Aplican", "No aplica", "N/A")):
         fail(f"La hoja {sheet_name} no está enfocada únicamente en Realizadas y Pendientes")
+jar_headers = [cell.value for cell in static_excel["Jarras"][4]]
+if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"]:
+    fail("La hoja Jarras no separa respuestas y piezas")
+if static_excel["Jarras"].max_row != 7 or static_excel["Jarras"][7][2].value != "Consolidado":
+    fail("La hoja Jarras no contiene las dos respuestas de prueba y su consolidado")
 with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
     subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
@@ -345,7 +373,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -369,7 +397,7 @@ for removed_copy in ("Vista personalizada", "Filtra, revisa y exporta en un solo
 if "Fall 26 · Cada detalle cuenta" in html:
     fail("El pie conserva el mensaje de campaña solicitado para retirar")
 store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
-if "<th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
+if "<th>CeCo</th><th>Tienda</th><th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
     fail("La tabla Tiendas todavía muestra la columna DM")
 for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\"", "id=\"active-scope\"", "id=\"toggle-dates\"", "id=\"commitment-dates\"", "renderActiveScope"]:
     if forbidden in html + js + css:
@@ -445,7 +473,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v32", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v33", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
@@ -514,9 +542,9 @@ if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow
     fail("El workflow conserva lógica transitoria para una prueba obsoleta")
 approve("10 · Workflow completo: limpiar, generar, validar y publicar")
 
-if len(passed) != 12:
-    fail(f"Se esperaban 12 validaciones y se ejecutaron {len(passed)}")
-print("Validación aprobada · 12/12 controles")
+if len(passed) != 13:
+    fail(f"Se esperaban 13 validaciones y se ejecutaron {len(passed)}")
+print("Validación aprobada · 13/13 controles")
 for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
