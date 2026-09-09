@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "a9aa30f7b7b65802",
+  "buildVersion": "c0816dc689d3446c",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-09T23:41:34+00:00",
+  "generatedAt": "2026-09-09T23:56:47+00:00",
   "lastUpdated": "2026-09-09T17:20:57",
   "lastUpdatedDisplay": "09/09/2026 17:20",
   "report": {
@@ -121,7 +121,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "75c52153fd971c1ce6fc8e23129d998fb19b1f0bed075d1117c0ec9bf7623621"
+    "cmsSha256": "8faa418e5a617babb66ac3af3de8b98088532e19f65726f02f028d269511650d"
   },
   "summary": {
     "regions": 4,
@@ -457,6 +457,28 @@
       "focusRank": 9
     },
     {
+      "name": "Jarras Blender | Cold Foam",
+      "description": "Registro de jarras en buen estado.",
+      "order": 12,
+      "startDate": "2026-09-09",
+      "endDate": "2026-09-13",
+      "commitmentDateDisplay": "13/09/26",
+      "dateStatus": "Vigente",
+      "requireEvidence": true,
+      "priority": "Alta",
+      "autoDetected": false,
+      "conditionalApplicability": false,
+      "completedStores": 2,
+      "applicableStores": 357,
+      "notApplicableStores": 0,
+      "pendingStores": 355,
+      "compliance": 0.6,
+      "deadlineLabel": "Vence en 4 días",
+      "deadlineTone": "amber",
+      "daysRemaining": 4,
+      "focusRank": 10
+    },
+    {
       "name": "Señaletica Back",
       "description": "Revisa Materiales Actualizados en Back",
       "order": 10,
@@ -476,7 +498,7 @@
       "deadlineLabel": "En 21 días",
       "deadlineTone": "green",
       "daysRemaining": 21,
-      "focusRank": 10
+      "focusRank": 11
     },
     {
       "name": "Señaletica Lobby",
@@ -498,28 +520,6 @@
       "deadlineLabel": "En 21 días",
       "deadlineTone": "green",
       "daysRemaining": 21,
-      "focusRank": 11
-    },
-    {
-      "name": "Jarras Blender | Cold Foam",
-      "description": "Registro de jarras en buen estado.",
-      "order": 12,
-      "startDate": "2026-09-09",
-      "endDate": null,
-      "commitmentDateDisplay": "Sin fecha compromiso",
-      "dateStatus": "Vigente",
-      "requireEvidence": true,
-      "priority": "Alta",
-      "autoDetected": false,
-      "conditionalApplicability": false,
-      "completedStores": 2,
-      "applicableStores": 357,
-      "notApplicableStores": 0,
-      "pendingStores": 355,
-      "compliance": 0.6,
-      "deadlineLabel": "Sin fecha",
-      "deadlineTone": "neutral",
-      "daysRemaining": null,
       "focusRank": 12
     }
   ],
