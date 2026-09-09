@@ -49,6 +49,14 @@ def approve(name: str) -> None:
     passed.append(name)
 
 
+def response_recency_key(item: dict) -> tuple[str, int]:
+    """Replica el orden del motor: fecha más reciente y última fila en empate."""
+    finished = item.get("finished")
+    timestamp = finished.isoformat() if finished else str(item.get("timestamp") or "")
+    source_row = item.get("row", item.get("_sourceRow", 0))
+    return timestamp, int(source_row or 0)
+
+
 allowed_hosts = {"grupovips-my.sharepoint.com"}
 safe_sample = "https://grupovips-my.sharepoint.com/ruta/imagen.jpg#vista"
 if safe_evidence_url(safe_sample, allowed_hosts) != safe_sample:
@@ -56,6 +64,10 @@ if safe_evidence_url(safe_sample, allowed_hosts) != safe_sample:
 for unsafe in ("http://grupovips-my.sharepoint.com/imagen.jpg", "https://usuario@grupovips-my.sharepoint.com/imagen.jpg", "https://example.com/imagen.jpg"):
     if safe_evidence_url(unsafe, allowed_hosts):
         fail("La validación aceptó un enlace de evidencia inseguro")
+if response_recency_key({"timestamp": "", "_sourceRow": 8}) >= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 2}):
+    fail("Una fila sin fecha reemplazó una respuesta fechada")
+if response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 8}) <= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 2}):
+    fail("El empate de fecha no conserva la última fila del archivo")
 
 
 for relative in REQUIRED:
@@ -212,20 +224,33 @@ forms_responses, forms_schema = load_responses(
     [item["name"] for item in data.get("activities", [])],
 )
 active_by_key = {compact_key(item["name"]): item["name"] for item in data.get("activities", [])}
+evidence_required = {compact_key(item["name"]): item.get("requireEvidence", True) for item in data.get("activities", [])}
 stores_by_ceco = {item["ceco"]: item for item in data.get("stores", [])}
 latest_excel_by_pair = {}
 for row in forms_responses:
     activity = active_by_key.get(compact_key(row["activity"]))
     evidence_url = safe_evidence_url(row["evidence"], allowed_hosts)
     resolved_ceco, _ = recover_response_ceco(row, stores_by_ceco)
-    if not activity or resolved_ceco not in stores_by_ceco or not row["confirmed"] or row["explicitNo"] or not evidence_url:
+    if not activity or resolved_ceco not in stores_by_ceco or row["applicabilityConflict"]:
+        continue
+    not_applicable = bool(row["explicitNo"])
+    valid = bool(
+        row["confirmed"]
+        and not not_applicable
+        and (evidence_url or not evidence_required.get(compact_key(activity), True))
+    )
+    if not (valid or row["applicabilityAnswer"]):
         continue
     pair = (resolved_ceco, activity)
-    row_sort = (row["finished"].isoformat() if row["finished"] else "", row["row"])
     current = latest_excel_by_pair.get(pair)
-    if current is None or row_sort > current[0]:
-        latest_excel_by_pair[pair] = (row_sort, evidence_url)
-expected_excel_links = {pair: item[1] for pair, item in latest_excel_by_pair.items()}
+    state = {**row, "valid": valid, "notApplicable": not_applicable, "evidenceUrl": evidence_url}
+    if current is None or response_recency_key(state) > response_recency_key(current):
+        latest_excel_by_pair[pair] = state
+expected_excel_links = {
+    pair: item["evidenceUrl"]
+    for pair, item in latest_excel_by_pair.items()
+    if item["valid"] and not item["notApplicable"] and item["evidenceUrl"]
+}
 published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for row in published}
 for correction in data.get("quality", {}).get("correctedCeCos", []):
     if (
