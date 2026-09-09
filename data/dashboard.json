@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "4aa0a677307fa6cd",
+  "buildVersion": "a9aa30f7b7b65802",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-10T08:33:37+09:00",
-  "lastUpdated": "2026-09-09T17:13:38",
-  "lastUpdatedDisplay": "09/09/2026 17:13",
+  "generatedAt": "2026-09-09T23:41:34+00:00",
+  "lastUpdated": "2026-09-09T17:20:57",
+  "lastUpdatedDisplay": "09/09/2026 17:20",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "09/09/26 · 17:13 h",
+    "cutOffDisplay": "09/09/26 · 17:20 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 482,
+        "completed": 483,
         "expected": 845,
-        "pending": 363,
-        "compliance": 57.0,
+        "pending": 362,
+        "compliance": 57.2,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "b52a6e7ef014471ef0425dd76dcf8a99dbd117eb9395b6881322c6997e90aa34",
+    "responsesSha256": "50ee47967e42bf172717f99181d3756c72997b7ca9887bbac70d80dd4c9528ed",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -129,15 +129,15 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 483,
+    "completedCompletions": 484,
     "compliance": 11.3,
-    "validResponses": 483,
+    "validResponses": 484,
     "storesComplete": 1,
-    "pendingCompletions": 3782,
+    "pendingCompletions": 3781,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 554,
+    "responsesRead": 555,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -170,7 +170,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 232
+        "CeCo1": 233
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -235,7 +235,7 @@
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 483,
+    "evidenceLinksPublished": 484,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -277,7 +277,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -10,
+      "daysRemaining": -9,
       "focusRank": 1
     },
     {
@@ -299,7 +299,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -6,
       "focusRank": 2
     },
     {
@@ -321,7 +321,7 @@
       "compliance": 19.3,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -6,
       "focusRank": 3
     },
     {
@@ -343,7 +343,7 @@
       "compliance": 6.6,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -6,
       "focusRank": 4
     },
     {
@@ -365,7 +365,7 @@
       "compliance": 18.5,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -3,
       "focusRank": 5
     },
     {
@@ -387,7 +387,7 @@
       "compliance": 8.1,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -3,
       "focusRank": 6
     },
     {
@@ -409,7 +409,7 @@
       "compliance": 8.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -3,
       "focusRank": 7
     },
     {
@@ -431,7 +431,7 @@
       "compliance": 9.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -3,
       "focusRank": 8
     },
     {
@@ -446,14 +446,14 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 50,
+      "completedStores": 51,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 307,
-      "compliance": 14.0,
-      "deadlineLabel": "Vence en 3 días",
+      "pendingStores": 306,
+      "compliance": 14.3,
+      "deadlineLabel": "Vence en 4 días",
       "deadlineTone": "amber",
-      "daysRemaining": 3,
+      "daysRemaining": 4,
       "focusRank": 9
     },
     {
@@ -473,9 +473,9 @@
       "notApplicableStores": 0,
       "pendingStores": 338,
       "compliance": 5.3,
-      "deadlineLabel": "En 20 días",
+      "deadlineLabel": "En 21 días",
       "deadlineTone": "green",
-      "daysRemaining": 20,
+      "daysRemaining": 21,
       "focusRank": 10
     },
     {
@@ -495,9 +495,9 @@
       "notApplicableStores": 0,
       "pendingStores": 337,
       "compliance": 5.6,
-      "deadlineLabel": "En 20 días",
+      "deadlineLabel": "En 21 días",
       "deadlineTone": "green",
-      "daysRemaining": 20,
+      "daysRemaining": 21,
       "focusRank": 11
     },
     {
@@ -591,12 +591,12 @@
         "Centro Norte"
       ],
       "stores": 11,
-      "completed": 68,
+      "completed": 69,
       "expected": 131,
       "notApplicable": 1,
-      "pending": 63,
+      "pending": 62,
       "pendingStores": 11,
-      "compliance": 51.9,
+      "compliance": 52.7,
       "status": "Seguimiento",
       "rank": 4
     },
@@ -4403,17 +4403,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38431",
-      "store": "Eduardo Molina",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 5,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 7,
-      "compliance": 41.7,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38811",
       "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
@@ -4559,6 +4548,17 @@
     {
       "ceco": "38930",
       "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 6,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38431",
+      "store": "Eduardo Molina",
       "dm": "Veronica Garcia Ortega",
       "completed": 6,
       "expected": 12,
@@ -17862,18 +17862,18 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 41.7,
-      "lastUpdate": "2026-09-07T15:27:44",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-09T17:20:57",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
         "Rack FHW": true,
         "Max & Min": false,
         "Fotografia - SM": true,
-        "Mandil Verde": false,
+        "Mandil Verde": true,
         "Lay Out": false,
         "Community Board": false,
         "Activacion PSL Sharpie": true,
@@ -19282,6 +19282,28 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-85039ab1e217623a",
+      "timestamp": "2026-09-09T17:20:57",
+      "timestampDisplay": "09/09/2026 17:20",
+      "activity": "Mandil Verde",
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Mandil_Verde_38431",
+      "evidenceLinkLabel": "Link_Mandil_Verde_38431",
+      "evidenceFileName": "17889959993671121144124258286926_Starbucks Eduardo Mo.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/17889959993671121144124258286926_Starbucks%20Eduardo%20Mo.jpg"
+    },
     {
       "id": "respuesta-60a6a10b70362d8c",
       "timestamp": "2026-09-09T17:13:38",
