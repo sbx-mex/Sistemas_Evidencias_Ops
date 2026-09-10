@@ -71,17 +71,8 @@ jobs:
           git diff --check
           python -X utf8 scripts/clean_obsolete.py --check
 
-      - name: Resumen de actualización
-        if: always()
-        run: |
-          echo "## Sistema de Evidencias OPS" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Fuente: Excel Forms + Directorio + CMS" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Excel: Forms + Directorio + CMS auditados de forma independiente" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Validación: UTF-8, fórmulas CMS, CeCo, actividad, evidencia y limpieza" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Publicación: sólo datos y exportaciones generadas" >> "$GITHUB_STEP_SUMMARY"
-
       - name: Publicar datos y limpieza obsoleta
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
@@ -98,3 +89,17 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "data: actualizar evidencias OPS"
           git push
+
+      - name: Resumen de actualización
+        if: always()
+        env:
+          BUILD_RESULT: ${{ job.status }}
+        run: |
+          echo "## Sistema de Evidencias OPS" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Resultado: $BUILD_RESULT" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Fuente: Excel Forms + Directorio + CMS" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$BUILD_RESULT" = "success" ]; then
+            echo "- Validaciones aprobadas: fuentes, conteos, jarras, evidencias y exportaciones." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- Actualización detenida. Revisar el primer paso con error antes de volver a ejecutar." >> "$GITHUB_STEP_SUMMARY"
+          fi
