@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "c0816dc689d3446c",
+  "buildVersion": "916d10c557175f7d",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-09T23:56:47+00:00",
-  "lastUpdated": "2026-09-09T17:20:57",
-  "lastUpdatedDisplay": "09/09/2026 17:20",
+  "generatedAt": "2026-09-10T09:45:58+09:00",
+  "lastUpdated": "2026-09-09T18:24:51",
+  "lastUpdatedDisplay": "09/09/2026 18:24",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "09/09/26 · 17:20 h",
+    "cutOffDisplay": "09/09/26 · 18:24 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 483,
+        "completed": 485,
         "expected": 845,
-        "pending": 362,
-        "compliance": 57.2,
+        "pending": 360,
+        "compliance": 57.4,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "50ee47967e42bf172717f99181d3756c72997b7ca9887bbac70d80dd4c9528ed",
+    "responsesSha256": "a724295a8ceb046d56995682a86436134a10b1b2fc840e627e86f149e2c44d1d",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -121,7 +121,8 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "8faa418e5a617babb66ac3af3de8b98088532e19f65726f02f028d269511650d"
+    "cmsSha256": "8faa418e5a617babb66ac3af3de8b98088532e19f65726f02f028d269511650d",
+    "settingsSha256": "c097e4ff0b150616e74b498df918498688553cf32acdab5b799bc8b90e8ff15d"
   },
   "summary": {
     "regions": 4,
@@ -129,15 +130,15 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 484,
-    "compliance": 11.3,
-    "validResponses": 484,
-    "storesComplete": 1,
-    "pendingCompletions": 3781,
+    "completedCompletions": 486,
+    "compliance": 11.4,
+    "validResponses": 486,
+    "storesComplete": 2,
+    "pendingCompletions": 3779,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 555,
+    "responsesRead": 557,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -170,7 +171,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 233
+        "CeCo1": 235
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -235,7 +236,7 @@
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 484,
+    "evidenceLinksPublished": 486,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -277,7 +278,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -9,
+      "daysRemaining": -10,
       "focusRank": 1
     },
     {
@@ -299,7 +300,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -6,
+      "daysRemaining": -7,
       "focusRank": 2
     },
     {
@@ -321,7 +322,7 @@
       "compliance": 19.3,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -6,
+      "daysRemaining": -7,
       "focusRank": 3
     },
     {
@@ -343,7 +344,7 @@
       "compliance": 6.6,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -6,
+      "daysRemaining": -7,
       "focusRank": 4
     },
     {
@@ -365,7 +366,7 @@
       "compliance": 18.5,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -4,
       "focusRank": 5
     },
     {
@@ -387,7 +388,7 @@
       "compliance": 8.1,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -4,
       "focusRank": 6
     },
     {
@@ -409,7 +410,7 @@
       "compliance": 8.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -4,
       "focusRank": 7
     },
     {
@@ -431,7 +432,7 @@
       "compliance": 9.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -4,
       "focusRank": 8
     },
     {
@@ -446,14 +447,14 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 51,
+      "completedStores": 52,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 306,
-      "compliance": 14.3,
-      "deadlineLabel": "Vence en 4 días",
+      "pendingStores": 305,
+      "compliance": 14.6,
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 9
     },
     {
@@ -468,14 +469,14 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 2,
+      "completedStores": 3,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 355,
-      "compliance": 0.6,
-      "deadlineLabel": "Vence en 4 días",
+      "pendingStores": 354,
+      "compliance": 0.8,
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 10
     },
     {
@@ -495,9 +496,9 @@
       "notApplicableStores": 0,
       "pendingStores": 338,
       "compliance": 5.3,
-      "deadlineLabel": "En 21 días",
+      "deadlineLabel": "En 20 días",
       "deadlineTone": "green",
-      "daysRemaining": 21,
+      "daysRemaining": 20,
       "focusRank": 11
     },
     {
@@ -517,9 +518,9 @@
       "notApplicableStores": 0,
       "pendingStores": 337,
       "compliance": 5.6,
-      "deadlineLabel": "En 21 días",
+      "deadlineLabel": "En 20 días",
       "deadlineTone": "green",
-      "daysRemaining": 21,
+      "daysRemaining": 20,
       "focusRank": 12
     }
   ],
@@ -534,13 +535,13 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 93,
+      "completed": 96,
       "expected": 117,
       "notApplicable": 3,
-      "pending": 24,
-      "pendingStores": 10,
-      "compliance": 79.5,
-      "status": "Seguimiento",
+      "pending": 21,
+      "pendingStores": 8,
+      "compliance": 82.1,
+      "status": "En meta",
       "rank": 1
     },
     {
@@ -553,12 +554,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 117,
+      "completed": 116,
       "expected": 151,
       "notApplicable": 5,
-      "pending": 34,
-      "pendingStores": 12,
-      "compliance": 77.5,
+      "pending": 35,
+      "pendingStores": 13,
+      "compliance": 76.8,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -591,12 +592,12 @@
         "Centro Norte"
       ],
       "stores": 11,
-      "completed": 69,
+      "completed": 70,
       "expected": 131,
       "notApplicable": 1,
-      "pending": 62,
+      "pending": 61,
       "pendingStores": 11,
-      "compliance": 52.7,
+      "compliance": 53.4,
       "status": "Seguimiento",
       "rank": 4
     },
@@ -629,12 +630,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 52,
+      "completed": 51,
       "expected": 153,
       "notApplicable": 3,
-      "pending": 101,
+      "pending": 102,
       "pendingStores": 13,
-      "compliance": 34.0,
+      "compliance": 33.3,
       "status": "Atención",
       "rank": 6
     },
@@ -4271,6 +4272,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 4,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 33.3,
+      "status": "Atención"
+    },
+    {
       "ceco": "43111",
       "store": "Montevideo Insurgentes",
       "dm": "Vanessa Carreño Rios",
@@ -4359,17 +4371,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "completed": 5,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 7,
-      "compliance": 41.7,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38546",
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
@@ -4394,17 +4395,6 @@
     {
       "ceco": "38529",
       "store": "Bosques de Aragon",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 5,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 7,
-      "compliance": 41.7,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38811",
-      "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
       "completed": 5,
       "expected": 12,
@@ -4581,6 +4571,17 @@
     {
       "ceco": "38924",
       "store": "Plaza Aeropuerto",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 6,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38811",
+      "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
       "completed": 6,
       "expected": 12,
@@ -4854,17 +4855,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38456",
-      "store": "Plaza las Flores",
-      "dm": "Enrique Cesar Flores",
-      "completed": 9,
-      "expected": 11,
-      "notApplicable": 1,
-      "pending": 2,
-      "compliance": 81.8,
-      "status": "En meta"
-    },
-    {
       "ceco": "38442",
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4909,19 +4899,8 @@
       "status": "En meta"
     },
     {
-      "ceco": "38604",
-      "store": "Cosmopol",
-      "dm": "Enrique Cesar Flores",
-      "completed": 10,
-      "expected": 11,
-      "notApplicable": 1,
-      "pending": 1,
-      "compliance": 90.9,
-      "status": "En meta"
-    },
-    {
-      "ceco": "43193",
-      "store": "Cosmopol N1",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 10,
       "expected": 11,
@@ -4933,6 +4912,17 @@
     {
       "ceco": "38859",
       "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 10,
+      "expected": 11,
+      "notApplicable": 1,
+      "pending": 1,
+      "compliance": 90.9,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38117",
+      "store": "Satelite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 10,
       "expected": 11,
@@ -8422,11 +8412,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 10,
+      "completed": 11,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 90.9,
-      "lastUpdate": "2026-09-06T17:59:41",
+      "compliance": 100.0,
+      "lastUpdate": "2026-09-09T18:09:32",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -8439,7 +8429,7 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": false
+        "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8462,11 +8452,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 10,
+      "completed": 11,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 90.9,
-      "lastUpdate": "2026-09-05T19:38:54",
+      "compliance": 100.0,
+      "lastUpdate": "2026-09-09T18:24:51",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -8479,7 +8469,7 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": false
+        "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8662,11 +8652,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 9,
+      "completed": 10,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 81.8,
-      "lastUpdate": "2026-09-05T15:00:54",
+      "compliance": 90.9,
+      "lastUpdate": "2026-09-09T18:24:39",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -8679,7 +8669,7 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": false
+        "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -17462,11 +17452,11 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 4,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 41.7,
-      "lastUpdate": "2026-09-09T17:13:38",
+      "compliance": 33.3,
+      "lastUpdate": "2026-09-07T13:01:51",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -17479,7 +17469,7 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": true
+        "Jarras Blender | Cold Foam": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -18142,18 +18132,18 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 41.7,
-      "lastUpdate": "2026-09-07T14:14:05",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-09T17:59:43",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
         "Rack FHW": true,
         "Max & Min": false,
         "Fotografia - SM": true,
-        "Mandil Verde": false,
+        "Mandil Verde": true,
         "Lay Out": false,
         "Community Board": false,
         "Activacion PSL Sharpie": true,
@@ -18622,11 +18612,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 11,
+      "completed": 10,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 100.0,
-      "lastUpdate": "2026-09-09T17:07:27",
+      "compliance": 90.9,
+      "lastUpdate": "2026-09-06T18:57:18",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18639,7 +18629,7 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": true
+        "Jarras Blender | Cold Foam": false
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19273,15 +19263,118 @@
           "label": "Jarras Cold Foam"
         }
       ],
-      "answeredStores": 2,
+      "answeredStores": 3,
       "totals": {
-        "blender": 4,
-        "coldFoam": 2,
-        "total": 6
+        "blender": 6,
+        "coldFoam": 4,
+        "total": 10
       }
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-bcca87446324e1ce",
+      "timestamp": "2026-09-09T18:24:51",
+      "timestampDisplay": "09/09/2026 18:24",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "43193",
+      "store": "Cosmopol N1",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_43193",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_43193",
+      "evidenceFileName": "IMG_9420_Luis Javier Perez Mo.jpeg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 3,
+        "coldFoam": 2,
+        "total": 5
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/IMG_9420_Luis%20Javier%20Perez%20Mo.jpeg"
+    },
+    {
+      "id": "respuesta-d1204fdcd36d6d18",
+      "timestamp": "2026-09-09T18:24:39",
+      "timestampDisplay": "09/09/2026 18:24",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38456",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38456",
+      "evidenceFileName": "17889997091362912024305341934699_Ramon Espinosa Macia.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 0,
+        "coldFoam": 0,
+        "total": 0
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17889997091362912024305341934699_Ramon%20Espinosa%20Macia.jpg"
+    },
+    {
+      "id": "respuesta-49a8e9d01b49c5d6",
+      "timestamp": "2026-09-09T18:09:32",
+      "timestampDisplay": "09/09/2026 18:09",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38604",
+      "store": "Cosmopol",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38604",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38604",
+      "evidenceFileName": "image_Starbucks Cosmopol.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 3,
+        "coldFoam": 2,
+        "total": 5
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/image_Starbucks%20Cosmopol.jpg"
+    },
+    {
+      "id": "respuesta-09d3793dd853c1af",
+      "timestamp": "2026-09-09T17:59:43",
+      "timestampDisplay": "09/09/2026 17:59",
+      "activity": "Mandil Verde",
+      "ceco": "38811",
+      "store": "Plaza Tepeyac",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Mandil_Verde_38811",
+      "evidenceLinkLabel": "Link_Mandil_Verde_38811",
+      "evidenceFileName": "image_Starbucks Plaza Tepe.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/image_Starbucks%20Plaza%20Tepe.jpg"
+    },
     {
       "id": "respuesta-85039ab1e217623a",
       "timestamp": "2026-09-09T17:20:57",
@@ -19303,60 +19396,6 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/17889959993671121144124258286926_Starbucks%20Eduardo%20Mo.jpg"
-    },
-    {
-      "id": "respuesta-60a6a10b70362d8c",
-      "timestamp": "2026-09-09T17:13:38",
-      "timestampDisplay": "09/09/2026 17:13",
-      "activity": "Jarras Blender | Cold Foam",
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "evidenceKey": "Jarras_Blender_Cold_Foam_38371",
-      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38371",
-      "evidenceFileName": "ChatGPT Image 9 sept 2026, 17_05_47_Enrique Cesar Flores.png",
-      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "quantities": {
-        "blender": 2,
-        "coldFoam": 1,
-        "total": 3
-      },
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/ChatGPT%20Image%209%20sept%202026,%2017_05_47_Enrique%20Cesar%20Flores.png"
-    },
-    {
-      "id": "respuesta-eb72bdaf6fa2d6ed",
-      "timestamp": "2026-09-09T17:07:27",
-      "timestampDisplay": "09/09/2026 17:07",
-      "activity": "Jarras Blender | Cold Foam",
-      "ceco": "38117",
-      "store": "Satelite",
-      "dm": "Yazmin Chabela Guadarrama",
-      "region": "Centro Norte",
-      "evidenceKey": "Jarras_Blender_Cold_Foam_38117",
-      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38117",
-      "evidenceFileName": "EO_DM_S37 (1)_Jorge Antonio Alcánt.png",
-      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "quantities": {
-        "blender": 2,
-        "coldFoam": 1,
-        "total": 3
-      },
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/EO_DM_S37%20(1)_Jorge%20Antonio%20Alc%C3%A1nt.png"
     },
     {
       "id": "respuesta-97cc45ae70db1307",

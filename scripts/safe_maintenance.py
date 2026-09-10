@@ -19,7 +19,7 @@ from typing import Iterator
 # El mantenimiento debe ser limpio también fuera de GitHub Actions.
 sys.dont_write_bytecode = True
 
-from build_dashboard import file_sha256, validate_xlsx
+from build_dashboard import file_sha256, output_version, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,25 +44,37 @@ def run(*command: str) -> None:
 
 @contextmanager
 def exclusive_lock() -> Iterator[None]:
-    """Impide dos actualizaciones simultáneas y nunca deja un bloqueo huérfano."""
-    if LOCK.exists():
+    """El sistema operativo libera el bloqueo al salir, incluso tras un cierre abrupto.
+
+    El archivo permanece ignorado por Git. No se borra: eliminarlo permitiría
+    que otro proceso bloqueara un archivo nuevo mientras el primero sigue activo.
+    """
+    with os.fdopen(os.open(LOCK, os.O_CREAT | os.O_RDWR, 0o600), "r+b") as handle:
+        if os.fstat(handle.fileno()).st_size == 0:
+            handle.write(b" ")
+            handle.flush()
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+            acquire = lambda: msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            release = lambda: msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            acquire = lambda: fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            release = lambda: fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
         try:
-            owner = int(LOCK.read_text(encoding="utf-8").split("pid=", 1)[1].splitlines()[0])
-        except (OSError, ValueError, IndexError):
-            owner = -1
-        # Autocorrección segura: sólo retira un lock cuyo proceso ya no existe.
-        if owner < 1 or not Path(f"/proc/{owner}").exists():
-            LOCK.unlink(missing_ok=True)
-    try:
-        descriptor = os.open(LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-    except FileExistsError as error:
-        raise RuntimeError("Ya existe una actualización segura en ejecución") from error
-    try:
-        os.write(descriptor, f"pid={os.getpid()}\n".encode())
-        os.close(descriptor)
-        yield
-    finally:
-        LOCK.unlink(missing_ok=True)
+            acquire()
+        except OSError as error:
+            raise RuntimeError("No se pudo adquirir el bloqueo; puede haber otra actualización en ejecución") from error
+        try:
+            handle.seek(0)
+            handle.write(f"pid={os.getpid()}\n".encode())
+            handle.truncate()
+            handle.flush()
+            yield
+        finally:
+            handle.seek(0)
+            release()
 
 
 def cms_sources() -> list[Path]:
@@ -92,6 +104,7 @@ def outputs_current(fingerprints: dict[str, str]) -> bool:
             "responsesSha256": sources.get("responsesSha256"),
             "directorySha256": sources.get("directorySha256"),
             "cmsSha256": sources.get("cmsSha256"),
+            "settingsSha256": sources.get("settingsSha256"),
         }
     except (OSError, ValueError, KeyError, TypeError):
         return False
@@ -99,8 +112,9 @@ def outputs_current(fingerprints: dict[str, str]) -> bool:
         "responsesSha256": fingerprints.get("Sistema de Evidencias OPS.xlsx"),
         "directorySha256": fingerprints.get("Directorio.xlsx"),
         "cmsSha256": fingerprints.get("Sistema_Evidencias_OPS_CMS.xlsx"),
+        "settingsSha256": file_sha256(ROOT / "config/settings.json"),
     }
-    return all(expected.values()) and saved == expected
+    return bool(all(expected.values()) and saved == expected and data.get("buildVersion") == output_version(expected))
 
 
 @contextmanager
@@ -182,6 +196,8 @@ def main() -> None:
             removed += clean_obsolete()
             run(sys.executable, "-X", "utf8", "scripts/audit_project.py")
             run(sys.executable, "scripts/clean_obsolete.py", "--check")
+            if before != validate_all_xlsx(cms_sources()) or not outputs_current(before):
+                raise RuntimeError("Las fuentes o el motor cambiaron durante la validación; se restauraron los resultados")
 
     elapsed = time.perf_counter() - started
     action = "reconstruido" if args.force or not current else "sin reconstrucción innecesaria"

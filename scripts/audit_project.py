@@ -93,7 +93,6 @@ for required in (
     "ensure_source_stability",
     "normalize_allowed_hosts",
     "Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte",
-    "latest_submission_by_pair",
     "recover_response_ceco",
     "STABILITY_CONTROLS",
 ):
@@ -150,9 +149,11 @@ for source_key, source_path, label in (
     ("responsesSha256", ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", "Forms"),
     ("directorySha256", ROOT / "cms" / "Directorio.xlsx", "Directorio"),
     ("cmsSha256", ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", "CMS"),
+    ("settingsSha256", ROOT / "config" / "settings.json", "Configuración"),
 ):
     try:
-        validate_xlsx(source_path, label)
+        if source_path.suffix == ".xlsx":
+            validate_xlsx(source_path, label)
         source_fingerprints[source_key] = file_sha256(source_path)
     except ValueError as error:
         issues.append(str(error))
@@ -174,7 +175,7 @@ if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'h
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
 if data.get("schemaVersion") != 13:
-    issues.append("Contrato JSON distinto de la versión 12")
+    issues.append("Contrato JSON distinto de la versión 13")
 if len(data.get("regions", [])) < 1 or data.get("summary", {}).get("regions") != len(data.get("regions", [])):
     issues.append("El alcance regional no es auditable")
 directory_status = data.get("sources", {}).get("directoryStatus", {})
@@ -250,6 +251,35 @@ if len(published_pairs) != len(set(published_pairs)):
     issues.append("Hay evidencias publicadas duplicadas para la misma tienda y actividad")
 if data.get("summary", {}).get("validResponses") != len(published_evidence):
     issues.append("El resumen no coincide con las evidencias vigentes deduplicadas")
+completed_pairs = {
+    (store["ceco"], activity)
+    for store in stores for activity, completed in store.get("activities", {}).items()
+    if completed
+}
+if set(published_pairs) != completed_pairs or data.get("summary", {}).get("completedCompletions") != len(completed_pairs):
+    issues.append("El cumplimiento y las evidencias no representan las mismas tiendas y actividades")
+excluded_pairs = {
+    (store["ceco"], activity)
+    for store in stores for activity, applicable in store.get("applicableActivities", {}).items()
+    if applicable is False
+}
+published_exclusions = {(item["ceco"], item["activity"]) for item in data.get("submissions", []) if item.get("notApplicable")}
+if published_exclusions != excluded_pairs:
+    issues.append("Las exclusiones publicadas no coinciden con el denominador")
+for module in data.get("quantityModules", []):
+    if module.get("activity") not in activity_names:
+        issues.append("Un módulo de cantidades inactivo sigue publicado")
+    records = [item for item in published_evidence if item["activity"] == module.get("activity")]
+    metric_keys = [metric["key"] for metric in module["metrics"]]
+    for item in records:
+        values = item.get("quantities", {})
+        if any(type(values.get(key)) is not int or not module["minimum"] <= values[key] <= module["maximum"] for key in metric_keys):
+            issues.append("Una respuesta vigente contiene cantidades inválidas")
+        elif values.get("total") != sum(values[key] for key in metric_keys):
+            issues.append("Las piezas totales de una tienda no coinciden")
+    totals = {key: sum(item.get("quantities", {}).get(key, 0) for item in records) for key in metric_keys}
+    if module.get("answeredStores") != len(records) or module.get("totals") != {**totals, "total": sum(totals.values())}:
+        issues.append("El consolidado de piezas no coincide con las respuestas vigentes")
 if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
 if data.get("quality", {}).get("unsafeEvidenceRows"):

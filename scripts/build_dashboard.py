@@ -130,7 +130,8 @@ def repair_mojibake(value: str) -> str:
 
 
 def clean_text(value: Any) -> str:
-    return re.sub(r"\s+", " ", repair_mojibake(str(value or "").strip()))
+    # 0 y False son respuestas informadas, no celdas vacías.
+    return re.sub(r"\s+", " ", repair_mojibake(str(value if value is not None else "").strip()))
 
 
 def key_text(value: Any) -> str:
@@ -300,6 +301,22 @@ def file_sha256(path: Path) -> str:
 def source_fingerprints(paths: dict[str, Path]) -> dict[str, str]:
     """Captura una versión estable de cada fuente antes de procesarla."""
     return {name: file_sha256(path) for name, path in paths.items()}
+
+
+def output_version(source_hashes: dict[str, str]) -> str:
+    """Invalida resultados al cambiar fuentes, motor, recursos o fecha operativa."""
+    inputs = dict(source_hashes)
+    inputs["calendarDate"] = datetime.now().date().isoformat()
+    for relative in (
+        "scripts/build_dashboard.py", "scripts/export_excel.py", "scripts/export_pdf.py",
+        "scripts/io_utils.py", "requirements.txt", "app.js", "styles.css",
+        "service-worker.js", "pdf-export.js", "xlsx-export.js", "index.html",
+    ):
+        inputs[relative] = file_sha256(ROOT / relative)
+    for asset in sorted((ROOT / "assets").rglob("*")):
+        if asset.is_file() and asset.suffix.casefold() in {".webp", ".png", ".jpg", ".jpeg"}:
+            inputs[asset.relative_to(ROOT).as_posix()] = file_sha256(asset)
+    return hashlib.sha256(json.dumps(inputs, sort_keys=True).encode("utf-8")).hexdigest()[:16]
 
 
 def ensure_source_stability(before: dict[str, str], paths: dict[str, Path]) -> None:
@@ -1255,6 +1272,7 @@ def build_payload(
         "responsesSha256": responses_path,
         "directorySha256": directory_path,
         "cmsSha256": cms_path,
+        "settingsSha256": settings_path,
     }
     initial_source_hashes = source_fingerprints(source_paths)
     activities, managers, cms_settings, calendar = load_cms(cms_path)
@@ -1350,7 +1368,7 @@ def build_payload(
                 quantities[metric["key"]] = quantity
             if quantity_issue:
                 quantity_response_issues.append({"row": response["row"], "issue": quantity_issue})
-        not_applicable = bool(response["explicitNo"] and store and not response["applicabilityConflict"])
+        not_applicable = bool(response["explicitNo"] and store and not response["schemaConflict"])
         if response["applicabilityAnswer"]:
             conditional_activities.add(activity)
         if response["evidence"] and not evidence_available:
@@ -1400,11 +1418,11 @@ def build_payload(
             public["email"] = response["email"]
         submissions.append(public)
 
-        if store and activity and not response["applicabilityConflict"] and (
+        if store and activity and not response["schemaConflict"] and (
             valid or response["applicabilityAnswer"]
         ):
             pair = (response["ceco"], activity)
-            state = {**response, "valid": valid, "notApplicable": not_applicable}
+            state = {**response, "valid": valid, "notApplicable": not_applicable, "public": public}
             current = latest_state_by_pair.get(pair)
             current_sort = ((current or {}).get("finished") or datetime.min, (current or {}).get("row", 0))
             state_sort = (response["finished"] or datetime.min, response["row"])
@@ -1420,19 +1438,17 @@ def build_payload(
     }
     completion_pairs = set(latest_by_pair)
     raw_valid_responses = sum(item["valid"] for item in submissions)
-    latest_submission_by_pair: dict[tuple[str, str], dict[str, Any]] = {}
-    for item in submissions:
-        if not (item["valid"] or item["notApplicable"]):
-            continue
-        pair = (item["ceco"], item["activity"])
-        current = latest_submission_by_pair.get(pair)
-        item_sort = (item.get("timestamp") or "", item.get("id") or "")
-        current_sort = ((current or {}).get("timestamp") or "", (current or {}).get("id") or "")
-        if current is None or item_sort > current_sort:
-            latest_submission_by_pair[pair] = item
-    submissions = list(latest_submission_by_pair.values())
+    # Cumplimiento, evidencia y piezas comparten la misma respuesta ganadora.
+    # En empate de fecha prevalece la última fila, nunca el hash del archivo.
+    # Un Sí reciente sin evidencia deja pendiente una exclusión anterior.
+    submissions = [
+        state["public"] for state in latest_state_by_pair.values()
+        if state["valid"] or state["notApplicable"]
+    ]
     quantity_modules = []
     for config in QUANTITY_ACTIVITY_CONFIG.values():
+        if config["activity"] not in activity_names:
+            continue
         records = [
             item for item in submissions
             if item.get("valid") and item.get("activity") == config["activity"] and item.get("quantities")
@@ -1564,15 +1580,7 @@ def build_payload(
 
     ensure_source_stability(initial_source_hashes, source_paths)
     source_hashes = initial_source_hashes
-    version_inputs = dict(source_hashes)
-    for relative_path in (
-        "scripts/build_dashboard.py", "app.js", "styles.css", "service-worker.js",
-        "pdf-export.js", "xlsx-export.js", "index.html",
-    ):
-        version_inputs[relative_path] = file_sha256(ROOT / relative_path)
-    build_version = hashlib.sha256(
-        json.dumps(version_inputs, sort_keys=True).encode("utf-8")
-    ).hexdigest()[:16]
+    build_version = output_version(source_hashes)
 
     ambiguous_evidence_issues = {
         "ambiguous-evidence", "ambiguous-matching-evidence",
@@ -1635,6 +1643,7 @@ def build_payload(
             "directoryStatus": directory_status,
             "cms": cms_path.name,
             "cmsSha256": source_hashes["cmsSha256"],
+            "settingsSha256": source_hashes["settingsSha256"],
         },
         "summary": {
             "regions": len(regions),

@@ -614,6 +614,71 @@ def main() -> None:
             {"row": 5, "issue": "Jarras Blender: faltante"},
         ]
 
+        # Ceros numéricos pasan por la lectura completa de Excel, no sólo
+        # por parse_quantity. Una tienda con 0 piezas sí respondió.
+        start, finish = timestamps(134)
+        zero_jars = temp / "zero-jars.xlsx"
+        save_book(zero_jars, jars_headers, [[
+            134, start, finish, "", "Prueba", "38115",
+            "Jarras Blender | Cold Foam", 0, 0, f"{allowed}/cero.jpg",
+        ]])
+        zero_payload = build_payload(zero_jars, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        assert zero_payload["summary"]["completedCompletions"] == 1
+        assert zero_payload["quantityModules"][0]["answeredStores"] == 1
+        assert zero_payload["quantityModules"][0]["totals"] == {"blender": 0, "coldFoam": 0, "total": 0}
+        assert zero_payload["quality"]["quantityResponseIssues"] == []
+
+        # Misma hora y mismo archivo: incluso con el mismo ID calculado,
+        # la última fila debe aportar las piezas y el cumplimiento.
+        tied_jars = temp / "tied-jars.xlsx"
+        save_book(tied_jars, jars_headers, [
+            [135, start, finish, "", "Prueba", "38115", "Jarras Blender | Cold Foam", 1, 1, f"{allowed}/misma.jpg"],
+            [136, start, finish, "", "Prueba", "38115", "Jarras Blender | Cold Foam", 3, 2, f"{allowed}/misma.jpg"],
+        ])
+        tied_payload = build_payload(tied_jars, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        assert tied_payload["quantityModules"][0]["totals"] == {"blender": 3, "coldFoam": 2, "total": 5}
+        assert len(tied_payload["submissions"]) == 1
+        assert tied_payload["submissions"][0]["quantities"]["total"] == 5
+        assert tied_payload["summary"]["completedCompletions"] == tied_payload["summary"]["validResponses"] == 1
+
+        # Una fila sin fecha no sustituye a la fechada, aunque aparezca abajo.
+        no_date = temp / "undated-jars.xlsx"
+        save_book(no_date, jars_headers, [
+            [137, start, finish, "", "Prueba", "38115", "Jarras Blender | Cold Foam", 3, 2, f"{allowed}/fechada.jpg"],
+            [138, "", "", "", "Prueba", "38115", "Jarras Blender | Cold Foam", 1, 1, f"{allowed}/sin-fecha.jpg"],
+        ])
+        dated_payload = build_payload(no_date, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        assert dated_payload["submissions"][0]["evidenceUrl"].endswith("fechada.jpg")
+        assert dated_payload["quantityModules"][0]["totals"]["total"] == 5
+
+        # No -> Sí sin evidencia: recupera el denominador y queda pendiente.
+        reopened = temp / "reopened-rack.xlsx"
+        save_book(reopened, BASE + ["CeCo", ACTIVITY, "¿ Tu Tienda Aplica para Rack FHW?", "Evidencia_Rack_FHW"], [
+            [139, start, finish, "", "Prueba", "38115", "Rack FHW", "No", ""],
+            [140, start, finish + timedelta(seconds=1), "", "Prueba", "38115", "Rack FHW", "Sí", ""],
+        ])
+        reopened_payload = build_payload(reopened, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        rack_store = next(item for item in reopened_payload["stores"] if item["ceco"] == "38115")
+        assert rack_store["applicableActivities"]["Rack FHW"] is True
+        assert rack_store["activities"]["Rack FHW"] is False
+        assert reopened_payload["quality"]["notApplicableResponses"] == 0
+        assert reopened_payload["summary"]["notApplicableCompletions"] == 0
+        assert reopened_payload["submissions"] == []
+
+        # El CMS también retira el módulo de piezas al desactivar Jarras.
+        inactive_cms = temp / "inactive-jars-cms.xlsx"
+        inactive_book = load_workbook(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
+        inactive_sheet = inactive_book["Actividades"]
+        for cells in inactive_sheet.iter_rows():
+            if any(cell.value == "Jarras Blender | Cold Foam" for cell in cells):
+                inactive_sheet.cell(cells[0].row, 6, "No")
+        inactive_book.save(inactive_cms)
+        inactive_book.close()
+        inactive_payload = build_payload(tied_jars, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json", inactive_cms)
+        assert inactive_payload["quantityModules"] == []
+        assert inactive_payload["submissions"] == []
+        assert inactive_payload["summary"]["completedCompletions"] == 0
+
         # Escenario 14: un archivo renombrado como XLSX se rechaza antes de procesarse.
         damaged = temp / "damaged.xlsx"
         damaged.write_bytes(b"archivo incompleto")

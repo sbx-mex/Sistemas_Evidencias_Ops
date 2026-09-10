@@ -14,7 +14,13 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.build_dashboard import STABILITY_CONTROLS, compact_key, evidence_key, file_sha256, load_responses, parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url, short_dm_name, validate_webp_asset
+from scripts.build_dashboard import (
+    QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, active_activity_catalog,
+    canonical_cms_activity, compact_key, evidence_key, file_sha256, load_cms,
+    load_directory, load_responses, load_settings, normalize_allowed_hosts,
+    parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
+    setting_list, short_dm_name, validate_webp_asset,
+)
 from scripts.clean_obsolete import OBSOLETE_FILES
 
 REQUIRED = [
@@ -129,7 +135,7 @@ if data.get("sources", {}).get("directorySheet") != "Directorio":
     fail("No se utilizó la hoja configurada del directorio")
 if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
     fail("Python no está leyendo el Excel CMS")
-if not re.fullmatch(r"\d{2}/\d{2}/\d{4} \d{2}:\d{2}", data.get("lastUpdatedDisplay", "")):
+if data.get("lastUpdatedDisplay") != "Sin respuestas" and not re.fullmatch(r"\d{2}/\d{2}/\d{4} \d{2}:\d{2}", data.get("lastUpdatedDisplay", "")):
     fail("Última actualización incorrecta")
 summary = data.get("summary", {})
 if not data.get("dms") or not data.get("stores") or not data.get("activities"):
@@ -146,9 +152,15 @@ for source_key, path in (
     if data.get("sources", {}).get(source_key) != file_sha256(path):
         fail(f"La huella de la fuente {source_key} no coincide")
 
-sample = next((store for store in data.get("stores", []) if store.get("ceco") == "38115"), None)
-if not sample or sample.get("store") != "Zona Azul" or sample.get("dm") != "Yazmin Haydee Garcia Gonzalez":
-    fail("Falló el cruce 38115 → Zona Azul → Yazmin Haydee")
+_, _, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
+settings = load_settings(ROOT / "config/settings.json", cms_settings)
+source_stores, _, source_directory_status = load_directory(ROOT / "cms/Directorio.xlsx", settings)
+published_directory = {
+    store["ceco"]: {key: store[key] for key in ("ceco", "store", "dm", "region", "status")}
+    for store in data.get("stores", [])
+}
+if published_directory != source_stores or len(published_directory) != len(data.get("stores", [])):
+    fail("Los cruces CeCo, tienda, DM y región no coinciden con el Directorio vigente")
 activity_names = [item["name"] for item in data.get("activities", [])]
 calculated_exclusions = 0
 for store in data.get("stores", []):
@@ -162,10 +174,11 @@ for store in data.get("stores", []):
         fail(f"CeCo {store.get('ceco')} contabiliza una actividad excluida")
 if summary.get("notApplicableCompletions") != calculated_exclusions:
     fail("La resta implícita de actividades no coincide con las respuestas Sí/No")
-if len(data.get("regions", [])) != 4 or summary.get("regions") != 4 or summary.get("stores") != 357:
+source_regions = {store["region"] for store in source_stores.values()}
+if set(data.get("regions", [])) != source_regions or summary.get("regions") != len(source_regions) or summary.get("stores") != len(source_stores):
     fail("El alcance multirregión del Directorio no quedó publicado")
 directory_status = data.get("sources", {}).get("directoryStatus", {})
-if directory_status.get("includedStatuses") != ["Abierta"] or directory_status.get("includedStores") != 357 or directory_status.get("excludedStores") != 15:
+if directory_status != source_directory_status:
     fail("El CMS no controla de forma auditable las tiendas abiertas")
 if any(store.get("status") != "Abierta" for store in data.get("stores", [])):
     fail("Una tienda no abierta entró en los conteos del dashboard")
@@ -187,15 +200,15 @@ if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", []
 if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
     fail("Calidad inicial incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
-if response_schema.get("cecoHeaders") != ["CeCo", "CeCo1"]:
-    fail("El motor no consolidó exactamente las columnas CeCo y CeCo1")
+if not response_schema.get("cecoHeaders"):
+    fail("El motor no detectó las columnas CeCo del archivo vigente")
 if "Ceco12" in response_schema.get("cecoHeaders", []):
     fail("Una columna ajena Ceco12 fue interpretada como CeCo")
 if any(header in response_schema.get("evidenceHeaders", []) for header in ("Jarra Blender", "Jarras Cold Foam")):
     fail("Una pregunta numérica de jarras fue interpretada como evidencia")
 ceco_usage = response_schema.get("cecoSourceUsage", {})
 ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
-if set(ceco_usage) != {"CeCo", "CeCo1"} or any(
+if set(ceco_usage) != set(response_schema.get("cecoHeaders", [])) or any(
     isinstance(count, bool) or not isinstance(count, int) or count < 0
     for count in ceco_usage.values()
 ):
@@ -204,7 +217,7 @@ if (
     isinstance(ceco_rows_using_both, bool)
     or not isinstance(ceco_rows_using_both, int)
     or ceco_rows_using_both < 0
-    or ceco_rows_using_both > min(ceco_usage.values())
+    or ceco_rows_using_both > sum(ceco_usage.values()) // 2
 ):
     fail("El traslape entre CeCo y CeCo1 es inválido")
 # Cada respuesta debe aportar una sola llave lógica. Si una fila contiene ambas
@@ -214,8 +227,6 @@ if (
 effective_ceco_rows = sum(ceco_usage.values()) - ceco_rows_using_both
 if effective_ceco_rows != data.get("quality", {}).get("responsesRead"):
     fail("La cobertura dinámica de CeCo/CeCo1 no coincide con las respuestas de Forms")
-if data.get("quality", {}).get("ignoredResponseSourceIds") or data.get("quality", {}).get("ignoredResponseRows"):
-    fail("El proyecto conserva exclusiones históricas activas")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
     fail("El proyecto conserva Id de Forms obsoletos en configuración")
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
@@ -226,21 +237,30 @@ forms_responses, forms_schema = load_responses(
     [item["name"] for item in data.get("activities", [])],
 )
 active_by_key = {compact_key(item["name"]): item["name"] for item in data.get("activities", [])}
+active_by_text, active_by_compact = active_activity_catalog(data.get("activities", []))
+allowed_hosts = normalize_allowed_hosts(settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com"))
+ignored_ids = set(setting_list(settings.get("ignoredResponseIds")))
+expected_ignored_rows = [row["row"] for row in forms_responses if row["sourceId"] in ignored_ids]
+if data.get("quality", {}).get("ignoredResponseRows") != expected_ignored_rows:
+    fail("Las exclusiones Forms no coinciden con el CMS")
 evidence_required = {compact_key(item["name"]): item.get("requireEvidence", True) for item in data.get("activities", [])}
 stores_by_ceco = {item["ceco"]: item for item in data.get("stores", [])}
 latest_excel_by_pair = {}
 for row in forms_responses:
-    activity = active_by_key.get(compact_key(row["activity"]))
+    if row["sourceId"] in ignored_ids:
+        continue
+    activity = canonical_cms_activity(row["activity"], active_by_text, active_by_compact)
     evidence_url = safe_evidence_url(row["evidence"], allowed_hosts)
     resolved_ceco, _ = recover_response_ceco(row, stores_by_ceco)
-    if not activity or resolved_ceco not in stores_by_ceco or row["applicabilityConflict"]:
+    if not activity or resolved_ceco not in stores_by_ceco or row["schemaConflict"]:
         continue
     not_applicable = bool(row["explicitNo"])
     quantity_complete = True
-    if activity == "Jarras Blender | Cold Foam":
+    quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
+    if quantity_config:
         quantity_complete = all(
-            parse_quantity(row.get(field)) is not None
-            for field in ("blenderJars", "coldFoamJars")
+            parse_quantity(row.get(metric["field"]), quantity_config["minimum"], quantity_config["maximum"]) is not None
+            for metric in quantity_config["metrics"]
         )
     valid = bool(
         row["confirmed"]
@@ -258,9 +278,9 @@ for row in forms_responses:
 expected_excel_links = {
     pair: item["evidenceUrl"]
     for pair, item in latest_excel_by_pair.items()
-    if item["valid"] and not item["notApplicable"] and item["evidenceUrl"]
+    if item["valid"] and not item["notApplicable"] and item["evidenceUrl"] and settings.get("publishEvidenceLinks")
 }
-published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for row in published}
+published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for row in published if row.get("evidenceUrl")}
 for correction in data.get("quality", {}).get("correctedCeCos", []):
     if (
         correction.get("sourceCeCo") == correction.get("resolvedCeCo")
@@ -268,9 +288,9 @@ for correction in data.get("quality", {}).get("correctedCeCos", []):
         or correction.get("method") != "correo corporativo + nombre exacto"
     ):
         fail("La auditoría de CeCo recuperados contiene una corrección insegura")
-if data.get("quality", {}).get("evidenceLinksPublished") != len(published) or summary.get("validResponses") != len(published):
+if data.get("quality", {}).get("evidenceLinksPublished") != sum(bool(row.get("evidenceUrl")) for row in data.get("submissions", [])) or summary.get("validResponses") != len(published):
     fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
-if any(not row.get("evidenceFileName") or not row.get("evidenceUrl") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or urlsplit(row["evidenceUrl"]).hostname not in allowed_hosts for row in published):
+if any(not row.get("evidenceFileName") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or not safe_evidence_url(row["evidenceUrl"], allowed_hosts) for row in published if row.get("evidenceUrl")):
     fail("Nombre de archivo o vínculo directo inválido")
 if published_excel_links != expected_excel_links:
     missing = len(set(expected_excel_links).difference(published_excel_links))
@@ -289,12 +309,18 @@ for header, match in evidence_header_matches.items():
         fail(f"El encabezado {header} declara una actividad CMS inexistente")
     if match == "unverified" and mapped_key in active_by_key:
         fail(f"El encabezado {header} dejó sin relacionar una actividad activa del CMS")
-for row in published:
+for row in (item for item in published if item.get("evidenceUrl")):
     expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
     if row["evidenceFileName"] != expected_name:
         fail("El nombre de archivo no coincide con el vínculo del Excel")
-if data.get("submissions") and data["submissions"][0].get("timestampDisplay") != data.get("lastUpdatedDisplay"):
-    fail("La última actualización no coincide con la respuesta más reciente")
+source_dates = [
+    row["finished"] for row in forms_responses
+    if row["finished"] and row["sourceId"] not in ignored_ids
+    and canonical_cms_activity(row["activity"], active_by_text, active_by_compact)
+]
+expected_cutoff = max(source_dates).isoformat() if source_dates else None
+if data.get("lastUpdated") != expected_cutoff:
+    fail("La fecha de corte no coincide con las respuestas del alcance CMS")
 for submission in published:
     store = stores_by_ceco.get(submission["ceco"])
     if not store or store["store"] != submission["store"] or store["dm"] != submission["dm"]:
@@ -311,10 +337,21 @@ jar_submissions = [
     item for item in published
     if item.get("activity") == jar_activity and item.get("quantities")
 ]
-if not jar_module or jar_module.get("answeredStores") != 2 or jar_module.get("totals") != {"blender": 4, "coldFoam": 2, "total": 6}:
-    fail("El consolidado de jarras no coincide con las dos respuestas de prueba")
-if len(jar_submissions) != 2 or any(item["quantities"] != {"blender": 2, "coldFoam": 1, "total": 3} for item in jar_submissions):
-    fail("Las respuestas de jarras no conservan ambas cantidades y su total")
+expected_jars = {}
+for (ceco, activity), row in latest_excel_by_pair.items():
+    if activity == jar_activity and row["valid"] and not row["notApplicable"]:
+        blender = parse_quantity(row["blenderJars"])
+        cold_foam = parse_quantity(row["coldFoamJars"])
+        expected_jars[ceco] = {"blender": blender, "coldFoam": cold_foam, "total": blender + cold_foam}
+actual_jars = {item["ceco"]: item["quantities"] for item in jar_submissions}
+if len(jar_submissions) != len(actual_jars) or actual_jars != expected_jars:
+    fail("Las piezas por tienda no coinciden con la última respuesta válida del Excel")
+expected_jar_totals = {key: sum(item[key] for item in expected_jars.values()) for key in ("blender", "coldFoam", "total")}
+if jar_activity in activity_names:
+    if not jar_module or jar_module.get("answeredStores") != len(expected_jars) or jar_module.get("totals") != expected_jar_totals:
+        fail("El consolidado de jarras no coincide con el Excel vigente")
+elif jar_module or jar_submissions:
+    fail("Una actividad de jarras inactiva sigue publicada")
 if data.get("quality", {}).get("quantityResponseIssues"):
     fail("El archivo vigente contiene cantidades de jarras inválidas")
 approve("02A · Jarras: cumplimiento y piezas consolidadas por separado")
@@ -344,8 +381,25 @@ for sheet_name, header_row in (("Resumen", 9), ("Tiendas", 4), ("Actividades", 4
 jar_headers = [cell.value for cell in static_excel["Jarras"][4]]
 if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"]:
     fail("La hoja Jarras no separa respuestas y piezas")
-if static_excel["Jarras"].max_row != 7 or static_excel["Jarras"][7][2].value != "Consolidado":
-    fail("La hoja Jarras no contiene las dos respuestas de prueba y su consolidado")
+jar_sheet = static_excel["Jarras"]
+total_row = 5 + len(expected_jars)
+if jar_sheet.max_row != total_row or jar_sheet.cell(total_row, 3).value != "Consolidado":
+    fail("La hoja Jarras no contiene las tiendas vigentes y su consolidado")
+excel_jars = {}
+for cells in jar_sheet.iter_rows(min_row=5, max_row=total_row - 1, values_only=True) if expected_jars else []:
+    ceco, store, dm, blender, cold_foam, total, link = cells
+    if ceco in excel_jars or ceco not in expected_jars:
+        fail("La hoja Jarras repite o agrega una tienda")
+    excel_jars[ceco] = {"blender": blender, "coldFoam": cold_foam, "total": total}
+    source = stores_by_ceco[ceco]
+    if (store, dm) != (source["store"], source["dm"]) or link != published_excel_links.get((ceco, jar_activity), "Validada"):
+        fail("El cruce de tienda o vínculo de jarras no coincide en el Excel")
+if excel_jars != expected_jars:
+    fail("Las cantidades del Excel Jarras no coinciden con Forms")
+for column in ("D", "E", "F"):
+    expected_formula = f"=SUM({column}5:{column}{total_row - 1})" if expected_jars else 0
+    if jar_sheet[f"{column}{total_row}"].value != expected_formula:
+        fail("El consolidado del Excel Jarras no suma todas las filas vigentes")
 with tempfile.TemporaryDirectory() as temp_dir:
     dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
     subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
