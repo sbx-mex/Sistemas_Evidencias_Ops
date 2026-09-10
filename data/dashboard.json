@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "916d10c557175f7d",
+  "buildVersion": "b3f79512be97ac3e",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-10T01:02:42+00:00",
-  "lastUpdated": "2026-09-09T18:24:51",
-  "lastUpdatedDisplay": "09/09/2026 18:24",
+  "generatedAt": "2026-09-10T01:07:00+00:00",
+  "lastUpdated": "2026-09-09T18:31:22",
+  "lastUpdatedDisplay": "09/09/2026 18:31",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "09/09/26 · 18:24 h",
+    "cutOffDisplay": "09/09/26 · 18:31 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 485,
+        "completed": 486,
         "expected": 845,
-        "pending": 360,
-        "compliance": 57.4,
+        "pending": 359,
+        "compliance": 57.5,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "a724295a8ceb046d56995682a86436134a10b1b2fc840e627e86f149e2c44d1d",
+    "responsesSha256": "a9a44a6a04407049417ce150b2c49cd59e70ddd69d5532c3db0c5e5125d449a8",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -130,15 +130,15 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 486,
+    "completedCompletions": 487,
     "compliance": 11.4,
-    "validResponses": 486,
+    "validResponses": 487,
     "storesComplete": 2,
-    "pendingCompletions": 3779,
+    "pendingCompletions": 3778,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 557,
+    "responsesRead": 558,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -171,7 +171,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 235
+        "CeCo1": 236
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -236,7 +236,7 @@
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 486,
+    "evidenceLinksPublished": 487,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -469,11 +469,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 3,
+      "completedStores": 4,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 354,
-      "compliance": 0.8,
+      "pendingStores": 353,
+      "compliance": 1.1,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -535,12 +535,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 96,
+      "completed": 97,
       "expected": 117,
       "notApplicable": 3,
-      "pending": 21,
+      "pending": 20,
       "pendingStores": 8,
-      "compliance": 82.1,
+      "compliance": 82.9,
       "status": "En meta",
       "rank": 1
     },
@@ -4734,17 +4734,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38368",
-      "store": "Luna Park",
-      "dm": "Enrique Cesar Flores",
-      "completed": 9,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 75.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38339",
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
@@ -4885,6 +4874,17 @@
       "notApplicable": 1,
       "pending": 2,
       "compliance": 81.8,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38368",
+      "store": "Luna Park",
+      "dm": "Enrique Cesar Flores",
+      "completed": 10,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 83.3,
       "status": "En meta"
     },
     {
@@ -8572,11 +8572,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 9,
+      "completed": 10,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 75.0,
-      "lastUpdate": "2026-09-06T21:59:25",
+      "compliance": 83.3,
+      "lastUpdate": "2026-09-09T18:31:22",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -8589,7 +8589,7 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false
+        "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19263,15 +19263,42 @@
           "label": "Jarras Cold Foam"
         }
       ],
-      "answeredStores": 3,
+      "answeredStores": 4,
       "totals": {
-        "blender": 6,
-        "coldFoam": 4,
-        "total": 10
+        "blender": 8,
+        "coldFoam": 5,
+        "total": 13
       }
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-2a57beacf9943bd8",
+      "timestamp": "2026-09-09T18:31:22",
+      "timestampDisplay": "09/09/2026 18:31",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38368",
+      "store": "Luna Park",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38368",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38368",
+      "evidenceFileName": "17890002429465249863001798263915_Starbucks Luna Park.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17890002429465249863001798263915_Starbucks%20Luna%20Park.jpg"
+    },
     {
       "id": "respuesta-bcca87446324e1ce",
       "timestamp": "2026-09-09T18:24:51",
