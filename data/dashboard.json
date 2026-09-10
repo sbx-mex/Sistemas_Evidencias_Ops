@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "c52adfd9f04f90c8",
+  "buildVersion": "36bb7a02b8593ea7",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-10T03:39:50+00:00",
+  "generatedAt": "2026-09-10T04:32:55+00:00",
   "lastUpdated": "2026-09-09T20:58:51",
   "lastUpdatedDisplay": "09/09/2026 20:58",
   "report": {
@@ -45,10 +45,10 @@
         "order": 2,
         "filterValue": "Centro Centro",
         "stores": 85,
-        "completed": 1,
+        "completed": 0,
         "expected": 1020,
-        "pending": 1019,
-        "compliance": 0.1,
+        "pending": 1020,
+        "compliance": 0.0,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 490,
+        "completed": 491,
         "expected": 845,
-        "pending": 355,
-        "compliance": 58.0,
+        "pending": 354,
+        "compliance": 58.1,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "aeb43d8e0db323a13b95626aa7fac1132fcf6c28618c2410e6b755ecf26e5603",
+    "responsesSha256": "3e1edc016bdd62a391ba121d56fdc0810605f0c39ff575dd0ae8be13db30c6e2",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -573,12 +573,12 @@
         "Centro Norte"
       ],
       "stores": 12,
-      "completed": 89,
+      "completed": 90,
       "expected": 138,
       "notApplicable": 6,
-      "pending": 49,
+      "pending": 48,
       "pendingStores": 12,
-      "compliance": 64.5,
+      "compliance": 65.2,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -640,25 +640,6 @@
       "rank": 6
     },
     {
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "shortName": "Alberto Torrado",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
-      "regions": [
-        "Centro Centro"
-      ],
-      "stores": 13,
-      "completed": 1,
-      "expected": 156,
-      "notApplicable": 0,
-      "pending": 155,
-      "pendingStores": 13,
-      "compliance": 0.6,
-      "status": "Atención",
-      "rank": 7
-    },
-    {
       "dm": "Adriana Alejandra Tanus Buhler",
       "shortName": "Adriana Tanus",
       "photo": "assets/dm/adriana-tanus.webp",
@@ -673,6 +654,25 @@
       "notApplicable": 0,
       "pending": 144,
       "pendingStores": 12,
+      "compliance": 0.0,
+      "status": "Atención",
+      "rank": 7
+    },
+    {
+      "dm": "Alberto Torrado Aguilar Cauz",
+      "shortName": "Alberto Torrado",
+      "photo": "",
+      "photoSource": "Pendiente",
+      "photoStatus": "Pendiente",
+      "regions": [
+        "Centro Centro"
+      ],
+      "stores": 13,
+      "completed": 0,
+      "expected": 156,
+      "notApplicable": 0,
+      "pending": 156,
+      "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 8
@@ -1271,6 +1271,17 @@
     {
       "ceco": "38627",
       "store": "Moliere 222",
+      "dm": "Alberto Torrado Aguilar Cauz",
+      "completed": 0,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 12,
+      "compliance": 0.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38187",
+      "store": "Nuevo Leon DT",
       "dm": "Alberto Torrado Aguilar Cauz",
       "completed": 0,
       "expected": 12,
@@ -4184,17 +4195,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38187",
-      "store": "Nuevo Leon DT",
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38207",
       "store": "Lindavista II",
       "dm": "Vanessa Carreño Rios",
@@ -4635,17 +4635,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38186",
-      "store": "Arboledas",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 7,
-      "expected": 11,
-      "notApplicable": 1,
-      "pending": 4,
-      "compliance": 63.6,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38661",
       "store": "Jinetes",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4698,6 +4687,17 @@
       "notApplicable": 0,
       "pending": 4,
       "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38186",
+      "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 8,
+      "expected": 11,
+      "notApplicable": 1,
+      "pending": 3,
+      "compliance": 72.7,
       "status": "Seguimiento"
     },
     {
@@ -5761,11 +5761,11 @@
       "dm": "Alberto Torrado Aguilar Cauz",
       "region": "Centro Centro",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 0,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-09T14:11:42",
+      "compliance": 0.0,
+      "lastUpdate": null,
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -5777,7 +5777,7 @@
         "Community Board": false,
         "Activacion PSL Sharpie": false,
         "Señaletica Back": false,
-        "Señaletica Lobby": true,
+        "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false
       },
       "applicableActivities": {
@@ -15601,11 +15601,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 63.6,
-      "lastUpdate": "2026-09-09T14:08:12",
+      "compliance": 72.7,
+      "lastUpdate": "2026-09-09T14:11:42",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -15617,7 +15617,7 @@
         "Community Board": false,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
-        "Señaletica Lobby": false,
+        "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": false
       },
       "applicableActivities": {
@@ -19995,16 +19995,16 @@
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/image_Maria%20Fernanda%20Reyes.jpg"
     },
     {
-      "id": "respuesta-e528662396aba601",
+      "id": "respuesta-963f042f9127e27f",
       "timestamp": "2026-09-09T14:11:42",
       "timestampDisplay": "09/09/2026 14:11",
       "activity": "Señaletica Lobby",
-      "ceco": "38187",
-      "store": "Nuevo Leon DT",
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "region": "Centro Centro",
-      "evidenceKey": "Senaletica_Lobby_38187",
-      "evidenceLinkLabel": "Link_Senaletica_Lobby_38187",
+      "ceco": "38186",
+      "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Senaletica_Lobby_38186",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38186",
       "evidenceFileName": "image_Starbucks Arboledas.jpg",
       "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
       "confirmed": true,
