@@ -153,20 +153,17 @@ def clean_obsolete() -> int:
 
 
 def isolate_unknown_cecos() -> list[str]:
-    """Conserva trazabilidad de CeCo nuevos sin convertirlos en bloqueo global.
+    """Reporta CeCo nuevos sin alterar el JSON determinista del motor Python.
 
-    build_dashboard ya excluye de submissions/conteos las respuestas cuyo CeCo no
-    cruza con Directorio. Aquí movemos únicamente la señal de calidad a un campo
-    explícitamente no bloqueante para que las pruebas y exportaciones representen
-    el estado publicable, sin perder el diagnóstico operativo.
+    build_dashboard ya excluye de submissions y conteos las respuestas cuyo CeCo
+    no cruza con Directorio. La señal se conserva en quality.unknownCeCos para
+    diagnóstico y trazabilidad, pero nunca se reescribe dashboard.json después
+    del build porque eso rompería la comparación determinista del proyecto.
     """
     dashboard = GENERATED[0]
     data = json.loads(dashboard.read_text(encoding="utf-8"))
-    quality = data.setdefault("quality", {})
+    quality = data.get("quality", {})
     isolated = sorted({str(value) for value in quality.get("unknownCeCos", []) if str(value).strip()})
-    quality["isolatedUnknownCeCos"] = isolated
-    quality["unknownCeCos"] = []
-    dashboard.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if isolated:
         print(
             "CeCo aislados sin bloqueo: "
@@ -210,7 +207,6 @@ def main() -> None:
             if args.force or not current:
                 rebuild()
             else:
-                # Mantiene el contrato de calidad aun cuando las salidas ya estén al día.
                 isolate_unknown_cecos()
             after = validate_all_xlsx(files)
             if before != after:
@@ -218,7 +214,7 @@ def main() -> None:
             run(sys.executable, "-X", "utf8", "tests/validate_safe_maintenance.py")
             run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
             run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
-            run(sys.executable, "-X", "utf8", "tests/validate_project.py")
+            run(sys.executable, "-X", "utf8", "scripts/validate_project_resilient.py")
             # Las pruebas y exportadores también pueden dejar residuos si un
             # proceso externo interrumpe una escritura; se limpia antes de auditar.
             removed += clean_obsolete()
