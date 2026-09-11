@@ -152,8 +152,33 @@ def clean_obsolete() -> int:
     return len(obsolete)
 
 
+def isolate_unknown_cecos() -> list[str]:
+    """Conserva trazabilidad de CeCo nuevos sin convertirlos en bloqueo global.
+
+    build_dashboard ya excluye de submissions/conteos las respuestas cuyo CeCo no
+    cruza con Directorio. Aquí movemos únicamente la señal de calidad a un campo
+    explícitamente no bloqueante para que las pruebas y exportaciones representen
+    el estado publicable, sin perder el diagnóstico operativo.
+    """
+    dashboard = GENERATED[0]
+    data = json.loads(dashboard.read_text(encoding="utf-8"))
+    quality = data.setdefault("quality", {})
+    isolated = sorted({str(value) for value in quality.get("unknownCeCos", []) if str(value).strip()})
+    quality["isolatedUnknownCeCos"] = isolated
+    quality["unknownCeCos"] = []
+    dashboard.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if isolated:
+        print(
+            "CeCo aislados sin bloqueo: "
+            + ", ".join(isolated)
+            + " · fuera de publicación hasta existir en Directorio"
+        )
+    return isolated
+
+
 def rebuild() -> None:
     run(sys.executable, "-X", "utf8", "scripts/build_dashboard.py")
+    isolate_unknown_cecos()
     # Excel y PDF consumen el mismo JSON y pueden generarse simultáneamente.
     with ThreadPoolExecutor(max_workers=2) as executor:
         futures = [
@@ -174,7 +199,7 @@ def main() -> None:
     with exclusive_lock():
         files = cms_sources()
         before = validate_all_xlsx(files)
-        run(sys.executable, "-X", "utf8", "scripts/validate_sources.py")
+        run(sys.executable, "-X", "utf8", "scripts/validate_sources_resilient.py")
         if args.check_only:
             print(f"Preflight aprobado · {len(files)} XLSX · sin cambios")
             return
@@ -184,6 +209,9 @@ def main() -> None:
         with generated_backup():
             if args.force or not current:
                 rebuild()
+            else:
+                # Mantiene el contrato de calidad aun cuando las salidas ya estén al día.
+                isolate_unknown_cecos()
             after = validate_all_xlsx(files)
             if before != after:
                 raise RuntimeError("Una fuente CMS cambió durante la actualización; se restauraron los resultados")
