@@ -1,6 +1,6 @@
 {
   "schemaVersion": 13,
-  "buildVersion": "fff7e111654a7291",
+  "buildVersion": "3ea9e7cdbc922ece",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-11T23:21:52+00:00",
-  "lastUpdated": "2026-09-11T16:59:20",
-  "lastUpdatedDisplay": "11/09/2026 16:59",
+  "generatedAt": "2026-09-12T18:30:15+00:00",
+  "lastUpdated": "2026-09-11T19:16:38",
+  "lastUpdatedDisplay": "11/09/2026 19:16",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "11/09/26 · 16:59 h",
+    "cutOffDisplay": "11/09/26 · 19:16 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -60,10 +60,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 100,
+        "completed": 102,
         "expected": 1200,
-        "pending": 1100,
-        "compliance": 8.3,
+        "pending": 1098,
+        "compliance": 8.5,
         "status": "Atención"
       },
       {
@@ -100,7 +100,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "ac2174acecce96f9fadc7fc25359d4492f7a690c2a1c65252538e5faf0e87726",
+    "responsesSha256": "f22ddd21d51a2f4b90a1bb4f15bfba688e1a40fbdbb2cca0def6e907b9b11048",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -130,15 +130,15 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 598,
-    "compliance": 14.0,
-    "validResponses": 598,
+    "completedCompletions": 600,
+    "compliance": 14.1,
+    "validResponses": 600,
     "storesComplete": 4,
-    "pendingCompletions": 3667,
+    "pendingCompletions": 3665,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 671,
+    "responsesRead": 673,
     "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -171,7 +171,7 @@
       ],
       "cecoSourceUsage": {
         "CeCo": 322,
-        "CeCo1": 349
+        "CeCo1": 351
       },
       "cecoRowsUsingBoth": 0,
       "confirmationHeaders": [],
@@ -236,7 +236,7 @@
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 598,
+    "evidenceLinksPublished": 600,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -278,7 +278,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -11,
+      "daysRemaining": -12,
       "focusRank": 1
     },
     {
@@ -300,7 +300,7 @@
       "compliance": 20.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -8,
+      "daysRemaining": -9,
       "focusRank": 2
     },
     {
@@ -322,7 +322,7 @@
       "compliance": 19.8,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -8,
+      "daysRemaining": -9,
       "focusRank": 3
     },
     {
@@ -344,7 +344,7 @@
       "compliance": 6.6,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -8,
+      "daysRemaining": -9,
       "focusRank": 4
     },
     {
@@ -366,7 +366,7 @@
       "compliance": 18.5,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -5,
+      "daysRemaining": -6,
       "focusRank": 5
     },
     {
@@ -388,7 +388,7 @@
       "compliance": 8.1,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -5,
+      "daysRemaining": -6,
       "focusRank": 6
     },
     {
@@ -410,7 +410,7 @@
       "compliance": 9.0,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -5,
+      "daysRemaining": -6,
       "focusRank": 7
     },
     {
@@ -432,7 +432,7 @@
       "compliance": 10.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -5,
+      "daysRemaining": -6,
       "focusRank": 8
     },
     {
@@ -452,9 +452,9 @@
       "notApplicableStores": 0,
       "pendingStores": 301,
       "compliance": 15.7,
-      "deadlineLabel": "Vence en 2 días",
+      "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
-      "daysRemaining": 2,
+      "daysRemaining": 1,
       "focusRank": 9
     },
     {
@@ -469,14 +469,14 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 99,
+      "completedStores": 101,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 258,
-      "compliance": 27.7,
-      "deadlineLabel": "Vence en 2 días",
+      "pendingStores": 256,
+      "compliance": 28.3,
+      "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
-      "daysRemaining": 2,
+      "daysRemaining": 1,
       "focusRank": 10
     },
     {
@@ -496,9 +496,9 @@
       "notApplicableStores": 0,
       "pendingStores": 336,
       "compliance": 5.9,
-      "deadlineLabel": "En 19 días",
+      "deadlineLabel": "En 18 días",
       "deadlineTone": "green",
-      "daysRemaining": 19,
+      "daysRemaining": 18,
       "focusRank": 11
     },
     {
@@ -518,9 +518,9 @@
       "notApplicableStores": 0,
       "pendingStores": 336,
       "compliance": 5.9,
-      "deadlineLabel": "En 19 días",
+      "deadlineLabel": "En 18 días",
       "deadlineTone": "green",
-      "daysRemaining": 19,
+      "daysRemaining": 18,
       "focusRank": 12
     }
   ],
@@ -697,6 +697,25 @@
       "rank": 9
     },
     {
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "shortName": "Adriana Tanus",
+      "photo": "assets/dm/adriana-tanus.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 12,
+      "completed": 12,
+      "expected": 144,
+      "notApplicable": 0,
+      "pending": 132,
+      "pendingStores": 12,
+      "compliance": 8.3,
+      "status": "Atención",
+      "rank": 10
+    },
+    {
       "dm": "Areli Anahi Lazcano Lezama",
       "shortName": "Areli Lazcano",
       "photo": "assets/dm/areli-lazcano.webp",
@@ -713,7 +732,7 @@
       "pendingStores": 13,
       "compliance": 8.3,
       "status": "Atención",
-      "rank": 10
+      "rank": 11
     },
     {
       "dm": "Erika Julieta Contreras Aguilera",
@@ -732,7 +751,7 @@
       "pendingStores": 15,
       "compliance": 8.3,
       "status": "Atención",
-      "rank": 11
+      "rank": 12
     },
     {
       "dm": "Jose De Jesus Magos Arzaluz",
@@ -751,7 +770,7 @@
       "pendingStores": 15,
       "compliance": 8.3,
       "status": "Atención",
-      "rank": 12
+      "rank": 13
     },
     {
       "dm": "Daniel Flores Maldonado",
@@ -769,25 +788,6 @@
       "pending": 144,
       "pendingStores": 13,
       "compliance": 7.7,
-      "status": "Atención",
-      "rank": 13
-    },
-    {
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "shortName": "Adriana Tanus",
-      "photo": "assets/dm/adriana-tanus.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 12,
-      "completed": 10,
-      "expected": 144,
-      "notApplicable": 0,
-      "pending": 134,
-      "pendingStores": 12,
-      "compliance": 6.9,
       "status": "Atención",
       "rank": 14
     },
@@ -1059,28 +1059,6 @@
     }
   ],
   "attention": [
-    {
-      "ceco": "38103",
-      "store": "Aguilas",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 0,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 12,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38692",
-      "store": "Plaza Exhibimex",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 0,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 12,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
     {
       "ceco": "38481",
       "store": "Alfonso Reyes",
@@ -3139,6 +3117,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38103",
+      "store": "Aguilas",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "completed": 1,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 11,
+      "compliance": 8.3,
+      "status": "Atención"
+    },
+    {
       "ceco": "38746",
       "store": "Arcos Bosques II",
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -3218,6 +3207,17 @@
     {
       "ceco": "38188",
       "store": "Palmas",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "completed": 1,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 11,
+      "compliance": 8.3,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38692",
+      "store": "Plaza Exhibimex",
       "dm": "Adriana Alejandra Tanus Buhler",
       "completed": 1,
       "expected": 12,
@@ -4950,11 +4950,11 @@
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 8.3,
+      "lastUpdate": "2026-09-11T19:16:38",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -4967,7 +4967,7 @@
         "Activacion PSL Sharpie": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false
+        "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -5310,11 +5310,11 @@
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 8.3,
+      "lastUpdate": "2026-09-11T18:20:51",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -5327,7 +5327,7 @@
         "Activacion PSL Sharpie": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false
+        "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19241,15 +19241,69 @@
           "label": "Jarras Cold Foam"
         }
       ],
-      "answeredStores": 99,
+      "answeredStores": 101,
       "totals": {
-        "blender": 173,
-        "coldFoam": 104,
-        "total": 277
+        "blender": 177,
+        "coldFoam": 105,
+        "total": 282
       }
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-b3ab4a40ec113eb2",
+      "timestamp": "2026-09-11T19:16:38",
+      "timestampDisplay": "11/09/2026 19:16",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38103",
+      "store": "Aguilas",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "region": "Centro Poniente",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38103",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38103",
+      "evidenceFileName": "17891757480322115482528748859301_Starbucks Aguilas.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17891757480322115482528748859301_Starbucks%20Aguilas.jpg"
+    },
+    {
+      "id": "respuesta-d7730164acffa729",
+      "timestamp": "2026-09-11T18:20:51",
+      "timestampDisplay": "11/09/2026 18:20",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38692",
+      "store": "Plaza Exhibimex",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "region": "Centro Poniente",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38692",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38692",
+      "evidenceFileName": "IMG_0485_Starbucks Plaza Exhi.jpeg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 0,
+        "total": 2
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/IMG_0485_Starbucks%20Plaza%20Exhi.jpeg"
+    },
     {
       "id": "respuesta-f027e56f10a50cd0",
       "timestamp": "2026-09-11T16:59:20",
