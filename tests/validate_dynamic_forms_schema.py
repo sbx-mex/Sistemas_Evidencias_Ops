@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_quantity
+from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_datetime, parse_quantity
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -68,6 +68,8 @@ def main() -> None:
         # accidentalmente como Latin-1, pero el repositorio conserva UTF-8 limpio.
         mojibake_yes = "Sí".encode("utf-8").decode("latin-1")
         assert clean_text(mojibake_yes) == "Sí"
+        assert parse_datetime(46278.759375) == datetime(2026, 9, 13, 18, 13, 30)
+        assert parse_datetime("46278.759375") == datetime(2026, 9, 13, 18, 13, 30)
         assert boolean_answer(mojibake_yes) is True
 
         # Escenario 3: Forms conserva CeCo y crea CeCo1 al cambiar la pregunta.
@@ -269,8 +271,8 @@ def main() -> None:
         assert len(repeated_payload["submissions"]) == 1
         assert repeated_payload["submissions"][0]["evidenceUrl"].endswith("rollout-vigente.jpg")
         assert repeated_payload["quality"]["responseSchema"]["evidenceHeaderMap"]["Evidencia_RollOut"] == "rollout"
-        assert repeated_payload["quality"]["stabilityScore"] == "10/10"
-        assert len(repeated_payload["quality"]["stabilityControls"]) == 10
+        assert repeated_payload["quality"]["stabilityScore"] == "11/11"
+        assert len(repeated_payload["quality"]["stabilityControls"]) == 11
 
         # Escenario 7: portada previa, encabezado desplazado y campos personales ausentes.
         shifted = temp / "shifted.xlsx"
@@ -679,7 +681,70 @@ def main() -> None:
         assert inactive_payload["submissions"] == []
         assert inactive_payload["summary"]["completedCompletions"] == 0
 
-        # Escenario 14: un archivo renombrado como XLSX se rechaza antes de procesarse.
+        # Escenario 14: horario festivo cuenta Sí/No en general y publica sólo
+        # horarios con valor. El último registro de cada tienda prevalece.
+        holiday = temp / "holiday-hours.xlsx"
+        holiday_headers = BASE + [
+            "CeCo", ACTIVITY, "¿ Modificas Horario Festivo?",
+            "Cierre 15 de Septiembre", "Apertura 16 de Septiembre",
+            "Evidencia_Validacion_Horario_Festivo_Sep 26",
+        ]
+        holiday_rows = []
+        holiday_cases = [
+            (150, "38115", "Sí", "08:00 p. m.", "Sin Modificacion Apertura", "horario-antiguo.jpg"),
+            (151, "38115", "Sí", "09:00 p. m.", "Sin Modificacion Apertura", "horario-reciente.jpg"),
+            (152, "38119", "No", "", "", ""),
+            (153, "38138", "Sí", "Sin Modificacion Cierre", "07:30 a. m.", "apertura.jpg"),
+            (154, "38149", "Sí", "Sin Modificacion Cierre", "Sin Modificacion Apertura", "sin-cambio.jpg"),
+        ]
+        for response_id, ceco, answer, closing, opening, filename in holiday_cases:
+            start, finish = timestamps(response_id)
+            holiday_rows.append([
+                response_id, start, finish, "", "Prueba", ceco,
+                "Validacion Horario Festivo Sep 26", answer, closing, opening,
+                f"{allowed}/{filename}" if filename else "",
+            ])
+        save_book(holiday, holiday_headers, holiday_rows)
+        holiday_payload = build_payload(
+            holiday,
+            ROOT / "cms/Directorio.xlsx",
+            ROOT / "config/settings.json",
+            ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        holiday_schema = holiday_payload["quality"]["responseSchema"]
+        assert holiday_schema["surveyHeaderMap"] == {
+            "¿ Modificas Horario Festivo?": {
+                "activity": "Validacion Horario Festivo Sep 26",
+                "field": "modifiesSchedule",
+                "kind": "boolean",
+            },
+            "Cierre 15 de Septiembre": {
+                "activity": "Validacion Horario Festivo Sep 26",
+                "field": "closingTime",
+                "kind": "time",
+            },
+            "Apertura 16 de Septiembre": {
+                "activity": "Validacion Horario Festivo Sep 26",
+                "field": "openingTime",
+                "kind": "time",
+            },
+        }
+        assert holiday_schema["surveyIssues"] == {"survey-without-operational-change": [6]}
+        module = next(item for item in holiday_payload["surveyModules"] if item["activity"] == "Validacion Horario Festivo Sep 26")
+        assert module["answeredStores"] == 4
+        assert module["answerCounts"] == {"No": 1, "Sí": 3}
+        by_ceco = {item["ceco"]: item for item in module["responses"]}
+        assert by_ceco["38115"]["answers"] == {
+            "modifiesSchedule": "Sí", "closingTime": "09:00 p. m.", "openingTime": "Sin modificación",
+        }
+        assert by_ceco["38119"]["answers"] == {"modifiesSchedule": "No"}
+        assert by_ceco["38138"]["answers"]["openingTime"] == "07:30 a. m."
+        assert by_ceco["38149"]["valid"] is False
+        assert holiday_payload["summary"]["validResponses"] == 3
+        assert holiday_payload["summary"]["completedCompletions"] == 3
+        assert holiday_payload["quality"]["duplicateValidResponses"] == 1
+
+        # Escenario 15: un archivo renombrado como XLSX se rechaza antes de procesarse.
         damaged = temp / "damaged.xlsx"
         damaged.write_bytes(b"archivo incompleto")
         try:
@@ -689,7 +754,7 @@ def main() -> None:
         else:
             raise AssertionError("El XLSX dañado no fue rechazado")
 
-        # Escenario 15: Forms puede quedar sólo con encabezados después de limpiar filas.
+        # Escenario 16: Forms puede quedar sólo con encabezados después de limpiar filas.
         empty = temp / "empty.xlsx"
         save_book(empty, ["CeCo", ACTIVITY, "Evidencia_RollOut"], [])
         payload = build_payload(

@@ -22,7 +22,7 @@ import re
 import unicodedata
 import zipfile
 from collections import Counter, defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
@@ -88,6 +88,46 @@ APPLICABILITY_ACTIVITY_ALIASES = {
     "Rack FHW": ("rack fhw",),
     "Community Board": ("community board",),
 }
+SURVEY_ACTIVITY_CONFIG = {
+    "validacionhorariofestivosep26": {
+        "activity": "Validacion Horario Festivo Sep 26",
+        "title": "Impacto de horario festivo",
+        "primaryKey": "modifiesSchedule",
+        "primaryLabel": "Modifica horario festivo",
+        "detailTitle": "Tiendas que modificaron horario",
+        "fields": (
+            {
+                "key": "modifiesSchedule",
+                "label": "¿Modifica horario festivo?",
+                "kind": "boolean",
+                "aliases": ("¿ Modificas Horario Festivo?", "¿Modificas Horario Festivo?"),
+                "excludedValues": (),
+            },
+            {
+                "key": "closingTime",
+                "label": "Cierre 15 de septiembre",
+                "kind": "time",
+                "aliases": ("Cierre 15 de Septiembre",),
+                "period": "pm",
+                "minimumMinutes": 20 * 60,
+                "maximumMinutes": 23 * 60,
+                "noChangeAliases": ("Sin Modificacion Cierre", "Sin modificación cierre"),
+                "excludedValues": ("Sin modificación",),
+            },
+            {
+                "key": "openingTime",
+                "label": "Apertura 16 de septiembre",
+                "kind": "time",
+                "aliases": ("Apertura 16 de Septiembre",),
+                "period": "am",
+                "minimumMinutes": 7 * 60,
+                "maximumMinutes": 10 * 60,
+                "noChangeAliases": ("Sin Modificacion Apertura", "Sin modificación apertura"),
+                "excludedValues": ("Sin modificación",),
+            },
+        ),
+    },
+}
 REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 MOJIBAKE_MARKERS = ("\u00c3", "\u00c2", "\u00e2")
@@ -97,6 +137,7 @@ STABILITY_CONTROLS = (
     "externalFormsIsolation",
     "canonicalActivityMatching",
     "evidenceHeaderSafety",
+    "surveyHeaderSafety",
     "columnOrderIndependence",
     "duplicateResponseResolution",
     "directoryUniqueness",
@@ -500,7 +541,17 @@ def parse_datetime(value: Any) -> datetime | None:
         return value
     if isinstance(value, date):
         return datetime.combine(value, datetime.min.time())
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        # Excel puede guardar fechas como número serial cuando otro motor
+        # reexporta el libro. El 30/12/1899 replica el sistema de fechas 1900.
+        serial = float(value)
+        if math.isfinite(serial) and 1 <= serial < 2_958_466:
+            return datetime(1899, 12, 30) + timedelta(days=serial)
     text = clean_text(value)
+    if re.fullmatch(r"\d+(?:\.\d+)?", text):
+        serial = float(text)
+        if math.isfinite(serial) and 1 <= serial < 2_958_466:
+            return datetime(1899, 12, 30) + timedelta(days=serial)
     for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
         try:
             return datetime.strptime(text, fmt)
@@ -652,6 +703,103 @@ def applicability_columns(
                 "activityKey": compact_key(activity),
             })
     return result
+
+
+def survey_columns(
+    headers: list[Any],
+    activity_names: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Detecta preguntas operativas configuradas sin depender del orden de Forms."""
+    active_keys = {compact_key(name) for name in (activity_names or []) if clean_text(name)}
+    result = []
+    for activity_key, config in SURVEY_ACTIVITY_CONFIG.items():
+        if activity_key not in active_keys:
+            continue
+        for field in config["fields"]:
+            for index in matching_columns(headers, field["aliases"]):
+                result.append({
+                    "index": index,
+                    "header": clean_text(headers[index]),
+                    "activity": config["activity"],
+                    "activityKey": activity_key,
+                    "fieldKey": field["key"],
+                    "kind": field["kind"],
+                })
+    return result
+
+
+def normalize_survey_answer(value: Any, field: dict[str, Any]) -> str | None:
+    """Normaliza Sí/No y horas de Forms; los valores inesperados no se publican."""
+    raw = clean_text(value)
+    if not raw:
+        return None
+    if field["kind"] == "boolean":
+        answer = boolean_answer(raw)
+        return "Sí" if answer is True else ("No" if answer is False else None)
+    if any(compact_key(raw) == compact_key(alias) for alias in field.get("noChangeAliases", ())):
+        return "Sin modificación"
+    compact = re.sub(r"[^0-9apm:]+", "", key_text(raw))
+    match = re.fullmatch(r"(\d{1,2}):(\d{2})(am|pm)", compact)
+    if not match:
+        return None
+    hour, minute, period = int(match.group(1)), int(match.group(2)), match.group(3)
+    if hour < 1 or hour > 12 or minute not in {0, 30} or period != field.get("period"):
+        return None
+    hour_24 = hour % 12 + (12 if period == "pm" else 0)
+    minutes = hour_24 * 60 + minute
+    if not field["minimumMinutes"] <= minutes <= field["maximumMinutes"]:
+        return None
+    return f"{hour:02d}:{minute:02d} {'p. m.' if period == 'pm' else 'a. m.'}"
+
+
+def resolve_survey_answers(
+    row: tuple[Any, ...],
+    columns: list[dict[str, Any]],
+    activity: str,
+) -> tuple[dict[str, str], list[str], str | None]:
+    """Consolida respuestas del módulo y rechaza duplicados contradictorios."""
+    config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
+    if not config:
+        return {}, [], None
+    fields = {field["key"]: field for field in config["fields"]}
+    answers: dict[str, str] = {}
+    sources: list[str] = []
+    issue = None
+    for field_key, field in fields.items():
+        matches = [item for item in columns if item["activityKey"] == compact_key(activity) and item["fieldKey"] == field_key]
+        raw_values = []
+        for item in matches:
+            raw = clean_text(row[item["index"]]) if item["index"] < len(row) else ""
+            if raw:
+                sources.append(item["header"])
+                if raw not in raw_values:
+                    raw_values.append(raw)
+        normalized = list(dict.fromkeys(
+            value for value in (normalize_survey_answer(raw, field) for raw in raw_values) if value
+        ))
+        if len(normalized) > 1:
+            issue = "conflicting-survey-answers"
+            continue
+        if raw_values and not normalized:
+            issue = issue or "invalid-survey-answer"
+            continue
+        if normalized:
+            answers[field_key] = normalized[0]
+
+    primary = answers.get(config["primaryKey"])
+    detail_fields = [field for field in config["fields"] if field["key"] != config["primaryKey"]]
+    if primary == "Sí":
+        detail_values = [answers.get(field["key"]) for field in detail_fields]
+        if any(value is None for value in detail_values):
+            issue = issue or "incomplete-survey-details"
+        elif all(value in field.get("excludedValues", ()) for value, field in zip(detail_values, detail_fields, strict=True)):
+            issue = issue or "survey-without-operational-change"
+    elif primary == "No" and any(
+        answers.get(field["key"]) not in (None, *field.get("excludedValues", ()))
+        for field in detail_fields
+    ):
+        issue = issue or "details-without-survey-change"
+    return answers, list(dict.fromkeys(sources)), issue
 
 
 def resolve_applicability_answer(
@@ -1097,7 +1245,9 @@ def find_response_source(workbook, activity_names: list[str] | None = None) -> t
     """Localiza hoja y fila de encabezados aunque Forms agregue portada o filas previas."""
     candidates = []
     for sheet_index, ws in enumerate(workbook.worksheets):
-        scan_limit = min(max(ws.max_row, 1), 25)
+        # Algunos exportadores válidos omiten la dimensión declarada de la hoja.
+        # openpyxl expone entonces ``max_row=None`` aunque las filas existan.
+        scan_limit = min(max(ws.max_row or 1, 1), 25)
         for row_number, row in enumerate(ws.iter_rows(min_row=1, max_row=scan_limit, values_only=True), 1):
             headers = list(row)
             activity_columns = matching_columns(headers, RESPONSE_FIELDS["activity"])
@@ -1146,6 +1296,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         item["index"] for item in evidence_group
     }
     applicability_group = applicability_columns(headers, excluded_indices, activity_names)
+    survey_group = survey_columns(headers, activity_names)
     response_activity_by_text: dict[str, str] = {}
     response_activity_by_compact: dict[str, str] = {}
     if activity_names:
@@ -1157,8 +1308,10 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
     conflicts = []
     ceco_source_usage: Counter[str] = Counter()
     ceco_rows_using_both = 0
+    ceco_rows_blank = 0
     evidence_issues: dict[str, list[int]] = defaultdict(list)
     applicability_issues: dict[str, list[int]] = defaultdict(list)
+    survey_issues: dict[str, list[int]] = defaultdict(list)
     for row_number, row in enumerate(rows, header_row + 1):
         if not any(value not in (None, "") for value in row):
             continue
@@ -1171,6 +1324,8 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
                 ceco_source_usage.update(source_headers)
                 if len(source_headers) > 1:
                     ceco_rows_using_both += 1
+                elif not source_headers:
+                    ceco_rows_blank += 1
             else:
                 values[field], conflict = coalesce_row_value(row, indices)
             if conflict:
@@ -1194,6 +1349,13 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         if applicability_issue:
             applicability_issues[applicability_issue].append(row_number)
             row_has_conflict = True
+        survey_answers, survey_sources, survey_issue = resolve_survey_answers(
+            row, survey_group, evidence_activity
+        )
+        if survey_issue:
+            survey_issues[survey_issue].append(row_number)
+            if survey_issue == "conflicting-survey-answers":
+                row_has_conflict = True
         finished = parse_datetime(values["finished"])
         # Registrar una actividad en Forms equivale a confirmarla. La respuesta de
         # confirmación puede permanecer en exportaciones históricas, pero nunca
@@ -1221,6 +1383,9 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "applicabilitySourceHeaders": applicability_sources,
             "applicabilityConflict": applicability_issue is not None,
             "explicitNo": applicability is False and not applicability_issue,
+            "surveyAnswers": survey_answers,
+            "surveySourceHeaders": survey_sources,
+            "surveyIssue": survey_issue,
             "evidence": evidence,
             "evidenceSourceHeader": evidence_source,
             "schemaConflict": row_has_conflict,
@@ -1237,10 +1402,20 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             for index in column_groups["ceco"]
         },
         "cecoRowsUsingBoth": ceco_rows_using_both,
+        "cecoRowsBlank": ceco_rows_blank,
         "confirmationHeaders": [clean_text(headers[index]) for index in confirmation_columns],
         "applicabilityHeaders": [item["header"] for item in applicability_group],
         "applicabilityHeaderMap": {
             item["header"]: item["activity"] for item in applicability_group
+        },
+        "surveyHeaders": [item["header"] for item in survey_group],
+        "surveyHeaderMap": {
+            item["header"]: {
+                "activity": item["activity"],
+                "field": item["fieldKey"],
+                "kind": item["kind"],
+            }
+            for item in survey_group
         },
         "evidenceHeaders": [item["header"] for item in evidence_group],
         "evidenceHeaderMap": {
@@ -1254,6 +1429,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         "rowConflicts": conflicts,
         "evidenceIssues": dict(evidence_issues),
         "applicabilityIssues": dict(applicability_issues),
+        "surveyIssues": dict(survey_issues),
     }
     return responses, schema
 
@@ -1350,6 +1526,7 @@ def build_payload(
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
         quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
+        survey_config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
         quantities: dict[str, int] = {}
         quantity_issue = ""
         if quantity_config:
@@ -1373,13 +1550,48 @@ def build_payload(
             conditional_activities.add(activity)
         if response["evidence"] and not evidence_available:
             unsafe_evidence_rows.append(response["row"])
+        survey_primary = (
+            response.get("surveyAnswers", {}).get(survey_config["primaryKey"])
+            if survey_config else None
+        )
+        survey_answered = survey_primary in {"Sí", "No"}
+        survey_valid = True
+        evidence_required = evidence_rules.get(
+            key_text(activity), settings.get("requireEvidence", True)
+        )
+        if survey_config:
+            detail_fields = [
+                field for field in survey_config["fields"]
+                if field["key"] != survey_config["primaryKey"]
+            ]
+            details = response.get("surveyAnswers", {})
+            has_complete_details = all(details.get(field["key"]) for field in detail_fields)
+            has_operational_change = any(
+                details.get(field["key"]) not in (None, *field.get("excludedValues", ()))
+                for field in detail_fields
+            )
+            survey_valid = bool(
+                survey_answered
+                and (
+                    survey_primary == "No"
+                    or (
+                        has_complete_details
+                        and has_operational_change
+                        and evidence_available
+                    )
+                )
+            )
+            # La rama No termina en Forms sin evidencia. La rama Sí conserva
+            # evidencia obligatoria y requiere al menos un horario modificado.
+            evidence_required = survey_primary == "Sí"
         valid = bool(
             store
             and activity
             and response["confirmed"]
             and not not_applicable
             and not quantity_issue
-            and (evidence_available or not evidence_rules.get(key_text(activity), settings.get("requireEvidence", True)))
+            and survey_valid
+            and (evidence_available or not evidence_required)
         )
         if not valid and not not_applicable:
             invalid_rows.append(response["row"])
@@ -1406,6 +1618,8 @@ def build_payload(
             "evidenceLinkPublished": bool(settings.get("publishEvidenceLinks") and evidence_url),
             "valid": valid,
         }
+        if response.get("surveyAnswers"):
+            public["surveyAnswers"] = response["surveyAnswers"]
         if quantity_config and not quantity_issue:
             public["quantities"] = {
                 **quantities,
@@ -1419,7 +1633,7 @@ def build_payload(
         submissions.append(public)
 
         if store and activity and not response["schemaConflict"] and (
-            valid or response["applicabilityAnswer"]
+            valid or response["applicabilityAnswer"] or survey_answered
         ):
             pair = (response["ceco"], activity)
             state = {**response, "valid": valid, "notApplicable": not_applicable, "public": public}
@@ -1468,6 +1682,56 @@ def build_payload(
             ],
             "answeredStores": len(records),
             "totals": {**totals, "total": sum(totals.values())},
+        })
+    survey_modules = []
+    for activity_key, config in SURVEY_ACTIVITY_CONFIG.items():
+        if config["activity"] not in activity_names:
+            continue
+        records = []
+        for (ceco, activity), state in latest_state_by_pair.items():
+            if compact_key(activity) != activity_key:
+                continue
+            answers = state.get("surveyAnswers", {})
+            if answers.get(config["primaryKey"]) not in {"Sí", "No"}:
+                continue
+            public = state["public"]
+            records.append({
+                "ceco": ceco,
+                "store": public["store"],
+                "dm": public["dm"],
+                "region": public["region"],
+                "timestamp": public["timestamp"],
+                "answers": answers,
+                "valid": state["valid"],
+                "evidenceAvailable": public["evidenceAvailable"],
+                "evidenceLinkPublished": public["evidenceLinkPublished"],
+                **({"evidenceUrl": public["evidenceUrl"]} if public.get("evidenceUrl") else {}),
+            })
+        if not records:
+            continue
+        answer_counts = Counter(
+            item["answers"][config["primaryKey"]] for item in records
+        )
+        survey_modules.append({
+            "activity": config["activity"],
+            "title": config["title"],
+            "primaryKey": config["primaryKey"],
+            "primaryLabel": config["primaryLabel"],
+            "detailTitle": config["detailTitle"],
+            "fields": [
+                {
+                    "key": field["key"],
+                    "label": field["label"],
+                    "kind": field["kind"],
+                    "excludedValues": list(field.get("excludedValues", ())),
+                }
+                for field in config["fields"]
+            ],
+            "answeredStores": len(records),
+            "answerCounts": {
+                answer: count for answer, count in sorted(answer_counts.items()) if count
+            },
+            "responses": sorted(records, key=lambda item: (key_text(item["store"]), item["ceco"])),
         })
     latest_timestamp_by_ceco: dict[str, datetime] = {}
     for (ceco, _), item in latest_by_pair.items():
@@ -1597,6 +1861,9 @@ def build_payload(
             rows for issue, rows in response_schema.get("evidenceIssues", {}).items()
             if issue in ambiguous_evidence_issues
         ),
+        "surveyHeaderSafety": not response_schema.get("surveyIssues", {}).get(
+            "conflicting-survey-answers"
+        ),
         "columnOrderIndependence": bool(
             response_schema.get("activityHeaders")
             and response_schema.get("cecoHeaders")
@@ -1613,7 +1880,7 @@ def build_payload(
     region_label = regions[0] if len(regions) == 1 else "Todas las regiones"
 
     return {
-        "schemaVersion": 13,
+        "schemaVersion": 14,
         "buildVersion": build_version,
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": region_label,
@@ -1705,6 +1972,7 @@ def build_payload(
         ),
         "stores": store_rows,
         "quantityModules": quantity_modules,
+        "surveyModules": survey_modules,
         "submissions": sorted(submissions, key=lambda item: item["timestamp"] or "", reverse=True),
     }
 

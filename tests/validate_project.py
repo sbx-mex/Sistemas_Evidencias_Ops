@@ -15,7 +15,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import (
-    QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, active_activity_catalog,
+    QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
     canonical_cms_activity, compact_key, evidence_key, file_sha256, load_cms,
     load_directory, load_responses, load_settings, normalize_allowed_hosts,
     parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
@@ -125,7 +125,7 @@ js = (ROOT / "app.js").read_text(encoding="utf-8")
 sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-if data.get("schemaVersion") != 13:
+if data.get("schemaVersion") != 14:
     fail("Versión del contrato JSON incorrecta")
 if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Todas las regiones":
     fail("Identidad del proyecto incorrecta")
@@ -206,8 +206,20 @@ if "Ceco12" in response_schema.get("cecoHeaders", []):
     fail("Una columna ajena Ceco12 fue interpretada como CeCo")
 if any(header in response_schema.get("evidenceHeaders", []) for header in ("Jarra Blender", "Jarras Cold Foam")):
     fail("Una pregunta numérica de jarras fue interpretada como evidencia")
+expected_survey_fields = {
+    "¿ Modificas Horario Festivo?": "modifiesSchedule",
+    "Cierre 15 de Septiembre": "closingTime",
+    "Apertura 16 de Septiembre": "openingTime",
+}
+survey_header_map = response_schema.get("surveyHeaderMap", {})
+if {
+    header: survey_header_map.get(header, {}).get("field")
+    for header in expected_survey_fields
+} != expected_survey_fields:
+    fail("Las preguntas de horario festivo no fueron detectadas por encabezado")
 ceco_usage = response_schema.get("cecoSourceUsage", {})
 ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
+ceco_rows_blank = response_schema.get("cecoRowsBlank", 0)
 if set(ceco_usage) != set(response_schema.get("cecoHeaders", [])) or any(
     isinstance(count, bool) or not isinstance(count, int) or count < 0
     for count in ceco_usage.values()
@@ -225,10 +237,24 @@ if (
 # antes de llegar a esta validación. No se fijan cantidades históricas porque
 # Forms seguirá agregando filas nuevas en CeCo1.
 effective_ceco_rows = sum(ceco_usage.values()) - ceco_rows_using_both
-if effective_ceco_rows != data.get("quality", {}).get("responsesRead"):
+if (
+    isinstance(ceco_rows_blank, bool)
+    or not isinstance(ceco_rows_blank, int)
+    or ceco_rows_blank < 0
+    or effective_ceco_rows + ceco_rows_blank != data.get("quality", {}).get("responsesRead")
+):
     fail("La cobertura dinámica de CeCo/CeCo1 no coincide con las respuestas de Forms")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
     fail("El proyecto conserva Id de Forms obsoletos en configuración")
+for module in data.get("surveyModules", []):
+    config = SURVEY_ACTIVITY_CONFIG.get(compact_key(module.get("activity")))
+    if not config or not module.get("responses"):
+        fail("Se publicó un desglose de encuesta vacío o sin configuración")
+    if any(not answer or type(count) is not int or count <= 0 for answer, count in module.get("answerCounts", {}).items()):
+        fail("El gráfico de encuesta contiene categorías vacías o sin valores")
+    response_pairs = [(item.get("ceco"), module.get("activity")) for item in module["responses"]]
+    if len(response_pairs) != len(set(response_pairs)):
+        fail("La encuesta publicó más de una respuesta vigente por tienda")
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
     fail("El JSON público expone correo o respondente")
 published = [row for row in data.get("submissions", []) if row.get("valid")]
@@ -262,13 +288,32 @@ for row in forms_responses:
             parse_quantity(row.get(metric["field"]), quantity_config["minimum"], quantity_config["maximum"]) is not None
             for metric in quantity_config["metrics"]
         )
+    survey_config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
+    survey_primary = row.get("surveyAnswers", {}).get(survey_config["primaryKey"]) if survey_config else None
+    survey_answered = survey_primary in {"Sí", "No"}
+    survey_complete = True
+    row_evidence_required = evidence_required.get(compact_key(activity), True)
+    if survey_config:
+        detail_fields = [field for field in survey_config["fields"] if field["key"] != survey_config["primaryKey"]]
+        details = row.get("surveyAnswers", {})
+        has_details = all(details.get(field["key"]) for field in detail_fields)
+        has_change = any(
+            details.get(field["key"]) not in (None, *field.get("excludedValues", ()))
+            for field in detail_fields
+        )
+        survey_complete = bool(
+            survey_answered
+            and (survey_primary == "No" or (has_details and has_change and evidence_url))
+        )
+        row_evidence_required = survey_primary == "Sí"
     valid = bool(
         row["confirmed"]
         and not not_applicable
         and quantity_complete
-        and (evidence_url or not evidence_required.get(compact_key(activity), True))
+        and survey_complete
+        and (evidence_url or not row_evidence_required)
     )
-    if not (valid or row["applicabilityAnswer"]):
+    if not (valid or row["applicabilityAnswer"] or survey_answered):
         continue
     pair = (resolved_ceco, activity)
     current = latest_excel_by_pair.get(pair)
@@ -470,15 +515,15 @@ for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body 
     if theme_token not in css:
         fail(f"El lenguaje visual Fall 26 no se aplicó fuera del hero: {theme_token}")
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
-if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
-    fail("Los 10 controles Python de estabilidad no están activos")
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "11/11":
+    fail("Los 11 controles Python de estabilidad no están activos")
 for required in [".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"]:
     if required not in css:
         fail(f"Actividades no está adaptada a móvil: {required}")
 if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
     fail("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
 approve("06B · Actividades en una fila y sin desplazamiento horizontal en móvil")
-for text in ["renderSummary", "renderActivities", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "clearDashboardFilters", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
+for text in ["renderSummary", "renderActivities", "renderSurveyModule", "activeSurveyModule", "responseCounts", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "clearDashboardFilters", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
     if text not in js:
         if text not in html + css:
             fail(f"Funcionalidad faltante: {text}")
@@ -527,7 +572,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v33", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v34", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
@@ -603,10 +648,10 @@ for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
 print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM + 1 Director Regional")
-if published:
-    sample_submission = published[0]
+sample_submission = next((item for item in published if item.get("evidenceUrl")), None)
+if sample_submission:
     print(f"{sample_submission['evidenceKey']} → {sample_submission['store']} · vínculo SharePoint validado")
 else:
-    print("Forms sin respuestas válidas · tablero vacío aceptado")
+    print("Forms sin vínculos publicados · respuestas válidas sin evidencia aceptadas")
 print("Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes")
 print("Excel: resumen rápido + detalle + actividades")

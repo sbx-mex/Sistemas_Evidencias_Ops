@@ -29,6 +29,7 @@
       <a href="#ranking">Ranking DM</a>
       <a href="#actividades">Actividades</a>
       <a id="quantity-nav" href="#inventario-jarras" hidden>Jarras</a>
+      <a id="survey-nav" href="#detalle-actividad" hidden>Detalle</a>
       <a href="#tiendas">Tiendas</a>
       <a href="#evidencias">Evidencias</a>
     </nav>
@@ -122,6 +123,29 @@
           <header class="quantity-panel-head"><div><span class="quantity-step">2</span><div><h3>Consolidado de piezas</h3><p id="quantity-scope">Vista actual</p></div></div></header>
           <div id="quantity-totals" class="quantity-totals"></div>
           <div id="quantity-bars" class="quantity-bars" aria-label="Comparativo de piezas"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="detalle-actividad" class="dashboard-section survey-section" aria-labelledby="survey-heading" hidden>
+      <header class="section-title"><div><p class="eyebrow">Actividad seleccionada</p><h2 id="survey-heading">Impacto operativo</h2></div><span id="survey-response-chip" class="tag">—</span></header>
+      <div class="survey-layout">
+        <article class="panel survey-general">
+          <header class="survey-panel-head"><div><span class="survey-step">1</span><div><h3>Respuesta general</h3><p id="survey-primary-label">Sólo respuestas con valor.</p></div></div><strong id="survey-response-rate">0%</strong></header>
+          <div class="quantity-progress" aria-hidden="true"><i id="survey-response-bar"></i></div>
+          <div id="survey-answer-bars" class="survey-bars" aria-label="Respuestas generales"></div>
+          <div class="table-shell survey-table-shell"><table>
+            <thead><tr><th>Tienda</th><th>DM</th><th>Respuesta</th></tr></thead>
+            <tbody id="survey-response-table"></tbody>
+          </table></div>
+        </article>
+        <article id="survey-impact-panel" class="panel survey-impact" hidden>
+          <header class="survey-panel-head"><div><span class="survey-step">2</span><div><h3 id="survey-detail-title">Tiendas que modificaron horario</h3><p id="survey-scope">Vista actual</p></div></div><strong id="survey-impact-count">0</strong></header>
+          <div id="survey-breakdowns" class="survey-breakdowns" aria-label="Desglose de horarios"></div>
+          <div class="table-shell survey-table-shell"><table>
+            <thead id="survey-impact-head"></thead>
+            <tbody id="survey-impact-table"></tbody>
+          </table></div>
         </article>
       </div>
     </section>

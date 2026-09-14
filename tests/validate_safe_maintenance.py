@@ -88,7 +88,7 @@ def main() -> None:
             safe.LOCK = old_lock
 
     data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
-    assert data["quality"]["stabilityScore"] == "10/10"
+    assert data["quality"]["stabilityScore"] == "11/11"
     print("Mantenimiento seguro aprobado · CMS completo · rollback · huellas · rendimiento")
 
 

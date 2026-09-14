@@ -34,5 +34,5 @@
 - 15 tiendas con cierre excluidas.
 - 4 regiones y 28 DM.
 - 11/11 pruebas del proyecto aprobadas.
-- 10/10 controles de estabilidad aprobados.
+- 11/11 controles de estabilidad aprobados.
 - Excel sin errores de fórmula detectados.

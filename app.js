@@ -243,6 +243,77 @@ function renderQuantityModule() {
   $("#quantity-bars").innerHTML = module.metrics.map((metric) => `<div><span>${esc(metric.label)}</span><b>${number(totals[metric.key])}</b><i><em style="--progress:${totals[metric.key] / maximum * 100}%"></em></i></div>`).join("");
 }
 
+function activeSurveyModule() {
+  return (state.data.surveyModules || []).find((item) => item.activity === state.filters.activity) || null;
+}
+
+function filteredSurveyResponses(module) {
+  return (module?.responses || []).filter((item) =>
+    (!state.filters.region || item.region === state.filters.region) &&
+    (!state.filters.dm || item.dm === state.filters.dm) &&
+    (!state.filters.store || item.ceco === state.filters.store));
+}
+
+function responseCounts(rows, key, excludedValues = []) {
+  const excluded = new Set(excludedValues);
+  return rows.reduce((counts, item) => {
+    const value = item.answers?.[key];
+    if (!value || excluded.has(value)) return counts;
+    counts[value] = (counts[value] || 0) + 1;
+    return counts;
+  }, {});
+}
+
+function renderSurveyBars(counts) {
+  const entries = Object.entries(counts).filter(([, value]) => Number(value) > 0);
+  const maximum = Math.max(...entries.map(([, value]) => Number(value)), 1);
+  return entries.map(([label, value]) => `<div><span>${esc(label)}</span><b>${number(value)}</b><i><em style="--progress:${Number(value) / maximum * 100}%"></em></i></div>`).join("");
+}
+
+function renderSurveyModule() {
+  const section = $("#detalle-actividad");
+  const nav = $("#survey-nav");
+  const module = activeSurveyModule();
+  const responses = filteredSurveyResponses(module);
+  const visible = Boolean(module && responses.length);
+  section.hidden = !visible;
+  nav.hidden = !visible;
+  if (!visible) return;
+
+  const eligibleStores = filteredStores().length;
+  const responseRate = eligibleStores ? responses.length / eligibleStores * 100 : 0;
+  const primaryCounts = responseCounts(responses, module.primaryKey);
+  const details = module.fields.filter((field) => field.key !== module.primaryKey);
+  const changed = responses.filter((item) => item.answers?.[module.primaryKey] === "Sí");
+  const breakdowns = details.map((field) => ({
+    field,
+    counts: responseCounts(changed, field.key, field.excludedValues || []),
+  })).filter((item) => Object.keys(item.counts).length);
+
+  $("#survey-heading").textContent = module.title;
+  $("#survey-response-chip").textContent = `${number(responses.length)} de ${number(eligibleStores)} tiendas`;
+  $("#survey-primary-label").textContent = module.primaryLabel;
+  $("#survey-response-rate").textContent = percent(responseRate);
+  $("#survey-response-bar").style.setProperty("--progress", `${Math.min(responseRate, 100)}%`);
+  $("#survey-answer-bars").innerHTML = renderSurveyBars(primaryCounts);
+  $("#survey-response-table").innerHTML = [...responses]
+    .sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
+    .map((item) => `<tr><td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></td><td>${esc(item.dm)}</td><td><span class="survey-answer ${item.answers[module.primaryKey] === "Sí" ? "yes" : "no"}">${esc(item.answers[module.primaryKey])}</span></td></tr>`).join("");
+
+  const impactPanel = $("#survey-impact-panel");
+  impactPanel.hidden = changed.length === 0;
+  if (!changed.length) return;
+  $("#survey-detail-title").textContent = module.detailTitle;
+  $("#survey-scope").textContent = currentScope();
+  $("#survey-impact-count").textContent = number(changed.length);
+  $("#survey-breakdowns").innerHTML = breakdowns.map(({ field, counts }) => `<section><h4>${esc(field.label)}</h4><div class="survey-bars">${renderSurveyBars(counts)}</div></section>`).join("");
+  $("#survey-breakdowns").hidden = breakdowns.length === 0;
+  $("#survey-impact-head").innerHTML = `<tr><th>Tienda</th><th>DM</th>${details.map((field) => `<th>${esc(field.label)}</th>`).join("")}</tr>`;
+  $("#survey-impact-table").innerHTML = [...changed]
+    .sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
+    .map((item) => `<tr><td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></td><td>${esc(item.dm)}</td>${details.map((field) => `<td>${esc(item.answers?.[field.key] || "—")}</td>`).join("")}</tr>`).join("");
+}
+
 function filteredEvidence() {
   return state.data.submissions.filter((item) =>
     item.valid && item.evidenceAvailable &&
@@ -348,7 +419,7 @@ function readFilterUrl() {
 }
 
 function renderAll() {
-  renderSummary(); renderOrganization(); renderActivities(); renderQuantityModule(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
+  renderSummary(); renderOrganization(); renderActivities(); renderQuantityModule(); renderSurveyModule(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
 }
 
 function filterDisplayValue(key, value) {
@@ -925,7 +996,8 @@ function bindEvents() {
     state.filters.activity = event.target.value;
     state.showAllEvidence = false;
     renderAll();
-    if (activeQuantityModule()) requestAnimationFrame(() => $("#inventario-jarras").scrollIntoView({ behavior: "smooth", block: "start" }));
+    const detailTarget = activeQuantityModule() ? $("#inventario-jarras") : activeSurveyModule() ? $("#detalle-actividad") : null;
+    if (detailTarget && !detailTarget.hidden) requestAnimationFrame(() => detailTarget.scrollIntoView({ behavior: "smooth", block: "start" }));
   });
   $("#clear-filters").addEventListener("click", clearDashboardFilters);
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });

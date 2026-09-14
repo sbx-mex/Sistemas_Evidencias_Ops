@@ -13,7 +13,7 @@ from PIL import Image
 # La auditoría no debe crear residuos que después ella misma reporte.
 sys.dont_write_bytecode = True
 
-from build_dashboard import STABILITY_CONTROLS, compact_key, file_sha256, short_dm_name, validate_xlsx
+from build_dashboard import STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, compact_key, file_sha256, short_dm_name, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,7 +68,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -111,7 +111,7 @@ store_table_html = html[html.index('<tbody id="store-table"'):]
 store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
 if "<th>CeCo</th><th>Tienda</th><th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
     issues.append("La tabla Tiendas todavía muestra la columna DM")
-for required in ("semaphore", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "clearDashboardFilters", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
+for required in ("semaphore", "renderEvidence", "renderSurveyModule", "renderSurveyBars", "filteredSurveyResponses", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "syncFilterUrl", "clearDashboardFilters", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "profile.photo", "acceptExportConfirmation", "Un_placer_haber_Ayudado.webp", "completedStores", "notStartedStores"):
     if required not in js:
         issues.append(f"Falta comportamiento dinámico: {required}")
 for required in ("Valida tu archivo", "Carpeta Descargas", "URL.revokeObjectURL(state.exportUrl)"):
@@ -161,7 +161,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v33", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v34", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -174,8 +174,8 @@ if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow
 if not all(token in html for token in ("no-cache, no-store, must-revalidate", 'http-equiv="Pragma"', 'http-equiv="Expires"')):
     issues.append("La portada no declara actualización inmediata")
 ranking = data.get("dms", [])
-if data.get("schemaVersion") != 13:
-    issues.append("Contrato JSON distinto de la versión 13")
+if data.get("schemaVersion") != 14:
+    issues.append("Contrato JSON distinto de la versión 14")
 if len(data.get("regions", [])) < 1 or data.get("summary", {}).get("regions") != len(data.get("regions", [])):
     issues.append("El alcance regional no es auditable")
 directory_status = data.get("sources", {}).get("directoryStatus", {})
@@ -185,12 +185,35 @@ if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
-if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "10/10":
-    issues.append("Los 10 controles Python de estabilidad no están activos")
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "11/11":
+    issues.append("Los 11 controles Python de estabilidad no están activos")
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
+expected_survey_fields = {
+    "¿ Modificas Horario Festivo?": "modifiesSchedule",
+    "Cierre 15 de Septiembre": "closingTime",
+    "Apertura 16 de Septiembre": "openingTime",
+}
+survey_header_map = response_schema.get("surveyHeaderMap", {})
+if {
+    header: survey_header_map.get(header, {}).get("field")
+    for header in expected_survey_fields
+} != expected_survey_fields:
+    issues.append("Las preguntas de horario festivo no fueron detectadas por encabezado")
 if set(response_schema.get("cecoSourceUsage", {})) != set(response_schema.get("cecoHeaders", [])):
     issues.append("El uso de CeCo/CeCo1 no quedó auditado por columna")
+ceco_usage = response_schema.get("cecoSourceUsage", {})
+ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
+ceco_rows_blank = response_schema.get("cecoRowsBlank", 0)
+if (
+    any(type(value) is not int or value < 0 for value in ceco_usage.values())
+    or type(ceco_rows_using_both) is not int
+    or ceco_rows_using_both < 0
+    or type(ceco_rows_blank) is not int
+    or ceco_rows_blank < 0
+    or sum(ceco_usage.values()) - ceco_rows_using_both + ceco_rows_blank != data.get("quality", {}).get("responsesRead")
+):
+    issues.append("La cobertura de filas con CeCo presente o vacío es incongruente")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
     issues.append("La configuración conserva Id de Forms obsoletos")
 for correction in data.get("quality", {}).get("correctedCeCos", []):
@@ -219,6 +242,14 @@ if response_schema.get("rowConflicts") or any(
     issues.append("El Excel Forms contiene columnas o evidencias ambiguas")
 if any(rows for rows in response_schema.get("applicabilityIssues", {}).values()):
     issues.append("El Excel Forms contiene respuestas Sí/No contradictorias")
+for module in data.get("surveyModules", []):
+    if compact_key(module.get("activity")) not in SURVEY_ACTIVITY_CONFIG or not module.get("responses"):
+        issues.append("Se publicó un desglose de encuesta vacío o no configurado")
+    if any(not answer or type(count) is not int or count <= 0 for answer, count in module.get("answerCounts", {}).items()):
+        issues.append("El gráfico de encuesta contiene categorías vacías o sin valores")
+    pairs = [(item.get("ceco"), module.get("activity")) for item in module.get("responses", [])]
+    if len(pairs) != len(set(pairs)):
+        issues.append("La encuesta publicó respuestas vigentes duplicadas por tienda")
 stores = data.get("stores", [])
 activity_names = [item.get("name") for item in data.get("activities", [])]
 calculated_exclusions = 0
@@ -284,8 +315,22 @@ if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
 if data.get("quality", {}).get("unsafeEvidenceRows"):
     issues.append("Se detectaron evidencias con vínculo inseguro")
-if any(not item.get("evidenceFileName") or not item.get("evidenceUrl") or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}" or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com" for item in published_evidence):
-    issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
+for item in published_evidence:
+    if not item.get("evidenceAvailable"):
+        survey_answers = item.get("surveyAnswers", {})
+        if not (
+            item.get("activity") == "Validacion Horario Festivo Sep 26"
+            and survey_answers.get("modifiesSchedule") == "No"
+        ):
+            issues.append("Una respuesta válida quedó sin la evidencia requerida")
+        continue
+    if (
+        not item.get("evidenceFileName")
+        or not item.get("evidenceUrl")
+        or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}"
+        or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com"
+    ):
+        issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
 section_order = [html.index(f'id="{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
 if nav_order != sorted(nav_order) or section_order != sorted(section_order):
