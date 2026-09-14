@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "3c05f8313f96e993",
+  "buildVersion": "00d0aac741e1c5ad",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-14T07:45:42+00:00",
-  "lastUpdated": "2026-09-13T18:24:48",
-  "lastUpdatedDisplay": "13/09/2026 18:24",
+  "generatedAt": "2026-09-14T23:31:34+00:00",
+  "lastUpdated": "2026-09-14T16:59:05",
+  "lastUpdatedDisplay": "14/09/2026 16:59",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "13/09/26 · 18:24 h",
+    "cutOffDisplay": "14/09/26 · 16:59 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -60,10 +60,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 102,
+        "completed": 117,
         "expected": 1200,
-        "pending": 1098,
-        "compliance": 8.5,
+        "pending": 1083,
+        "compliance": 9.8,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 471,
+        "completed": 480,
         "expected": 845,
-        "pending": 374,
-        "compliance": 55.7,
+        "pending": 365,
+        "compliance": 56.8,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "1e6109f24088732db4777e64dcfa034dea3db5dde208444810ce3fb6434df336",
+    "responsesSha256": "080ca05d927400b9f6f48ef7cf377920a8f98d1d69a0eec547e5b93895fa022e",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -130,18 +130,19 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 575,
-    "compliance": 13.5,
-    "validResponses": 575,
-    "storesComplete": 0,
-    "pendingCompletions": 3690,
+    "completedCompletions": 599,
+    "compliance": 14.0,
+    "validResponses": 599,
+    "storesComplete": 3,
+    "pendingCompletions": 3666,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 697,
+    "responsesRead": 723,
     "invalidRows": [
       521,
-      591
+      591,
+      723
     ],
     "unknownCeCos": [
       "38599",
@@ -219,7 +220,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 54,
+    "duplicateValidResponses": 55,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -232,7 +233,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 697
+        "CeCo": 723
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -317,11 +318,15 @@
       "rowConflicts": [],
       "evidenceIssues": {},
       "applicabilityIssues": {},
-      "surveyIssues": {}
+      "surveyIssues": {
+        "survey-without-operational-change": [
+          723
+        ]
+      }
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 575,
+    "evidenceLinksPublished": 596,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -402,11 +407,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": true,
-      "completedStores": 23,
+      "completedStores": 24,
       "applicableStores": 347,
       "notApplicableStores": 10,
-      "pendingStores": 324,
-      "compliance": 6.6,
+      "pendingStores": 323,
+      "compliance": 6.9,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -11,
@@ -512,11 +517,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 105,
+      "completedStores": 108,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 252,
-      "compliance": 29.4,
+      "pendingStores": 249,
+      "compliance": 30.3,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -556,11 +561,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 1,
+      "completedStores": 20,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 0.3,
+      "pendingStores": 337,
+      "compliance": 5.6,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -600,11 +605,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 20,
+      "completedStores": 21,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 337,
-      "compliance": 5.6,
+      "pendingStores": 336,
+      "compliance": 5.9,
       "deadlineLabel": "En 16 días",
       "deadlineTone": "green",
       "daysRemaining": 16,
@@ -612,25 +617,6 @@
     }
   ],
   "dms": [
-    {
-      "dm": "Enrique Cesar Flores",
-      "shortName": "Enrique César",
-      "photo": "assets/dm/enrique-cesar.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 10,
-      "completed": 89,
-      "expected": 117,
-      "notApplicable": 3,
-      "pending": 28,
-      "pendingStores": 10,
-      "compliance": 76.1,
-      "status": "Seguimiento",
-      "rank": 1
-    },
     {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
@@ -641,12 +627,31 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 112,
+      "completed": 118,
       "expected": 151,
       "notApplicable": 5,
-      "pending": 39,
-      "pendingStores": 13,
-      "compliance": 74.2,
+      "pending": 33,
+      "pendingStores": 11,
+      "compliance": 78.1,
+      "status": "Seguimiento",
+      "rank": 1
+    },
+    {
+      "dm": "Enrique Cesar Flores",
+      "shortName": "Enrique César",
+      "photo": "assets/dm/enrique-cesar.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 10,
+      "completed": 90,
+      "expected": 117,
+      "notApplicable": 3,
+      "pending": 27,
+      "pendingStores": 9,
+      "compliance": 76.9,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -660,12 +665,12 @@
         "Centro Norte"
       ],
       "stores": 12,
-      "completed": 89,
+      "completed": 91,
       "expected": 138,
       "notApplicable": 6,
-      "pending": 49,
+      "pending": 47,
       "pendingStores": 12,
-      "compliance": 64.5,
+      "compliance": 65.9,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -736,12 +741,12 @@
         "Centro Poniente"
       ],
       "stores": 13,
-      "completed": 16,
+      "completed": 22,
       "expected": 156,
       "notApplicable": 0,
-      "pending": 140,
+      "pending": 134,
       "pendingStores": 13,
-      "compliance": 10.3,
+      "compliance": 14.1,
       "status": "Atención",
       "rank": 7
     },
@@ -755,14 +760,52 @@
         "Centro Poniente"
       ],
       "stores": 8,
-      "completed": 9,
+      "completed": 10,
       "expected": 96,
       "notApplicable": 0,
-      "pending": 87,
+      "pending": 86,
       "pendingStores": 8,
-      "compliance": 9.4,
+      "compliance": 10.4,
       "status": "Atención",
       "rank": 8
+    },
+    {
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "shortName": "Jose Magos",
+      "photo": "assets/dm/jose-magos.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 15,
+      "completed": 18,
+      "expected": 180,
+      "notApplicable": 0,
+      "pending": 162,
+      "pendingStores": 15,
+      "compliance": 10.0,
+      "status": "Atención",
+      "rank": 9
+    },
+    {
+      "dm": "Daniel Flores Maldonado",
+      "shortName": "Daniel Flores",
+      "photo": "assets/dm/daniel-flores.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 13,
+      "completed": 15,
+      "expected": 156,
+      "notApplicable": 0,
+      "pending": 141,
+      "pendingStores": 13,
+      "compliance": 9.6,
+      "status": "Atención",
+      "rank": 10
     },
     {
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -774,14 +817,33 @@
         "Centro Poniente"
       ],
       "stores": 12,
-      "completed": 12,
+      "completed": 13,
       "expected": 144,
       "notApplicable": 0,
-      "pending": 132,
+      "pending": 131,
       "pendingStores": 12,
-      "compliance": 8.3,
+      "compliance": 9.0,
       "status": "Atención",
-      "rank": 9
+      "rank": 11
+    },
+    {
+      "dm": "Erika Julieta Contreras Aguilera",
+      "shortName": "Erika Contreras",
+      "photo": "assets/dm/erika-contreras.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 15,
+      "completed": 16,
+      "expected": 180,
+      "notApplicable": 0,
+      "pending": 164,
+      "pendingStores": 15,
+      "compliance": 8.9,
+      "status": "Atención",
+      "rank": 12
     },
     {
       "dm": "Areli Anahi Lazcano Lezama",
@@ -799,63 +861,6 @@
       "pending": 143,
       "pendingStores": 13,
       "compliance": 8.3,
-      "status": "Atención",
-      "rank": 10
-    },
-    {
-      "dm": "Erika Julieta Contreras Aguilera",
-      "shortName": "Erika Contreras",
-      "photo": "assets/dm/erika-contreras.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 15,
-      "completed": 15,
-      "expected": 180,
-      "notApplicable": 0,
-      "pending": 165,
-      "pendingStores": 15,
-      "compliance": 8.3,
-      "status": "Atención",
-      "rank": 11
-    },
-    {
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "shortName": "Jose Magos",
-      "photo": "assets/dm/jose-magos.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 15,
-      "completed": 15,
-      "expected": 180,
-      "notApplicable": 0,
-      "pending": 165,
-      "pendingStores": 15,
-      "compliance": 8.3,
-      "status": "Atención",
-      "rank": 12
-    },
-    {
-      "dm": "Daniel Flores Maldonado",
-      "shortName": "Daniel Flores",
-      "photo": "assets/dm/daniel-flores.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 13,
-      "completed": 12,
-      "expected": 156,
-      "notApplicable": 0,
-      "pending": 144,
-      "pendingStores": 13,
-      "compliance": 7.7,
       "status": "Atención",
       "rank": 13
     },
@@ -3215,17 +3220,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38617",
-      "store": "Axomiatla",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38646",
       "store": "Carracci",
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -3371,17 +3365,6 @@
     {
       "ceco": "38578",
       "store": "Galerias Toluca",
-      "dm": "Andrea Nava Guzman",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "43147",
-      "store": "Juarez 70",
       "dm": "Andrea Nava Guzman",
       "completed": 1,
       "expected": 12,
@@ -3556,41 +3539,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "43068",
-      "store": "Galerias Metepec II",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "43059",
       "store": "La Providencia DT",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38441",
-      "store": "Metepec Plaza del Parque",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38668",
-      "store": "Pabellon Metepec",
       "dm": "Daniel Flores Maldonado",
       "completed": 1,
       "expected": 12,
@@ -3743,17 +3693,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38438",
-      "store": "City Walk",
-      "dm": "Erika Julieta Contreras Aguilera",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38704",
       "store": "Corportivo Banamex",
       "dm": "Erika Julieta Contreras Aguilera",
@@ -3864,17 +3803,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38400",
-      "store": "Centro Medico ABC Santa Fe",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38798",
       "store": "Corp. Televisa Sta Fe",
       "dm": "Jose De Jesus Magos Arzaluz",
@@ -3888,28 +3816,6 @@
     {
       "ceco": "38755",
       "store": "Corporativo Santander",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38512",
-      "store": "Garden Santa Fe",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38532",
-      "store": "One o One",
       "dm": "Jose De Jesus Magos Arzaluz",
       "completed": 1,
       "expected": 12,
@@ -4117,17 +4023,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38717",
-      "store": "Av Revolucion",
-      "dm": "Manuel Alejandro Avila Molina",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38773",
       "store": "Colegio Americano",
       "dm": "Manuel Alejandro Avila Molina",
@@ -4152,28 +4047,6 @@
     {
       "ceco": "38461",
       "store": "Fuente de Tritones",
-      "dm": "Manuel Alejandro Avila Molina",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38121",
-      "store": "Herradura",
-      "dm": "Manuel Alejandro Avila Molina",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38366",
-      "store": "Hospital ABC",
       "dm": "Manuel Alejandro Avila Molina",
       "completed": 1,
       "expected": 12,
@@ -4216,14 +4089,25 @@
       "status": "Atención"
     },
     {
-      "ceco": "38720",
-      "store": "Patio Barranca PB",
-      "dm": "Manuel Alejandro Avila Molina",
-      "completed": 1,
+      "ceco": "38617",
+      "store": "Axomiatla",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "43147",
+      "store": "Juarez 70",
+      "dm": "Andrea Nava Guzman",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
       "status": "Atención"
     },
     {
@@ -4249,6 +4133,94 @@
       "status": "Atención"
     },
     {
+      "ceco": "43068",
+      "store": "Galerias Metepec II",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38441",
+      "store": "Metepec Plaza del Parque",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38668",
+      "store": "Pabellon Metepec",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38438",
+      "store": "City Walk",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38400",
+      "store": "Centro Medico ABC Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38512",
+      "store": "Garden Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38532",
+      "store": "One o One",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38717",
+      "store": "Av Revolucion",
+      "dm": "Manuel Alejandro Avila Molina",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
       "ceco": "38727",
       "store": "Centro Tk",
       "dm": "Manuel Alejandro Avila Molina",
@@ -4260,8 +4232,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38386",
-      "store": "Duraznos",
+      "ceco": "38121",
+      "store": "Herradura",
       "dm": "Manuel Alejandro Avila Molina",
       "completed": 2,
       "expected": 12,
@@ -4271,8 +4243,19 @@
       "status": "Atención"
     },
     {
-      "ceco": "38644",
-      "store": "Torre Virreyes",
+      "ceco": "38366",
+      "store": "Hospital ABC",
+      "dm": "Manuel Alejandro Avila Molina",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38720",
+      "store": "Patio Barranca PB",
       "dm": "Manuel Alejandro Avila Molina",
       "completed": 2,
       "expected": 12,
@@ -4290,6 +4273,28 @@
       "notApplicable": 2,
       "pending": 8,
       "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38386",
+      "store": "Duraznos",
+      "dm": "Manuel Alejandro Avila Molina",
+      "completed": 3,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 25.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38644",
+      "store": "Torre Virreyes",
+      "dm": "Manuel Alejandro Avila Molina",
+      "completed": 3,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 25.0,
       "status": "Atención"
     },
     {
@@ -4711,17 +4716,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38606",
-      "store": "TlalnepantlaCarso",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 7,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 58.3,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38374",
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4909,30 +4903,19 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 9,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 75.0,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38695",
       "store": "Cetram 4 Caminos",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 9,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 75.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38197",
-      "store": "Echegaray",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 9,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 75.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38475",
-      "store": "Satelite Centro Civico",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 9,
       "expected": 12,
@@ -5030,17 +5013,6 @@
       "status": "En meta"
     },
     {
-      "ceco": "38604",
-      "store": "Cosmopol",
-      "dm": "Enrique Cesar Flores",
-      "completed": 10,
-      "expected": 11,
-      "notApplicable": 1,
-      "pending": 1,
-      "compliance": 90.9,
-      "status": "En meta"
-    },
-    {
       "ceco": "43193",
       "store": "Cosmopol N1",
       "dm": "Enrique Cesar Flores",
@@ -5063,14 +5035,14 @@
       "status": "En meta"
     },
     {
-      "ceco": "38117",
-      "store": "Satelite",
+      "ceco": "38197",
+      "store": "Echegaray",
       "dm": "Yazmin Chabela Guadarrama",
-      "completed": 10,
-      "expected": 11,
-      "notApplicable": 1,
+      "completed": 11,
+      "expected": 12,
+      "notApplicable": 0,
       "pending": 1,
-      "compliance": 90.9,
+      "compliance": 91.7,
       "status": "En meta"
     }
   ],
@@ -5161,11 +5133,11 @@
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:22:37",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:21:23",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -5178,7 +5150,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -6241,11 +6213,11 @@
       "dm": "Andrea Nava Guzman",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:39:47",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:59:05",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -6258,7 +6230,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8081,11 +8053,11 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-10T15:58:22",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:06:15",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -8098,7 +8070,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8161,11 +8133,11 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:48:59",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:02:53",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -8178,7 +8150,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8201,11 +8173,11 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:56:49",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:15:53",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -8218,7 +8190,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8521,11 +8493,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 10,
+      "completed": 11,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 90.9,
-      "lastUpdate": "2026-09-09T18:09:32",
+      "compliance": 100.0,
+      "lastUpdate": "2026-09-14T12:20:11",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -8538,7 +8510,7 @@
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -8765,7 +8737,7 @@
       "expected": 11,
       "notApplicable": 1,
       "compliance": 81.8,
-      "lastUpdate": "2026-09-09T18:24:39",
+      "lastUpdate": "2026-09-14T12:22:19",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -9161,11 +9133,11 @@
       "dm": "Erika Julieta Contreras Aguilera",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T08:44:08",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:15:57",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -9178,7 +9150,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -11921,11 +11893,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:29:40",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:42:54",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -11938,7 +11910,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -12041,11 +12013,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-10T15:54:26",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:55:52",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -12058,7 +12030,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -12081,11 +12053,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:04:34",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:34:06",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -12098,7 +12070,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -14041,11 +14013,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T11:23:00",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:00:07",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -14058,7 +14030,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -14201,11 +14173,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 16.7,
-      "lastUpdate": "2026-09-12T12:50:49",
+      "compliance": 25.0,
+      "lastUpdate": "2026-09-14T16:31:03",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": false,
@@ -14218,7 +14190,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -14281,11 +14253,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-10T16:25:59",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:31:54",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -14298,7 +14270,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -14321,11 +14293,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-10T16:06:52",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:27:53",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -14338,7 +14310,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -14481,11 +14453,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-10T15:54:50",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:15:05",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -14498,7 +14470,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -14521,11 +14493,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 16.7,
-      "lastUpdate": "2026-09-11T11:09:26",
+      "compliance": 25.0,
+      "lastUpdate": "2026-09-14T16:24:56",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": true,
@@ -14538,7 +14510,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -16081,11 +16053,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 9,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 58.3,
-      "lastUpdate": "2026-09-09T13:59:54",
+      "compliance": 75.0,
+      "lastUpdate": "2026-09-14T16:13:45",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -16093,11 +16065,11 @@
         "Max & Min": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": false,
+        "Community Board": true,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false,
+        "Jarras Blender | Cold Foam": true,
         "Validacion Horario Festivo Sep 26": false
       },
       "applicableActivities": {
@@ -18361,11 +18333,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 9,
+      "completed": 11,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 75.0,
-      "lastUpdate": "2026-09-11T15:24:31",
+      "compliance": 91.7,
+      "lastUpdate": "2026-09-14T12:27:02",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18377,8 +18349,8 @@
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": false,
-        "Validacion Horario Festivo Sep 26": false
+        "Jarras Blender | Cold Foam": true,
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -18721,11 +18693,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 10,
+      "completed": 11,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 90.9,
-      "lastUpdate": "2026-09-11T11:22:12",
+      "compliance": 100.0,
+      "lastUpdate": "2026-09-14T12:37:29",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18738,7 +18710,7 @@
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -18761,11 +18733,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 9,
+      "completed": 12,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 75.0,
-      "lastUpdate": "2026-09-09T19:57:35",
+      "compliance": 100.0,
+      "lastUpdate": "2026-09-14T12:29:13",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18776,9 +18748,9 @@
         "Community Board": true,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
-        "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false,
-        "Validacion Horario Festivo Sep 26": false
+        "Señaletica Lobby": true,
+        "Jarras Blender | Cold Foam": true,
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19372,11 +19344,11 @@
           "label": "Jarras Cold Foam"
         }
       ],
-      "answeredStores": 105,
+      "answeredStores": 108,
       "totals": {
-        "blender": 181,
-        "coldFoam": 108,
-        "total": 289
+        "blender": 190,
+        "coldFoam": 113,
+        "total": 303
       }
     }
   ],
@@ -19411,11 +19383,153 @@
           ]
         }
       ],
-      "answeredStores": 1,
+      "answeredStores": 21,
       "answerCounts": {
-        "Sí": 1
+        "No": 3,
+        "Sí": 18
       },
       "responses": [
+        {
+          "ceco": "38717",
+          "store": "Av Revolucion",
+          "dm": "Manuel Alejandro Avila Molina",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:00:07",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Maria%20Teresa%20Espinoz.jpg"
+        },
+        {
+          "ceco": "38617",
+          "store": "Axomiatla",
+          "dm": "Adriana Alejandra Tanus Buhler",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:21:23",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "08:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Starbucks%20Axomiatla.jpg"
+        },
+        {
+          "ceco": "38400",
+          "store": "Centro Medico ABC Santa Fe",
+          "dm": "Jose De Jesus Magos Arzaluz",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:42:54",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "08:00 p. m.",
+            "openingTime": "08:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG20260914163435_Starbucks%20Centro%20M%C3%A9d.jpg"
+        },
+        {
+          "ceco": "38438",
+          "store": "City Walk",
+          "dm": "Erika Julieta Contreras Aguilera",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:15:57",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "08:00 p. m.",
+            "openingTime": "09:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Ra%C3%BAl%20Eduardo%20%C3%81lvarez.jpg"
+        },
+        {
+          "ceco": "38798",
+          "store": "Corp. Televisa Sta Fe",
+          "dm": "Jose De Jesus Magos Arzaluz",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:58:51",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "Sin modificación",
+            "openingTime": "Sin modificación"
+          },
+          "valid": false,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/WhatsApp%20Image%202026-09-14%20at%204.56.21%20PM_Starbucks%20Corporativ.jpeg"
+        },
+        {
+          "ceco": "38604",
+          "store": "Cosmopol",
+          "dm": "Enrique Cesar Flores",
+          "region": "Centro Norte",
+          "timestamp": "2026-09-14T12:20:11",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "09:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/WhatsApp%20Image%202026-09-14%20at%2012.19.02%20PM_Starbucks%20Cosmopol.jpeg"
+        },
+        {
+          "ceco": "38386",
+          "store": "Duraznos",
+          "dm": "Manuel Alejandro Avila Molina",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:31:03",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG-20260914-WA0041_Starbucks%20Parque%20Dur.jpg"
+        },
+        {
+          "ceco": "38197",
+          "store": "Echegaray",
+          "dm": "Yazmin Chabela Guadarrama",
+          "region": "Centro Norte",
+          "timestamp": "2026-09-14T12:19:48",
+          "answers": {
+            "modifiesSchedule": "No"
+          },
+          "valid": true,
+          "evidenceAvailable": false,
+          "evidenceLinkPublished": false
+        },
+        {
+          "ceco": "43068",
+          "store": "Galerias Metepec II",
+          "dm": "Daniel Flores Maldonado",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:06:15",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "10:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_20260914_160250239_HDR_Francisco%20Manuel%20Gon.jpg"
+        },
         {
           "ceco": "38894",
           "store": "Galerias Perinorte",
@@ -19431,11 +19545,837 @@
           "evidenceAvailable": true,
           "evidenceLinkPublished": true,
           "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Starbucks%20Galerias%20P.jpg"
+        },
+        {
+          "ceco": "38512",
+          "store": "Garden Santa Fe",
+          "dm": "Jose De Jesus Magos Arzaluz",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:55:52",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "08:00 p. m.",
+            "openingTime": "09:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_20260914_165513_Perla%20Franco%20Brito.jpg"
+        },
+        {
+          "ceco": "38121",
+          "store": "Herradura",
+          "dm": "Manuel Alejandro Avila Molina",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:31:54",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "08:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/17894250934056603675822650146808_Fernando%20Axel%20Velasc.jpg"
+        },
+        {
+          "ceco": "38366",
+          "store": "Hospital ABC",
+          "dm": "Manuel Alejandro Avila Molina",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:27:53",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:30 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/17894247690178233286585894695438_Starbucks%20Hospital%20A.jpg"
+        },
+        {
+          "ceco": "43147",
+          "store": "Juarez 70",
+          "dm": "Andrea Nava Guzman",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:59:05",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_4851_Starbucks%20Juarez%2070.jpeg"
+        },
+        {
+          "ceco": "38441",
+          "store": "Metepec Plaza del Parque",
+          "dm": "Daniel Flores Maldonado",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:02:53",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "07:30 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Starbucks%20Metepec%20Pl.jpg"
+        },
+        {
+          "ceco": "38532",
+          "store": "One o One",
+          "dm": "Jose De Jesus Magos Arzaluz",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:34:06",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "08:00 p. m.",
+            "openingTime": "08:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Jes%C3%BAs%20Alberto%20Alquic.jpg"
+        },
+        {
+          "ceco": "38668",
+          "store": "Pabellon Metepec",
+          "dm": "Daniel Flores Maldonado",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:15:53",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/6bc2dc23-d39f-45c7-a5e9-1b96d7c69a1f_Karina%20Anahi%20Hernand.jpeg"
+        },
+        {
+          "ceco": "38720",
+          "store": "Patio Barranca PB",
+          "dm": "Manuel Alejandro Avila Molina",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:15:05",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "09:00 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/17894240908491121633773774908313_Starbucks%20Portal%20San.jpg"
+        },
+        {
+          "ceco": "38117",
+          "store": "Satelite",
+          "dm": "Yazmin Chabela Guadarrama",
+          "region": "Centro Norte",
+          "timestamp": "2026-09-14T12:37:29",
+          "answers": {
+            "modifiesSchedule": "No"
+          },
+          "valid": true,
+          "evidenceAvailable": false,
+          "evidenceLinkPublished": false
+        },
+        {
+          "ceco": "38475",
+          "store": "Satelite Centro Civico",
+          "dm": "Yazmin Chabela Guadarrama",
+          "region": "Centro Norte",
+          "timestamp": "2026-09-14T12:29:13",
+          "answers": {
+            "modifiesSchedule": "No"
+          },
+          "valid": true,
+          "evidenceAvailable": false,
+          "evidenceLinkPublished": false
+        },
+        {
+          "ceco": "38644",
+          "store": "Torre Virreyes",
+          "dm": "Manuel Alejandro Avila Molina",
+          "region": "Centro Poniente",
+          "timestamp": "2026-09-14T16:24:56",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "08:00 p. m.",
+            "openingTime": "07:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG-20260914-WA0186_Starbucks%20Torre%20Virr.jpg"
         }
       ]
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-d860d9016b28218c",
+      "timestamp": "2026-09-14T16:59:05",
+      "timestampDisplay": "14/09/2026 16:59",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "43147",
+      "store": "Juarez 70",
+      "dm": "Andrea Nava Guzman",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_43147",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_43147",
+      "evidenceFileName": "IMG_4851_Starbucks Juarez 70.jpeg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_4851_Starbucks%20Juarez%2070.jpeg"
+    },
+    {
+      "id": "respuesta-f337d4e097f8d872",
+      "timestamp": "2026-09-14T16:55:52",
+      "timestampDisplay": "14/09/2026 16:55",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38512",
+      "store": "Garden Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38512",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38512",
+      "evidenceFileName": "IMG_20260914_165513_Perla Franco Brito.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "08:00 p. m.",
+        "openingTime": "09:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_20260914_165513_Perla%20Franco%20Brito.jpg"
+    },
+    {
+      "id": "respuesta-58743d24c7311954",
+      "timestamp": "2026-09-14T16:42:54",
+      "timestampDisplay": "14/09/2026 16:42",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38400",
+      "store": "Centro Medico ABC Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38400",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38400",
+      "evidenceFileName": "IMG20260914163435_Starbucks Centro Méd.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "08:00 p. m.",
+        "openingTime": "08:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG20260914163435_Starbucks%20Centro%20M%C3%A9d.jpg"
+    },
+    {
+      "id": "respuesta-3acd3f860b5bc2ec",
+      "timestamp": "2026-09-14T16:34:06",
+      "timestampDisplay": "14/09/2026 16:34",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38532",
+      "store": "One o One",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38532",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38532",
+      "evidenceFileName": "image_Jesús Alberto Alquic.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "08:00 p. m.",
+        "openingTime": "08:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Jes%C3%BAs%20Alberto%20Alquic.jpg"
+    },
+    {
+      "id": "respuesta-169bc09ee668b01d",
+      "timestamp": "2026-09-14T16:31:54",
+      "timestampDisplay": "14/09/2026 16:31",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38121",
+      "store": "Herradura",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38121",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38121",
+      "evidenceFileName": "17894250934056603675822650146808_Fernando Axel Velasc.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "08:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/17894250934056603675822650146808_Fernando%20Axel%20Velasc.jpg"
+    },
+    {
+      "id": "respuesta-6a289158c974c599",
+      "timestamp": "2026-09-14T16:31:03",
+      "timestampDisplay": "14/09/2026 16:31",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38386",
+      "store": "Duraznos",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38386",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38386",
+      "evidenceFileName": "IMG-20260914-WA0041_Starbucks Parque Dur.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG-20260914-WA0041_Starbucks%20Parque%20Dur.jpg"
+    },
+    {
+      "id": "respuesta-e26c04943a8faf54",
+      "timestamp": "2026-09-14T16:27:53",
+      "timestampDisplay": "14/09/2026 16:27",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38366",
+      "store": "Hospital ABC",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38366",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38366",
+      "evidenceFileName": "17894247690178233286585894695438_Starbucks Hospital A.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:30 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/17894247690178233286585894695438_Starbucks%20Hospital%20A.jpg"
+    },
+    {
+      "id": "respuesta-063103c029920b78",
+      "timestamp": "2026-09-14T16:24:56",
+      "timestampDisplay": "14/09/2026 16:24",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38644",
+      "store": "Torre Virreyes",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38644",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38644",
+      "evidenceFileName": "IMG-20260914-WA0186_Starbucks Torre Virr.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "08:00 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG-20260914-WA0186_Starbucks%20Torre%20Virr.jpg"
+    },
+    {
+      "id": "respuesta-0009a6552bdc60ae",
+      "timestamp": "2026-09-14T16:21:23",
+      "timestampDisplay": "14/09/2026 16:21",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38617",
+      "store": "Axomiatla",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38617",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38617",
+      "evidenceFileName": "image_Starbucks Axomiatla.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "08:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Starbucks%20Axomiatla.jpg"
+    },
+    {
+      "id": "respuesta-8f25c4cb0185dca7",
+      "timestamp": "2026-09-14T16:15:57",
+      "timestampDisplay": "14/09/2026 16:15",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38438",
+      "store": "City Walk",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38438",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38438",
+      "evidenceFileName": "image_Raúl Eduardo Álvarez.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "08:00 p. m.",
+        "openingTime": "09:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Ra%C3%BAl%20Eduardo%20%C3%81lvarez.jpg"
+    },
+    {
+      "id": "respuesta-8ccc2a561cb364f9",
+      "timestamp": "2026-09-14T16:15:53",
+      "timestampDisplay": "14/09/2026 16:15",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38668",
+      "store": "Pabellon Metepec",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38668",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38668",
+      "evidenceFileName": "6bc2dc23-d39f-45c7-a5e9-1b96d7c69a1f_Karina Anahi Hernand.jpeg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/6bc2dc23-d39f-45c7-a5e9-1b96d7c69a1f_Karina%20Anahi%20Hernand.jpeg"
+    },
+    {
+      "id": "respuesta-41fb36263190f6d0",
+      "timestamp": "2026-09-14T16:15:05",
+      "timestampDisplay": "14/09/2026 16:15",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38720",
+      "store": "Patio Barranca PB",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38720",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38720",
+      "evidenceFileName": "17894240908491121633773774908313_Starbucks Portal San.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/17894240908491121633773774908313_Starbucks%20Portal%20San.jpg"
+    },
+    {
+      "id": "respuesta-71ce3f4dca881fd9",
+      "timestamp": "2026-09-14T16:13:45",
+      "timestampDisplay": "14/09/2026 16:13",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38606",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38606",
+      "evidenceFileName": "IMG_2968_Starbucks Tlalnepant.jpeg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/IMG_2968_Starbucks%20Tlalnepant.jpeg"
+    },
+    {
+      "id": "respuesta-7a9d8ec748038423",
+      "timestamp": "2026-09-14T16:10:33",
+      "timestampDisplay": "14/09/2026 16:10",
+      "activity": "Community Board",
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Community_Board_38606",
+      "evidenceLinkLabel": "Link_Community_Board_38606",
+      "evidenceFileName": "IMG_2952_Starbucks Tlalnepant.jpeg",
+      "evidenceSourceHeader": "Evidencia_Community_Board",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Lay_Out%201/IMG_2952_Starbucks%20Tlalnepant.jpeg"
+    },
+    {
+      "id": "respuesta-0f081e73dee9e81d",
+      "timestamp": "2026-09-14T16:06:15",
+      "timestampDisplay": "14/09/2026 16:06",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "43068",
+      "store": "Galerias Metepec II",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_43068",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_43068",
+      "evidenceFileName": "IMG_20260914_160250239_HDR_Francisco Manuel Gon.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "10:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_20260914_160250239_HDR_Francisco%20Manuel%20Gon.jpg"
+    },
+    {
+      "id": "respuesta-ccef88c2a8d22cae",
+      "timestamp": "2026-09-14T16:02:53",
+      "timestampDisplay": "14/09/2026 16:02",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38441",
+      "store": "Metepec Plaza del Parque",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38441",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38441",
+      "evidenceFileName": "image_Starbucks Metepec Pl.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "07:30 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Starbucks%20Metepec%20Pl.jpg"
+    },
+    {
+      "id": "respuesta-f776d9a85f8c4b3d",
+      "timestamp": "2026-09-14T16:00:07",
+      "timestampDisplay": "14/09/2026 16:00",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38717",
+      "store": "Av Revolucion",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38717",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38717",
+      "evidenceFileName": "image_Maria Teresa Espinoz.jpg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "07:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/image_Maria%20Teresa%20Espinoz.jpg"
+    },
+    {
+      "id": "respuesta-797c7da5223e0492",
+      "timestamp": "2026-09-14T12:37:29",
+      "timestampDisplay": "14/09/2026 12:37",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38117",
+      "store": "Satelite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38117",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38117",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "No"
+      }
+    },
+    {
+      "id": "respuesta-aedc6e2b2e836eb2",
+      "timestamp": "2026-09-14T12:29:13",
+      "timestampDisplay": "14/09/2026 12:29",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38475",
+      "store": "Satelite Centro Civico",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38475",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38475",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "No"
+      }
+    },
+    {
+      "id": "respuesta-d7c7a6f47c43d79e",
+      "timestamp": "2026-09-14T12:27:54",
+      "timestampDisplay": "14/09/2026 12:27",
+      "activity": "Señaletica Lobby",
+      "ceco": "38475",
+      "store": "Satelite Centro Civico",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Senaletica_Lobby_38475",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38475",
+      "evidenceFileName": "17894104465239153539716206541114_Starbucks Satélite C.jpg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Back/17894104465239153539716206541114_Starbucks%20Sat%C3%A9lite%20C.jpg"
+    },
+    {
+      "id": "respuesta-fc1d29acb280bcb3",
+      "timestamp": "2026-09-14T12:27:02",
+      "timestampDisplay": "14/09/2026 12:27",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38197",
+      "store": "Echegaray",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38197",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38197",
+      "evidenceFileName": "88602217-3b47-41c4-8327-3737ba7d5f5d_Starbucks Echegaray.jpeg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 3,
+        "coldFoam": 2,
+        "total": 5
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/88602217-3b47-41c4-8327-3737ba7d5f5d_Starbucks%20Echegaray.jpeg"
+    },
+    {
+      "id": "respuesta-4305a8b347c00e23",
+      "timestamp": "2026-09-14T12:26:16",
+      "timestampDisplay": "14/09/2026 12:26",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38475",
+      "store": "Satelite Centro Civico",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38475",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38475",
+      "evidenceFileName": "17894103186815180756369685527455_Starbucks Satélite C.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 2,
+        "total": 4
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17894103186815180756369685527455_Starbucks%20Sat%C3%A9lite%20C.jpg"
+    },
+    {
+      "id": "respuesta-614c8df9c3999fb0",
+      "timestamp": "2026-09-14T12:22:19",
+      "timestampDisplay": "14/09/2026 12:22",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38456",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38456",
+      "evidenceFileName": "17894098786624170437606810729851_Ramon Espinosa Macia.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 0,
+        "total": 2
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17894098786624170437606810729851_Ramon%20Espinosa%20Macia.jpg"
+    },
+    {
+      "id": "respuesta-7b6a8805129fd588",
+      "timestamp": "2026-09-14T12:20:11",
+      "timestampDisplay": "14/09/2026 12:20",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38604",
+      "store": "Cosmopol",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38604",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38604",
+      "evidenceFileName": "WhatsApp Image 2026-09-14 at 12.19.02 PM_Starbucks Cosmopol.jpeg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "09:00 p. m.",
+        "openingTime": "09:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/WhatsApp%20Image%202026-09-14%20at%2012.19.02%20PM_Starbucks%20Cosmopol.jpeg"
+    },
+    {
+      "id": "respuesta-412d673c154d854c",
+      "timestamp": "2026-09-14T12:19:48",
+      "timestampDisplay": "14/09/2026 12:19",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38197",
+      "store": "Echegaray",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38197",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38197",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "No"
+      }
+    },
     {
       "id": "respuesta-15fbe2b3cd356d9a",
       "timestamp": "2026-09-13T18:24:48",
@@ -22634,33 +23574,6 @@
         "total": 5
       },
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/IMG_9420_Luis%20Javier%20Perez%20Mo.jpeg"
-    },
-    {
-      "id": "respuesta-d1204fdcd36d6d18",
-      "timestamp": "2026-09-09T18:24:39",
-      "timestampDisplay": "09/09/2026 18:24",
-      "activity": "Jarras Blender | Cold Foam",
-      "ceco": "38456",
-      "store": "Plaza las Flores",
-      "dm": "Enrique Cesar Flores",
-      "region": "Centro Norte",
-      "evidenceKey": "Jarras_Blender_Cold_Foam_38456",
-      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38456",
-      "evidenceFileName": "17889997091362912024305341934699_Ramon Espinosa Macia.jpg",
-      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "quantities": {
-        "blender": 0,
-        "coldFoam": 0,
-        "total": 0
-      },
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17889997091362912024305341934699_Ramon%20Espinosa%20Macia.jpg"
     },
     {
       "id": "respuesta-49a8e9d01b49c5d6",
