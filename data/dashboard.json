@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "00d0aac741e1c5ad",
+  "buildVersion": "b64b0d190eae0080",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-14T23:31:34+00:00",
+  "generatedAt": "2026-09-14T23:44:23+00:00",
   "lastUpdated": "2026-09-14T16:59:05",
   "lastUpdatedDisplay": "14/09/2026 16:59",
   "report": {
@@ -60,9 +60,9 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 117,
+        "completed": 118,
         "expected": 1200,
-        "pending": 1083,
+        "pending": 1082,
         "compliance": 9.8,
         "status": "Atención"
       },
@@ -130,19 +130,18 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 599,
-    "compliance": 14.0,
-    "validResponses": 599,
+    "completedCompletions": 600,
+    "compliance": 14.1,
+    "validResponses": 600,
     "storesComplete": 3,
-    "pendingCompletions": 3666,
+    "pendingCompletions": 3665,
     "notApplicableCompletions": 19
   },
   "quality": {
     "responsesRead": 723,
     "invalidRows": [
       521,
-      591,
-      723
+      591
     ],
     "unknownCeCos": [
       "38599",
@@ -318,15 +317,11 @@
       "rowConflicts": [],
       "evidenceIssues": {},
       "applicabilityIssues": {},
-      "surveyIssues": {
-        "survey-without-operational-change": [
-          723
-        ]
-      }
+      "surveyIssues": {}
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 596,
+    "evidenceLinksPublished": 597,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -561,11 +556,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 20,
+      "completedStores": 21,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 337,
-      "compliance": 5.6,
+      "pendingStores": 336,
+      "compliance": 5.9,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -751,6 +746,25 @@
       "rank": 7
     },
     {
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "shortName": "Jose Magos",
+      "photo": "assets/dm/jose-magos.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 15,
+      "completed": 19,
+      "expected": 180,
+      "notApplicable": 0,
+      "pending": 161,
+      "pendingStores": 15,
+      "compliance": 10.6,
+      "status": "Atención",
+      "rank": 8
+    },
+    {
       "dm": "Andrea Nava Guzman",
       "shortName": "Andrea Nava",
       "photo": "assets/dm/andrea-nava.webp",
@@ -766,25 +780,6 @@
       "pending": 86,
       "pendingStores": 8,
       "compliance": 10.4,
-      "status": "Atención",
-      "rank": 8
-    },
-    {
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "shortName": "Jose Magos",
-      "photo": "assets/dm/jose-magos.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 15,
-      "completed": 18,
-      "expected": 180,
-      "notApplicable": 0,
-      "pending": 162,
-      "pendingStores": 15,
-      "compliance": 10.0,
       "status": "Atención",
       "rank": 9
     },
@@ -3803,17 +3798,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38798",
-      "store": "Corp. Televisa Sta Fe",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 8.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38755",
       "store": "Corporativo Santander",
       "dm": "Jose De Jesus Magos Arzaluz",
@@ -4179,6 +4163,17 @@
     {
       "ceco": "38400",
       "store": "Centro Medico ABC Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38798",
+      "store": "Corp. Televisa Sta Fe",
       "dm": "Jose De Jesus Magos Arzaluz",
       "completed": 2,
       "expected": 12,
@@ -11933,11 +11928,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 8.3,
-      "lastUpdate": "2026-09-11T10:55:58",
+      "compliance": 16.7,
+      "lastUpdate": "2026-09-14T16:58:51",
       "activities": {
         "Roll Out": false,
         "Programacion Hornos Merry - Focaccia": false,
@@ -11950,7 +11945,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19385,8 +19380,8 @@
       ],
       "answeredStores": 21,
       "answerCounts": {
-        "No": 3,
-        "Sí": 18
+        "No": 4,
+        "Sí": 17
       },
       "responses": [
         {
@@ -19460,11 +19455,11 @@
           "region": "Centro Poniente",
           "timestamp": "2026-09-14T16:58:51",
           "answers": {
-            "modifiesSchedule": "Sí",
+            "modifiesSchedule": "No",
             "closingTime": "Sin modificación",
             "openingTime": "Sin modificación"
           },
-          "valid": false,
+          "valid": true,
           "evidenceAvailable": true,
           "evidenceLinkPublished": true,
           "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/WhatsApp%20Image%202026-09-14%20at%204.56.21%20PM_Starbucks%20Corporativ.jpeg"
@@ -19746,6 +19741,33 @@
         "openingTime": "07:00 a. m."
       },
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_4851_Starbucks%20Juarez%2070.jpeg"
+    },
+    {
+      "id": "respuesta-e3345e069971655c",
+      "timestamp": "2026-09-14T16:58:51",
+      "timestampDisplay": "14/09/2026 16:58",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38798",
+      "store": "Corp. Televisa Sta Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38798",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38798",
+      "evidenceFileName": "WhatsApp Image 2026-09-14 at 4.56.21 PM_Starbucks Corporativ.jpeg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "No",
+        "closingTime": "Sin modificación",
+        "openingTime": "Sin modificación"
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/WhatsApp%20Image%202026-09-14%20at%204.56.21%20PM_Starbucks%20Corporativ.jpeg"
     },
     {
       "id": "respuesta-f337d4e097f8d872",
