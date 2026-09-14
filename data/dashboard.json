@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "aaac8211efbfffc0",
+  "buildVersion": "3c05f8313f96e993",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-14T06:22:17+00:00",
+  "generatedAt": "2026-09-14T07:45:42+00:00",
   "lastUpdated": "2026-09-13T18:24:48",
   "lastUpdatedDisplay": "13/09/2026 18:24",
   "report": {
@@ -100,7 +100,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "0424e460cbe1fe563a18d37cd7413d764726efd502cabe7f4d2fe5129bf5208a",
+    "responsesSha256": "1e6109f24088732db4777e64dcfa034dea3db5dde208444810ce3fb6434df336",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -210,14 +210,6 @@
         "store": "Eduardo Molina",
         "method": "correo corporativo + nombre exacto",
         "hadSchemaConflict": false
-      },
-      {
-        "row": 514,
-        "sourceCeCo": "388445",
-        "resolvedCeCo": "38845",
-        "store": "Mundo E II",
-        "method": "correo corporativo + nombre exacto",
-        "hadSchemaConflict": true
       }
     ],
     "quarantinedResponses": [],
@@ -322,12 +314,7 @@
         "Evidencia_Jarras_Blender_&_Cold_Foam": "exact",
         "Evidencia_Validacion_Horario_Festivo_Sep 26": "exact"
       },
-      "rowConflicts": [
-        {
-          "row": 514,
-          "field": "ceco"
-        }
-      ],
+      "rowConflicts": [],
       "evidenceIssues": {},
       "applicabilityIssues": {},
       "surveyIssues": {}
