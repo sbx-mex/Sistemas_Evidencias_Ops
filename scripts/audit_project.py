@@ -283,6 +283,12 @@ for full_name, expected in (("Luis Manuel Neri Saldaña", "Luis Neri"), ("Nancy 
     if short_dm_name(full_name) != expected:
         issues.append(f"Nombre corto DM incorrecto: {full_name}")
 published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
+linked_evidence = [item for item in published_evidence if item.get("evidenceUrl")]
+unlinked_evidence = [item for item in published_evidence if not item.get("evidenceUrl")]
+activity_evidence_rules = {
+    item.get("name"): bool(item.get("requireEvidence", True))
+    for item in data.get("activities", [])
+}
 published_pairs = [(item.get("ceco"), item.get("activity")) for item in published_evidence]
 if len(published_pairs) != len(set(published_pairs)):
     issues.append("Hay evidencias publicadas duplicadas para la misma tienda y actividad")
@@ -321,8 +327,37 @@ if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
 if any(row not in quarantined_rows for row in data.get("quality", {}).get("unsafeEvidenceRows", [])):
     issues.append("Una evidencia con vínculo inseguro no quedó aislada")
-if any(not item.get("evidenceFileName") or not item.get("evidenceUrl") or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}" or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com" for item in published_evidence):
+if any(
+    not item.get("evidenceFileName")
+    or item.get("evidenceFileName") == "Sin archivo"
+    or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}"
+    or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com"
+    or not item.get("evidenceAvailable")
+    or not item.get("evidenceLinkPublished")
+    for item in linked_evidence
+):
     issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
+if any(
+    item.get("evidenceFileName") != "Sin archivo"
+    or item.get("evidenceAvailable")
+    or item.get("evidenceLinkPublished")
+    for item in unlinked_evidence
+):
+    issues.append("Una respuesta sin archivo conserva metadatos de evidencia")
+if any(
+    (
+        SURVEY_ACTIVITY_CONFIG.get(compact_key(item.get("activity")))
+        and item.get("surveyAnswers", {}).get(
+            SURVEY_ACTIVITY_CONFIG[compact_key(item.get("activity"))]["primaryKey"]
+        ) != "No"
+    )
+    or (
+        not SURVEY_ACTIVITY_CONFIG.get(compact_key(item.get("activity")))
+        and activity_evidence_rules.get(item.get("activity"), True)
+    )
+    for item in unlinked_evidence
+):
+    issues.append("Una respuesta válida omite evidencia obligatoria")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
 section_order = [html.index(f'id="{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
 if nav_order != sorted(nav_order) or section_order != sorted(section_order):
@@ -401,7 +436,7 @@ report = {
     "rankingSorted": not any("Ranking DM" in issue for issue in issues),
     "vanessaWhiteBackground": round(white_corner_ratio * 100, 1),
     "exportVisuals": 2,
-    "directEvidenceLinks": len(published_evidence),
+    "directEvidenceLinks": len(linked_evidence),
     "sourceFingerprints": {key: value[:12] for key, value in source_fingerprints.items()},
     "xlsxFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx").is_file(),
     "pdfFallback": (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").is_file(),

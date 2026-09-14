@@ -261,6 +261,8 @@ for module in data.get("surveyModules", []):
 if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
     fail("El JSON público expone correo o respondente")
 published = [row for row in data.get("submissions", []) if row.get("valid")]
+published_with_links = [row for row in published if row.get("evidenceUrl")]
+published_without_links = [row for row in published if not row.get("evidenceUrl")]
 forms_responses, forms_schema = load_responses(
     ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
     [item["name"] for item in data.get("activities", [])],
@@ -339,8 +341,29 @@ for correction in data.get("quality", {}).get("correctedCeCos", []):
         fail("La auditoría de CeCo recuperados contiene una corrección insegura")
 if data.get("quality", {}).get("evidenceLinksPublished") != sum(bool(row.get("evidenceUrl")) for row in data.get("submissions", [])) or summary.get("validResponses") != len(published):
     fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
-if any(not row.get("evidenceFileName") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or not safe_evidence_url(row["evidenceUrl"], allowed_hosts) for row in published if row.get("evidenceUrl")):
+if any(not row.get("evidenceFileName") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or not safe_evidence_url(row["evidenceUrl"], allowed_hosts) for row in published_with_links):
     fail("Nombre de archivo o vínculo directo inválido")
+if any(
+    row.get("evidenceFileName") != "Sin archivo"
+    or row.get("evidenceAvailable")
+    or row.get("evidenceLinkPublished")
+    for row in published_without_links
+):
+    fail("Una respuesta sin archivo conserva metadatos de evidencia")
+if any(
+    (
+        SURVEY_ACTIVITY_CONFIG.get(compact_key(row.get("activity")))
+        and row.get("surveyAnswers", {}).get(
+            SURVEY_ACTIVITY_CONFIG[compact_key(row.get("activity"))]["primaryKey"]
+        ) != "No"
+    )
+    or (
+        not SURVEY_ACTIVITY_CONFIG.get(compact_key(row.get("activity")))
+        and evidence_required.get(compact_key(row.get("activity")), True)
+    )
+    for row in published_without_links
+):
+    fail("Una respuesta válida omite evidencia obligatoria")
 if published_excel_links != expected_excel_links:
     missing = len(set(expected_excel_links).difference(published_excel_links))
     unexpected = len(set(published_excel_links).difference(expected_excel_links))
