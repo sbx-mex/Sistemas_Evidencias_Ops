@@ -13,6 +13,9 @@ El motor actual incluye `unknownCeCos` dentro de los bloqueos duros de `scripts/
 3. Las filas aisladas no deben modificar avance, fecha de corte, tienda, DM, región ni exportaciones.
 4. El workflow debe mostrar claramente los CeCo aislados para que se actualice Directorio sin perder la publicación del resto de respuestas válidas.
 5. Una vez incorporado el CeCo al Directorio, la misma fila de Forms puede recuperarse automáticamente en la siguiente reconstrucción.
+6. Un CeCo mal escrito o un conflicto CeCo/CeCo1 se corrige únicamente con doble identidad exacta (correo corporativo + nombre de tienda). Si no existe esa confirmación, se aísla la fila sin alterar avance ni fecha de corte.
+7. Agregar o retirar filas inválidas de una descarga de Forms no cambia los resultados válidos. Las fechas serializadas por Excel siguen interpretándose igual al subir una versión descargada o reexportada.
+8. El CMS permite cambiar temporalmente `responseErrorPolicy` a `Bloquear archivo` cuando se requiera una revisión estricta; en operación normal, `Aislar fila` evita que un error individual detenga la actualización completa.
 
 ## Causa observada
 

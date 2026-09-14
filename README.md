@@ -19,7 +19,7 @@ El motor identifica estos encabezados aunque cambie su orden o existan columnas 
 
 1. `Hora de finalización` → **Última actualización**.
 2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
-3. `CeCo` o `CeCo1` → cruce automático con nombre de tienda y DM. Forms puede conservar ambas columnas al cambiar la pregunta de lista desplegable a captura numérica; Python toma el único valor informado y rechaza filas con valores contradictorios.
+3. `CeCo` o `CeCo1` → cruce automático con nombre de tienda y DM. Forms puede conservar ambas columnas al cambiar la pregunta. Un valor mal formado o contradictorio se recupera únicamente cuando correo corporativo y nombre exacto confirman la misma tienda abierta; de lo contrario se aísla sólo esa fila.
 4. Las preguntas previas de Hornos y Rack FHW → un `Sí` continúa hacia la evidencia; un `No` explícito significa **No aplica** sólo para la actividad nombrada y la descuenta del ideal.
 5. `Evidencia del avance` o `Evidencia_<Actividad>` → Python elige la columna que coincide con la actividad seleccionada, valida HTTPS y dominio autorizado y genera una etiqueta `Actividad_CeCo`.
 
@@ -72,6 +72,8 @@ Edita `cms/Sistema_Evidencias_OPS_CMS.xlsx`:
 - `Descripción`: contexto que verá el usuario en el dashboard.
 
 En `Configuracion` se administran región, privacidad, dominios autorizados y Director Regional. Forms puede seguir acumulando actividades y respuestas, pero **sólo las actividades activas y vigentes del CMS se publican y forman parte del denominador**. Las actividades presentes en Forms pero no habilitadas en CMS se conservan en la fuente y se reportan como ocultas en la auditoría.
+
+`responseErrorPolicy = Aislar fila` mantiene disponible la publicación cuando una respuesta nueva trae un dato inválido. `trustedCeCoRecovery = Si` permite recuperar un CeCo sólo con la doble coincidencia de correo corporativo y nombre exacto; nunca adivina por cercanía numérica.
 
 ## Evidencias y alcance seguro
 

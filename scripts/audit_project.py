@@ -13,7 +13,7 @@ from PIL import Image
 # La auditoría no debe crear residuos que después ella misma reporte.
 sys.dont_write_bytecode = True
 
-from build_dashboard import STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, compact_key, file_sha256, short_dm_name, validate_xlsx
+from build_dashboard import STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, short_dm_name, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -185,8 +185,8 @@ if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     issues.append("La versión Python para invalidar caché es incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
-if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "11/11":
-    issues.append("Los 11 controles Python de estabilidad no están activos")
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "12/12":
+    issues.append("Los 12 controles Python de estabilidad no están activos")
 if not response_schema.get("activityHeaders") or not response_schema.get("cecoHeaders") or not response_schema.get("evidenceHeaders"):
     issues.append("No se auditó el esquema dinámico del Excel Forms")
 expected_survey_fields = {
@@ -219,7 +219,7 @@ if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
 for correction in data.get("quality", {}).get("correctedCeCos", []):
     if (
         correction.get("sourceCeCo") == correction.get("resolvedCeCo")
-        or not re.fullmatch(r"[0-9]{5}", correction.get("sourceCeCo", ""))
+        or not clean_text(correction.get("sourceCeCo"))
         or not re.fullmatch(r"[0-9]{5}", correction.get("resolvedCeCo", ""))
         or correction.get("method") != "correo corporativo + nombre exacto"
     ):
@@ -235,8 +235,14 @@ if any(
     for header, match in evidence_header_matches.items()
 ):
     issues.append("La relación entre encabezados de evidencia y actividades CMS es incongruente")
-if response_schema.get("rowConflicts") or any(
+quarantined_rows = {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
+recovered_conflict_rows = {
+    item.get("row") for item in data.get("quality", {}).get("correctedCeCos", [])
+    if item.get("hadSchemaConflict")
+}
+if any(item.get("row") not in quarantined_rows | recovered_conflict_rows for item in response_schema.get("rowConflicts", [])) or any(
     key in {"ambiguous-evidence", "ambiguous-matching-evidence", "mismatched-evidence-column", "multiple-evidence-columns"} and rows
+    and not set(rows).issubset(quarantined_rows)
     for key, rows in response_schema.get("evidenceIssues", {}).items()
 ):
     issues.append("El Excel Forms contiene columnas o evidencias ambiguas")
@@ -313,8 +319,8 @@ for module in data.get("quantityModules", []):
         issues.append("El consolidado de piezas no coincide con las respuestas vigentes")
 if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
-if data.get("quality", {}).get("unsafeEvidenceRows"):
-    issues.append("Se detectaron evidencias con vínculo inseguro")
+if any(row not in quarantined_rows for row in data.get("quality", {}).get("unsafeEvidenceRows", [])):
+    issues.append("Una evidencia con vínculo inseguro no quedó aislada")
 if any(not item.get("evidenceFileName") or not item.get("evidenceUrl") or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}" or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com" for item in published_evidence):
     issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]

@@ -197,7 +197,10 @@ if any(item.get("photo") != f"assets/dm/{photo_slug(item.get('shortName'))}.webp
     fail("Las rutas de fotografía de Centro Poniente no siguen el nombre canónico")
 if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):
     fail("Los DM nuevos no quedaron marcados con foto pendiente")
-if data.get("quality", {}).get("unknownCeCos") or data.get("quality", {}).get("unsafeEvidenceRows"):
+if data.get("quality", {}).get("unknownCeCos") or any(
+    row not in {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
+    for row in data.get("quality", {}).get("unsafeEvidenceRows", [])
+):
     fail("Calidad inicial incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
 if not response_schema.get("cecoHeaders"):
@@ -329,6 +332,7 @@ published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for 
 for correction in data.get("quality", {}).get("correctedCeCos", []):
     if (
         correction.get("sourceCeCo") == correction.get("resolvedCeCo")
+        or not clean_text(correction.get("sourceCeCo"))
         or correction.get("resolvedCeCo") not in stores_by_ceco
         or correction.get("method") != "correo corporativo + nombre exacto"
     ):
@@ -342,7 +346,20 @@ if published_excel_links != expected_excel_links:
     unexpected = len(set(published_excel_links).difference(expected_excel_links))
     changed = sum(published_excel_links.get(pair) != url for pair, url in expected_excel_links.items() if pair in published_excel_links)
     fail(f"La última evidencia por tienda y actividad no coincide: faltan {missing}, sobran {unexpected}, cambiaron {changed}")
-if not forms_schema["evidenceHeaders"] or forms_schema["rowConflicts"] or forms_schema["evidenceIssues"] or forms_schema.get("applicabilityIssues"):
+quarantined_rows = {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
+recovered_conflict_rows = {
+    item.get("row") for item in data.get("quality", {}).get("correctedCeCos", [])
+    if item.get("hadSchemaConflict")
+}
+unhandled_conflicts = [
+    item for item in forms_schema["rowConflicts"]
+    if item.get("row") not in quarantined_rows | recovered_conflict_rows
+]
+if not forms_schema["evidenceHeaders"] or unhandled_conflicts or any(
+    rows and not set(rows).issubset(quarantined_rows)
+    for key, rows in forms_schema["evidenceIssues"].items()
+    if key != "generic-evidence-fallback"
+) or any(rows and not set(rows).issubset(quarantined_rows) for rows in forms_schema.get("applicabilityIssues", {}).values()):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
 evidence_header_matches = forms_schema.get("evidenceHeaderMatch", {})
 evidence_header_map = forms_schema.get("evidenceHeaderMap", {})
@@ -515,7 +532,7 @@ for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body 
     if theme_token not in css:
         fail(f"El lenguaje visual Fall 26 no se aplicó fuera del hero: {theme_token}")
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
-if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "11/11":
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "12/12":
     fail("Los 11 controles Python de estabilidad no están activos")
 for required in [".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"]:
     if required not in css:

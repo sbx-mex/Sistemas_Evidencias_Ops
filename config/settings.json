@@ -6,5 +6,7 @@
   "includedStoreStatuses": "Abierta",
   "requireEvidence": true,
   "publishEvidenceLinks": true,
-  "publishPersonalData": false
+  "publishPersonalData": false,
+  "responseErrorPolicy": "Aislar fila",
+  "trustedCeCoRecovery": true
 }

@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_quantity
+from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_datetime, parse_quantity
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -68,6 +68,8 @@ def main() -> None:
         # accidentalmente como Latin-1, pero el repositorio conserva UTF-8 limpio.
         mojibake_yes = "Sí".encode("utf-8").decode("latin-1")
         assert clean_text(mojibake_yes) == "Sí"
+        assert parse_datetime(46278.759375) == datetime(2026, 9, 13, 18, 13, 30)
+        assert parse_datetime("46278.759375") == datetime(2026, 9, 13, 18, 13, 30)
         assert boolean_answer(mojibake_yes) is True
 
         # Escenario 3: Forms conserva CeCo y crea CeCo1 al cambiar la pregunta.
@@ -156,9 +158,85 @@ def main() -> None:
             "resolvedCeCo": "43152",
             "store": "Samara Satélite",
             "method": "correo corporativo + nombre exacto",
+            "hadSchemaConflict": False,
         }]
         assert recovered_payload["summary"]["validResponses"] == 1
         assert recovered_payload["submissions"][0]["ceco"] == "43152"
+
+        # Un dígito extra o CeCo/CeCo1 contradictorios se recuperan sólo cuando
+        # correo corporativo y nombre exacto confirman la misma tienda abierta.
+        malformed = temp / "ceco-malformed.xlsx"
+        save_book(malformed, simulation_headers, [[
+            12002, recovery_start, recovery_finish,
+            "sbmx43152@starbucks.com.mx", "Starbucks Samara Satélite",
+            "", "443152", "Roll Out", f"{allowed}/samara-malformed.jpg",
+        ]])
+        malformed_payload = build_payload(
+            malformed,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        assert malformed_payload["summary"]["validResponses"] == 1
+        assert malformed_payload["submissions"][0]["ceco"] == "43152"
+        assert malformed_payload["quality"]["correctedCeCos"][0]["hadSchemaConflict"] is True
+        assert malformed_payload["quality"]["quarantinedResponses"] == []
+
+        isolated = temp / "ceco-isolated.xlsx"
+        save_book(isolated, simulation_headers, [[
+            12003, recovery_start, recovery_finish,
+            "", "Nombre sin coincidencia", "", "443152", "Roll Out",
+            f"{allowed}/isolated.jpg",
+        ]])
+        isolated_payload = build_payload(
+            isolated,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+        )
+        assert isolated_payload["summary"]["validResponses"] == 0
+        assert isolated_payload["submissions"] == []
+        assert isolated_payload["quality"]["quarantinedResponses"] == [
+            {"row": 2, "reasons": ["ceco"]}
+        ]
+        assert isolated_payload["quality"]["stabilityScore"] == "12/12"
+
+        # Subir una descarga con una fila inválida nueva, reordenarla o volver a
+        # bajar la versión sin esa fila conserva exactamente el resultado válido.
+        stable_start, stable_finish = timestamps(2100)
+        bad_start, bad_finish = timestamps(2200)
+        roundtrip_headers = BASE + ["CeCo", ACTIVITY, "Evidencia_RollOut"]
+        stable_row = [
+            13000, stable_start, stable_finish, "", "Prueba", "38115",
+            "Roll Out", f"{allowed}/stable.jpg",
+        ]
+        bad_row = [
+            13001, bad_start, bad_finish, "", "Sin coincidencia", "381155",
+            "Roll Out", f"{allowed}/bad.jpg",
+        ]
+        versions = []
+        for filename, version_rows in (
+            ("downloaded.xlsx", [stable_row]),
+            ("uploaded-with-error.xlsx", [stable_row, bad_row]),
+            ("uploaded-reordered.xlsx", [bad_row, stable_row]),
+        ):
+            version = temp / filename
+            save_book(version, roundtrip_headers, version_rows)
+            versions.append(build_payload(
+                version,
+                ROOT / "cms" / "Directorio.xlsx",
+                ROOT / "config" / "settings.json",
+                ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            ))
+        snapshots = [(
+            payload["summary"]["completedCompletions"],
+            payload["summary"]["validResponses"],
+            payload["lastUpdated"],
+            [(item["ceco"], item["activity"], item.get("evidenceUrl")) for item in payload["submissions"]],
+        ) for payload in versions]
+        assert snapshots[0] == snapshots[1] == snapshots[2]
+        assert versions[1]["quality"]["quarantinedResponses"] == [{"row": 3, "reasons": ["ceco"]}]
+        assert versions[2]["quality"]["quarantinedResponses"] == [{"row": 2, "reasons": ["ceco"]}]
 
         # Una sola señal o un nombre distinto nunca autoriza la corrección.
         untrusted = temp / "ceco-untrusted.xlsx"
@@ -269,8 +347,8 @@ def main() -> None:
         assert len(repeated_payload["submissions"]) == 1
         assert repeated_payload["submissions"][0]["evidenceUrl"].endswith("rollout-vigente.jpg")
         assert repeated_payload["quality"]["responseSchema"]["evidenceHeaderMap"]["Evidencia_RollOut"] == "rollout"
-        assert repeated_payload["quality"]["stabilityScore"] == "11/11"
-        assert len(repeated_payload["quality"]["stabilityControls"]) == 11
+        assert repeated_payload["quality"]["stabilityScore"] == "12/12"
+        assert len(repeated_payload["quality"]["stabilityControls"]) == 12
 
         # Escenario 7: portada previa, encabezado desplazado y campos personales ausentes.
         shifted = temp / "shifted.xlsx"
@@ -297,12 +375,12 @@ def main() -> None:
         start1, finish1 = timestamps(8)
         start2, finish2 = timestamps(9)
         flexible_headers = [
-            "Columna nueva", "Fotografia SM", "CeCo", ACTIVITY,
+            "Columna nueva", "Mandil Verde", "CeCo", ACTIVITY,
             "Evidencia_Programacion_Horno_Merry_Focaccia", "Hora de finalización",
         ]
         save_book(flexible, flexible_headers, [
             ["x", "", "38333", "Programacion Hornos Merry - Focaccia", f"{allowed}/horno.jpg", finish1],
-            ["x", f"{allowed}/foto.jpg", "38115", "Fotografia - SM", "", finish2],
+            ["x", f"{allowed}/mandil.jpg", "38115", "Mandil Verde", "", finish2],
         ])
         activity_names = [
             "Roll Out", "Programacion Hornos Merry - Focaccia", "Rack FHW",
@@ -310,12 +388,12 @@ def main() -> None:
         ]
         rows, schema = load_responses(flexible, activity_names)
         assert [row["activity"] for row in rows] == [
-            "Programacion Hornos Merry - Focaccia", "Fotografia - SM",
+            "Programacion Hornos Merry - Focaccia", "Mandil Verde",
         ]
         assert rows[0]["evidence"].endswith("horno.jpg")
-        assert rows[1]["evidence"].endswith("foto.jpg")
+        assert rows[1]["evidence"].endswith("mandil.jpg")
         assert schema["evidenceHeaderMatch"]["Evidencia_Programacion_Horno_Merry_Focaccia"] == "affinity"
-        assert schema["evidenceHeaderMatch"]["Fotografia SM"] == "exact"
+        assert schema["evidenceHeaderMatch"]["Mandil Verde"] == "exact"
         assert schema["evidenceIssues"] == {}
 
         # Escenario 8b: mayúsculas inestables, acentos y un error menor conservan
@@ -383,7 +461,7 @@ def main() -> None:
         assert pending_dates == sorted(pending_dates)
         stores = {store["ceco"]: store for store in payload["stores"]}
         assert stores["38333"]["activities"]["Programacion Hornos Merry - Focaccia"] is True
-        assert stores["38115"]["activities"]["Fotografia - SM"] is True
+        assert stores["38115"]["activities"]["Mandil Verde"] is True
 
         # Escenario 10: preguntas Sí/No duplicadas, reordenadas y con texto adicional.
         # La respuesta se asocia a la actividad elegida en la misma fila.

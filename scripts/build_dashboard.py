@@ -22,7 +22,7 @@ import re
 import unicodedata
 import zipfile
 from collections import Counter, defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
@@ -142,14 +142,21 @@ STABILITY_CONTROLS = (
     "duplicateResponseResolution",
     "directoryUniqueness",
     "safeEvidenceLinks",
+    "rowQuarantine",
     "atomicPublication",
 )
 KNOWN_SETTING_KEYS = (
     "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
-    "ignoredResponseIds",
+    "ignoredResponseIds", "responseErrorPolicy", "trustedCeCoRecovery",
 )
+ROW_ERROR_POLICIES = {"aislar fila": "Aislar fila", "bloquear archivo": "Bloquear archivo"}
+BLOCKING_EVIDENCE_ISSUES = {
+    "ambiguous-evidence", "ambiguous-matching-evidence",
+    "ambiguous-evidence-header", "mismatched-evidence-column",
+    "multiple-evidence-columns",
+}
 
 
 def repair_mojibake(value: str) -> str:
@@ -454,18 +461,25 @@ def store_name_key(value: Any) -> str:
 
 
 def recover_response_ceco(
-    response: dict[str, Any], stores: dict[str, dict[str, str]]
+    response: dict[str, Any],
+    stores: dict[str, dict[str, str]],
+    *,
+    enabled: bool = True,
 ) -> tuple[str, dict[str, Any] | None]:
     """Corrige un CeCo desconocido sólo con dos señales corporativas exactas.
 
     El valor de Forms se conserva cuando ya cruza con Directorio. Si no cruza,
     únicamente se recupera cuando el correo ``sbmx<CeCo>@starbucks.com.mx``
     apunta a una tienda abierta y el nombre coincide exactamente (sin el prefijo
-    Starbucks). Casos incompletos, ambiguos o con conflicto de columnas siguen
-    rechazándose para evitar asignar evidencia a una tienda incorrecta.
+    Starbucks). También puede recuperar un valor mal formado o un conflicto
+    CeCo/CeCo1, pero nunca un conflicto de otra clase. Casos incompletos o
+    ambiguos siguen aislados para evitar asignar evidencia a otra tienda.
     """
     source_ceco = normalize_ceco(response.get("ceco"))
-    if source_ceco in stores or not source_ceco or response.get("schemaConflict"):
+    conflict_fields = set(response.get("schemaConflictFields", []))
+    if source_ceco in stores and not conflict_fields:
+        return source_ceco, None
+    if not enabled or conflict_fields.difference({"ceco"}):
         return source_ceco, None
 
     email_match = re.fullmatch(
@@ -483,12 +497,15 @@ def recover_response_ceco(
     ):
         return source_ceco, None
 
+    candidates = [clean_text(value) for value in response.get("cecoCandidates", []) if clean_text(value)]
+    source_label = " | ".join(candidates[:3]) or source_ceco or "Sin CeCo válido"
     return resolved_ceco, {
         "row": response.get("row"),
-        "sourceCeCo": source_ceco,
+        "sourceCeCo": source_label,
         "resolvedCeCo": resolved_ceco,
         "store": store["store"],
         "method": "correo corporativo + nombre exacto",
+        "hadSchemaConflict": "ceco" in conflict_fields,
     }
 
 
@@ -541,7 +558,16 @@ def parse_datetime(value: Any) -> datetime | None:
         return value
     if isinstance(value, date):
         return datetime.combine(value, datetime.min.time())
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        # Un archivo descargado/reexportado puede convertir la fecha a serial Excel.
+        serial = float(value)
+        if math.isfinite(serial) and 1 <= serial < 2_958_466:
+            return datetime(1899, 12, 30) + timedelta(days=serial)
     text = clean_text(value)
+    if re.fullmatch(r"\d+(?:\.\d+)?", text):
+        serial = float(text)
+        if math.isfinite(serial) and 1 <= serial < 2_958_466:
+            return datetime(1899, 12, 30) + timedelta(days=serial)
     for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
         try:
             return datetime.strptime(text, fmt)
@@ -956,7 +982,10 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     config_ws = workbook["Configuracion"]
     config_header, config_cols = find_header(config_ws, {"clave", "valor"})
     cms_settings: dict[str, Any] = {}
-    boolean_keys = {"onlyOpenStores", "requireEvidence", "publishEvidenceLinks", "publishPersonalData"}
+    boolean_keys = {
+        "onlyOpenStores", "requireEvidence", "publishEvidenceLinks",
+        "publishPersonalData", "trustedCeCoRecovery",
+    }
     canonical_setting_keys = {key_text(key): key for key in KNOWN_SETTING_KEYS}
     seen_setting_keys: set[str] = set()
     for row in config_ws.iter_rows(min_row=config_header + 1, values_only=True):
@@ -982,6 +1011,12 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             cms_settings[key] = is_yes(value)
         else:
             cms_settings[key] = text_value
+    policy = key_text(cms_settings.get("responseErrorPolicy", "Aislar fila"))
+    if policy not in ROW_ERROR_POLICIES:
+        raise ValueError(
+            "responseErrorPolicy sólo acepta Aislar fila o Bloquear archivo"
+        )
+    cms_settings["responseErrorPolicy"] = ROW_ERROR_POLICIES[policy]
 
     activity_ws = workbook["Actividades"]
     header_row, cols = find_header(activity_ws, {"orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo"})
@@ -1307,9 +1342,15 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             continue
         values: dict[str, str] = {}
         row_has_conflict = False
+        row_conflict_fields: list[str] = []
+        ceco_candidates: list[str] = []
         for field, indices in column_groups.items():
             if field == "ceco":
                 values[field], conflict, populated_indices = coalesce_ceco_value(row, indices)
+                ceco_candidates = list(dict.fromkeys(
+                    clean_text(row[index]) for index in populated_indices
+                    if index < len(row) and clean_text(row[index])
+                ))
                 source_headers = [clean_text(headers[index]) for index in populated_indices]
                 ceco_source_usage.update(source_headers)
                 if len(source_headers) > 1:
@@ -1321,10 +1362,12 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             if conflict:
                 conflicts.append({"row": row_number, "field": field})
                 row_has_conflict = True
+                row_conflict_fields.append(field)
         confirmation, confirmation_conflict = coalesce_row_value(row, confirmation_columns)
         if confirmation_conflict:
             conflicts.append({"row": row_number, "field": "confirmed"})
             row_has_conflict = True
+            row_conflict_fields.append("confirmed")
         evidence_activity = canonical_cms_activity(
             values["activity"], response_activity_by_text, response_activity_by_compact
         ) or values["activity"]
@@ -1339,6 +1382,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         if applicability_issue:
             applicability_issues[applicability_issue].append(row_number)
             row_has_conflict = True
+            row_conflict_fields.append("applicability")
         survey_answers, survey_sources, survey_issue = resolve_survey_answers(
             row, survey_group, evidence_activity
         )
@@ -1346,6 +1390,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             survey_issues[survey_issue].append(row_number)
             if survey_issue == "conflicting-survey-answers":
                 row_has_conflict = True
+                row_conflict_fields.append("survey")
         finished = parse_datetime(values["finished"])
         # Registrar una actividad en Forms equivale a confirmarla. La respuesta de
         # confirmación puede permanecer en exportaciones históricas, pero nunca
@@ -1365,6 +1410,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "name": values["name"],
             "activity": values["activity"],
             "ceco": values["ceco"],
+            "cecoCandidates": ceco_candidates,
             "blenderJars": values["blenderJars"],
             "coldFoamJars": values["coldFoamJars"],
             "confirmedAnswer": "Sí" if values["activity"] else "",
@@ -1379,6 +1425,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "evidence": evidence,
             "evidenceSourceHeader": evidence_source,
             "schemaConflict": row_has_conflict,
+            "schemaConflictFields": list(dict.fromkeys(row_conflict_fields)),
             "evidenceIssue": evidence_issue,
         })
     schema = {
@@ -1475,6 +1522,7 @@ def build_payload(
     canonicalized_activity_rows = []
     quantity_response_issues = []
     corrected_cecos = []
+    quarantined_responses: list[dict[str, Any]] = []
     ignored_response_rows = []
     configured_ignored_response_ids = set(setting_list(settings.get("ignoredResponseIds")))
     ignored_response_source_ids = set()
@@ -1485,12 +1533,23 @@ def build_payload(
             ignored_response_rows.append(response["row"])
             ignored_response_source_ids.add(response["sourceId"])
             continue
-        resolved_ceco, correction = recover_response_ceco(response, stores)
+        resolved_ceco, correction = recover_response_ceco(
+            response,
+            stores,
+            enabled=bool(settings.get("trustedCeCoRecovery", True)),
+        )
         if correction:
             corrected_cecos.append(correction)
+            remaining_conflicts = [
+                field for field in response.get("schemaConflictFields", [])
+                if field != "ceco"
+            ]
             response = {
                 **response,
                 "ceco": resolved_ceco,
+                "schemaConflictFields": remaining_conflicts,
+                "schemaConflict": bool(remaining_conflicts),
+                "confirmed": bool(response.get("activity")) and not remaining_conflicts,
                 "id": stable_response_id(
                     response["started"], response["finished"], resolved_ceco,
                     response["activity"], response["evidence"],
@@ -1508,13 +1567,36 @@ def build_payload(
             continue
         if compact_key(activity_text) != compact_key(activity):
             canonicalized_activity_rows.append(response["row"])
+        quarantine_reasons = list(response.get("schemaConflictFields", []))
+        if response.get("evidenceIssue") in BLOCKING_EVIDENCE_ISSUES:
+            quarantine_reasons.append(response["evidenceIssue"])
+        if response.get("surveyIssue") == "conflicting-survey-answers":
+            quarantine_reasons.append(response["surveyIssue"])
+        if response.get("applicabilityConflict"):
+            quarantine_reasons.append("applicability")
+        if quarantine_reasons:
+            quarantined_responses.append({
+                "row": response["row"],
+                "reasons": list(dict.fromkeys(quarantine_reasons)),
+            })
+            invalid_rows.append(response["row"])
+            continue
         if response["ceco"] and not store:
             unknown_cecos.add(response["ceco"])
-        # Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte.
-        if response["finished"] and (latest_update is None or response["finished"] > latest_update):
-            latest_update = response["finished"]
         evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
         evidence_available = evidence_url is not None
+        if response["evidence"] and not evidence_available:
+            unsafe_evidence_rows.append(response["row"])
+            quarantined_responses.append({
+                "row": response["row"],
+                "reasons": ["unsafe-evidence-link"],
+            })
+            invalid_rows.append(response["row"])
+            continue
+        # Una fila ajena o inactiva no modifica ni los conteos ni la fecha de corte.
+        # Las filas aisladas ya terminaron antes de este punto.
+        if store and response["finished"] and (latest_update is None or response["finished"] > latest_update):
+            latest_update = response["finished"]
         quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
         survey_config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
         quantities: dict[str, int] = {}
@@ -1538,8 +1620,6 @@ def build_payload(
         not_applicable = bool(response["explicitNo"] and store and not response["schemaConflict"])
         if response["applicabilityAnswer"]:
             conditional_activities.add(activity)
-        if response["evidence"] and not evidence_available:
-            unsafe_evidence_rows.append(response["row"])
         survey_primary = (
             response.get("surveyAnswers", {}).get(survey_config["primaryKey"])
             if survey_config else None
@@ -1836,11 +1916,14 @@ def build_payload(
     source_hashes = initial_source_hashes
     build_version = output_version(source_hashes)
 
-    ambiguous_evidence_issues = {
-        "ambiguous-evidence", "ambiguous-matching-evidence",
-        "ambiguous-evidence-header", "mismatched-evidence-column",
-        "multiple-evidence-columns",
+    recovered_conflict_rows = {
+        item["row"] for item in corrected_cecos if item.get("hadSchemaConflict")
     }
+    quarantined_rows = {item["row"] for item in quarantined_responses}
+    unresolved_row_conflicts = [
+        item for item in response_schema.get("rowConflicts", [])
+        if item["row"] not in recovered_conflict_rows
+    ]
     published_pairs = [(item["ceco"], item["activity"]) for item in submissions]
     stability_controls = {
         "sourceIntegrity": True,
@@ -1849,10 +1932,11 @@ def build_payload(
         "canonicalActivityMatching": all(item["activity"] in activity_names for item in submissions),
         "evidenceHeaderSafety": not any(
             rows for issue, rows in response_schema.get("evidenceIssues", {}).items()
-            if issue in ambiguous_evidence_issues
+            if issue in BLOCKING_EVIDENCE_ISSUES and not set(rows).issubset(quarantined_rows)
         ),
-        "surveyHeaderSafety": not response_schema.get("surveyIssues", {}).get(
-            "conflicting-survey-answers"
+        "surveyHeaderSafety": not any(
+            row not in quarantined_rows
+            for row in response_schema.get("surveyIssues", {}).get("conflicting-survey-answers", [])
         ),
         "columnOrderIndependence": bool(
             response_schema.get("activityHeaders")
@@ -1861,7 +1945,28 @@ def build_payload(
         ),
         "duplicateResponseResolution": len(published_pairs) == len(set(published_pairs)),
         "directoryUniqueness": bool(stores) and len(stores) == len(set(stores)),
-        "safeEvidenceLinks": not unsafe_evidence_rows,
+        "safeEvidenceLinks": not any(item.get("evidenceUrl") and not item.get("evidenceAvailable") for item in submissions),
+        "rowQuarantine": (
+            all(
+                item["row"] in recovered_conflict_rows or item["row"] in quarantined_rows
+                for item in response_schema.get("rowConflicts", [])
+            )
+            and all(
+                set(rows).issubset(quarantined_rows)
+                for issue, rows in response_schema.get("evidenceIssues", {}).items()
+                if issue in BLOCKING_EVIDENCE_ISSUES
+            )
+            and all(
+                set(rows).issubset(quarantined_rows)
+                for rows in response_schema.get("applicabilityIssues", {}).values()
+            )
+            and all(
+                set(rows).issubset(quarantined_rows)
+                for issue, rows in response_schema.get("surveyIssues", {}).items()
+                if issue == "conflicting-survey-answers"
+            )
+            and set(unsafe_evidence_rows).issubset(quarantined_rows)
+        ),
         "atomicPublication": True,
     }
     stability_passed = sum(stability_controls.values())
@@ -1924,6 +2029,10 @@ def build_payload(
             "canonicalizedActivityRows": canonicalized_activity_rows,
             "quantityResponseIssues": quantity_response_issues,
             "correctedCeCos": corrected_cecos,
+            "quarantinedResponses": quarantined_responses,
+            "unresolvedRowConflicts": unresolved_row_conflicts,
+            "responseErrorPolicy": settings.get("responseErrorPolicy", "Aislar fila"),
+            "trustedCeCoRecovery": bool(settings.get("trustedCeCoRecovery", True)),
             "ignoredResponseRows": ignored_response_rows,
             "ignoredResponseSourceIds": sorted(ignored_response_source_ids, key=key_text),
             "unusedIgnoredResponseSourceIds": sorted(

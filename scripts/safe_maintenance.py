@@ -170,6 +170,13 @@ def isolate_unknown_cecos() -> list[str]:
             + ", ".join(isolated)
             + " · fuera de publicación hasta existir en Directorio"
         )
+    quarantined = quality.get("quarantinedResponses", [])
+    if quarantined:
+        print(
+            "Filas Forms aisladas sin bloqueo: "
+            + ", ".join(str(item["row"]) for item in quarantined)
+            + " · no afectan datos ni fecha de corte"
+        )
     return isolated
 
 

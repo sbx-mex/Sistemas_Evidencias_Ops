@@ -36,7 +36,7 @@ CMS_CONFIG_KEYS = {
     "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
-    "ignoredResponseIds",
+    "ignoredResponseIds", "responseErrorPolicy", "trustedCeCoRecovery",
 }
 
 
@@ -168,7 +168,10 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
     config_header, config_cols = find_header(config_ws, {"clave", "valor"})
     config_keys: list[str] = []
     config_defaults = 0
-    boolean_keys = {"onlyOpenStores", "requireEvidence", "publishEvidenceLinks", "publishPersonalData"}
+    boolean_keys = {
+        "onlyOpenStores", "requireEvidence", "publishEvidenceLinks",
+        "publishPersonalData", "trustedCeCoRecovery",
+    }
     for row in range(config_header + 1, config_ws.max_row + 1):
         key = clean_text(config_ws.cell(row, config_cols["clave"] + 1).value)
         if not key:

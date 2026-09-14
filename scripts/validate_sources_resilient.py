@@ -45,12 +45,16 @@ def main() -> None:
         if key not in {"generic-evidence-fallback"} and rows
     }
     isolated_unknown_cecos = quality.get("unknownCeCos", [])
+    error_policy = quality.get("responseErrorPolicy", "Aislar fila")
+    unresolved_row_conflicts = quality.get("unresolvedRowConflicts", [])
+    strict_rows = error_policy == "Bloquear archivo"
     blocking_issues = {
-        "conflictosFilas": schema.get("rowConflicts", []),
-        "conflictosEvidencia": conflicting_evidence,
-        "conflictosAplicabilidad": schema.get("applicabilityIssues", {}),
+        "conflictosFilas": unresolved_row_conflicts if strict_rows else [],
+        "conflictosEvidencia": conflicting_evidence if strict_rows else {},
+        "conflictosAplicabilidad": schema.get("applicabilityIssues", {}) if strict_rows else {},
+        "conflictosEncuesta": schema.get("surveyIssues", {}) if strict_rows else {},
         "exclusionesObsoletas": quality.get("unusedIgnoredResponseSourceIds", []),
-        "vinculosInseguros": quality.get("unsafeEvidenceRows", []),
+        "vinculosInseguros": quality.get("unsafeEvidenceRows", []) if strict_rows else [],
     }
     if any(blocking_issues.values()):
         raise SystemExit("Fuentes rechazadas: " + json.dumps(blocking_issues, ensure_ascii=False))
@@ -74,6 +78,20 @@ def main() -> None:
         )
     else:
         print("Cruce CeCo · sin filas aisladas")
+    quarantined = quality.get("quarantinedResponses", [])
+    if quarantined:
+        print(
+            "ADVERTENCIA NO BLOQUEANTE · filas aisladas por respuesta inválida: "
+            + ", ".join(str(item["row"]) for item in quarantined)
+            + " · el resto del archivo se publica normalmente"
+        )
+    recovered = [item for item in quality.get("correctedCeCos", []) if item.get("hadSchemaConflict")]
+    if recovered:
+        print(
+            "Recuperación CeCo verificada · filas: "
+            + ", ".join(str(item["row"]) for item in recovered)
+            + " · correo corporativo y nombre exacto"
+        )
 
     print(
         "Motores auditados · "
