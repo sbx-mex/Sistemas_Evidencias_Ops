@@ -804,12 +804,19 @@ def resolve_survey_answers(
 
     primary = answers.get(config["primaryKey"])
     detail_fields = [field for field in config["fields"] if field["key"] != config["primaryKey"]]
+    detail_values = [answers.get(field["key"]) for field in detail_fields]
+    # Forms ya ramifica esta encuesta, pero una persona puede marcar "Sí" y
+    # después elegir "Sin modificación" en ambos horarios. En ese caso la
+    # clasificación operativa correcta es "No", sin dejar la fila aislada.
+    if all(
+        value is not None and value in field.get("excludedValues", ())
+        for value, field in zip(detail_values, detail_fields, strict=True)
+    ):
+        primary = "No"
+        answers[config["primaryKey"]] = primary
     if primary == "Sí":
-        detail_values = [answers.get(field["key"]) for field in detail_fields]
         if any(value is None for value in detail_values):
             issue = issue or "incomplete-survey-details"
-        elif all(value in field.get("excludedValues", ()) for value, field in zip(detail_values, detail_fields, strict=True)):
-            issue = issue or "survey-without-operational-change"
     elif primary == "No" and any(
         answers.get(field["key"]) not in (None, *field.get("excludedValues", ()))
         for field in detail_fields

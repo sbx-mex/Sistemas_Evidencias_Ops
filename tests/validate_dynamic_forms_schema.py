@@ -805,19 +805,24 @@ def main() -> None:
                 "kind": "time",
             },
         }
-        assert holiday_schema["surveyIssues"] == {"survey-without-operational-change": [6]}
+        assert holiday_schema["surveyIssues"] == {}
         module = next(item for item in holiday_payload["surveyModules"] if item["activity"] == "Validacion Horario Festivo Sep 26")
         assert module["answeredStores"] == 4
-        assert module["answerCounts"] == {"No": 1, "Sí": 3}
+        assert module["answerCounts"] == {"No": 2, "Sí": 2}
         by_ceco = {item["ceco"]: item for item in module["responses"]}
         assert by_ceco["38115"]["answers"] == {
             "modifiesSchedule": "Sí", "closingTime": "09:00 p. m.", "openingTime": "Sin modificación",
         }
         assert by_ceco["38119"]["answers"] == {"modifiesSchedule": "No"}
         assert by_ceco["38138"]["answers"]["openingTime"] == "07:30 a. m."
-        assert by_ceco["38149"]["valid"] is False
-        assert holiday_payload["summary"]["validResponses"] == 3
-        assert holiday_payload["summary"]["completedCompletions"] == 3
+        assert by_ceco["38149"]["answers"] == {
+            "modifiesSchedule": "No",
+            "closingTime": "Sin modificación",
+            "openingTime": "Sin modificación",
+        }
+        assert by_ceco["38149"]["valid"] is True
+        assert holiday_payload["summary"]["validResponses"] == 4
+        assert holiday_payload["summary"]["completedCompletions"] == 4
         assert holiday_payload["quality"]["duplicateValidResponses"] == 1
 
         # Escenario 15: un archivo renombrado como XLSX se rechaza antes de procesarse.
