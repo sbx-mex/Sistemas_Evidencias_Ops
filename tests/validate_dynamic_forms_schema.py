@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_datetime, parse_quantity
+from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_quantity
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -68,8 +68,6 @@ def main() -> None:
         # accidentalmente como Latin-1, pero el repositorio conserva UTF-8 limpio.
         mojibake_yes = "Sí".encode("utf-8").decode("latin-1")
         assert clean_text(mojibake_yes) == "Sí"
-        assert parse_datetime(46278.759375) == datetime(2026, 9, 13, 18, 13, 30)
-        assert parse_datetime("46278.759375") == datetime(2026, 9, 13, 18, 13, 30)
         assert boolean_answer(mojibake_yes) is True
 
         # Escenario 3: Forms conserva CeCo y crea CeCo1 al cambiar la pregunta.

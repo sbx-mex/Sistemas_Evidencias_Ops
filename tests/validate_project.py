@@ -648,10 +648,10 @@ for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
 print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM + 1 Director Regional")
-sample_submission = next((item for item in published if item.get("evidenceUrl")), None)
-if sample_submission:
+if published:
+    sample_submission = published[0]
     print(f"{sample_submission['evidenceKey']} → {sample_submission['store']} · vínculo SharePoint validado")
 else:
-    print("Forms sin vínculos publicados · respuestas válidas sin evidencia aceptadas")
+    print("Forms sin respuestas válidas · tablero vacío aceptado")
 print("Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes")
 print("Excel: resumen rápido + detalle + actividades")

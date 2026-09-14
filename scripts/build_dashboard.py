@@ -22,7 +22,7 @@ import re
 import unicodedata
 import zipfile
 from collections import Counter, defaultdict
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
@@ -541,17 +541,7 @@ def parse_datetime(value: Any) -> datetime | None:
         return value
     if isinstance(value, date):
         return datetime.combine(value, datetime.min.time())
-    if isinstance(value, (int, float)) and not isinstance(value, bool):
-        # Excel puede guardar fechas como número serial cuando otro motor
-        # reexporta el libro. El 30/12/1899 replica el sistema de fechas 1900.
-        serial = float(value)
-        if math.isfinite(serial) and 1 <= serial < 2_958_466:
-            return datetime(1899, 12, 30) + timedelta(days=serial)
     text = clean_text(value)
-    if re.fullmatch(r"\d+(?:\.\d+)?", text):
-        serial = float(text)
-        if math.isfinite(serial) and 1 <= serial < 2_958_466:
-            return datetime(1899, 12, 30) + timedelta(days=serial)
     for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
         try:
             return datetime.strptime(text, fmt)

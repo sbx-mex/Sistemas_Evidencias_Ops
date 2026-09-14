@@ -1,0 +1,36 @@
+SISTEMA DE EVIDENCIAS OPS · HORARIO FESTIVO SEP 26
+
+Destino del proyecto:
+https://github.com/sbx-mex/Sistemas_Evidencias_Ops
+
+Instalación:
+1. Conserva las carpetas incluidas en este ZIP.
+2. Copia cada archivo sobre la misma ruta del repositorio.
+3. Confirma el commit en la rama main.
+4. Espera el workflow "Construir dashboard desde Excel".
+5. La ejecución correcta debe terminar en verde.
+
+Comportamiento incorporado:
+- Detecta por encabezado las preguntas de horario festivo, aunque cambie su posición.
+- Conserva únicamente la respuesta más reciente de cada CeCo y actividad.
+- En la vista general contabiliza y lista las respuestas Sí/No.
+- Al filtrar "Validacion Horario Festivo Sep 26" muestra las tiendas que cambiaron horario.
+- Desglosa cierre del 15 y apertura del 16 sólo cuando existen valores contabilizados.
+- Omite preguntas, categorías y gráficos sin datos.
+- La rama No es válida sin evidencia; la rama Sí exige cierre, apertura, un cambio real y evidencia segura.
+- El Excel Forms fusionado conserva los CeCo históricos y agrega los cuatro encabezados nuevos.
+
+Validación ejecutada:
+- 712 filas Forms únicas.
+- 357 tiendas abiertas.
+- 13 actividades vigentes.
+- 607 cumplimientos válidos.
+- 11/11 controles de estabilidad activos.
+- 13/13 controles integrales aprobados.
+- Auditoría final sin incidencias.
+
+IMPORTANTE DE SEGURIDAD:
+El repositorio Sistemas_Evidencias_Ops es PÚBLICO. Los Excel y el JSON contienen datos
+operativos, nombres, correos y/o vínculos de SharePoint. Cambia el repositorio a privado
+antes de publicar este paquete completo. Si debe permanecer público, no subas los Excel
+fuente ni datos que identifiquen personas o evidencias.

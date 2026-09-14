@@ -315,22 +315,8 @@ if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
 if data.get("quality", {}).get("unsafeEvidenceRows"):
     issues.append("Se detectaron evidencias con vínculo inseguro")
-for item in published_evidence:
-    if not item.get("evidenceAvailable"):
-        survey_answers = item.get("surveyAnswers", {})
-        if not (
-            item.get("activity") == "Validacion Horario Festivo Sep 26"
-            and survey_answers.get("modifiesSchedule") == "No"
-        ):
-            issues.append("Una respuesta válida quedó sin la evidencia requerida")
-        continue
-    if (
-        not item.get("evidenceFileName")
-        or not item.get("evidenceUrl")
-        or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}"
-        or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com"
-    ):
-        issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
+if any(not item.get("evidenceFileName") or not item.get("evidenceUrl") or item.get("evidenceLinkLabel") != f"Link_{item.get('evidenceKey')}" or urlsplit(item["evidenceUrl"]).hostname != "grupovips-my.sharepoint.com" for item in published_evidence):
+    issues.append("Falta nombre de archivo o vínculo SharePoint directo validado")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
 section_order = [html.index(f'id="{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
 if nav_order != sorted(nav_order) or section_order != sorted(section_order):
