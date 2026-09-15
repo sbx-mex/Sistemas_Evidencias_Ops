@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "218948989478eff5",
+  "buildVersion": "ef74aa42c7350642",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-15T16:54:55+00:00",
+  "generatedAt": "2026-09-15T18:38:36+00:00",
   "lastUpdated": "2026-09-15T10:25:11",
   "lastUpdatedDisplay": "15/09/2026 10:25",
   "report": {
@@ -100,7 +100,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "2ed147a1ea66accd86074ad253186731b3165e28364a97cd1540abe222acc273",
+    "responsesSha256": "adca8b7cc6f1fd12ac8ce0693a86f9c28b079530b9795da0ed294704310dcec2",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -138,7 +138,7 @@
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 786,
+    "responsesRead": 787,
     "invalidRows": [
       521,
       591
@@ -186,7 +186,8 @@
       538,
       624,
       632,
-      689
+      689,
+      788
     ],
     "hiddenActivities": [
       "Fotografia - SM",
@@ -232,7 +233,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 786
+        "CeCo": 787
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
