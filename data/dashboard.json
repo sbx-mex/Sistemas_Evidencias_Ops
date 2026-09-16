@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "d136a4cf9f6120e1",
+  "buildVersion": "951d1ac4c2d54e4c",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-16T04:38:52+00:00",
-  "lastUpdated": "2026-09-15T17:54:01",
-  "lastUpdatedDisplay": "15/09/2026 17:54",
+  "generatedAt": "2026-09-16T04:40:43+00:00",
+  "lastUpdated": "2026-09-15T19:02:44",
+  "lastUpdatedDisplay": "15/09/2026 19:02",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "15/09/26 · 17:54 h",
+    "cutOffDisplay": "15/09/26 · 19:02 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 496,
+        "completed": 498,
         "expected": 845,
-        "pending": 349,
-        "compliance": 58.7,
+        "pending": 347,
+        "compliance": 58.9,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "bd377c9706015e8e709ae684df2b4519f925e411cdf4aaefe4451cc44c6d33fb",
+    "responsesSha256": "d9e2dce7db6cc122c9f2192ede8204a5a2f02c4a69112c7484018f315418355c",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -130,15 +130,15 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 675,
-    "compliance": 15.8,
-    "validResponses": 675,
+    "completedCompletions": 677,
+    "compliance": 15.9,
+    "validResponses": 677,
     "storesComplete": 7,
-    "pendingCompletions": 3590,
+    "pendingCompletions": 3588,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 801,
+    "responsesRead": 803,
     "invalidRows": [
       521,
       591
@@ -241,7 +241,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 801
+        "CeCo": 803
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -330,7 +330,7 @@
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 659,
+    "evidenceLinksPublished": 660,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -499,11 +499,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 58,
+      "completedStores": 59,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 299,
-      "compliance": 16.2,
+      "pendingStores": 298,
+      "compliance": 16.5,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -3,
@@ -565,11 +565,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 88,
+      "completedStores": 89,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 269,
-      "compliance": 24.6,
+      "pendingStores": 268,
+      "compliance": 24.9,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -650,12 +650,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 124,
+      "completed": 126,
       "expected": 151,
       "notApplicable": 5,
-      "pending": 27,
+      "pending": 25,
       "pendingStores": 10,
-      "compliance": 82.1,
+      "compliance": 83.4,
       "status": "En meta",
       "rank": 2
     },
@@ -4731,17 +4731,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "43152",
-      "store": "Samara Satélite",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 7,
-      "expected": 11,
-      "notApplicable": 1,
-      "pending": 4,
-      "compliance": 63.6,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38333",
       "store": "Izcalli Mega",
       "dm": "Enrique Cesar Flores",
@@ -4909,6 +4898,17 @@
     {
       "ceco": "38590",
       "store": "Parque Toreo II",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 9,
+      "expected": 11,
+      "notApplicable": 1,
+      "pending": 2,
+      "compliance": 81.8,
+      "status": "En meta"
+    },
+    {
+      "ceco": "43152",
+      "store": "Samara Satélite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 9,
       "expected": 11,
@@ -18613,24 +18613,24 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 9,
       "expected": 11,
       "notApplicable": 1,
-      "compliance": 63.6,
-      "lastUpdate": "2026-09-07T00:29:26",
+      "compliance": 81.8,
+      "lastUpdate": "2026-09-15T19:02:44",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
         "Rack FHW": true,
         "Max & Min": true,
-        "Mandil Verde": false,
+        "Mandil Verde": true,
         "Lay Out": false,
         "Community Board": false,
         "Activacion PSL Sharpie": true,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": false,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19343,9 +19343,9 @@
           ]
         }
       ],
-      "answeredStores": 88,
+      "answeredStores": 89,
       "answerCounts": {
-        "No": 18,
+        "No": 19,
         "Sí": 70
       },
       "responses": [
@@ -20466,6 +20466,19 @@
           "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/16cd661a-01e3-456b-9d73-74f3799e9252_Starbucks%20CC%20Samara.jpeg"
         },
         {
+          "ceco": "43152",
+          "store": "Samara Satélite",
+          "dm": "Yazmin Chabela Guadarrama",
+          "region": "Centro Norte",
+          "timestamp": "2026-09-15T19:01:06",
+          "answers": {
+            "modifiesSchedule": "No"
+          },
+          "valid": true,
+          "evidenceAvailable": false,
+          "evidenceLinkPublished": false
+        },
+        {
           "ceco": "38862",
           "store": "San Miguel Izcalli",
           "dm": "Enrique Cesar Flores",
@@ -20713,6 +20726,52 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-5f1631d63e40ef9c",
+      "timestamp": "2026-09-15T19:02:44",
+      "timestampDisplay": "15/09/2026 19:02",
+      "activity": "Mandil Verde",
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Mandil_Verde_43152",
+      "evidenceLinkLabel": "Link_Mandil_Verde_43152",
+      "evidenceFileName": "107cf806-49c3-43fb-a769-5462a9942c26_Starbucks Samara Sat.jpeg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/107cf806-49c3-43fb-a769-5462a9942c26_Starbucks%20Samara%20Sat.jpeg"
+    },
+    {
+      "id": "respuesta-000a7f31251eb7d6",
+      "timestamp": "2026-09-15T19:01:06",
+      "timestampDisplay": "15/09/2026 19:01",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_43152",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_43152",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "No"
+      }
+    },
     {
       "id": "respuesta-41dc91f50b74a5db",
       "timestamp": "2026-09-15T17:54:01",
