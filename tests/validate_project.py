@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import (
     QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
     canonical_cms_activity, clean_text, compact_key, evidence_key, file_sha256, load_cms,
-    load_directory, load_responses, load_settings, normalize_allowed_hosts,
+    load_cutover, load_directory, load_responses, load_settings, normalize_allowed_hosts,
     parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
     setting_list, short_dm_name, validate_webp_asset,
 )
@@ -55,12 +55,12 @@ def approve(name: str) -> None:
     passed.append(name)
 
 
-def response_recency_key(item: dict) -> tuple[str, int]:
+def response_recency_key(item: dict) -> tuple[str, int, int]:
     """Replica el orden del motor: fecha más reciente y última fila en empate."""
     finished = item.get("finished")
     timestamp = finished.isoformat() if finished else str(item.get("timestamp") or "")
     source_row = item.get("row", item.get("_sourceRow", 0))
-    return timestamp, int(source_row or 0)
+    return timestamp, int(item.get("sourceOrder", 0)), int(source_row or 0)
 
 
 allowed_hosts = {"grupovips-my.sharepoint.com"}
@@ -284,6 +284,23 @@ forms_responses, forms_schema = load_responses(
     ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
     [item["name"] for item in data.get("activities", [])],
 )
+if cutover_quality:
+    configured_cutover = load_cutover(ROOT / "config" / "cutover.json")
+    if not configured_cutover:
+        fail("El dashboard declara un corte sin configuración vigente")
+    baseline_responses, _ = load_responses(
+        configured_cutover["baseline"],
+        [item["name"] for item in data.get("activities", [])],
+    )
+    forms_responses = [
+        {**row, "sourceOrder": 0}
+        for row in baseline_responses
+        if row.get("finished") and row["finished"] <= configured_cutover["cutoff"]
+    ] + [
+        {**row, "sourceOrder": 1}
+        for row in forms_responses
+        if row.get("finished") and row["finished"] > configured_cutover["cutoff"]
+    ]
 active_by_key = {compact_key(item["name"]): item["name"] for item in data.get("activities", [])}
 active_by_text, active_by_compact = active_activity_catalog(data.get("activities", []))
 allowed_hosts = normalize_allowed_hosts(settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com"))
