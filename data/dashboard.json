@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "6dfdae6ef17fe39f",
+  "buildVersion": "22a03740e21b04e6",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-17T23:58:49-05:00",
+  "generatedAt": "2026-09-18T05:02:23+00:00",
   "lastUpdated": "2026-09-17T22:29:30",
   "lastUpdatedDisplay": "17/09/2026 22:29",
   "report": {
@@ -343,7 +343,7 @@
   },
   "calendar": {
     "active": 10,
-    "scheduled": 10,
+    "scheduled": 0,
     "expired": 0,
     "inactive": 5
   },
@@ -355,7 +355,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-20",
       "commitmentDateDisplay": "20/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -365,9 +365,9 @@
       "notApplicableStores": 0,
       "pendingStores": 356,
       "compliance": 0.3,
-      "deadlineLabel": "Vence en 3 días",
+      "deadlineLabel": "Vence en 2 días",
       "deadlineTone": "amber",
-      "daysRemaining": 3,
+      "daysRemaining": 2,
       "focusRank": 1
     },
     {
@@ -377,7 +377,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-27",
       "commitmentDateDisplay": "27/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -387,9 +387,9 @@
       "notApplicableStores": 0,
       "pendingStores": 356,
       "compliance": 0.3,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 2
     },
     {
@@ -399,7 +399,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -409,9 +409,9 @@
       "notApplicableStores": 5,
       "pendingStores": 286,
       "compliance": 18.8,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 3
     },
     {
@@ -421,7 +421,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -431,9 +431,9 @@
       "notApplicableStores": 0,
       "pendingStores": 327,
       "compliance": 8.4,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 4
     },
     {
@@ -443,7 +443,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -453,9 +453,9 @@
       "notApplicableStores": 0,
       "pendingStores": 298,
       "compliance": 16.5,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 5
     },
     {
@@ -465,7 +465,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -475,9 +475,9 @@
       "notApplicableStores": 0,
       "pendingStores": 320,
       "compliance": 10.4,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 6
     },
     {
@@ -487,7 +487,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -497,9 +497,9 @@
       "notApplicableStores": 10,
       "pendingStores": 323,
       "compliance": 6.9,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 7
     },
     {
@@ -509,7 +509,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -519,9 +519,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.2,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 8
     },
     {
@@ -531,7 +531,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Media",
       "autoDetected": false,
@@ -541,9 +541,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.2,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 9
     },
     {
@@ -553,7 +553,7 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
-      "dateStatus": "Programada",
+      "dateStatus": "Vigente",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -563,9 +563,9 @@
       "notApplicableStores": 0,
       "pendingStores": 244,
       "compliance": 31.7,
-      "deadlineLabel": "En 13 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 13,
+      "daysRemaining": 12,
       "focusRank": 10
     }
   ],
