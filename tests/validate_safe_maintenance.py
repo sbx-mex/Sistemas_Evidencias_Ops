@@ -39,6 +39,13 @@ def main() -> None:
             (root / "config").mkdir()
             settings = root / "config/settings.json"
             settings.write_bytes((ROOT / "config/settings.json").read_bytes())
+            (root / "cms").mkdir()
+            (root / "cms" / "Corte_Forms_2026-09-17_115657.xlsx").write_bytes(
+                (ROOT / "cms" / "Corte_Forms_2026-09-17_115657.xlsx").read_bytes()
+            )
+            (root / "config" / "cutover.json").write_bytes(
+                (ROOT / "config" / "cutover.json").read_bytes()
+            )
             current_data = (ROOT / "data/dashboard.json").read_bytes()
             safe.GENERATED[0].write_bytes(current_data)
             assert safe.outputs_current(fingerprints)

@@ -247,13 +247,23 @@ if (
 # antes de llegar a esta validación. No se fijan cantidades históricas porque
 # Forms seguirá agregando filas nuevas en CeCo1.
 effective_ceco_rows = sum(ceco_usage.values()) - ceco_rows_using_both
+cutover_quality = data.get("quality", {}).get("cutover") or {}
+expected_current_ceco_rows = cutover_quality.get(
+    "newFormsRowsRead", data.get("quality", {}).get("responsesRead")
+)
 if (
     isinstance(ceco_rows_blank, bool)
     or not isinstance(ceco_rows_blank, int)
     or ceco_rows_blank < 0
-    or effective_ceco_rows + ceco_rows_blank != data.get("quality", {}).get("responsesRead")
+    or effective_ceco_rows + ceco_rows_blank != expected_current_ceco_rows
 ):
     fail("La cobertura dinámica de CeCo/CeCo1 no coincide con las respuestas de Forms")
+if cutover_quality:
+    baseline_schema = cutover_quality.get("baselineSchema", {})
+    baseline_usage = baseline_schema.get("cecoSourceUsage", {})
+    baseline_effective = sum(baseline_usage.values()) - baseline_schema.get("cecoRowsUsingBoth", 0)
+    if baseline_effective + baseline_schema.get("cecoRowsBlank", 0) != cutover_quality.get("baselineRowsRead"):
+        fail("La cobertura CeCo/CeCo1 del corte histórico no coincide con su base")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
     fail("El proyecto conserva Id de Forms obsoletos en configuración")
 for module in data.get("surveyModules", []):

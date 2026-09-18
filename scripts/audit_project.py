@@ -206,15 +206,25 @@ if set(response_schema.get("cecoSourceUsage", {})) != set(response_schema.get("c
 ceco_usage = response_schema.get("cecoSourceUsage", {})
 ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
 ceco_rows_blank = response_schema.get("cecoRowsBlank", 0)
+cutover_quality = data.get("quality", {}).get("cutover") or {}
+expected_current_ceco_rows = cutover_quality.get(
+    "newFormsRowsRead", data.get("quality", {}).get("responsesRead")
+)
 if (
     any(type(value) is not int or value < 0 for value in ceco_usage.values())
     or type(ceco_rows_using_both) is not int
     or ceco_rows_using_both < 0
     or type(ceco_rows_blank) is not int
     or ceco_rows_blank < 0
-    or sum(ceco_usage.values()) - ceco_rows_using_both + ceco_rows_blank != data.get("quality", {}).get("responsesRead")
+    or sum(ceco_usage.values()) - ceco_rows_using_both + ceco_rows_blank != expected_current_ceco_rows
 ):
     issues.append("La cobertura de filas con CeCo presente o vacío es incongruente")
+if cutover_quality:
+    baseline_schema = cutover_quality.get("baselineSchema", {})
+    baseline_usage = baseline_schema.get("cecoSourceUsage", {})
+    baseline_effective = sum(baseline_usage.values()) - baseline_schema.get("cecoRowsUsingBoth", 0)
+    if baseline_effective + baseline_schema.get("cecoRowsBlank", 0) != cutover_quality.get("baselineRowsRead"):
+        issues.append("La cobertura CeCo del corte histórico es incongruente")
 if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
     issues.append("La configuración conserva Id de Forms obsoletos")
 for correction in data.get("quality", {}).get("correctedCeCos", []):

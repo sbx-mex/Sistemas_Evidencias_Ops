@@ -39,6 +39,7 @@ DEFAULT_RESPONSES = ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"
 DEFAULT_DIRECTORY = ROOT / "cms" / "Directorio.xlsx"
 DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
+DEFAULT_CUTOVER = ROOT / "config" / "cutover.json"
 DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
 
 RESPONSE_FIELDS = {
@@ -935,6 +936,33 @@ def load_settings(path: Path, cms_settings: dict[str, Any] | None = None) -> dic
     return settings
 
 
+def load_cutover(path: Path) -> dict[str, Any] | None:
+    """Carga un corte histórico opcional sin mezclarlo con el Forms nuevo.
+
+    La base histórica sólo conserva respuestas hasta ``cutoff``; el archivo
+    actual de Forms sólo admite respuestas posteriores. Con esto puede
+    reiniciarse Forms sin perder el avance ya consolidado y sin que una descarga
+    antigua vuelva a sumar por accidente.
+    """
+    if not path.is_file():
+        return None
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    cutoff = parse_datetime(raw.get("cutoff"))
+    baseline_value = clean_text(raw.get("baseline"))
+    if not cutoff or not baseline_value:
+        raise ValueError("config/cutover.json debe incluir cutoff y baseline")
+    baseline = Path(baseline_value)
+    if not baseline.is_absolute():
+        baseline = ROOT / baseline
+    if not baseline.is_file():
+        raise ValueError(f"No existe la base histórica del corte: {baseline}")
+    return {
+        "cutoff": cutoff,
+        "baseline": baseline,
+        "label": clean_text(raw.get("label")) or cutoff.strftime("%d/%m/%Y %H:%M:%S"),
+    }
+
+
 def parse_date(value: Any):
     if isinstance(value, datetime):
         return value.date()
@@ -1487,6 +1515,9 @@ def build_payload(
     directory_path: Path,
     settings_path: Path,
     cms_path: Path = DEFAULT_CMS,
+    baseline_path: Path | None = None,
+    cutoff: datetime | None = None,
+    cutover_config_path: Path | None = None,
 ) -> dict[str, Any]:
     source_paths = {
         "responsesSha256": responses_path,
@@ -1494,6 +1525,10 @@ def build_payload(
         "cmsSha256": cms_path,
         "settingsSha256": settings_path,
     }
+    if baseline_path:
+        source_paths["baselineSha256"] = baseline_path
+    if cutover_config_path:
+        source_paths["cutoverConfigSha256"] = cutover_config_path
     initial_source_hashes = source_fingerprints(source_paths)
     activities, managers, cms_settings, calendar = load_cms(cms_path)
     organization = cms_settings.pop("_organization")
@@ -1511,7 +1546,43 @@ def build_payload(
             regional_director_photo, "Director Regional"
         )
     stores, directory_sheet, directory_status = load_directory(directory_path, settings)
-    responses, response_schema = load_responses(responses_path, [item["name"] for item in activities])
+    active_names = [item["name"] for item in activities]
+    current_responses, response_schema = load_responses(responses_path, active_names)
+    cutover_quality: dict[str, Any] | None = None
+    if baseline_path or cutoff:
+        if not baseline_path or not cutoff:
+            raise ValueError("El corte requiere baseline_path y cutoff")
+        baseline_responses, baseline_schema = load_responses(baseline_path, active_names)
+        historical = [
+            {**response, "source": "corte histórico", "sourceOrder": 0}
+            for response in baseline_responses
+            if response.get("finished") and response["finished"] <= cutoff
+        ]
+        fresh = [
+            {**response, "source": "Forms nuevo", "sourceOrder": 1}
+            for response in current_responses
+            if response.get("finished") and response["finished"] > cutoff
+        ]
+        cutover_quality = {
+            "enabled": True,
+            "cutoff": iso_or_none(cutoff),
+            "baselineRowsRead": len(baseline_responses),
+            "baselineRowsIncluded": len(historical),
+            "baselineRowsRejectedAfterCutoff": sum(
+                bool(item.get("finished") and item["finished"] > cutoff)
+                for item in baseline_responses
+            ),
+            "newFormsRowsRead": len(current_responses),
+            "newFormsRowsIncluded": len(fresh),
+            "newFormsRowsRejectedAtOrBeforeCutoff": sum(
+                bool(not item.get("finished") or item["finished"] <= cutoff)
+                for item in current_responses
+            ),
+            "baselineSchema": baseline_schema,
+        }
+        responses = historical + fresh
+    else:
+        responses = [{**response, "source": "Forms", "sourceOrder": 0} for response in current_responses]
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
     configured_by_text, configured_by_compact = active_activity_catalog(activities)
@@ -1715,8 +1786,16 @@ def build_payload(
             pair = (response["ceco"], activity)
             state = {**response, "valid": valid, "notApplicable": not_applicable, "public": public}
             current = latest_state_by_pair.get(pair)
-            current_sort = ((current or {}).get("finished") or datetime.min, (current or {}).get("row", 0))
-            state_sort = (response["finished"] or datetime.min, response["row"])
+            current_sort = (
+                ((current or {}).get("finished") or datetime.min),
+                (current or {}).get("sourceOrder", 0),
+                (current or {}).get("row", 0),
+            )
+            state_sort = (
+                response["finished"] or datetime.min,
+                response.get("sourceOrder", 0),
+                response["row"],
+            )
             if current is None or state_sort > current_sort:
                 latest_state_by_pair[pair] = state
 
@@ -2006,6 +2085,11 @@ def build_payload(
         "sources": {
             "responses": responses_path.name,
             "responsesSha256": source_hashes["responsesSha256"],
+            "baseline": baseline_path.name if baseline_path else None,
+            "baselineSha256": source_hashes.get("baselineSha256"),
+            "cutoff": iso_or_none(cutoff),
+            "cutoverConfig": cutover_config_path.name if cutover_config_path else None,
+            "cutoverConfigSha256": source_hashes.get("cutoverConfigSha256"),
             "directory": directory_path.name,
             "directorySha256": source_hashes["directorySha256"],
             "directorySheet": directory_sheet,
@@ -2029,6 +2113,7 @@ def build_payload(
         },
         "quality": {
             "responsesRead": len(responses),
+            "cutover": cutover_quality,
             "invalidRows": invalid_rows,
             "unknownCeCos": sorted(unknown_cecos),
             "hiddenActivityRows": hidden_activity_rows,
@@ -2089,9 +2174,22 @@ def main() -> None:
     parser.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
     parser.add_argument("--settings", type=Path, default=DEFAULT_SETTINGS)
     parser.add_argument("--cms", type=Path, default=DEFAULT_CMS)
+    parser.add_argument("--cutover", type=Path, default=DEFAULT_CUTOVER,
+                        help="JSON del corte histórico; omitir con --no-cutover")
+    parser.add_argument("--no-cutover", action="store_true",
+                        help="Procesa sólo el archivo Forms indicado")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    payload = build_payload(args.responses, args.directory, args.settings, args.cms)
+    cutover = None if args.no_cutover else load_cutover(args.cutover)
+    payload = build_payload(
+        args.responses,
+        args.directory,
+        args.settings,
+        args.cms,
+        baseline_path=cutover["baseline"] if cutover else None,
+        cutoff=cutover["cutoff"] if cutover else None,
+        cutover_config_path=args.cutover if cutover else None,
+    )
     atomic_write_text(
         args.output,
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
@@ -2102,6 +2200,12 @@ def main() -> None:
         f"{summary['completedCompletions']}/{summary['expectedCompletions']} cumplimientos"
     )
     print(f"Última actualización Forms: {payload['lastUpdatedDisplay']}")
+    if cutover:
+        print(
+            "Corte histórico aplicado: "
+            f"{cutover['label']} · {payload['quality']['cutover']['baselineRowsIncluded']} filas base · "
+            f"{payload['quality']['cutover']['newFormsRowsIncluded']} filas nuevas"
+        )
 
 
 if __name__ == "__main__":

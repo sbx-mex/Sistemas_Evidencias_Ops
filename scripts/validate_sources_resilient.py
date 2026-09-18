@@ -18,9 +18,11 @@ from build_dashboard import (
     DEFAULT_DIRECTORY,
     DEFAULT_RESPONSES,
     DEFAULT_SETTINGS,
+    DEFAULT_CUTOVER,
     STABILITY_CONTROLS,
     build_payload,
     file_sha256,
+    load_cutover,
 )
 from validate_sources import validate_cms_engine, validate_directory_engine
 
@@ -31,12 +33,22 @@ def main() -> None:
     parser.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
     parser.add_argument("--cms", type=Path, default=DEFAULT_CMS)
     parser.add_argument("--settings", type=Path, default=DEFAULT_SETTINGS)
+    parser.add_argument("--cutover", type=Path, default=DEFAULT_CUTOVER)
     args = parser.parse_args()
 
     cms_audit = validate_cms_engine(args.cms)
     directory_audit = validate_directory_engine(args.directory, args.cms, args.settings)
 
-    payload = build_payload(args.responses, args.directory, args.settings, args.cms)
+    cutover = load_cutover(args.cutover)
+    payload = build_payload(
+        args.responses,
+        args.directory,
+        args.settings,
+        args.cms,
+        baseline_path=cutover["baseline"] if cutover else None,
+        cutoff=cutover["cutoff"] if cutover else None,
+        cutover_config_path=args.cutover if cutover else None,
+    )
     quality = payload["quality"]
     schema = quality["responseSchema"]
     conflicting_evidence = {
@@ -78,6 +90,13 @@ def main() -> None:
         )
     else:
         print("Cruce CeCo · sin filas aisladas")
+    if quality.get("cutover"):
+        cut = quality["cutover"]
+        print(
+            "Corte histórico aprobado · "
+            f"{cut['cutoff']} · {cut['baselineRowsIncluded']} filas base · "
+            f"{cut['newFormsRowsIncluded']} filas nuevas"
+        )
     quarantined = quality.get("quarantinedResponses", [])
     if quarantined:
         print(

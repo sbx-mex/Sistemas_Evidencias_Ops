@@ -114,6 +114,19 @@ def outputs_current(fingerprints: dict[str, str]) -> bool:
         "cmsSha256": fingerprints.get("Sistema_Evidencias_OPS_CMS.xlsx"),
         "settingsSha256": file_sha256(ROOT / "config/settings.json"),
     }
+    cutover = ROOT / "config" / "cutover.json"
+    if cutover.is_file():
+        try:
+            config = json.loads(cutover.read_text(encoding="utf-8"))
+            baseline = Path(str(config["baseline"]))
+            if not baseline.is_absolute():
+                baseline = ROOT / baseline
+            expected["baselineSha256"] = file_sha256(baseline)
+            expected["cutoverConfigSha256"] = file_sha256(cutover)
+            saved["baselineSha256"] = sources.get("baselineSha256")
+            saved["cutoverConfigSha256"] = sources.get("cutoverConfigSha256")
+        except (OSError, ValueError, KeyError, TypeError):
+            return False
     return bool(all(expected.values()) and saved == expected and data.get("buildVersion") == output_version(expected))
 
 
@@ -220,6 +233,7 @@ def main() -> None:
                 raise RuntimeError("Una fuente CMS cambió durante la actualización; se restauraron los resultados")
             run(sys.executable, "-X", "utf8", "tests/validate_safe_maintenance.py")
             run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
+            run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
             run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
             run(sys.executable, "-X", "utf8", "scripts/validate_project_resilient.py")
             # Las pruebas y exportadores también pueden dejar residuos si un
