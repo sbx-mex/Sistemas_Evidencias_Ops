@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -30,9 +31,19 @@ def create_new_forms(path: Path, rows: list[list[object]]) -> None:
 
 
 def main() -> None:
-    cutover = load_cutover(ROOT / "config" / "cutover.json")
-    assert cutover
     with tempfile.TemporaryDirectory() as temp_dir:
+        temp = Path(temp_dir)
+        # El proyecto puede desactivar su corte al iniciar una base nueva; esta
+        # prueba mantiene cubierta la protección histórica con una configuración
+        # temporal e independiente.
+        cutover_file = temp / "cutover.json"
+        cutover_file.write_text(json.dumps({
+            "cutoff": "2026-09-17 11:56:57",
+            "baseline": str(ROOT / "cms" / "Corte_Forms_2026-09-17_115657.xlsx"),
+            "label": "Corte de prueba",
+        }), encoding="utf-8")
+        cutover = load_cutover(cutover_file)
+        assert cutover
         forms = Path(temp_dir) / "Forms_nuevo.xlsx"
         baseline = build_payload(
             ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
@@ -41,9 +52,11 @@ def main() -> None:
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
             baseline_path=cutover["baseline"],
             cutoff=cutover["cutoff"],
-            cutover_config_path=ROOT / "config" / "cutover.json",
+            cutover_config_path=cutover_file,
         )
-        activity = baseline["activities"][0]["name"]
+        # Rack FHW existe también en la base histórica y evita depender del
+        # orden editorial de los nuevos eventos Peanuts.
+        activity = "Rack FHW"
         candidate = next(store for store in baseline["stores"] if not store["activities"][activity])
         after = cutover["cutoff"] + timedelta(seconds=1)
         before = cutover["cutoff"] - timedelta(seconds=1)
@@ -60,7 +73,7 @@ def main() -> None:
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
             baseline_path=cutover["baseline"],
             cutoff=cutover["cutoff"],
-            cutover_config_path=ROOT / "config" / "cutover.json",
+            cutover_config_path=cutover_file,
         )
         cut = payload["quality"]["cutover"]
         assert cut == {
@@ -71,7 +84,12 @@ def main() -> None:
             "newFormsRowsIncluded": 2,
             "newFormsRowsRejectedAtOrBeforeCutoff": 1,
         }
-        assert payload["summary"]["completedCompletions"] == baseline["summary"]["completedCompletions"] + 1
+        updated_store = next(store for store in payload["stores"] if store["ceco"] == candidate["ceco"])
+        assert updated_store["activities"][activity] is True
+        assert any(
+            item["ceco"] == candidate["ceco"] and item["activity"] == activity and item["valid"]
+            for item in payload["submissions"]
+        )
         assert "Roll Out" not in {item["name"] for item in payload["activities"]}
         assert all(item["activity"] != "Roll Out" for item in payload["submissions"])
         assert payload["sources"]["cutoff"] == "2026-09-17T11:56:57"

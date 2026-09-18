@@ -120,15 +120,12 @@ def main() -> None:
         all_cecos = [store["ceco"] for store in current_payload["stores"]]
         active_activities = [item["name"] for item in current_payload["activities"]]
         assert active_activities
-        # Los próximos lanzamientos deben estar presentes en el CMS antes de
-        # recibir respuestas de Forms. La fecha límite es siempre un día antes
-        # del lanzamiento, y cada encabezado de evidencia debe cruzarse con su
-        # actividad sin depender de que Forms conserve el mismo orden.
+        # Los dos eventos Peanuts deben estar listos antes de recibir respuestas
+        # de Forms. El encabezado Evidencia es la llave del evento, de modo que
+        # quitar filas del respaldo no altera el cruce de respuestas nuevas.
         peanuts_due = {
-            "Peanuts Charly | 21 Sep": "2026-09-20",
-            "Peanuts Lucy | 24 Sep": "2026-09-23",
-            "Peanuts Linus | 28 Sep": "2026-09-27",
-            "Peanuts Snoopy | 2 Oct": "2026-10-01",
+            "Peanuts Charly&Lucy": "2026-09-20",
+            "Peanuts Linus&Snoopy": "2026-09-27",
         }
         configured = {item["name"]: item for item in current_payload["activities"]}
         assert set(peanuts_due).issubset(configured)
@@ -136,20 +133,23 @@ def main() -> None:
             name: configured[name]["endDate"] for name in peanuts_due
         } == peanuts_due
         assert all(configured[name]["requireEvidence"] for name in peanuts_due)
+        assert [item["name"] for item in current_payload["activities"][:2]] == list(peanuts_due)
+        assert [configured[name]["description"] for name in peanuts_due] == [
+            "Anticipa materiales y artículos de Charly & Lucy. Fecha límite: 20 Sep.",
+            "Anticipa materiales y artículos de Linus & Snoopy. Fecha límite: 27 Sep.",
+        ]
 
         future_campaigns = temp / "future-peanuts.xlsx"
         future_headers = BASE + [
             "CeCo", ACTIVITY,
-            "Evidencia_Peanuts_Charly_21Sep",
-            "Evidencia_Peanuts_Lucy_24Sep",
-            "Evidencia_Peanuts_Linus_28Sep",
-            "Evidencia_Peanuts_Snoopy_2Oct",
+            "Evidencia_Peanuts_Charly&Lucy",
+            "Evidencia_Peanuts_Linus&Snoopy",
         ]
         future_rows = []
-        future_evidence_headers = future_headers[-4:]
+        future_evidence_headers = future_headers[-2:]
         for index, (activity, evidence_header) in enumerate(zip(peanuts_due, future_evidence_headers), 1):
             started, finished = timestamps(3000 + index)
-            evidence_values = [""] * 4
+            evidence_values = [""] * 2
             evidence_values[index - 1] = f"{allowed}/peanuts-{index}.jpg"
             future_rows.append([
                 15000 + index, started, finished, "", "Simulación",
@@ -162,10 +162,11 @@ def main() -> None:
             ROOT / "config" / "settings.json",
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
-        assert future_payload["summary"]["validResponses"] == 4
-        assert future_payload["summary"]["completedCompletions"] == 4
+        assert future_payload["summary"]["validResponses"] == 2
+        assert future_payload["summary"]["completedCompletions"] == 2
         assert {item["activity"] for item in future_payload["submissions"]} == set(peanuts_due)
         assert {item["evidenceSourceHeader"] for item in future_payload["submissions"]} == set(future_evidence_headers)
+        assert set(future_payload["quality"]["responseSchema"]["evidenceHeaderMatch"].values()) == {"exact"}
 
         simulation_activity = active_activities[0]
         all_ceco1 = temp / "all-ceco1.xlsx"
@@ -536,8 +537,14 @@ def main() -> None:
         )
         assert payload["summary"]["completedCompletions"] == 2
         assert [item["focusRank"] for item in payload["activities"]] == list(range(1, len(payload["activities"]) + 1))
-        pending_dates = [item["endDate"] for item in payload["activities"] if item["pendingStores"] and item["endDate"]]
-        assert pending_dates == sorted(pending_dates)
+        pending = [item for item in payload["activities"] if item["pendingStores"] and item["endDate"]]
+        peanut_pending = [item for item in pending if clean_text(item["name"]).lower().startswith("peanuts ")]
+        other_pending = [item for item in pending if item not in peanut_pending]
+        # La secuencia Peanuts ocupa un bloque continuo por fecha; las demás
+        # actividades conservan su orden operativo por fecha límite.
+        assert pending[:len(peanut_pending)] == peanut_pending
+        assert [item["endDate"] for item in peanut_pending] == sorted(item["endDate"] for item in peanut_pending)
+        assert [item["endDate"] for item in other_pending] == sorted(item["endDate"] for item in other_pending)
         stores = {store["ceco"]: store for store in payload["stores"]}
         assert stores["38333"]["activities"]["Programacion Hornos Merry - Focaccia"] is True
         assert stores["38115"]["activities"]["Mandil Verde"] is True
@@ -610,6 +617,17 @@ def main() -> None:
         actual = temp / "actual-order.xlsx"
         actual_source = load_workbook(ROOT / "cms" / "Sistema de Evidencias OPS.xlsx", read_only=True)
         actual_headers = [cell.value for cell in next(actual_source["Sheet1"].iter_rows(min_row=1, max_row=1))]
+        actual_positions = {str(header).strip(): index for index, header in enumerate(actual_headers) if header}
+        # La nueva base de Forms quedó simplificada para los dos eventos
+        # Peanuts. Este escenario conserva una réplica de compatibilidad de
+        # las preguntas condicionales históricas sin exigir que sigan visibles
+        # en la exportación operativa.
+        compatibility_headers = [
+            "Id", "Hora de inicio", "Hora de finalización", "CeCo", ACTIVITY,
+            "¿ Tienes Horno Merry Chef ?", "Evidencia_Programacion_Hornos_Merry_Focaccia",
+            "¿Cuentas con Community Board?", "Evidencia_Community_Board",
+        ]
+        actual_headers.extend(header for header in compatibility_headers if header not in actual_positions)
         actual_positions = {str(header).strip(): index for index, header in enumerate(actual_headers) if header}
 
         def actual_row(values: dict[str, object]) -> list[object]:

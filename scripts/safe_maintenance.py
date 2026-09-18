@@ -118,6 +118,8 @@ def outputs_current(fingerprints: dict[str, str]) -> bool:
     if cutover.is_file():
         try:
             config = json.loads(cutover.read_text(encoding="utf-8"))
+            if config.get("enabled") is False:
+                return bool(all(expected.values()) and saved == expected and data.get("buildVersion") == output_version(expected))
             baseline = Path(str(config["baseline"]))
             if not baseline.is_absolute():
                 baseline = ROOT / baseline

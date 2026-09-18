@@ -947,6 +947,8 @@ def load_cutover(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
     raw = json.loads(path.read_text(encoding="utf-8"))
+    if raw.get("enabled") is False:
+        return None
     cutoff = parse_datetime(raw.get("cutoff"))
     baseline_value = clean_text(raw.get("baseline"))
     if not cutoff or not baseline_value:
@@ -1930,12 +1932,16 @@ def build_payload(
             "compliance": round(completed / applicable * 100, 1) if applicable else 0,
             **deadline_focus(item.get("endDate"), pending),
         })
-    activity_stats.sort(key=lambda item: (
-        item["pendingStores"] == 0,
-        item.get("endDate") or "9999-12-31",
-        item["order"],
-        key_text(item["name"]),
-    ))
+    # Las campañas Peanuts se muestran como una secuencia de eventos,
+    # independientemente de que existan otras actividades con una fecha límite intermedia.
+    # El selector conserva primero Charly&Lucy y después Linus&Snoopy.
+    def activity_display_sort_key(item: dict) -> tuple:
+        is_peanuts = key_text(item.get("name", "")).startswith("peanuts ")
+        if is_peanuts:
+            return (0, item.get("endDate") or "9999-12-31", item["order"], key_text(item["name"]))
+        return (1, item["pendingStores"] == 0, item.get("endDate") or "9999-12-31", item["order"], key_text(item["name"]))
+
+    activity_stats.sort(key=activity_display_sort_key)
     for focus_rank, item in enumerate(activity_stats, 1):
         item["focusRank"] = focus_rank
 

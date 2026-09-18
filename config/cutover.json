@@ -1,5 +1,4 @@
 {
-  "cutoff": "2026-09-17 11:56:57",
-  "baseline": "cms/Corte_Forms_2026-09-17_115657.xlsx",
-  "label": "Corte operativo 17/09/2026 11:56:57"
+  "enabled": false,
+  "label": "Base Forms reiniciada después del respaldo 17/09/2026"
 }
