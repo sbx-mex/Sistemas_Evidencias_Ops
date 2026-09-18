@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "951d1ac4c2d54e4c",
+  "buildVersion": "97cc23ea68bc1e96",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-16T04:40:43+00:00",
-  "lastUpdated": "2026-09-15T19:02:44",
-  "lastUpdatedDisplay": "15/09/2026 19:02",
+  "generatedAt": "2026-09-18T00:22:32+00:00",
+  "lastUpdated": "2026-09-17T11:56:57",
+  "lastUpdatedDisplay": "17/09/2026 11:56",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "15/09/26 · 19:02 h",
+    "cutOffDisplay": "17/09/26 · 11:56 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 498,
+        "completed": 499,
         "expected": 845,
-        "pending": 347,
-        "compliance": 58.9,
+        "pending": 346,
+        "compliance": 59.1,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "d9e2dce7db6cc122c9f2192ede8204a5a2f02c4a69112c7484018f315418355c",
+    "responsesSha256": "695ba84fa0b3161ef425244b97c93ccb95b1b436d5949d9d4f0952e65fe63d9a",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",
@@ -130,15 +130,15 @@
     "stores": 357,
     "activities": 12,
     "expectedCompletions": 4265,
-    "completedCompletions": 677,
+    "completedCompletions": 678,
     "compliance": 15.9,
-    "validResponses": 677,
+    "validResponses": 678,
     "storesComplete": 7,
-    "pendingCompletions": 3588,
+    "pendingCompletions": 3587,
     "notApplicableCompletions": 19
   },
   "quality": {
-    "responsesRead": 803,
+    "responsesRead": 804,
     "invalidRows": [
       521,
       591
@@ -241,7 +241,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 803
+        "CeCo": 804
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -330,7 +330,7 @@
     },
     "notApplicableResponses": 19,
     "notApplicablePairs": 19,
-    "evidenceLinksPublished": 660,
+    "evidenceLinksPublished": 661,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -374,7 +374,7 @@
       "compliance": 20.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -16,
+      "daysRemaining": -18,
       "focusRank": 1
     },
     {
@@ -396,7 +396,7 @@
       "compliance": 20.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -13,
+      "daysRemaining": -15,
       "focusRank": 2
     },
     {
@@ -418,7 +418,7 @@
       "compliance": 6.9,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -13,
+      "daysRemaining": -15,
       "focusRank": 3
     },
     {
@@ -440,7 +440,7 @@
       "compliance": 18.8,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -10,
+      "daysRemaining": -12,
       "focusRank": 4
     },
     {
@@ -462,7 +462,7 @@
       "compliance": 8.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -10,
+      "daysRemaining": -12,
       "focusRank": 5
     },
     {
@@ -484,7 +484,7 @@
       "compliance": 10.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -10,
+      "daysRemaining": -12,
       "focusRank": 6
     },
     {
@@ -506,7 +506,7 @@
       "compliance": 16.5,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -5,
       "focusRank": 7
     },
     {
@@ -528,7 +528,7 @@
       "compliance": 31.7,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -3,
+      "daysRemaining": -5,
       "focusRank": 8
     },
     {
@@ -550,7 +550,7 @@
       "compliance": 19.8,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -1,
+      "daysRemaining": -3,
       "focusRank": 9
     },
     {
@@ -565,14 +565,14 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 89,
+      "completedStores": 90,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 268,
-      "compliance": 24.9,
+      "pendingStores": 267,
+      "compliance": 25.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -1,
+      "daysRemaining": -3,
       "focusRank": 10
     },
     {
@@ -592,9 +592,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.2,
-      "deadlineLabel": "En 14 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 14,
+      "daysRemaining": 12,
       "focusRank": 11
     },
     {
@@ -614,9 +614,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.2,
-      "deadlineLabel": "En 14 días",
+      "deadlineLabel": "En 12 días",
       "deadlineTone": "green",
-      "daysRemaining": 14,
+      "daysRemaining": 12,
       "focusRank": 12
     }
   ],
@@ -650,12 +650,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 126,
+      "completed": 127,
       "expected": 151,
       "notApplicable": 5,
-      "pending": 25,
+      "pending": 24,
       "pendingStores": 10,
-      "compliance": 83.4,
+      "compliance": 84.1,
       "status": "En meta",
       "rank": 2
     },
@@ -4852,17 +4852,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38695",
-      "store": "Cetram 4 Caminos",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 9,
-      "expected": 12,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 75.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38656",
       "store": "Viveros de la Loma",
       "dm": "Yazmin Chabela Guadarrama",
@@ -4965,6 +4954,17 @@
       "ceco": "38136",
       "store": "Punta Norte",
       "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 10,
+      "expected": 12,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 83.3,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
       "completed": 10,
       "expected": 12,
       "notApplicable": 0,
@@ -18253,11 +18253,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 9,
+      "completed": 10,
       "expected": 12,
       "notApplicable": 0,
-      "compliance": 75.0,
-      "lastUpdate": "2026-09-09T20:58:51",
+      "compliance": 83.3,
+      "lastUpdate": "2026-09-17T11:56:57",
       "activities": {
         "Roll Out": true,
         "Programacion Hornos Merry - Focaccia": true,
@@ -18270,7 +18270,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Validacion Horario Festivo Sep 26": false
+        "Validacion Horario Festivo Sep 26": true
       },
       "applicableActivities": {
         "Roll Out": true,
@@ -19343,10 +19343,10 @@
           ]
         }
       ],
-      "answeredStores": 89,
+      "answeredStores": 90,
       "answerCounts": {
         "No": 19,
-        "Sí": 70
+        "Sí": 71
       },
       "responses": [
         {
@@ -19637,6 +19637,22 @@
           "evidenceAvailable": true,
           "evidenceLinkPublished": true,
           "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/IMG_7796_Carlos%20Rodriguez%20Mor.jpeg"
+        },
+        {
+          "ceco": "38695",
+          "store": "Cetram 4 Caminos",
+          "dm": "Yazmin Chabela Guadarrama",
+          "region": "Centro Norte",
+          "timestamp": "2026-09-17T11:56:57",
+          "answers": {
+            "modifiesSchedule": "Sí",
+            "closingTime": "10:00 p. m.",
+            "openingTime": "08:00 a. m."
+          },
+          "valid": true,
+          "evidenceAvailable": true,
+          "evidenceLinkPublished": true,
+          "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/d4ccda8e-87f0-4f41-9da8-14975f266916_Starbucks%20CEMTRAM%204.jpeg"
         },
         {
           "ceco": "38438",
@@ -20726,6 +20742,33 @@
     }
   ],
   "submissions": [
+    {
+      "id": "respuesta-0235268bc21aa471",
+      "timestamp": "2026-09-17T11:56:57",
+      "timestampDisplay": "17/09/2026 11:56",
+      "activity": "Validacion Horario Festivo Sep 26",
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Validacion_Horario_Festivo_Sep_26_38695",
+      "evidenceLinkLabel": "Link_Validacion_Horario_Festivo_Sep_26_38695",
+      "evidenceFileName": "d4ccda8e-87f0-4f41-9da8-14975f266916_Starbucks CEMTRAM 4.jpeg",
+      "evidenceSourceHeader": "Evidencia_Validacion_Horario_Festivo_Sep 26",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "surveyAnswers": {
+        "modifiesSchedule": "Sí",
+        "closingTime": "10:00 p. m.",
+        "openingTime": "08:00 a. m."
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Jarras_Blender_%26_Cold_Foam/d4ccda8e-87f0-4f41-9da8-14975f266916_Starbucks%20CEMTRAM%204.jpeg"
+    },
     {
       "id": "respuesta-5f1631d63e40ef9c",
       "timestamp": "2026-09-15T19:02:44",
