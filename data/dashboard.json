@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "db068e8116122ad1",
+  "buildVersion": "1c72da47978718ea",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-18T01:26:56+00:00",
+  "generatedAt": "2026-09-18T01:48:47+00:00",
   "lastUpdated": "2026-09-15T19:02:44",
   "lastUpdatedDisplay": "15/09/2026 19:02",
   "report": {
@@ -100,7 +100,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "695ba84fa0b3161ef425244b97c93ccb95b1b436d5949d9d4f0952e65fe63d9a",
+    "responsesSha256": "a66210cb18139f6d91cb5bed21674f739b820134c4c304f6aa18947d04611407",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "5aa6bd9905ace9dca4a6a0cd1112169c02ccc69bcbaf9abf35b23d6e6e898206",
     "cutoff": "2026-09-17T11:56:57",
@@ -150,9 +150,9 @@
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 804,
+      "newFormsRowsRead": 0,
       "newFormsRowsIncluded": 0,
-      "newFormsRowsRejectedAtOrBeforeCutoff": 804,
+      "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "baselineSchema": {
         "sheet": "Respuestas corte",
         "headerRow": 1,
@@ -263,7 +263,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 804
+        "CeCo": 0
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
