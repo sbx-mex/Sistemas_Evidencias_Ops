@@ -58,11 +58,12 @@ def main() -> None:
         after = cutover["cutoff"] + timedelta(seconds=1)
         before = cutover["cutoff"] - timedelta(seconds=1)
         evidence = "https://grupovips-my.sharepoint.com/evidencias/prueba.jpg"
+        continuation_evidence = "https://grupovips-my.sharepoint.com/evidencias/continuacion.jpg"
         create_new_forms(forms, [
             [1, after, after, "", candidate["store"], candidate["ceco"], activity, evidence],
             [2, after, after, "", candidate["store"], candidate["ceco"], "Roll Out", evidence],
             [3, before, before, "", candidate["store"], candidate["ceco"], activity, evidence],
-            [4, "", "", "", candidate["store"], candidate["ceco"], activity, evidence],
+            [4, "", "", "", candidate["store"], candidate["ceco"], activity, continuation_evidence],
         ])
         payload = build_payload(
             forms,
@@ -90,6 +91,8 @@ def main() -> None:
             item["ceco"] == candidate["ceco"] and item["activity"] == activity and item["valid"]
             for item in payload["submissions"]
         )
+        continuation = next(item for item in payload["submissions"] if item["ceco"] == candidate["ceco"] and item["activity"] == activity)
+        assert continuation["evidenceUrl"].endswith("continuacion.jpg")
         assert "Roll Out" not in {item["name"] for item in payload["activities"]}
         assert all(item["activity"] != "Roll Out" for item in payload["submissions"])
         assert payload["sources"]["cutoff"] == "2026-09-17T11:56:57"

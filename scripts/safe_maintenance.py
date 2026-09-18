@@ -30,6 +30,14 @@ GENERATED = (
     ROOT / "exports" / "Resumen_Evidencias_OPS.pdf",
 )
 LOCK = ROOT / ".safe-maintenance.lock"
+REQUIRED_VALIDATORS = (
+    "tests/validate_safe_maintenance.py",
+    "tests/validate_dynamic_forms_schema.py",
+    "tests/validate_cutover.py",
+    "tests/validate_maintenance.py",
+    "tests/validate_project.py",
+    "scripts/audit_project.py",
+)
 
 
 def run(*command: str) -> None:
@@ -40,6 +48,13 @@ def run(*command: str) -> None:
         "PYTHONPYCACHEPREFIX": "/tmp/evidencias-ops-pycache",
     })
     subprocess.run(command, cwd=ROOT, check=True, env=environment)
+
+
+def validate_required_validators() -> None:
+    """Falla antes de modificar datos si falta una prueba declarada por Python."""
+    missing = [relative for relative in REQUIRED_VALIDATORS if not (ROOT / relative).is_file()]
+    if missing:
+        raise RuntimeError("Faltan validadores requeridos: " + ", ".join(missing))
 
 
 @contextmanager
@@ -215,6 +230,7 @@ def main() -> None:
     args = parser.parse_args()
     started = time.perf_counter()
 
+    validate_required_validators()
     with exclusive_lock():
         files = cms_sources()
         before = validate_all_xlsx(files)
@@ -237,7 +253,7 @@ def main() -> None:
             run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
             run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
             run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
-            run(sys.executable, "-X", "utf8", "scripts/validate_project_resilient.py")
+            run(sys.executable, "-X", "utf8", "tests/validate_project.py")
             # Las pruebas y exportadores también pueden dejar residuos si un
             # proceso externo interrumpe una escritura; se limpia antes de auditar.
             removed += clean_obsolete()

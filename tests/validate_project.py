@@ -55,12 +55,15 @@ def approve(name: str) -> None:
     passed.append(name)
 
 
-def response_recency_key(item: dict) -> tuple[str, int, int]:
-    """Replica el orden del motor: fecha más reciente y última fila en empate."""
+def response_recency_key(item: dict) -> tuple[int, str, int, int]:
+    """Replica el orden del motor, incluida la continuación sin fecha."""
     finished = item.get("finished")
     timestamp = finished.isoformat() if finished else str(item.get("timestamp") or "")
+    source_order = int(item.get("sourceOrder", 0) or 0)
     source_row = item.get("row", item.get("_sourceRow", 0))
-    return timestamp, int(item.get("sourceOrder", 0)), int(source_row or 0)
+    if not timestamp and source_order > 0:
+        return 2, "9999-12-31T23:59:59", source_order, int(source_row or 0)
+    return (1 if timestamp else 0), timestamp, source_order, int(source_row or 0)
 
 
 allowed_hosts = {"grupovips-my.sharepoint.com"}
@@ -74,6 +77,8 @@ if response_recency_key({"timestamp": "", "_sourceRow": 8}) >= response_recency_
     fail("Una fila sin fecha reemplazó una respuesta fechada")
 if response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 8}) <= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 2}):
     fail("El empate de fecha no conserva la última fila del archivo")
+if response_recency_key({"timestamp": "", "sourceOrder": 1, "_sourceRow": 3}) <= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 8}):
+    fail("Una continuación Forms sin fecha no prevalece sobre el corte")
 
 
 for relative in REQUIRED:
@@ -151,6 +156,11 @@ for source_key, path in (
 ):
     if data.get("sources", {}).get(source_key) != file_sha256(path):
         fail(f"La huella de la fuente {source_key} no coincide")
+configured_cutover = load_cutover(ROOT / "config" / "cutover.json")
+if not configured_cutover or not configured_cutover.get("baselineSha256"):
+    fail("El corte no está protegido con una huella SHA-256")
+if configured_cutover["baselineSha256"] != file_sha256(configured_cutover["baseline"]):
+    fail("La huella declarada del corte no coincide con el respaldo")
 
 _, _, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
 settings = load_settings(ROOT / "config/settings.json", cms_settings)

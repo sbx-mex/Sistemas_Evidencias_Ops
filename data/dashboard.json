@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "f7a95f175d542de9",
+  "buildVersion": "1948eb76fda11eb4",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-18T05:06:27+00:00",
+  "generatedAt": "2026-09-18T00:13:51-05:00",
   "lastUpdated": "2026-09-17T22:29:30",
   "lastUpdatedDisplay": "17/09/2026 22:29",
   "report": {
@@ -105,7 +105,7 @@
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
     "cutoverConfig": "cutover.json",
-    "cutoverConfigSha256": "76dd7ceba6502e94f27d65c7466ec1710445d051f702ee6075b401940eea3346",
+    "cutoverConfigSha256": "8b770cb5985344bfb61eb5204142e3d0aa9fdf790aa0f0b035970648fdfa8aca",
     "directory": "Directorio.xlsx",
     "directorySha256": "8a3a589cbe026109d5b48ec093f8ed6108affeb95138b9f1abaa6f3a3e1d5f5f",
     "directorySheet": "Directorio",

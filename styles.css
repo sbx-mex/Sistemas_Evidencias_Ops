@@ -35,6 +35,9 @@ svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width:
 .button.primary:hover { border-color: #004e34; background: #004e34; }
 
 main { display: grid; width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-width)); gap: 22px; margin-inline: auto; padding: clamp(18px, 3vw, 30px) 0 clamp(40px, 5vw, 56px); }
+@supports (content-visibility: auto) {
+  .dashboard-section, .evidence-disclosure, .table-shell { content-visibility: auto; contain-intrinsic-size: auto 560px; }
+}
 .hero { position: relative; isolation: isolate; overflow: hidden; scroll-margin-top: 80px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: end; border-radius: 22px; background: linear-gradient(125deg, #123f32, var(--dark)); color: white; padding: clamp(24px, 3.5vw, 36px); }
 .hero::after { position: absolute; z-index: -1; right: 22%; bottom: -60px; width: 190px; height: 190px; border: 18px solid rgba(244,207,87,.12); border-radius: 50%; content: ""; }
 .campaign-mark { display: inline-flex; width: max-content; margin-bottom: 13px; border: 1px solid rgba(244,207,87,.6); border-radius: 999px; background: rgba(244,207,87,.1); color: #ffe89c; padding: 6px 10px; font-size: .56rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }

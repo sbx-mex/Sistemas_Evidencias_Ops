@@ -959,9 +959,16 @@ def load_cutover(path: Path) -> dict[str, Any] | None:
         baseline = ROOT / baseline
     if not baseline.is_file():
         raise ValueError(f"No existe la base histórica del corte: {baseline}")
+    expected_sha256 = clean_text(raw.get("baselineSha256")).casefold()
+    if expected_sha256 and file_sha256(baseline).casefold() != expected_sha256:
+        raise ValueError(
+            "La huella de la base histórica no coincide con config/cutover.json; "
+            "detén la carga y valida el corte antes de publicar"
+        )
     return {
         "cutoff": cutoff,
         "baseline": baseline,
+        "baselineSha256": expected_sha256 or None,
         "label": clean_text(raw.get("label")) or cutoff.strftime("%d/%m/%Y %H:%M:%S"),
     }
 
@@ -1802,16 +1809,19 @@ def build_payload(
             pair = (response["ceco"], activity)
             state = {**response, "valid": valid, "notApplicable": not_applicable, "public": public}
             current = latest_state_by_pair.get(pair)
-            current_sort = (
-                ((current or {}).get("finished") or datetime.min),
-                (current or {}).get("sourceOrder", 0),
-                (current or {}).get("row", 0),
-            )
-            state_sort = (
-                response["finished"] or datetime.min,
-                response.get("sourceOrder", 0),
-                response["row"],
-            )
+            def state_sort_key(item: dict[str, Any] | None) -> tuple[int, datetime, int, int]:
+                item = item or {}
+                finished = item.get("finished")
+                source_order = int(item.get("sourceOrder", 0) or 0)
+                row = int(item.get("row", 0) or 0)
+                # Forms reiniciado puede omitir la fecha: al venir de la fuente
+                # posterior al corte, es una continuación válida y prevalece.
+                if not finished and source_order > 0:
+                    return 2, datetime.max, source_order, row
+                return (1 if finished else 0), (finished or datetime.min), source_order, row
+
+            current_sort = state_sort_key(current)
+            state_sort = state_sort_key(response)
             if current is None or state_sort > current_sort:
                 latest_state_by_pair[pair] = state
 
