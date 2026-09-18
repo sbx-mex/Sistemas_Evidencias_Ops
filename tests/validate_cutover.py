@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prueba que el corte conserva avance y acepta únicamente Forms posteriores."""
+"""Prueba que el corte conserva avance y continúa con cualquier actividad CMS."""
 
 from __future__ import annotations
 
@@ -33,9 +33,6 @@ def create_new_forms(path: Path, rows: list[list[object]]) -> None:
 def main() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         temp = Path(temp_dir)
-        # El proyecto puede desactivar su corte al iniciar una base nueva; esta
-        # prueba mantiene cubierta la protección histórica con una configuración
-        # temporal e independiente.
         cutover_file = temp / "cutover.json"
         cutover_file.write_text(json.dumps({
             "cutoff": "2026-09-17 11:56:57",
@@ -65,6 +62,7 @@ def main() -> None:
             [1, after, after, "", candidate["store"], candidate["ceco"], activity, evidence],
             [2, after, after, "", candidate["store"], candidate["ceco"], "Roll Out", evidence],
             [3, before, before, "", candidate["store"], candidate["ceco"], activity, evidence],
+            [4, "", "", "", candidate["store"], candidate["ceco"], activity, evidence],
         ])
         payload = build_payload(
             forms,
@@ -80,9 +78,11 @@ def main() -> None:
             **cut,
             "enabled": True,
             "baselineRowsIncluded": 425,
-            "newFormsRowsRead": 3,
+            "newFormsRowsRead": 4,
             "newFormsRowsIncluded": 2,
+            "newFormsRowsIncludedWithoutTimestamp": 1,
             "newFormsRowsRejectedAtOrBeforeCutoff": 1,
+            "newFormsRowsRejectedInactive": 1,
         }
         updated_store = next(store for store in payload["stores"] if store["ceco"] == candidate["ceco"])
         assert updated_store["activities"][activity] is True
@@ -93,7 +93,7 @@ def main() -> None:
         assert "Roll Out" not in {item["name"] for item in payload["activities"]}
         assert all(item["activity"] != "Roll Out" for item in payload["submissions"])
         assert payload["sources"]["cutoff"] == "2026-09-17T11:56:57"
-    print("Corte histórico aprobado · conserva avance · sólo suma Forms nuevos · CMS filtra actividades ocultas")
+    print("Corte histórico aprobado · conserva avance · suma cualquier actividad activa · CMS filtra actividades ocultas")
 
 
 if __name__ == "__main__":

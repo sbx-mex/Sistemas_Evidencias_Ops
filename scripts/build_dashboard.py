@@ -940,9 +940,10 @@ def load_cutover(path: Path) -> dict[str, Any] | None:
     """Carga un corte histórico opcional sin mezclarlo con el Forms nuevo.
 
     La base histórica sólo conserva respuestas hasta ``cutoff``; el archivo
-    actual de Forms sólo admite respuestas posteriores. Con esto puede
-    reiniciarse Forms sin perder el avance ya consolidado y sin que una descarga
-    antigua vuelva a sumar por accidente.
+    actual de Forms admite respuestas posteriores al corte y, cuando el Forms
+    no exporta la hora de finalización, filas de actividades activas del CMS.
+    Con esto puede reiniciarse Forms sin perder el avance ya consolidado y sin
+    que una descarga antigua vuelva a sumar por accidente.
     """
     if not path.is_file():
         return None
@@ -1549,6 +1550,7 @@ def build_payload(
         )
     stores, directory_sheet, directory_status = load_directory(directory_path, settings)
     active_names = [item["name"] for item in activities]
+    configured_by_text, configured_by_compact = active_activity_catalog(activities)
     current_responses, response_schema = load_responses(responses_path, active_names)
     cutover_quality: dict[str, Any] | None = None
     if baseline_path or cutoff:
@@ -1560,10 +1562,16 @@ def build_payload(
             for response in baseline_responses
             if response.get("finished") and response["finished"] <= cutoff
         ]
+        def is_active_cms_response(response: dict[str, Any]) -> bool:
+            return bool(canonical_cms_activity(
+                response.get("activity"), configured_by_text, configured_by_compact
+            ))
+
         fresh = [
             {**response, "source": "Forms nuevo", "sourceOrder": 1}
             for response in current_responses
-            if response.get("finished") and response["finished"] > cutoff
+            if is_active_cms_response(response)
+            and (not response.get("finished") or response["finished"] > cutoff)
         ]
         cutover_quality = {
             "enabled": True,
@@ -1576,9 +1584,16 @@ def build_payload(
             ),
             "newFormsRowsRead": len(current_responses),
             "newFormsRowsIncluded": len(fresh),
-            "newFormsRowsRejectedAtOrBeforeCutoff": sum(
-                bool(not item.get("finished") or item["finished"] <= cutoff)
+            "newFormsRowsIncludedWithoutTimestamp": sum(
+                bool(not item.get("finished") and is_active_cms_response(item))
                 for item in current_responses
+            ),
+            "newFormsRowsRejectedAtOrBeforeCutoff": sum(
+                bool(item.get("finished") and item["finished"] <= cutoff)
+                for item in current_responses
+            ),
+            "newFormsRowsRejectedInactive": sum(
+                bool(not is_active_cms_response(item)) for item in current_responses
             ),
             "baselineSchema": baseline_schema,
         }
@@ -1587,7 +1602,6 @@ def build_payload(
         responses = [{**response, "source": "Forms", "sourceOrder": 0} for response in current_responses]
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
-    configured_by_text, configured_by_compact = active_activity_catalog(activities)
     activity_names = [item["name"] for item in activities]
     evidence_rules = {key_text(item["name"]): item.get("requireEvidence", True) for item in activities}
 

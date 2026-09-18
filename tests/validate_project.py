@@ -284,6 +284,7 @@ forms_responses, forms_schema = load_responses(
     ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
     [item["name"] for item in data.get("activities", [])],
 )
+active_by_text, active_by_compact = active_activity_catalog(data.get("activities", []))
 if cutover_quality:
     configured_cutover = load_cutover(ROOT / "config" / "cutover.json")
     if not configured_cutover:
@@ -299,10 +300,10 @@ if cutover_quality:
     ] + [
         {**row, "sourceOrder": 1}
         for row in forms_responses
-        if row.get("finished") and row["finished"] > configured_cutover["cutoff"]
+        if canonical_cms_activity(row.get("activity"), active_by_text, active_by_compact)
+        and (not row.get("finished") or row["finished"] > configured_cutover["cutoff"])
     ]
 active_by_key = {compact_key(item["name"]): item["name"] for item in data.get("activities", [])}
-active_by_text, active_by_compact = active_activity_catalog(data.get("activities", []))
 allowed_hosts = normalize_allowed_hosts(settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com"))
 ignored_ids = set(setting_list(settings.get("ignoredResponseIds")))
 expected_ignored_rows = [row["row"] for row in forms_responses if row["sourceId"] in ignored_ids]
