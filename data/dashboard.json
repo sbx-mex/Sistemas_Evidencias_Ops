@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "97cc23ea68bc1e96",
+  "buildVersion": "d772a0f906e2e552",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-18T00:22:32+00:00",
+  "generatedAt": "2026-09-18T00:32:58+00:00",
   "lastUpdated": "2026-09-17T11:56:57",
   "lastUpdatedDisplay": "17/09/2026 11:56",
   "report": {
@@ -890,9 +890,9 @@
     {
       "dm": "Fernando Eduardo Verdugo Saldaña",
       "shortName": "Fernando Verdugo",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/fernando-verdugo.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -928,9 +928,9 @@
     {
       "dm": "Ariana Janet Gutierrez Martinez",
       "shortName": "Ariana Gutierrez",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/ariana-gutierrez.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -947,9 +947,9 @@
     {
       "dm": "Cesar Alfonso Castillo Romero",
       "shortName": "Cesar Castillo",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/cesar-castillo.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -985,9 +985,9 @@
     {
       "dm": "Hazar Susim Trejo Hernandez",
       "shortName": "Hazar Trejo",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/hazar-trejo.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -1004,9 +1004,9 @@
     {
       "dm": "Jaqueline Cortes Ayala",
       "shortName": "Jaqueline Cortes",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/jaqueline-cortes.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -1023,9 +1023,9 @@
     {
       "dm": "Jesus Antonio Elguera Flores",
       "shortName": "Jesus Elguera",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/jesus-elguera.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -1061,9 +1061,9 @@
     {
       "dm": "Luis Alberto Quevedo Rodriguez",
       "shortName": "Luis Quevedo",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/luis-quevedo.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
@@ -1099,9 +1099,9 @@
     {
       "dm": "Monica Selene Morales Ibarra",
       "shortName": "Monica Morales",
-      "photo": "",
-      "photoSource": "Pendiente",
-      "photoStatus": "Pendiente",
+      "photo": "assets/dm/monica-morales.webp",
+      "photoSource": "Detectada",
+      "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
       ],
