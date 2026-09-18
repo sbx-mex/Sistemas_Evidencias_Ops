@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import (
     QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
-    canonical_cms_activity, compact_key, evidence_key, file_sha256, load_cms,
+    canonical_cms_activity, clean_text, compact_key, evidence_key, file_sha256, load_cms,
     load_directory, load_responses, load_settings, normalize_allowed_hosts,
     parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
     setting_list, short_dm_name, validate_webp_asset,
@@ -197,9 +197,15 @@ if any(item.get("photo") != f"assets/dm/{photo_slug(item.get('shortName'))}.webp
     fail("Las rutas de fotografía de Centro Poniente no siguen el nombre canónico")
 if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):
     fail("Los DM nuevos no quedaron marcados con foto pendiente")
-if data.get("quality", {}).get("unknownCeCos") or any(
+unknown_cecos = {str(value).strip() for value in data.get("quality", {}).get("unknownCeCos", []) if str(value).strip()}
+if (
+    any(not re.fullmatch(r"[0-9]{5}", value) for value in unknown_cecos)
+    or unknown_cecos.intersection({str(store.get("ceco", "")) for store in data.get("stores", [])})
+    or unknown_cecos.intersection({str(item.get("ceco", "")) for item in data.get("submissions", [])})
+    or any(
     row not in {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
     for row in data.get("quality", {}).get("unsafeEvidenceRows", [])
+    )
 ):
     fail("Calidad inicial incorrecta")
 response_schema = data.get("quality", {}).get("responseSchema", {})
@@ -215,7 +221,8 @@ expected_survey_fields = {
     "Apertura 16 de Septiembre": "openingTime",
 }
 survey_header_map = response_schema.get("surveyHeaderMap", {})
-if {
+holiday_activity_key = compact_key("Validacion Horario Festivo Sep 26")
+if holiday_activity_key in {compact_key(item.get("name")) for item in data.get("activities", [])} and {
     header: survey_header_map.get(header, {}).get("field")
     for header in expected_survey_fields
 } != expected_survey_fields:

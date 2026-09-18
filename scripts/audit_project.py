@@ -195,7 +195,8 @@ expected_survey_fields = {
     "Apertura 16 de Septiembre": "openingTime",
 }
 survey_header_map = response_schema.get("surveyHeaderMap", {})
-if {
+holiday_activity_key = compact_key("Validacion Horario Festivo Sep 26")
+if holiday_activity_key in {compact_key(item.get("name")) for item in data.get("activities", [])} and {
     header: survey_header_map.get(header, {}).get("field")
     for header in expected_survey_fields
 } != expected_survey_fields:

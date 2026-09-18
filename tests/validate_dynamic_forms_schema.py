@@ -107,7 +107,10 @@ def main() -> None:
         assert schema["rowConflicts"] == [{"row": 2, "field": "ceco"}]
 
         # Simulación integral: cualquier CeCo abierto escrito en CeCo1 debe
-        # cruzar exactamente igual que el histórico almacenado en CeCo.
+        # cruzar exactamente igual que el histórico almacenado en CeCo. La
+        # actividad se toma del catálogo vigente: Roll Out puede estar
+        # desactivada legítimamente desde el CMS y la prueba no debe volver a
+        # publicarla ni asumirla como parte del denominador.
         current_payload = build_payload(
             ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
             ROOT / "cms" / "Directorio.xlsx",
@@ -115,14 +118,19 @@ def main() -> None:
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
         )
         all_cecos = [store["ceco"] for store in current_payload["stores"]]
+        active_activities = [item["name"] for item in current_payload["activities"]]
+        assert active_activities
+        simulation_activity = active_activities[0]
         all_ceco1 = temp / "all-ceco1.xlsx"
-        simulation_headers = BASE + ["CeCo", "CeCo1", ACTIVITY, "Evidencia_RollOut"]
+        # La columna genérica permite probar el cruce CeCo/CeCo1 sin acoplar
+        # este escenario a una actividad u opción vigente específica de Forms.
+        simulation_headers = BASE + ["CeCo", "CeCo1", ACTIVITY, "Evidencia del avance"]
         simulation_rows = []
         for index, ceco in enumerate(all_cecos, 1):
             simulated_start, simulated_finish = timestamps(1000 + index)
             simulation_rows.append([
                 9000 + index, simulated_start, simulated_finish, "", "Simulación",
-                "", ceco, "Roll Out", f"{allowed}/{ceco}.jpg",
+                "", ceco, simulation_activity, f"{allowed}/{ceco}.jpg",
             ])
         save_book(all_ceco1, simulation_headers, simulation_rows)
         simulated_payload = build_payload(
@@ -143,7 +151,7 @@ def main() -> None:
         save_book(recoverable, simulation_headers, [[
             12000, recovery_start, recovery_finish,
             "sbmx43152@starbucks.com.mx", "Starbucks Samara Satélite",
-            "", "44152", "Roll Out", f"{allowed}/samara.jpg",
+            "", "44152", simulation_activity, f"{allowed}/samara.jpg",
         ]])
         recovered_payload = build_payload(
             recoverable,
@@ -169,7 +177,7 @@ def main() -> None:
         save_book(malformed, simulation_headers, [[
             12002, recovery_start, recovery_finish,
             "sbmx43152@starbucks.com.mx", "Starbucks Samara Satélite",
-            "", "443152", "Roll Out", f"{allowed}/samara-malformed.jpg",
+            "", "443152", simulation_activity, f"{allowed}/samara-malformed.jpg",
         ]])
         malformed_payload = build_payload(
             malformed,
@@ -185,7 +193,7 @@ def main() -> None:
         isolated = temp / "ceco-isolated.xlsx"
         save_book(isolated, simulation_headers, [[
             12003, recovery_start, recovery_finish,
-            "", "Nombre sin coincidencia", "", "443152", "Roll Out",
+            "", "Nombre sin coincidencia", "", "443152", simulation_activity,
             f"{allowed}/isolated.jpg",
         ]])
         isolated_payload = build_payload(
@@ -205,14 +213,14 @@ def main() -> None:
         # bajar la versión sin esa fila conserva exactamente el resultado válido.
         stable_start, stable_finish = timestamps(2100)
         bad_start, bad_finish = timestamps(2200)
-        roundtrip_headers = BASE + ["CeCo", ACTIVITY, "Evidencia_RollOut"]
+        roundtrip_headers = BASE + ["CeCo", ACTIVITY, "Evidencia del avance"]
         stable_row = [
             13000, stable_start, stable_finish, "", "Prueba", "38115",
-            "Roll Out", f"{allowed}/stable.jpg",
+            simulation_activity, f"{allowed}/stable.jpg",
         ]
         bad_row = [
             13001, bad_start, bad_finish, "", "Sin coincidencia", "381155",
-            "Roll Out", f"{allowed}/bad.jpg",
+            simulation_activity, f"{allowed}/bad.jpg",
         ]
         versions = []
         for filename, version_rows in (
@@ -243,7 +251,7 @@ def main() -> None:
         save_book(untrusted, simulation_headers, [[
             12001, recovery_start, recovery_finish,
             "sbmx43152@starbucks.com.mx", "Otra tienda",
-            "", "44152", "Roll Out", f"{allowed}/otra.jpg",
+            "", "44152", simulation_activity, f"{allowed}/otra.jpg",
         ]])
         untrusted_payload = build_payload(
             untrusted,
@@ -325,8 +333,20 @@ def main() -> None:
         assert payload["lastUpdated"] is None and payload["lastUpdatedDisplay"] == "Sin respuestas"
         cms_activities, _, _, _ = load_cms(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
 
-        # Escenario 6b: Roll Out se enlaza con Evidencia_RollOut por nombre,
-        # aunque cambie el orden. Dos respuestas del mismo par publican sólo la última.
+        # Escenario 6b: se vuelve a activar Roll Out sólo en una copia temporal
+        # del CMS. Así se valida su enlace exacto con Evidencia_RollOut sin
+        # exigir que una actividad retirada por operación vuelva a ser visible
+        # en el CMS real. Dos respuestas del mismo par publican sólo la última.
+        repeated_cms = temp / "cms-rollout-active.xlsx"
+        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", repeated_cms)
+        repeated_book = load_workbook(repeated_cms)
+        repeated_sheet = repeated_book["Actividades"]
+        for row_number in range(5, repeated_sheet.max_row + 1):
+            if clean_text(repeated_sheet.cell(row_number, cms_headers["Actividad"]).value) == "Roll Out":
+                repeated_sheet.cell(row_number, cms_headers["Activo"]).value = "Si"
+                break
+        repeated_book.save(repeated_cms)
+        repeated_book.close()
         repeated = temp / "repeated-rollout.xlsx"
         old_start, old_finish = timestamps(11)
         new_start, new_finish = timestamps(12)
@@ -339,7 +359,7 @@ def main() -> None:
             repeated,
             ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            repeated_cms,
         )
         assert repeated_payload["summary"]["completedCompletions"] == 1
         assert repeated_payload["summary"]["validResponses"] == 1
@@ -428,11 +448,23 @@ def main() -> None:
             [13, start1, finish1, "", "Prueba", "38333", "Programacion Horno Merry - Focaccia", f"{allowed}/horno-similar.jpg", ""],
             [14, start2, finish2, "", "Prueba", "38339", "Actividad Externa Forms", "", f"{allowed}/externa.jpg"],
         ])
+        # El caso cubre normalización de Programación de Hornos; se habilita
+        # sólo en su copia de prueba para no imponer visibilidad al CMS real.
+        similar_cms = temp / "cms-programacion-activa.xlsx"
+        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", similar_cms)
+        similar_book = load_workbook(similar_cms)
+        similar_sheet = similar_book["Actividades"]
+        for row_number in range(5, similar_sheet.max_row + 1):
+            if clean_text(similar_sheet.cell(row_number, cms_headers["Actividad"]).value) == "Programacion Hornos Merry - Focaccia":
+                similar_sheet.cell(row_number, cms_headers["Activo"]).value = "Si"
+                break
+        similar_book.save(similar_cms)
+        similar_book.close()
         payload = build_payload(
             similar_activity,
             ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            similar_cms,
         )
         assert payload["summary"]["completedCompletions"] == 1
         assert payload["quality"]["canonicalizedActivityRows"] == [2]
@@ -443,7 +475,7 @@ def main() -> None:
         # Escenario 9: cambiar el orden editorial del CMS sólo cambia la
         # presentación; el cumplimiento continúa cruzándose por nombre.
         reordered_cms = temp / "cms_reordered.xlsx"
-        cms_book = load_workbook(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
+        cms_book = load_workbook(similar_cms)
         activity_sheet = cms_book["Actividades"]
         for row_number in range(5, activity_sheet.max_row + 1):
             if activity_sheet.cell(row_number, 2).value and activity_sheet.cell(row_number, 1).value is not None:
@@ -503,7 +535,7 @@ def main() -> None:
             conditional,
             ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            similar_cms,
         )
         activity_map = {item["name"]: item for item in payload["activities"]}
         horno = activity_map["Programacion Hornos Merry - Focaccia"]
@@ -511,7 +543,8 @@ def main() -> None:
         assert horno["completedStores"] == 8 and horno["notApplicableStores"] == 2
         assert community["completedStores"] == 1 and community["notApplicableStores"] == 1
         enrique = next(item for item in payload["dms"] if item["dm"] == "Enrique Cesar Flores")
-        expected_enrique = len(enrique_cecos) * len(cms_activities) - 2
+        conditional_activities, _, _, _ = load_cms(similar_cms)
+        expected_enrique = len(enrique_cecos) * len(conditional_activities) - 2
         assert enrique["completed"] == 8 and enrique["expected"] == expected_enrique
         assert payload["summary"]["notApplicableCompletions"] == 3
         assert payload["quality"]["responseSchema"]["applicabilityIssues"] == {}
@@ -570,7 +603,7 @@ def main() -> None:
             actual,
             ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            similar_cms,
         )
         activity_map = {item["name"]: item for item in payload["activities"]}
         assert (activity_map["Programacion Hornos Merry - Focaccia"]["completedStores"], activity_map["Programacion Hornos Merry - Focaccia"]["notApplicableStores"]) == (8, 2)
@@ -642,7 +675,7 @@ def main() -> None:
             42, start, finish, "", "Prueba", "38333", "Programacion Hornos Merry - Focaccia",
             "Sí", "No", "", f"{allowed}/conflicto.jpg", "",
         ]])
-        rows, schema = load_responses(conflicting, [item["name"] for item in cms_activities])
+        rows, schema = load_responses(conflicting, [item["name"] for item in conditional_activities])
         assert rows[0]["confirmed"] is False and rows[0]["applicabilityConflict"] is True
         assert schema["applicabilityIssues"]["conflicting-applicability-answers"] == [2]
 
@@ -781,11 +814,24 @@ def main() -> None:
                 f"{allowed}/{filename}" if filename else "",
             ])
         save_book(holiday, holiday_headers, holiday_rows)
+        # El flujo de horario festivo se valida en una copia donde el módulo
+        # está activo; la visibilidad real la sigue determinando exclusivamente
+        # el CMS que se publica.
+        holiday_cms = temp / "cms-horario-festivo-activo.xlsx"
+        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", holiday_cms)
+        holiday_book = load_workbook(holiday_cms)
+        holiday_sheet = holiday_book["Actividades"]
+        for row_number in range(5, holiday_sheet.max_row + 1):
+            if clean_text(holiday_sheet.cell(row_number, cms_headers["Actividad"]).value) == "Validacion Horario Festivo Sep 26":
+                holiday_sheet.cell(row_number, cms_headers["Activo"]).value = "Si"
+                break
+        holiday_book.save(holiday_cms)
+        holiday_book.close()
         holiday_payload = build_payload(
             holiday,
             ROOT / "cms/Directorio.xlsx",
             ROOT / "config/settings.json",
-            ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx",
+            holiday_cms,
         )
         holiday_schema = holiday_payload["quality"]["responseSchema"]
         assert holiday_schema["surveyHeaderMap"] == {

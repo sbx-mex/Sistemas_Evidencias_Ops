@@ -106,7 +106,12 @@ def test_structural_guards(temp: Path) -> None:
     header_row, cols = find_header(sheet, {
         "orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo",
     })
-    first = header_row + 1
+    first = next(
+        row_number
+        for row_number in range(header_row + 1, sheet.max_row + 1)
+        if sheet.cell(row_number, cols["actividad"] + 1).value
+        and str(sheet.cell(row_number, cols["activo"] + 1).value or "").strip().casefold() in {"si", "sí"}
+    )
     target = sheet.max_row + 1
     for column in range(1, sheet.max_column + 1):
         sheet.cell(target, column, sheet.cell(first, column).value)
@@ -156,7 +161,13 @@ def test_flexible_cms(temp: Path) -> None:
         "orden", "actividad", "descripcion", "fecha inicio", "fecha limite",
         "activo", "evidencia requerida", "prioridad", "estado fecha",
     })
-    first = header_row + 1
+    first = next(
+        row_number
+        for row_number in range(header_row + 1, activities.max_row + 1)
+        if activities.cell(row_number, cols["actividad"] + 1).value
+        and str(activities.cell(row_number, cols["activo"] + 1).value or "").strip().casefold() in {"si", "sí"}
+    )
+    edited_name = activities.cell(first, cols["actividad"] + 1).value
     activities["A1"] = "CMS actualizado por operación"
     activities["A2"] = "Las notas y celdas auxiliares pueden cambiar sin romper el motor."
     activities.cell(first, cols["descripcion"] + 1, "Descripción actualizada desde CMS")
@@ -199,7 +210,7 @@ def test_flexible_cms(temp: Path) -> None:
     loaded, _, cms_settings, _ = load_cms(cms)
     assert len(loaded) == expected_count
     assert "Borrador sin publicar" not in {item["name"] for item in loaded}
-    edited = next(item for item in loaded if item["name"] == "Roll Out")
+    edited = next(item for item in loaded if item["name"] == edited_name)
     assert edited["description"] == "Descripción actualizada desde CMS"
     assert edited["priority"] == "Urgente"
     assert edited["requireEvidence"] is True
