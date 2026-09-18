@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "1948eb76fda11eb4",
+  "buildVersion": "0a19828784905193",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-18T00:13:51-05:00",
+  "generatedAt": "2026-09-18T05:22:12+00:00",
   "lastUpdated": "2026-09-17T22:29:30",
   "lastUpdatedDisplay": "17/09/2026 22:29",
   "report": {
@@ -126,7 +126,7 @@
       }
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "20d934b33d6111491e0afd9840363890ae3b37f8e18ec522215a172ba25e4826",
+    "cmsSha256": "0641ecccdd20f77ce0605f9f131c65680fe07207bb3f3f84a597cba64e6fe794",
     "settingsSha256": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524"
   },
   "summary": {
@@ -350,7 +350,7 @@
   "activities": [
     {
       "name": "Peanuts Charly&Lucy",
-      "description": "Anticipa materiales y artículos de Charly & Lucy. Fecha límite: 20 Sep.",
+      "description": "Anticipa y valida el material impreso completo del lanzamiento.",
       "order": 1,
       "startDate": "2026-09-18",
       "endDate": "2026-09-20",
@@ -372,7 +372,7 @@
     },
     {
       "name": "Peanuts Linus&Snoopy",
-      "description": "Anticipa materiales y artículos de Linus & Snoopy. Fecha límite: 27 Sep.",
+      "description": "Anticipa y valida el material impreso completo del lanzamiento.",
       "order": 2,
       "startDate": "2026-09-18",
       "endDate": "2026-09-27",
@@ -394,7 +394,7 @@
     },
     {
       "name": "Rack FHW",
-      "description": "Validación de Rack FHW. Forms: Evidencia_Rack_FHW.",
+      "description": "Valida, si aplica, y evidencia la correcta implementación del Rack FHW.",
       "order": 3,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -416,7 +416,7 @@
     },
     {
       "name": "Max & Min",
-      "description": "Estándar Max & Min y acomodo de Back. Forms: Evidencia_Max&Min.",
+      "description": "Actualiza Max & Min y evidencia el acomodo correcto de Back.",
       "order": 4,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -438,7 +438,7 @@
     },
     {
       "name": "Mandil Verde",
-      "description": "Seguimiento Mandil Verde. Forms: Evidencia_Mandil Verde.",
+      "description": "Evidencia la correcta implementación de Mandil Verde en tienda.",
       "order": 5,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -460,7 +460,7 @@
     },
     {
       "name": "Lay Out",
-      "description": "Validación de estaciones y acomodo. Forms: Evidencia_Lay_Out.",
+      "description": "Valida el acomodo de estaciones y evidencia el Layout actualizado.",
       "order": 6,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -482,7 +482,7 @@
     },
     {
       "name": "Community Board",
-      "description": "Validación de Community Board. Forms: ¿Cuentas con Community Board? + Evidencia_Community_Board.",
+      "description": "Confirma si aplica y evidencia el Community Board actualizado.",
       "order": 7,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -504,7 +504,7 @@
     },
     {
       "name": "Señaletica Back",
-      "description": "Materiales actualizados en Back. Forms: Evidencia_Señaletica_Back.",
+      "description": "Evidencia la señalética de Back vigente, visible y actualizada.",
       "order": 8,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -526,7 +526,7 @@
     },
     {
       "name": "Señaletica Lobby",
-      "description": "Materiales actualizados en Lobby. Forms: Evidencia_Señaletica_Lobby.",
+      "description": "Evidencia la señalética de Lobby vigente, visible y actualizada.",
       "order": 9,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
@@ -548,7 +548,7 @@
     },
     {
       "name": "Jarras Blender | Cold Foam",
-      "description": "Jarras completas, sin daños y listas para operar. Forms: Jarra Blender + Jarras Cold Foam + Evidencia_Jarras_Blender_&_Cold_Foam.",
+      "description": "Registra y evidencia jarras completas, sin daños y listas para operar.",
       "order": 10,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
