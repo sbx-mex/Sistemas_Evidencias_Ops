@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "22a03740e21b04e6",
+  "buildVersion": "f7a95f175d542de9",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-18T05:02:23+00:00",
+  "generatedAt": "2026-09-18T05:06:27+00:00",
   "lastUpdated": "2026-09-17T22:29:30",
   "lastUpdatedDisplay": "17/09/2026 22:29",
   "report": {
@@ -45,10 +45,10 @@
         "order": 2,
         "filterValue": "Centro Centro",
         "stores": 85,
-        "completed": 1,
+        "completed": 0,
         "expected": 850,
-        "pending": 849,
-        "compliance": 0.1,
+        "pending": 850,
+        "compliance": 0.0,
         "status": "Atención"
       },
       {
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 1,
+        "completed": 0,
         "expected": 1000,
-        "pending": 999,
-        "compliance": 0.1,
+        "pending": 1000,
+        "compliance": 0.0,
         "status": "Atención"
       },
       {
@@ -90,10 +90,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 274,
+        "completed": 276,
         "expected": 705,
-        "pending": 431,
-        "compliance": 38.9,
+        "pending": 429,
+        "compliance": 39.1,
         "status": "Atención"
       }
     ]
@@ -102,7 +102,7 @@
     "responses": "Sistema de Evidencias OPS.xlsx",
     "responsesSha256": "05594007edd27c222121ceb2a5cb55b9b07b1e0675d903ca62bc22f2011e495c",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
-    "baselineSha256": "5aa6bd9905ace9dca4a6a0cd1112169c02ccc69bcbaf9abf35b23d6e6e898206",
+    "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
     "cutoverConfig": "cutover.json",
     "cutoverConfigSha256": "76dd7ceba6502e94f27d65c7466ec1710445d051f702ee6075b401940eea3346",
@@ -618,12 +618,12 @@
         "Centro Norte"
       ],
       "stores": 12,
-      "completed": 56,
+      "completed": 57,
       "expected": 115,
       "notApplicable": 5,
-      "pending": 59,
+      "pending": 58,
       "pendingStores": 12,
-      "compliance": 48.7,
+      "compliance": 49.6,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -666,6 +666,25 @@
       "rank": 5
     },
     {
+      "dm": "Vanessa Carreño Rios",
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 13,
+      "completed": 15,
+      "expected": 128,
+      "notApplicable": 2,
+      "pending": 113,
+      "pendingStores": 13,
+      "compliance": 11.7,
+      "status": "Atención",
+      "rank": 6
+    },
+    {
       "dm": "Andrea Nava Guzman",
       "shortName": "Andrea Nava",
       "photo": "assets/dm/andrea-nava.webp",
@@ -681,25 +700,6 @@
       "pending": 71,
       "pendingStores": 8,
       "compliance": 11.2,
-      "status": "Atención",
-      "rank": 6
-    },
-    {
-      "dm": "Vanessa Carreño Rios",
-      "shortName": "Vanessa Carreño",
-      "photo": "assets/dm/vanessa-carreno.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 13,
-      "completed": 14,
-      "expected": 128,
-      "notApplicable": 2,
-      "pending": 114,
-      "pendingStores": 13,
-      "compliance": 10.9,
       "status": "Atención",
       "rank": 7
     },
@@ -846,33 +846,14 @@
         "Centro Centro"
       ],
       "stores": 13,
-      "completed": 1,
+      "completed": 0,
       "expected": 130,
       "notApplicable": 0,
-      "pending": 129,
+      "pending": 130,
       "pendingStores": 13,
-      "compliance": 0.8,
+      "compliance": 0.0,
       "status": "Atención",
       "rank": 15
-    },
-    {
-      "dm": "Fernando Eduardo Verdugo Saldaña",
-      "shortName": "Fernando Verdugo",
-      "photo": "assets/dm/fernando-verdugo.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Sur"
-      ],
-      "stores": 12,
-      "completed": 1,
-      "expected": 120,
-      "notApplicable": 0,
-      "pending": 119,
-      "pendingStores": 12,
-      "compliance": 0.8,
-      "status": "Atención",
-      "rank": 16
     },
     {
       "dm": "Ariana Janet Gutierrez Martinez",
@@ -891,7 +872,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 17
+      "rank": 16
     },
     {
       "dm": "Cesar Alfonso Castillo Romero",
@@ -908,6 +889,25 @@
       "notApplicable": 0,
       "pending": 140,
       "pendingStores": 14,
+      "compliance": 0.0,
+      "status": "Atención",
+      "rank": 17
+    },
+    {
+      "dm": "Fernando Eduardo Verdugo Saldaña",
+      "shortName": "Fernando Verdugo",
+      "photo": "assets/dm/fernando-verdugo.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 12,
+      "completed": 0,
+      "expected": 120,
+      "notApplicable": 0,
+      "pending": 120,
+      "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 18
@@ -1184,6 +1184,17 @@
     {
       "ceco": "38627",
       "store": "Moliere 222",
+      "dm": "Alberto Torrado Aguilar Cauz",
+      "completed": 0,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 0.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38187",
+      "store": "Nuevo Leon DT",
       "dm": "Alberto Torrado Aguilar Cauz",
       "completed": 0,
       "expected": 10,
@@ -1537,6 +1548,17 @@
       "ceco": "38138",
       "store": "Galerias metepec 1",
       "dm": "Daniel Flores Maldonado",
+      "completed": 0,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 0.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38471",
+      "store": "Angeles Acoxpa",
+      "dm": "Fernando Eduardo Verdugo Saldaña",
       "completed": 0,
       "expected": 10,
       "notApplicable": 0,
@@ -3305,17 +3327,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38187",
-      "store": "Nuevo Leon DT",
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43011",
       "store": "Carr Toluca-Atlacomulco DT",
       "dm": "Andrea Nava Guzman",
@@ -3814,17 +3825,6 @@
       "ceco": "38189",
       "store": "Santa Fe Imax",
       "dm": "Erika Julieta Contreras Aguilera",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38471",
-      "store": "Angeles Acoxpa",
-      "dm": "Fernando Eduardo Verdugo Saldaña",
       "completed": 1,
       "expected": 10,
       "notApplicable": 0,
@@ -4581,17 +4581,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "completed": 3,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 7,
-      "compliance": 30.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38937",
       "store": "Parque Tepeyac Piso 1",
       "dm": "Veronica Garcia Ortega",
@@ -4661,6 +4650,17 @@
       "ceco": "38374",
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 4,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 40.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
       "completed": 4,
       "expected": 10,
       "notApplicable": 0,
@@ -4878,17 +4878,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38186",
-      "store": "Arboledas",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 6,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 3,
-      "compliance": 66.7,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38442",
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4969,6 +4958,17 @@
       "ceco": "38456",
       "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
+      "completed": 7,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 2,
+      "compliance": 77.8,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38186",
+      "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 7,
       "expected": 9,
       "notApplicable": 1,
@@ -5759,11 +5759,11 @@
       "dm": "Alberto Torrado Aguilar Cauz",
       "region": "Centro Centro",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 0,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:11:42",
+      "compliance": 0.0,
+      "lastUpdate": null,
       "activities": {
         "Peanuts Charly&Lucy": false,
         "Peanuts Linus&Snoopy": false,
@@ -5773,7 +5773,7 @@
         "Lay Out": false,
         "Community Board": false,
         "Señaletica Back": false,
-        "Señaletica Lobby": true,
+        "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false
       },
       "applicableActivities": {
@@ -8999,15 +8999,15 @@
       "dm": "Fernando Eduardo Verdugo Saldaña",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 0,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-07T13:00:23",
+      "compliance": 0.0,
+      "lastUpdate": null,
       "activities": {
         "Peanuts Charly&Lucy": false,
         "Peanuts Linus&Snoopy": false,
-        "Rack FHW": true,
+        "Rack FHW": false,
         "Max & Min": false,
         "Mandil Verde": false,
         "Lay Out": false,
@@ -14615,10 +14615,10 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 66.7,
+      "compliance": 77.8,
       "lastUpdate": "2026-09-12T13:34:25",
       "activities": {
         "Peanuts Charly&Lucy": false,
@@ -14629,7 +14629,7 @@
         "Lay Out": true,
         "Community Board": false,
         "Señaletica Back": true,
-        "Señaletica Lobby": false,
+        "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true
       },
       "applicableActivities": {
@@ -16271,15 +16271,15 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 30.0,
+      "compliance": 40.0,
       "lastUpdate": "2026-09-17T22:29:30",
       "activities": {
         "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": true,
-        "Rack FHW": false,
+        "Rack FHW": true,
         "Max & Min": false,
         "Mandil Verde": false,
         "Lay Out": false,
@@ -21997,16 +21997,16 @@
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/image_Maria%20Fernanda%20Reyes.jpg"
     },
     {
-      "id": "respuesta-e528662396aba601",
+      "id": "respuesta-963f042f9127e27f",
       "timestamp": "2026-09-09T14:11:42",
       "timestampDisplay": "09/09/2026 14:11",
       "activity": "Señaletica Lobby",
-      "ceco": "38187",
-      "store": "Nuevo Leon DT",
-      "dm": "Alberto Torrado Aguilar Cauz",
-      "region": "Centro Centro",
-      "evidenceKey": "Senaletica_Lobby_38187",
-      "evidenceLinkLabel": "Link_Senaletica_Lobby_38187",
+      "ceco": "38186",
+      "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Senaletica_Lobby_38186",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38186",
       "evidenceFileName": "image_Starbucks Arboledas.jpg",
       "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
       "confirmed": true,
@@ -22783,16 +22783,16 @@
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%202/IMG_9501_Starbucks%20San%20Mateo.jpeg"
     },
     {
-      "id": "respuesta-ed93a3f21e109c9f",
+      "id": "respuesta-f328ae4d5fa7f96e",
       "timestamp": "2026-09-07T13:00:23",
       "timestampDisplay": "07/09/2026 13:00",
       "activity": "Rack FHW",
-      "ceco": "38471",
-      "store": "Angeles Acoxpa",
-      "dm": "Fernando Eduardo Verdugo Saldaña",
-      "region": "Centro Sur",
-      "evidenceKey": "Rack_FHW_38471",
-      "evidenceLinkLabel": "Link_Rack_FHW_38471",
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "region": "Centro Norte",
+      "evidenceKey": "Rack_FHW_38371",
+      "evidenceLinkLabel": "Link_Rack_FHW_38371",
       "evidenceFileName": "image_Starbucks Montevideo.jpg",
       "evidenceSourceHeader": "Evidencia_Rack_FHW",
       "confirmed": true,
