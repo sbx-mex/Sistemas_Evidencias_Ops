@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "98e47218789cdb79",
+  "buildVersion": "ef528ff924407836",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-19T21:51:48+00:00",
-  "lastUpdated": "2026-09-19T15:31:21",
-  "lastUpdatedDisplay": "19/09/2026 15:31",
+  "generatedAt": "2026-09-19T22:09:37+00:00",
+  "lastUpdated": "2026-09-19T16:04:14",
+  "lastUpdatedDisplay": "19/09/2026 16:04",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "19/09/26 · 15:31 h",
+    "cutOffDisplay": "19/09/26 · 16:04 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 297,
+        "completed": 296,
         "expected": 776,
-        "pending": 479,
-        "compliance": 38.3,
+        "pending": 480,
+        "compliance": 38.1,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "091264a8a7402c79bb978e89d2d399a33bcf39d9bda7e22b749faa29dbf47932",
+    "responsesSha256": "aeec09282a9c4ec33c2ba720ba03955f47a0548beeee8cc2ebff93c81f60590d",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3911,
-    "completedCompletions": 397,
-    "compliance": 10.2,
-    "validResponses": 397,
+    "completedCompletions": 396,
+    "compliance": 10.1,
+    "validResponses": 396,
     "storesComplete": 0,
-    "pendingCompletions": 3514,
+    "pendingCompletions": 3515,
     "notApplicableCompletions": 16
   },
   "quality": {
-    "responsesRead": 451,
+    "responsesRead": 450,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 26,
-      "newFormsRowsIncluded": 26,
+      "newFormsRowsRead": 25,
+      "newFormsRowsIncluded": 25,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 0,
@@ -252,7 +252,7 @@
     "responseSchema": {
       "sheet": "Sheet1",
       "headerRow": 1,
-      "columns": 22,
+      "columns": 23,
       "activityHeaders": [
         "Selecciona la actividad que deseas registrar"
       ],
@@ -260,7 +260,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 26
+        "CeCo": 25
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -286,7 +286,8 @@
         "Evidencia_Jarras_Blender_&_Cold_Foam",
         "Evidencia_Peanuts_Charly&Lucy",
         "Evidencia_Peanuts_Linus&Snoopy",
-        "Evidencia_Organizacion_Refrigeradores_Back"
+        "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+        "Evidencia_Organizacion_Refrigeradores_Back_Despues"
       ],
       "evidenceHeaderMap": {
         "Evidencia_Rack_FHW": "rackfhw",
@@ -299,7 +300,8 @@
         "Evidencia_Jarras_Blender_&_Cold_Foam": "jarrasblendercoldfoam",
         "Evidencia_Peanuts_Charly&Lucy": "peanutscharlylucy",
         "Evidencia_Peanuts_Linus&Snoopy": "peanutslinussnoopy",
-        "Evidencia_Organizacion_Refrigeradores_Back": "organizacionrefrigeradoresback"
+        "Evidencia_Organizacion_Refrigeradores_Back_Antes": "organizacionrefrigeradoresback",
+        "Evidencia_Organizacion_Refrigeradores_Back_Despues": "organizacionrefrigeradoresback"
       },
       "evidenceHeaderMatch": {
         "Evidencia_Rack_FHW": "exact",
@@ -312,7 +314,8 @@
         "Evidencia_Jarras_Blender_&_Cold_Foam": "exact",
         "Evidencia_Peanuts_Charly&Lucy": "exact",
         "Evidencia_Peanuts_Linus&Snoopy": "exact",
-        "Evidencia_Organizacion_Refrigeradores_Back": "exact"
+        "Evidencia_Organizacion_Refrigeradores_Back_Antes": "affinity",
+        "Evidencia_Organizacion_Refrigeradores_Back_Despues": "affinity"
       },
       "rowConflicts": [],
       "evidenceIssues": {},
@@ -321,7 +324,7 @@
     },
     "notApplicableResponses": 16,
     "notApplicablePairs": 16,
-    "evidenceLinksPublished": 397,
+    "evidenceLinksPublished": 396,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -358,11 +361,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 18,
+      "completedStores": 19,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 339,
-      "compliance": 5.0,
+      "pendingStores": 338,
+      "compliance": 5.3,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -380,11 +383,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 1,
+      "completedStores": 0,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 0.3,
+      "pendingStores": 357,
+      "compliance": 0.0,
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
@@ -578,11 +581,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 1,
+      "completedStores": 0,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 0.3,
+      "pendingStores": 357,
+      "compliance": 0.0,
       "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
       "daysRemaining": 11,
@@ -676,33 +679,14 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 33,
+      "completed": 35,
       "expected": 143,
       "notApplicable": 0,
-      "pending": 110,
+      "pending": 108,
       "pendingStores": 13,
-      "compliance": 23.1,
+      "compliance": 24.5,
       "status": "Atención",
       "rank": 5
-    },
-    {
-      "dm": "Vanessa Carreño Rios",
-      "shortName": "Vanessa Carreño",
-      "photo": "assets/dm/vanessa-carreno.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 13,
-      "completed": 16,
-      "expected": 141,
-      "notApplicable": 2,
-      "pending": 125,
-      "pendingStores": 13,
-      "compliance": 11.3,
-      "status": "Atención",
-      "rank": 6
     },
     {
       "dm": "Andrea Nava Guzman",
@@ -721,7 +705,7 @@
       "pendingStores": 8,
       "compliance": 10.2,
       "status": "Atención",
-      "rank": 7
+      "rank": 6
     },
     {
       "dm": "Manuel Alejandro Avila Molina",
@@ -739,6 +723,25 @@
       "pending": 129,
       "pendingStores": 13,
       "compliance": 9.8,
+      "status": "Atención",
+      "rank": 7
+    },
+    {
+      "dm": "Vanessa Carreño Rios",
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 13,
+      "completed": 13,
+      "expected": 141,
+      "notApplicable": 2,
+      "pending": 128,
+      "pendingStores": 13,
+      "compliance": 9.2,
       "status": "Atención",
       "rank": 8
     },
@@ -4403,6 +4406,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 2,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 18.2,
+      "status": "Atención"
+    },
+    {
       "ceco": "38546",
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
@@ -4447,30 +4461,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38149",
-      "store": "Bellavista",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 2,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 18.2,
-      "status": "Atención"
-    },
-    {
       "ceco": "38394",
       "store": "Centro Comercial Lomas Verdes",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 2,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 18.2,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38507",
-      "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 2,
       "expected": 11,
@@ -4590,8 +4582,30 @@
       "status": "Atención"
     },
     {
+      "ceco": "38149",
+      "store": "Bellavista",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 3,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 27.3,
+      "status": "Atención"
+    },
+    {
       "ceco": "38535",
       "store": "City Center Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 3,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 27.3,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38507",
+      "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 3,
       "expected": 11,
@@ -4681,17 +4695,6 @@
       "ceco": "38339",
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
-      "completed": 5,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 45.5,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
       "completed": 5,
       "expected": 11,
       "notApplicable": 0,
@@ -16915,14 +16918,14 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 2,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 45.5,
-      "lastUpdate": "2026-09-19T15:31:21",
+      "compliance": 18.2,
+      "lastUpdate": "2026-09-09T17:13:38",
       "activities": {
-        "Peanuts Charly&Lucy": true,
-        "Peanuts Linus&Snoopy": true,
+        "Peanuts Charly&Lucy": false,
+        "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
         "Mandil Verde": false,
@@ -16931,7 +16934,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Organizacion Refrigeradores Back": true
+        "Organizacion Refrigeradores Back": false
       },
       "applicableActivities": {
         "Peanuts Charly&Lucy": true,
@@ -18169,13 +18172,13 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 18.2,
-      "lastUpdate": "2026-09-09T15:25:41",
+      "compliance": 27.3,
+      "lastUpdate": "2026-09-19T16:04:14",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -18283,13 +18286,13 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 18.2,
-      "lastUpdate": "2026-09-09T14:39:20",
+      "compliance": 27.3,
+      "lastUpdate": "2026-09-19T15:37:27",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -18647,18 +18650,18 @@
   "surveyModules": [],
   "submissions": [
     {
-      "id": "respuesta-2d0d3a72b093c6f4",
-      "timestamp": "2026-09-19T15:31:21",
-      "timestampDisplay": "19/09/2026 15:31",
-      "activity": "Organizacion Refrigeradores Back",
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
+      "id": "respuesta-f233586f4c4d2172",
+      "timestamp": "2026-09-19T16:04:14",
+      "timestampDisplay": "19/09/2026 16:04",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38149",
+      "store": "Bellavista",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
-      "evidenceKey": "Organizacion_Refrigeradores_Back_38371",
-      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38371",
-      "evidenceFileName": "ChatGPT Image 19 sept 2026, 15_22_18_Enrique Cesar Flores.png",
-      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back",
+      "evidenceKey": "Peanuts_Charly_Lucy_38149",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38149",
+      "evidenceFileName": "IMG-20260918-WA0067_Starbucks Bellavista.jpg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
       "confirmed": true,
       "answer": "Sí",
       "notApplicable": false,
@@ -18666,7 +18669,29 @@
       "evidenceAvailable": true,
       "evidenceLinkPublished": true,
       "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/ChatGPT%20Image%2019%20sept%202026,%2015_22_18_Enrique%20Cesar%20Flores.png"
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/IMG-20260918-WA0067_Starbucks%20Bellavista.jpg"
+    },
+    {
+      "id": "respuesta-11e7ec98a6395feb",
+      "timestamp": "2026-09-19T15:37:27",
+      "timestampDisplay": "19/09/2026 15:37",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38507",
+      "store": "Espacio Vista del Valle",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38507",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38507",
+      "evidenceFileName": "image_Eduardo David Reyes.jpg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/image_Eduardo%20David%20Reyes.jpg"
     },
     {
       "id": "respuesta-a579f816e01460a8",
@@ -19177,50 +19202,6 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/image_Johan%20Arellano%20Navar.jpg"
-    },
-    {
-      "id": "respuesta-608ffc33fc7d6b94",
-      "timestamp": "2026-09-17T22:29:30",
-      "timestampDisplay": "17/09/2026 22:29",
-      "activity": "Peanuts Linus&Snoopy",
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "evidenceKey": "Peanuts_Linus_Snoopy_38371",
-      "evidenceLinkLabel": "Link_Peanuts_Linus_Snoopy_38371",
-      "evidenceFileName": "17897057552931957226119787917932_Enrique Cesar Flores.jpg",
-      "evidenceSourceHeader": "Evidencia_Peanuts_Linus&Snoopy",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Lucy_24Sep/17897057552931957226119787917932_Enrique%20Cesar%20Flores.jpg"
-    },
-    {
-      "id": "respuesta-4892894bc24b97e0",
-      "timestamp": "2026-09-17T22:27:26",
-      "timestampDisplay": "17/09/2026 22:27",
-      "activity": "Peanuts Charly&Lucy",
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "evidenceKey": "Peanuts_Charly_Lucy_38371",
-      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38371",
-      "evidenceFileName": "17897056090625970350618027055472_Enrique Cesar Flores.jpg",
-      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/17897056090625970350618027055472_Enrique%20Cesar%20Flores.jpg"
     },
     {
       "id": "respuesta-5f1631d63e40ef9c",
