@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "0a19828784905193",
+  "buildVersion": "f2608677d20b7283",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-18T05:22:12+00:00",
-  "lastUpdated": "2026-09-17T22:29:30",
-  "lastUpdatedDisplay": "17/09/2026 22:29",
+  "generatedAt": "2026-09-19T08:03:49+00:00",
+  "lastUpdated": "2026-09-18T21:56:06",
+  "lastUpdatedDisplay": "18/09/2026 21:56",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "17/09/26 · 22:29 h",
+    "cutOffDisplay": "18/09/26 · 21:56 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 0,
+        "completed": 1,
         "expected": 1000,
-        "pending": 1000,
-        "compliance": 0.0,
+        "pending": 999,
+        "compliance": 0.1,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 276,
-        "expected": 705,
-        "pending": 429,
-        "compliance": 39.1,
-        "status": "Atención"
+        "completed": 283,
+        "expected": 704,
+        "pending": 421,
+        "compliance": 40.2,
+        "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "05594007edd27c222121ceb2a5cb55b9b07b1e0675d903ca62bc22f2011e495c",
+    "responsesSha256": "10378081f9042ed7f4973cc2bb4864d35206741bc52c7db57628d8270b38f1e4",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
@@ -134,24 +134,24 @@
     "dms": 28,
     "stores": 357,
     "activities": 10,
-    "expectedCompletions": 3555,
-    "completedCompletions": 375,
-    "compliance": 10.5,
-    "validResponses": 375,
+    "expectedCompletions": 3554,
+    "completedCompletions": 383,
+    "compliance": 10.8,
+    "validResponses": 383,
     "storesComplete": 0,
-    "pendingCompletions": 3180,
-    "notApplicableCompletions": 15
+    "pendingCompletions": 3171,
+    "notApplicableCompletions": 16
   },
   "quality": {
-    "responsesRead": 427,
+    "responsesRead": 436,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 2,
-      "newFormsRowsIncluded": 2,
+      "newFormsRowsRead": 11,
+      "newFormsRowsIncluded": 11,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 0,
@@ -265,7 +265,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 2
+        "CeCo": 11
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -321,9 +321,9 @@
       "applicabilityIssues": {},
       "surveyIssues": {}
     },
-    "notApplicableResponses": 15,
-    "notApplicablePairs": 15,
-    "evidenceLinksPublished": 375,
+    "notApplicableResponses": 16,
+    "notApplicablePairs": 16,
+    "evidenceLinksPublished": 383,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -360,14 +360,14 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 1,
+      "completedStores": 8,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 0.3,
-      "deadlineLabel": "Vence en 2 días",
+      "pendingStores": 349,
+      "compliance": 2.2,
+      "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
-      "daysRemaining": 2,
+      "daysRemaining": 1,
       "focusRank": 1
     },
     {
@@ -387,9 +387,9 @@
       "notApplicableStores": 0,
       "pendingStores": 356,
       "compliance": 0.3,
-      "deadlineLabel": "En 9 días",
+      "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
-      "daysRemaining": 9,
+      "daysRemaining": 8,
       "focusRank": 2
     },
     {
@@ -409,9 +409,9 @@
       "notApplicableStores": 5,
       "pendingStores": 286,
       "compliance": 18.8,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 3
     },
     {
@@ -431,9 +431,9 @@
       "notApplicableStores": 0,
       "pendingStores": 327,
       "compliance": 8.4,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 4
     },
     {
@@ -448,14 +448,14 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 59,
+      "completedStores": 60,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 298,
-      "compliance": 16.5,
-      "deadlineLabel": "En 12 días",
+      "pendingStores": 297,
+      "compliance": 16.8,
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 5
     },
     {
@@ -475,9 +475,9 @@
       "notApplicableStores": 0,
       "pendingStores": 320,
       "compliance": 10.4,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 6
     },
     {
@@ -493,13 +493,13 @@
       "autoDetected": false,
       "conditionalApplicability": true,
       "completedStores": 24,
-      "applicableStores": 347,
-      "notApplicableStores": 10,
-      "pendingStores": 323,
+      "applicableStores": 346,
+      "notApplicableStores": 11,
+      "pendingStores": 322,
       "compliance": 6.9,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 7
     },
     {
@@ -519,9 +519,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.2,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 8
     },
     {
@@ -541,9 +541,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.2,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 9
     },
     {
@@ -563,9 +563,9 @@
       "notApplicableStores": 0,
       "pendingStores": 244,
       "compliance": 31.7,
-      "deadlineLabel": "En 12 días",
+      "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
-      "daysRemaining": 12,
+      "daysRemaining": 11,
       "focusRank": 10
     }
   ],
@@ -618,12 +618,12 @@
         "Centro Norte"
       ],
       "stores": 12,
-      "completed": 57,
+      "completed": 59,
       "expected": 115,
       "notApplicable": 5,
-      "pending": 58,
+      "pending": 56,
       "pendingStores": 12,
-      "compliance": 49.6,
+      "compliance": 51.3,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -637,12 +637,12 @@
         "Centro Norte"
       ],
       "stores": 11,
-      "completed": 31,
-      "expected": 109,
-      "notApplicable": 1,
-      "pending": 78,
+      "completed": 32,
+      "expected": 108,
+      "notApplicable": 2,
+      "pending": 76,
       "pendingStores": 11,
-      "compliance": 28.4,
+      "compliance": 29.6,
       "status": "Atención",
       "rank": 4
     },
@@ -656,12 +656,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 29,
+      "completed": 33,
       "expected": 130,
       "notApplicable": 0,
-      "pending": 101,
+      "pending": 97,
       "pendingStores": 13,
-      "compliance": 22.3,
+      "compliance": 25.4,
       "status": "Atención",
       "rank": 5
     },
@@ -837,6 +837,25 @@
       "rank": 14
     },
     {
+      "dm": "Monica Selene Morales Ibarra",
+      "shortName": "Monica Morales",
+      "photo": "assets/dm/monica-morales.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 13,
+      "completed": 1,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 129,
+      "pendingStores": 13,
+      "compliance": 0.8,
+      "status": "Atención",
+      "rank": 15
+    },
+    {
       "dm": "Alberto Torrado Aguilar Cauz",
       "shortName": "Alberto Torrado",
       "photo": "",
@@ -853,7 +872,7 @@
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 15
+      "rank": 16
     },
     {
       "dm": "Ariana Janet Gutierrez Martinez",
@@ -872,7 +891,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 16
+      "rank": 17
     },
     {
       "dm": "Cesar Alfonso Castillo Romero",
@@ -891,7 +910,7 @@
       "pendingStores": 14,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 17
+      "rank": 18
     },
     {
       "dm": "Fernando Eduardo Verdugo Saldaña",
@@ -910,7 +929,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 18
+      "rank": 19
     },
     {
       "dm": "Guadalupe Ibarra Martínez",
@@ -929,7 +948,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 19
+      "rank": 20
     },
     {
       "dm": "Hazar Susim Trejo Hernandez",
@@ -948,7 +967,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 20
+      "rank": 21
     },
     {
       "dm": "Jaqueline Cortes Ayala",
@@ -967,7 +986,7 @@
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 21
+      "rank": 22
     },
     {
       "dm": "Jesus Antonio Elguera Flores",
@@ -986,7 +1005,7 @@
       "pendingStores": 10,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 22
+      "rank": 23
     },
     {
       "dm": "Luis Manuel Neri Saldaña",
@@ -1005,7 +1024,7 @@
       "pendingStores": 15,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 23
+      "rank": 24
     },
     {
       "dm": "Luis Alberto Quevedo Rodriguez",
@@ -1024,7 +1043,7 @@
       "pendingStores": 14,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 24
+      "rank": 25
     },
     {
       "dm": "Maria Anallely Sanchez Garcia",
@@ -1041,25 +1060,6 @@
       "notApplicable": 0,
       "pending": 160,
       "pendingStores": 16,
-      "compliance": 0.0,
-      "status": "Atención",
-      "rank": 25
-    },
-    {
-      "dm": "Monica Selene Morales Ibarra",
-      "shortName": "Monica Morales",
-      "photo": "assets/dm/monica-morales.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Sur"
-      ],
-      "stores": 13,
-      "completed": 0,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 130,
-      "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 26
@@ -2733,17 +2733,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "43164",
-      "store": "Blvd Ojo de Agua DT",
-      "dm": "Monica Selene Morales Ibarra",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38351",
       "store": "Ciudad Jardin l",
       "dm": "Monica Selene Morales Ibarra",
@@ -4240,6 +4229,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "43164",
+      "store": "Blvd Ojo de Agua DT",
+      "dm": "Monica Selene Morales Ibarra",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38694",
       "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4405,28 +4405,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38529",
-      "store": "Bosques de Aragon",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38431",
-      "store": "Eduardo Molina",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38995",
       "store": "Encuentro Oceania II",
       "dm": "Veronica Garcia Ortega",
@@ -4482,17 +4460,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38535",
-      "store": "City Center Esmeralda",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38507",
       "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4526,30 +4493,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38925",
-      "store": "Star Medica Lomas Verdes",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43130",
       "store": "Town Center Nicolás Romero",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38115",
-      "store": "Zona Azul",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 2,
       "expected": 10,
@@ -4570,6 +4515,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38529",
+      "store": "Bosques de Aragon",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 2,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 7,
+      "compliance": 22.2,
+      "status": "Atención"
+    },
+    {
       "ceco": "38845",
       "store": "Mundo E II",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4578,6 +4534,17 @@
       "notApplicable": 2,
       "pending": 6,
       "compliance": 25.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 3,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 30.0,
       "status": "Atención"
     },
     {
@@ -4603,8 +4570,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "43043",
-      "store": "Atizapan",
+      "ceco": "38535",
+      "store": "City Center Esmeralda",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 3,
       "expected": 10,
@@ -4627,6 +4594,28 @@
     {
       "ceco": "38266",
       "store": "San Mateo",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 3,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 30.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 3,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 30.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38115",
+      "store": "Zona Azul",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 3,
       "expected": 10,
@@ -4669,14 +4658,14 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38661",
-      "store": "Jinetes",
-      "dm": "Nancy Carolina Rodriguez Medina",
+      "ceco": "43043",
+      "store": "Atizapan",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 4,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 5,
-      "compliance": 44.4,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 40.0,
       "status": "Seguimiento"
     },
     {
@@ -4694,17 +4683,6 @@
       "ceco": "38339",
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
-      "completed": 5,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38674",
-      "store": "Mundo E",
-      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 5,
       "expected": 10,
       "notApplicable": 0,
@@ -4768,6 +4746,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38661",
+      "store": "Jinetes",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 5,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 4,
+      "compliance": 55.6,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38590",
       "store": "Parque Toreo II",
       "dm": "Yazmin Chabela Guadarrama",
@@ -4825,6 +4814,17 @@
     {
       "ceco": "38230",
       "store": "ITEMS Edo de Mexico",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 6,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 60.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38674",
+      "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 6,
       "expected": 10,
@@ -14219,17 +14219,17 @@
       "dm": "Monica Selene Morales Ibarra",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-18T13:17:40",
       "activities": {
         "Peanuts Charly&Lucy": false,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": false,
         "Max & Min": false,
-        "Mandil Verde": false,
+        "Mandil Verde": true,
         "Lay Out": false,
         "Community Board": false,
         "Señaletica Back": false,
@@ -14687,13 +14687,13 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 44.4,
-      "lastUpdate": "2026-09-08T18:53:18",
+      "compliance": 55.6,
+      "lastUpdate": "2026-09-18T17:27:58",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": false,
         "Max & Min": true,
@@ -14723,13 +14723,13 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-07T14:47:21",
+      "compliance": 60.0,
+      "lastUpdate": "2026-09-18T21:30:13",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": true,
@@ -16596,9 +16596,9 @@
       "region": "Centro Norte",
       "status": "Abierta",
       "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "compliance": 20.0,
+      "expected": 9,
+      "notApplicable": 1,
+      "compliance": 22.2,
       "lastUpdate": "2026-09-09T14:05:07",
       "activities": {
         "Peanuts Charly&Lucy": false,
@@ -16619,7 +16619,7 @@
         "Max & Min": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true,
+        "Community Board": false,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true
@@ -16631,13 +16631,13 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-09T17:20:57",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-18T16:59:32",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -17423,13 +17423,13 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 30.0,
-      "lastUpdate": "2026-09-10T09:52:03",
+      "compliance": 40.0,
+      "lastUpdate": "2026-09-18T18:03:25",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -17531,13 +17531,13 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-09T14:22:14",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-18T21:56:06",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -17747,13 +17747,13 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-09T14:58:12",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-18T17:48:50",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -17819,13 +17819,13 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-09T16:41:03",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-18T19:40:46",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -17912,6 +17912,203 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-6006e93dc042589c",
+      "timestamp": "2026-09-18T21:56:06",
+      "timestampDisplay": "18/09/2026 21:56",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38535",
+      "store": "City Center Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38535",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38535",
+      "evidenceFileName": "IMG_6412_Maria Fernanda Reyes.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/IMG_6412_Maria%20Fernanda%20Reyes.jpeg"
+    },
+    {
+      "id": "respuesta-fc71871c96b57d15",
+      "timestamp": "2026-09-18T21:30:13",
+      "timestampDisplay": "18/09/2026 21:30",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38674",
+      "store": "Mundo E",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38674",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38674",
+      "evidenceFileName": "17897885365583498999874107265144_Starbucks Mundo E.jpg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/17897885365583498999874107265144_Starbucks%20Mundo%20E.jpg"
+    },
+    {
+      "id": "respuesta-5341084711f5ed95",
+      "timestamp": "2026-09-18T19:40:46",
+      "timestampDisplay": "18/09/2026 19:40",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38115",
+      "store": "Zona Azul",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38115",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38115",
+      "evidenceFileName": "PEANUTS_Starbucks Zona Azul.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/PEANUTS_Starbucks%20Zona%20Azul.jpeg"
+    },
+    {
+      "id": "respuesta-223e72edc48ea90e",
+      "timestamp": "2026-09-18T18:03:25",
+      "timestampDisplay": "18/09/2026 18:03",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "43043",
+      "store": "Atizapan",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_43043",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_43043",
+      "evidenceFileName": "a65fc51a-a078-45b3-b3fe-dc146bb64aae_Starbucks Atizapan.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/a65fc51a-a078-45b3-b3fe-dc146bb64aae_Starbucks%20Atizapan.jpeg"
+    },
+    {
+      "id": "respuesta-4d207c51c0b49270",
+      "timestamp": "2026-09-18T17:48:50",
+      "timestampDisplay": "18/09/2026 17:48",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38925",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38925",
+      "evidenceFileName": "IMG_1748_Starbucks Star Medic.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/IMG_1748_Starbucks%20Star%20Medic.jpeg"
+    },
+    {
+      "id": "respuesta-1af86af3a1f5c204",
+      "timestamp": "2026-09-18T17:27:58",
+      "timestampDisplay": "18/09/2026 17:27",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38661",
+      "store": "Jinetes",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38661",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38661",
+      "evidenceFileName": "IMG_8216_Starbucks Jinetes.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/IMG_8216_Starbucks%20Jinetes.jpeg"
+    },
+    {
+      "id": "respuesta-3cbf8fba24b52301",
+      "timestamp": "2026-09-18T16:59:32",
+      "timestampDisplay": "18/09/2026 16:59",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38431",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38431",
+      "evidenceFileName": "image_Ricardo Romo Morales.jpg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/image_Ricardo%20Romo%20Morales.jpg"
+    },
+    {
+      "id": "respuesta-907aa42005c57040",
+      "timestamp": "2026-09-18T13:44:45",
+      "timestampDisplay": "18/09/2026 13:44",
+      "activity": "Community Board",
+      "ceco": "38529",
+      "store": "Bosques de Aragon",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Community_Board_38529",
+      "evidenceLinkLabel": "Link_Community_Board_38529",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": true,
+      "status": "No aplica",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": false
+    },
+    {
+      "id": "respuesta-894c7d75f34f1bb5",
+      "timestamp": "2026-09-18T13:17:40",
+      "timestampDisplay": "18/09/2026 13:17",
+      "activity": "Mandil Verde",
+      "ceco": "43164",
+      "store": "Blvd Ojo de Agua DT",
+      "dm": "Monica Selene Morales Ibarra",
+      "region": "Centro Sur",
+      "evidenceKey": "Mandil_Verde_43164",
+      "evidenceLinkLabel": "Link_Mandil_Verde_43164",
+      "evidenceFileName": "image_Johan Arellano Navar.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/image_Johan%20Arellano%20Navar.jpg"
+    },
     {
       "id": "respuesta-608ffc33fc7d6b94",
       "timestamp": "2026-09-17T22:29:30",
