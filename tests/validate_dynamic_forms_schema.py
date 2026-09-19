@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, load_cms, load_responses, parse_datetime, parse_quantity
+from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, find_header, load_cms, load_responses, parse_datetime, parse_quantity
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -167,6 +167,52 @@ def main() -> None:
         assert {item["activity"] for item in future_payload["submissions"]} == set(peanuts_due)
         assert {item["evidenceSourceHeader"] for item in future_payload["submissions"]} == set(future_evidence_headers)
         assert set(future_payload["quality"]["responseSchema"]["evidenceHeaderMatch"].values()) == {"exact"}
+
+        # Escenario integral: una fila CMS nueva y su pregunta de evidencia
+        # se descubren por encabezado, sin editar listas fijas ni posiciones.
+        future_cms = temp / "cms_actividad_nueva.xlsx"
+        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", future_cms)
+        workbook = load_workbook(future_cms)
+        activity_sheet = workbook["Actividades"]
+        activity_header, activity_cols = find_header(activity_sheet, {
+            "orden", "actividad", "descripcion", "fecha inicio", "fecha limite",
+            "activo", "evidencia requerida", "prioridad", "estado fecha",
+        })
+        target_row = next(
+            row
+            for row in range(activity_header + 1, activity_sheet.max_row + 2)
+            if not clean_text(activity_sheet.cell(row, activity_cols["actividad"] + 1).value)
+        )
+        new_activity = "Actividad futura segura"
+        activity_sheet.cell(target_row, activity_cols["orden"] + 1, 999)
+        activity_sheet.cell(target_row, activity_cols["actividad"] + 1, new_activity)
+        activity_sheet.cell(target_row, activity_cols["descripcion"] + 1, "Prueba de alta dinámica")
+        activity_sheet.cell(target_row, activity_cols["fecha inicio"] + 1, datetime(2026, 9, 19))
+        activity_sheet.cell(target_row, activity_cols["fecha limite"] + 1, datetime(2026, 9, 30))
+        activity_sheet.cell(target_row, activity_cols["activo"] + 1, "Si")
+        activity_sheet.cell(target_row, activity_cols["evidencia requerida"] + 1, "Si")
+        activity_sheet.cell(target_row, activity_cols["prioridad"] + 1, "Alta")
+        workbook.save(future_cms)
+
+        future_form = temp / "forms_actividad_nueva.xlsx"
+        new_evidence_header = "Evidencia_Actividad_futura_segura"
+        started, finished = timestamps(3500)
+        save_book(
+            future_form,
+            BASE + ["CeCo", ACTIVITY, new_evidence_header],
+            [[16000, started, finished, "", "Simulación", all_cecos[0], new_activity, f"{allowed}/actividad-futura.jpg"]],
+        )
+        dynamic_payload = build_payload(
+            future_form,
+            ROOT / "cms" / "Directorio.xlsx",
+            ROOT / "config" / "settings.json",
+            future_cms,
+        )
+        assert new_activity in {item["name"] for item in dynamic_payload["activities"]}
+        assert dynamic_payload["summary"]["validResponses"] == 1
+        assert dynamic_payload["submissions"][0]["activity"] == new_activity
+        assert dynamic_payload["submissions"][0]["evidenceSourceHeader"] == new_evidence_header
+        assert dynamic_payload["quality"]["responseSchema"]["evidenceHeaderMatch"][new_evidence_header] == "exact"
 
         simulation_activity = active_activities[0]
         all_ceco1 = temp / "all-ceco1.xlsx"

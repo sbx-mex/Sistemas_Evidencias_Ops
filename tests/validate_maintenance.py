@@ -88,6 +88,19 @@ def test_source_and_host_guards(temp: Path) -> None:
 def test_structural_guards(temp: Path) -> None:
     original_cms = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 
+    repeated_header = temp / "cms_encabezado_repetido.xlsx"
+    shutil.copy2(original_cms, repeated_header)
+    workbook = load_workbook(repeated_header)
+    sheet = workbook["Gerentes"]
+    sheet.insert_rows(5)
+    for column in range(1, sheet.max_column + 1):
+        sheet.cell(5, column, sheet.cell(4, column).value)
+    workbook.save(repeated_header)
+    expect_error(
+        lambda: validate_cms_engine(repeated_header),
+        "Encabezado CMS repetido en Gerentes",
+    )
+
     duplicate_config = temp / "cms_config_duplicada.xlsx"
     shutil.copy2(original_cms, duplicate_config)
     workbook = load_workbook(duplicate_config)

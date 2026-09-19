@@ -1,0 +1,27 @@
+PAQUETE DE CORRECCIÓN
+
+1. Descomprime el ZIP.
+2. Conserva exactamente las carpetas cms, scripts y tests.
+3. Sube esas carpetas al nivel raíz de sbx-mex/Sistemas_Evidencias_Ops.
+4. Reemplaza únicamente los archivos incluidos.
+5. No borres cms/Sistema de Evidencias OPS.xlsx ni config/cutover.json.
+6. Espera a que GitHub Actions ejecute “Actualizar Sistema de Evidencias OPS”.
+7. Confirma que “Validar los tres motores Excel” y “Validar sintaxis y controles del proyecto” estén en verde.
+
+El workflow regenerará data/dashboard.json y los archivos de exports.
+
+ARCHIVOS DEL PAQUETE
+
+- cms/Directorio.xlsx
+- cms/Sistema_Evidencias_OPS_CMS.xlsx
+- scripts/validate_sources.py
+- tests/validate_dynamic_forms_schema.py
+- tests/validate_maintenance.py
+- AUDITORIA_CARGA_SEGURA.md
+
+CONTROL PRINCIPAL
+
+Directorio.xlsx controla tienda, región, Estatus y DM.
+Sólo Estatus = Abierta se publica y contabiliza.
+Una nueva fila de CMS se descubre por encabezados, no por número de fila.
+Una nueva evidencia de Forms debe llamarse Evidencia_<Actividad>.

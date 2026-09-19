@@ -44,6 +44,30 @@ def duplicates(values: list[str]) -> list[str]:
     return sorted(value for value, count in Counter(values).items() if count > 1)
 
 
+def reject_repeated_header_rows(
+    ws,
+    header_row: int,
+    cols: dict[str, int],
+    fields: tuple[str, ...],
+) -> None:
+    """Evita que una segunda fila de encabezados pase como borrador o dato."""
+    expected = tuple(
+        key_text(ws.cell(header_row, cols[field] + 1).value)
+        for field in fields
+    )
+    repeated = []
+    for row_number in range(header_row + 1, ws.max_row + 1):
+        actual = tuple(
+            key_text(ws.cell(row_number, cols[field] + 1).value)
+            for field in fields
+        )
+        if actual == expected:
+            repeated.append(row_number)
+    if repeated:
+        rows = ", ".join(str(row) for row in repeated)
+        raise ValueError(f"Encabezado CMS repetido en {ws.title}: fila {rows}")
+
+
 def validate_cms_engine(path: Path) -> dict[str, int]:
     """Audita encabezados y filas activas sin bloquear borradores ni celdas auxiliares."""
     validate_xlsx(path, "el CMS maestro")
@@ -57,6 +81,15 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
         "orden", "actividad", "descripcion", "fecha inicio", "fecha limite",
         "activo", "evidencia requerida", "prioridad", "estado fecha",
     })
+    reject_repeated_header_rows(
+        ws,
+        header_row,
+        cols,
+        (
+            "orden", "actividad", "descripcion", "fecha inicio", "fecha limite",
+            "activo", "evidencia requerida", "prioridad", "estado fecha",
+        ),
+    )
     names: list[str] = []
     orders: list[str] = []
     activity_rows = 0
@@ -109,6 +142,12 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
 
     manager_ws = workbook["Gerentes"]
     manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
+    reject_repeated_header_rows(
+        manager_ws,
+        manager_header,
+        manager_cols,
+        ("dm", "region", "nombre corto", "foto webp", "estado foto", "activo"),
+    )
     managers: list[str] = []
     manager_photos = 0
     auto_detected_manager_photos = 0
@@ -129,6 +168,12 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
 
     org_ws = workbook["Organigrama"]
     org_header, org_cols = find_header(org_ws, {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"})
+    reject_repeated_header_rows(
+        org_ws,
+        org_header,
+        org_cols,
+        ("nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"),
+    )
     organization: list[tuple[int, str, str]] = []
     for row in org_ws.iter_rows(min_row=org_header + 1, values_only=True):
         name = clean_text(row[org_cols["nombre"]])
@@ -151,6 +196,12 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
 
     stores_ws = workbook["Tiendas Abiertas"]
     stores_header, stores_cols = find_header(stores_ws, {"cc", "cc nombre", "region", "estatus", "dm"})
+    reject_repeated_header_rows(
+        stores_ws,
+        stores_header,
+        stores_cols,
+        ("cc", "cc nombre", "region", "estatus", "dm"),
+    )
     cms_open_stores = 0
     cms_cecos: list[str] = []
     for row in stores_ws.iter_rows(min_row=stores_header + 1, values_only=True):
@@ -166,6 +217,12 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
 
     config_ws = workbook["Configuracion"]
     config_header, config_cols = find_header(config_ws, {"clave", "valor"})
+    reject_repeated_header_rows(
+        config_ws,
+        config_header,
+        config_cols,
+        ("clave", "valor", "descripcion"),
+    )
     config_keys: list[str] = []
     config_defaults = 0
     boolean_keys = {
