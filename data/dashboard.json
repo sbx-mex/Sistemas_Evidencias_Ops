@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "561e2738b21e6757",
+  "buildVersion": "3a8ef126a9ad3969",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-19T21:30:07+00:00",
-  "lastUpdated": "2026-09-19T14:24:20",
-  "lastUpdatedDisplay": "19/09/2026 14:24",
+  "generatedAt": "2026-09-19T21:33:12+00:00",
+  "lastUpdated": "2026-09-19T15:31:21",
+  "lastUpdatedDisplay": "19/09/2026 15:31",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "19/09/26 · 14:24 h",
+    "cutOffDisplay": "19/09/26 · 15:31 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 295,
+        "completed": 297,
         "expected": 776,
-        "pending": 481,
-        "compliance": 38.0,
+        "pending": 479,
+        "compliance": 38.3,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "2364b141768a1ab3bf3b0c0c7c1717a03d5c338e6ff757c19412303eb1b62044",
+    "responsesSha256": "091264a8a7402c79bb978e89d2d399a33bcf39d9bda7e22b749faa29dbf47932",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3911,
-    "completedCompletions": 395,
-    "compliance": 10.1,
-    "validResponses": 395,
+    "completedCompletions": 397,
+    "compliance": 10.2,
+    "validResponses": 397,
     "storesComplete": 0,
-    "pendingCompletions": 3516,
+    "pendingCompletions": 3514,
     "notApplicableCompletions": 16
   },
   "quality": {
-    "responsesRead": 449,
+    "responsesRead": 451,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 24,
-      "newFormsRowsIncluded": 24,
+      "newFormsRowsRead": 26,
+      "newFormsRowsIncluded": 26,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 0,
@@ -252,7 +252,7 @@
     "responseSchema": {
       "sheet": "Sheet1",
       "headerRow": 1,
-      "columns": 21,
+      "columns": 22,
       "activityHeaders": [
         "Selecciona la actividad que deseas registrar"
       ],
@@ -260,7 +260,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 24
+        "CeCo": 26
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -285,7 +285,8 @@
         "Evidencia_Señaletica_Lobby",
         "Evidencia_Jarras_Blender_&_Cold_Foam",
         "Evidencia_Peanuts_Charly&Lucy",
-        "Evidencia_Peanuts_Linus&Snoopy"
+        "Evidencia_Peanuts_Linus&Snoopy",
+        "Evidencia_Organizacion_Refrigeradores_Back"
       ],
       "evidenceHeaderMap": {
         "Evidencia_Rack_FHW": "rackfhw",
@@ -297,7 +298,8 @@
         "Evidencia_Señaletica_Lobby": "senaleticalobby",
         "Evidencia_Jarras_Blender_&_Cold_Foam": "jarrasblendercoldfoam",
         "Evidencia_Peanuts_Charly&Lucy": "peanutscharlylucy",
-        "Evidencia_Peanuts_Linus&Snoopy": "peanutslinussnoopy"
+        "Evidencia_Peanuts_Linus&Snoopy": "peanutslinussnoopy",
+        "Evidencia_Organizacion_Refrigeradores_Back": "organizacionrefrigeradoresback"
       },
       "evidenceHeaderMatch": {
         "Evidencia_Rack_FHW": "exact",
@@ -309,7 +311,8 @@
         "Evidencia_Señaletica_Lobby": "exact",
         "Evidencia_Jarras_Blender_&_Cold_Foam": "exact",
         "Evidencia_Peanuts_Charly&Lucy": "exact",
-        "Evidencia_Peanuts_Linus&Snoopy": "exact"
+        "Evidencia_Peanuts_Linus&Snoopy": "exact",
+        "Evidencia_Organizacion_Refrigeradores_Back": "exact"
       },
       "rowConflicts": [],
       "evidenceIssues": {},
@@ -318,7 +321,7 @@
     },
     "notApplicableResponses": 16,
     "notApplicablePairs": 16,
-    "evidenceLinksPublished": 395,
+    "evidenceLinksPublished": 397,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -355,11 +358,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 17,
+      "completedStores": 18,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 340,
-      "compliance": 4.8,
+      "pendingStores": 339,
+      "compliance": 5.0,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -575,11 +578,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 1,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 357,
-      "compliance": 0.0,
+      "pendingStores": 356,
+      "compliance": 0.3,
       "deadlineLabel": "En 11 días",
       "deadlineTone": "green",
       "daysRemaining": 11,
@@ -654,12 +657,12 @@
         "Centro Norte"
       ],
       "stores": 11,
-      "completed": 32,
+      "completed": 33,
       "expected": 119,
       "notApplicable": 2,
-      "pending": 87,
+      "pending": 86,
       "pendingStores": 11,
-      "compliance": 26.9,
+      "compliance": 27.7,
       "status": "Atención",
       "rank": 4
     },
@@ -692,12 +695,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 15,
+      "completed": 16,
       "expected": 141,
       "notApplicable": 2,
-      "pending": 126,
+      "pending": 125,
       "pendingStores": 13,
-      "compliance": 10.6,
+      "compliance": 11.3,
       "status": "Atención",
       "rank": 6
     },
@@ -4422,17 +4425,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38995",
-      "store": "Encuentro Oceania II",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 2,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 18.2,
-      "status": "Atención"
-    },
-    {
       "ceco": "38811",
       "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
@@ -4565,6 +4557,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38995",
+      "store": "Encuentro Oceania II",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 3,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 27.3,
+      "status": "Atención"
+    },
+    {
       "ceco": "38937",
       "store": "Parque Tepeyac Piso 1",
       "dm": "Veronica Garcia Ortega",
@@ -4664,17 +4667,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "completed": 4,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 7,
-      "compliance": 36.4,
-      "status": "Atención"
-    },
-    {
       "ceco": "43043",
       "store": "Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4689,6 +4681,17 @@
       "ceco": "38339",
       "store": "San Marcos",
       "dm": "Enrique Cesar Flores",
+      "completed": 5,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 45.5,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
       "completed": 5,
       "expected": 11,
       "notApplicable": 0,
@@ -16912,11 +16915,11 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 36.4,
-      "lastUpdate": "2026-09-17T22:29:30",
+      "compliance": 45.5,
+      "lastUpdate": "2026-09-19T15:31:21",
       "activities": {
         "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": true,
@@ -16928,7 +16931,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Organizacion Refrigeradores Back": false
+        "Organizacion Refrigeradores Back": true
       },
       "applicableActivities": {
         "Peanuts Charly&Lucy": true,
@@ -17368,13 +17371,13 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 18.2,
-      "lastUpdate": "2026-09-09T14:40:05",
+      "compliance": 27.3,
+      "lastUpdate": "2026-09-19T15:25:57",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": false,
@@ -18643,6 +18646,50 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-2d0d3a72b093c6f4",
+      "timestamp": "2026-09-19T15:31:21",
+      "timestampDisplay": "19/09/2026 15:31",
+      "activity": "Organizacion Refrigeradores Back",
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "region": "Centro Norte",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38371",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38371",
+      "evidenceFileName": "ChatGPT Image 19 sept 2026, 15_22_18_Enrique Cesar Flores.png",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/ChatGPT%20Image%2019%20sept%202026,%2015_22_18_Enrique%20Cesar%20Flores.png"
+    },
+    {
+      "id": "respuesta-a579f816e01460a8",
+      "timestamp": "2026-09-19T15:25:57",
+      "timestampDisplay": "19/09/2026 15:25",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38995",
+      "store": "Encuentro Oceania II",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38995",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38995",
+      "evidenceFileName": "17898530673955615463134915162659_Starbucks Encuentro.jpg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/17898530673955615463134915162659_Starbucks%20Encuentro.jpg"
+    },
     {
       "id": "respuesta-b137df62822002cb",
       "timestamp": "2026-09-19T14:24:20",
