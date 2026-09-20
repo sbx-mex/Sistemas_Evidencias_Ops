@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "ad42c9a83fe94d4e",
+  "buildVersion": "68eb27537e897fe2",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-20T20:19:37+00:00",
-  "lastUpdated": "2026-09-20T13:46:45",
-  "lastUpdatedDisplay": "20/09/2026 13:46",
+  "generatedAt": "2026-09-20T20:56:24+00:00",
+  "lastUpdated": "2026-09-20T14:54:30",
+  "lastUpdatedDisplay": "20/09/2026 14:54",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "20/09/26 · 13:46 h",
+    "cutOffDisplay": "20/09/26 · 14:54 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 314,
+        "completed": 315,
         "expected": 776,
-        "pending": 462,
-        "compliance": 40.5,
+        "pending": 461,
+        "compliance": 40.6,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "969c8c66d39cf5d85860626f196e2dafe53b9c60d1b213dfe2cde05f0a1857a7",
+    "responsesSha256": "dd98b83fe22d95e26f5793d2ecf4f1c67beae0635cb62eb27078c1a41053fcb7",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3911,
-    "completedCompletions": 415,
+    "completedCompletions": 416,
     "compliance": 10.6,
-    "validResponses": 415,
+    "validResponses": 416,
     "storesComplete": 0,
-    "pendingCompletions": 3496,
+    "pendingCompletions": 3495,
     "notApplicableCompletions": 16
   },
   "quality": {
-    "responsesRead": 479,
+    "responsesRead": 480,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 54,
-      "newFormsRowsIncluded": 54,
+      "newFormsRowsRead": 55,
+      "newFormsRowsIncluded": 55,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 0,
@@ -275,7 +275,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 54
+        "CeCo": 55
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -346,7 +346,7 @@
     },
     "notApplicableResponses": 16,
     "notApplicablePairs": 16,
-    "evidenceLinksPublished": 415,
+    "evidenceLinksPublished": 416,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -383,11 +383,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 32,
+      "completedStores": 33,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 325,
-      "compliance": 9.0,
+      "pendingStores": 324,
+      "compliance": 9.2,
       "deadlineLabel": "Vence hoy",
       "deadlineTone": "red",
       "daysRemaining": 0,
@@ -616,6 +616,25 @@
   ],
   "dms": [
     {
+      "dm": "Enrique Cesar Flores",
+      "shortName": "Enrique César",
+      "photo": "assets/dm/enrique-cesar.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 10,
+      "completed": 71,
+      "expected": 107,
+      "notApplicable": 3,
+      "pending": 36,
+      "pendingStores": 10,
+      "compliance": 66.4,
+      "status": "Seguimiento",
+      "rank": 1
+    },
+    {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
       "photo": "assets/dm/yazmin-chabela.webp",
@@ -631,25 +650,6 @@
       "pending": 48,
       "pendingStores": 13,
       "compliance": 65.5,
-      "status": "Seguimiento",
-      "rank": 1
-    },
-    {
-      "dm": "Enrique Cesar Flores",
-      "shortName": "Enrique César",
-      "photo": "assets/dm/enrique-cesar.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 10,
-      "completed": 70,
-      "expected": 107,
-      "notApplicable": 3,
-      "pending": 37,
-      "pendingStores": 10,
-      "compliance": 65.4,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -4758,17 +4758,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38401",
-      "store": "Coacalco",
-      "dm": "Enrique Cesar Flores",
-      "completed": 6,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 54.5,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38894",
       "store": "Galerias Perinorte",
       "dm": "Enrique Cesar Flores",
@@ -4865,6 +4854,17 @@
       "notApplicable": 1,
       "pending": 4,
       "compliance": 60.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38401",
+      "store": "Coacalco",
+      "dm": "Enrique Cesar Flores",
+      "completed": 7,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 63.6,
       "status": "Seguimiento"
     },
     {
@@ -8314,13 +8314,13 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 54.5,
-      "lastUpdate": "2026-09-19T18:46:10",
+      "compliance": 63.6,
+      "lastUpdate": "2026-09-20T14:54:30",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": true,
@@ -18671,6 +18671,28 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-121df503da8d0e8c",
+      "timestamp": "2026-09-20T14:54:30",
+      "timestampDisplay": "20/09/2026 14:54",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38401",
+      "store": "Coacalco",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38401",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38401",
+      "evidenceFileName": "51453A22-3233-4913-B78D-3D37C71F4E9B_Starbucks CC Coalcal.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/51453A22-3233-4913-B78D-3D37C71F4E9B_Starbucks%20CC%20Coalcal.jpeg"
+    },
     {
       "id": "respuesta-0502cb55d502f247",
       "timestamp": "2026-09-20T13:46:45",
