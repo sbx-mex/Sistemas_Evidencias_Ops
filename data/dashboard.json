@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "56bbd29fd8af79e5",
+  "buildVersion": "b54dffbe3a96b1b1",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-21T02:15:43+00:00",
-  "lastUpdated": "2026-09-20T20:09:36",
-  "lastUpdatedDisplay": "20/09/2026 20:09",
+  "generatedAt": "2026-09-21T02:24:35+00:00",
+  "lastUpdated": "2026-09-20T20:23:37",
+  "lastUpdatedDisplay": "20/09/2026 20:23",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "20/09/26 · 20:09 h",
+    "cutOffDisplay": "20/09/26 · 20:23 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 328,
+        "completed": 329,
         "expected": 776,
-        "pending": 448,
-        "compliance": 42.3,
+        "pending": 447,
+        "compliance": 42.4,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "43472a751245e2f9af527d228fe5ed578d332ab2e76ac4ba6be55fec0fee3c27",
+    "responsesSha256": "e6b6fa3945ec9b593ebe80be6a0798c8c8a4992cfa53e8bff2bc19ab42be2c59",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3911,
-    "completedCompletions": 432,
-    "compliance": 11.0,
-    "validResponses": 432,
+    "completedCompletions": 433,
+    "compliance": 11.1,
+    "validResponses": 433,
     "storesComplete": 0,
-    "pendingCompletions": 3479,
+    "pendingCompletions": 3478,
     "notApplicableCompletions": 16
   },
   "quality": {
-    "responsesRead": 497,
+    "responsesRead": 498,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 72,
-      "newFormsRowsIncluded": 72,
+      "newFormsRowsRead": 73,
+      "newFormsRowsIncluded": 73,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 0,
@@ -277,7 +277,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 72
+        "CeCo": 73
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -348,7 +348,7 @@
     },
     "notApplicableResponses": 16,
     "notApplicablePairs": 16,
-    "evidenceLinksPublished": 432,
+    "evidenceLinksPublished": 433,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -385,11 +385,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 45,
+      "completedStores": 46,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 312,
-      "compliance": 12.6,
+      "pendingStores": 311,
+      "compliance": 12.9,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -627,12 +627,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 78,
+      "completed": 79,
       "expected": 107,
       "notApplicable": 3,
-      "pending": 29,
+      "pending": 28,
       "pendingStores": 10,
-      "compliance": 72.9,
+      "compliance": 73.8,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -4914,17 +4914,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38456",
-      "store": "Plaza las Flores",
-      "dm": "Enrique Cesar Flores",
-      "completed": 7,
-      "expected": 10,
-      "notApplicable": 1,
-      "pending": 3,
-      "compliance": 70.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38442",
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4982,6 +4971,17 @@
     {
       "ceco": "38604",
       "store": "Cosmopol",
+      "dm": "Enrique Cesar Flores",
+      "completed": 8,
+      "expected": 10,
+      "notApplicable": 1,
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38456",
+      "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 8,
       "expected": 10,
@@ -8582,13 +8582,13 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 1,
-      "compliance": 70.0,
-      "lastUpdate": "2026-09-14T17:09:15",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-20T20:23:37",
       "activities": {
-        "Peanuts Charly&Lucy": false,
+        "Peanuts Charly&Lucy": true,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": true,
         "Max & Min": true,
@@ -18673,6 +18673,28 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-d39c774df0f79e40",
+      "timestamp": "2026-09-20T20:23:37",
+      "timestampDisplay": "20/09/2026 20:23",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38456",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38456",
+      "evidenceFileName": "image_Starbucks Plaza Las.jpg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/image_Starbucks%20Plaza%20Las.jpg"
+    },
     {
       "id": "respuesta-e125b9be6c431db0",
       "timestamp": "2026-09-20T20:09:36",
