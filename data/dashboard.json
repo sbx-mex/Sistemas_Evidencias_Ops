@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "f397e26b625f6f11",
+  "buildVersion": "85ed79144eca84f5",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-20T23:46:35+00:00",
-  "lastUpdated": "2026-09-20T17:34:40",
-  "lastUpdatedDisplay": "20/09/2026 17:34",
+  "generatedAt": "2026-09-21T00:26:16+00:00",
+  "lastUpdated": "2026-09-20T18:12:28",
+  "lastUpdatedDisplay": "20/09/2026 18:12",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "20/09/26 · 17:34 h",
+    "cutOffDisplay": "20/09/26 · 18:12 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 2,
+        "completed": 3,
         "expected": 1100,
-        "pending": 1098,
-        "compliance": 0.2,
+        "pending": 1097,
+        "compliance": 0.3,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 323,
+        "completed": 325,
         "expected": 776,
-        "pending": 453,
-        "compliance": 41.6,
+        "pending": 451,
+        "compliance": 41.9,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "029a2ecf4add0ca3a9c535c28863f31a54e97e23ff4801a13ec91650b091ac1c",
+    "responsesSha256": "c0d54a690f57164c96cf8361de89312f0d7e574f7d849aa2d4cf9548ac48a867",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 11,
     "expectedCompletions": 3911,
-    "completedCompletions": 424,
-    "compliance": 10.8,
-    "validResponses": 424,
+    "completedCompletions": 427,
+    "compliance": 10.9,
+    "validResponses": 427,
     "storesComplete": 0,
-    "pendingCompletions": 3487,
+    "pendingCompletions": 3484,
     "notApplicableCompletions": 16
   },
   "quality": {
-    "responsesRead": 488,
+    "responsesRead": 492,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 425,
       "baselineRowsIncluded": 425,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 63,
-      "newFormsRowsIncluded": 63,
+      "newFormsRowsRead": 67,
+      "newFormsRowsIncluded": 67,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 0,
@@ -231,9 +231,11 @@
       247,
       311,
       30,
-      48
+      48,
+      67
     ],
     "unknownCeCos": [
+      "38143",
       "38599",
       "94565"
     ],
@@ -275,7 +277,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 63
+        "CeCo": 67
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -346,7 +348,7 @@
     },
     "notApplicableResponses": 16,
     "notApplicablePairs": 16,
-    "evidenceLinksPublished": 424,
+    "evidenceLinksPublished": 427,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -367,7 +369,7 @@
   "calendar": {
     "active": 11,
     "scheduled": 0,
-    "expired": 0,
+    "expired": 1,
     "inactive": 5
   },
   "activities": [
@@ -378,19 +380,19 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-20",
       "commitmentDateDisplay": "20/09/26",
-      "dateStatus": "Vigente",
+      "dateStatus": "Vencida",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 41,
+      "completedStores": 42,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 316,
-      "compliance": 11.5,
-      "deadlineLabel": "Vence hoy",
+      "pendingStores": 315,
+      "compliance": 11.8,
+      "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": 0,
+      "daysRemaining": -1,
       "focusRank": 1
     },
     {
@@ -405,14 +407,14 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 1,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 357,
-      "compliance": 0.0,
-      "deadlineLabel": "Vence en 7 días",
+      "pendingStores": 356,
+      "compliance": 0.3,
+      "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
-      "daysRemaining": 7,
+      "daysRemaining": 6,
       "focusRank": 2
     },
     {
@@ -432,9 +434,9 @@
       "notApplicableStores": 5,
       "pendingStores": 286,
       "compliance": 18.8,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 3
     },
     {
@@ -454,9 +456,9 @@
       "notApplicableStores": 0,
       "pendingStores": 327,
       "compliance": 8.4,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 4
     },
     {
@@ -476,9 +478,9 @@
       "notApplicableStores": 0,
       "pendingStores": 297,
       "compliance": 16.8,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 5
     },
     {
@@ -493,14 +495,14 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 38,
+      "completedStores": 39,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 319,
-      "compliance": 10.6,
-      "deadlineLabel": "En 10 días",
+      "pendingStores": 318,
+      "compliance": 10.9,
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 6
     },
     {
@@ -520,9 +522,9 @@
       "notApplicableStores": 11,
       "pendingStores": 322,
       "compliance": 6.9,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 7
     },
     {
@@ -542,9 +544,9 @@
       "notApplicableStores": 0,
       "pendingStores": 332,
       "compliance": 7.0,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 8
     },
     {
@@ -564,9 +566,9 @@
       "notApplicableStores": 0,
       "pendingStores": 333,
       "compliance": 6.7,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 9
     },
     {
@@ -586,9 +588,9 @@
       "notApplicableStores": 0,
       "pendingStores": 241,
       "compliance": 32.5,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 10
     },
     {
@@ -608,9 +610,9 @@
       "notApplicableStores": 0,
       "pendingStores": 357,
       "compliance": 0.0,
-      "deadlineLabel": "En 10 días",
+      "deadlineLabel": "En 9 días",
       "deadlineTone": "green",
-      "daysRemaining": 10,
+      "daysRemaining": 9,
       "focusRank": 11
     }
   ],
@@ -625,12 +627,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 74,
+      "completed": 76,
       "expected": 107,
       "notApplicable": 3,
-      "pending": 33,
+      "pending": 31,
       "pendingStores": 10,
-      "compliance": 69.2,
+      "compliance": 71.0,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -882,6 +884,25 @@
       "rank": 14
     },
     {
+      "dm": "Monica Selene Morales Ibarra",
+      "shortName": "Monica Morales",
+      "photo": "assets/dm/monica-morales.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 13,
+      "completed": 2,
+      "expected": 143,
+      "notApplicable": 0,
+      "pending": 141,
+      "pendingStores": 13,
+      "compliance": 1.4,
+      "status": "Atención",
+      "rank": 15
+    },
+    {
       "dm": "Ariana Janet Gutierrez Martinez",
       "shortName": "Ariana Gutierrez",
       "photo": "assets/dm/ariana-gutierrez.webp",
@@ -897,25 +918,6 @@
       "pending": 131,
       "pendingStores": 12,
       "compliance": 0.8,
-      "status": "Atención",
-      "rank": 15
-    },
-    {
-      "dm": "Monica Selene Morales Ibarra",
-      "shortName": "Monica Morales",
-      "photo": "assets/dm/monica-morales.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Sur"
-      ],
-      "stores": 13,
-      "completed": 1,
-      "expected": 143,
-      "notApplicable": 0,
-      "pending": 142,
-      "pendingStores": 13,
-      "compliance": 0.7,
       "status": "Atención",
       "rank": 16
     },
@@ -2778,17 +2780,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38511",
-      "store": "Ciudad Jardin ll",
-      "dm": "Monica Selene Morales Ibarra",
-      "completed": 0,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 11,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43034",
       "store": "Macroplaza Tecamac",
       "dm": "Monica Selene Morales Ibarra",
@@ -4285,6 +4276,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38511",
+      "store": "Ciudad Jardin ll",
+      "dm": "Monica Selene Morales Ibarra",
+      "completed": 1,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 10,
+      "compliance": 9.1,
+      "status": "Atención"
+    },
+    {
       "ceco": "38694",
       "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4769,17 +4771,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38333",
-      "store": "Izcalli Mega",
-      "dm": "Enrique Cesar Flores",
-      "completed": 6,
-      "expected": 11,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 54.5,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38674",
       "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4953,6 +4944,17 @@
       "notApplicable": 1,
       "pending": 3,
       "compliance": 70.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "completed": 8,
+      "expected": 11,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 72.7,
       "status": "Seguimiento"
     },
     {
@@ -8466,14 +8468,14 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 8,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 54.5,
-      "lastUpdate": "2026-09-19T14:24:20",
+      "compliance": 72.7,
+      "lastUpdate": "2026-09-20T18:12:28",
       "activities": {
-        "Peanuts Charly&Lucy": false,
-        "Peanuts Linus&Snoopy": false,
+        "Peanuts Charly&Lucy": true,
+        "Peanuts Linus&Snoopy": true,
         "Rack FHW": true,
         "Max & Min": true,
         "Mandil Verde": true,
@@ -14850,18 +14852,18 @@
       "dm": "Monica Selene Morales Ibarra",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 11,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 9.1,
+      "lastUpdate": "2026-09-20T18:06:55",
       "activities": {
         "Peanuts Charly&Lucy": false,
         "Peanuts Linus&Snoopy": false,
         "Rack FHW": false,
         "Max & Min": false,
         "Mandil Verde": false,
-        "Lay Out": false,
+        "Lay Out": true,
         "Community Board": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
@@ -18671,6 +18673,72 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-83e9d2d61ab9deeb",
+      "timestamp": "2026-09-20T18:12:28",
+      "timestampDisplay": "20/09/2026 18:12",
+      "activity": "Peanuts Linus&Snoopy",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Linus_Snoopy_38333",
+      "evidenceLinkLabel": "Link_Peanuts_Linus_Snoopy_38333",
+      "evidenceFileName": "IMG_3490_Starbucks Mega Izcal.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Linus&Snoopy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Lucy_24Sep/IMG_3490_Starbucks%20Mega%20Izcal.jpeg"
+    },
+    {
+      "id": "respuesta-f119e6ac5cb532bb",
+      "timestamp": "2026-09-20T18:06:55",
+      "timestampDisplay": "20/09/2026 18:06",
+      "activity": "Lay Out",
+      "ceco": "38511",
+      "store": "Ciudad Jardin ll",
+      "dm": "Monica Selene Morales Ibarra",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38511",
+      "evidenceLinkLabel": "Link_Lay_Out_38511",
+      "evidenceFileName": "image_Starbucks Ciudad Jar.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/image_Starbucks%20Ciudad%20Jar.jpg"
+    },
+    {
+      "id": "respuesta-487c303617bf21ba",
+      "timestamp": "2026-09-20T17:46:55",
+      "timestampDisplay": "20/09/2026 17:46",
+      "activity": "Peanuts Charly&Lucy",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Peanuts_Charly_Lucy_38333",
+      "evidenceLinkLabel": "Link_Peanuts_Charly_Lucy_38333",
+      "evidenceFileName": "IMG_3490_Starbucks Mega Izcal.jpeg",
+      "evidenceSourceHeader": "Evidencia_Peanuts_Charly&Lucy",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%202/IMG_3490_Starbucks%20Mega%20Izcal.jpeg"
+    },
     {
       "id": "respuesta-f5b03cc4479f3375",
       "timestamp": "2026-09-20T17:34:40",
