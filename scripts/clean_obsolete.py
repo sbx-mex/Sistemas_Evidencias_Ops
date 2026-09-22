@@ -9,7 +9,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 # Lista cerrada: sin patrones, globs ni directorios recursivos.
-OBSOLETE_FILES = (
+ROOT_UPLOAD_ARTIFACTS = (
+    # Residuos de una carga web que aplanó las carpetas del paquete anterior.
+    "MANIFEST_CORRECCION_CMS_2026-09-22.txt",
+    "Resumen_Evidencias_OPS.xlsx",
+    "build_dashboard.py",
+    "dashboard.json",
+    "safe_maintenance.py",
+    "validate_cutover.py",
+    "validate_dynamic_forms_schema.py",
+    "validate_project.py",
+    "validate_safe_maintenance.py",
+    "validate_sources_resilient.py",
+)
+DOCUMENTED_OBSOLETE_FILES = (
     "cms/Centro Norte_Directorio.xlsx",
     "config/actividades.csv",
     "config/gerentes.csv",
@@ -22,6 +35,7 @@ OBSOLETE_FILES = (
     "assets/icons/icon.svg",
     "tests/validate_horno_applicability.py",
 )
+OBSOLETE_FILES = ROOT_UPLOAD_ARTIFACTS + DOCUMENTED_OBSOLETE_FILES
 TRANSIENT_FILE_NAMES = {".DS_Store", "Thumbs.db"}
 TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
 

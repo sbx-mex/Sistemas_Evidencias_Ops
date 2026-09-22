@@ -21,7 +21,7 @@ from scripts.build_dashboard import (
     parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
     setting_list, short_dm_name, validate_webp_asset,
 )
-from scripts.clean_obsolete import OBSOLETE_FILES
+from scripts.clean_obsolete import DOCUMENTED_OBSOLETE_FILES, OBSOLETE_FILES
 
 REQUIRED = [
     "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
@@ -88,7 +88,7 @@ obsolete_present = [relative for relative in OBSOLETE_FILES if (ROOT / relative)
 if obsolete_present:
     fail("Persisten archivos obsoletos: " + ", ".join(obsolete_present))
 public_docs = "\n".join((ROOT / name).read_text(encoding="utf-8") for name in ("ARCHIVOS.md", "MEJORAS.md"))
-obsolete_references = [relative for relative in OBSOLETE_FILES if relative in public_docs]
+obsolete_references = [relative for relative in DOCUMENTED_OBSOLETE_FILES if relative in public_docs]
 if obsolete_references:
     fail("La documentación conserva rutas obsoletas: " + ", ".join(obsolete_references))
 mojibake_codepoints = {0x00C2, 0x00C3, 0x00E2}

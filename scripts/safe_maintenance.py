@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -19,7 +20,8 @@ from typing import Iterator
 # El mantenimiento debe ser limpio también fuera de GitHub Actions.
 sys.dont_write_bytecode = True
 
-from build_dashboard import file_sha256, output_version, validate_xlsx
+from build_dashboard import file_sha256, load_responses, output_version, parse_datetime, validate_xlsx
+from io_utils import atomic_write_text
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +40,7 @@ REQUIRED_VALIDATORS = (
     "tests/validate_project.py",
     "scripts/audit_project.py",
 )
+BASELINE_CONTRACT_VERSION = 1
 
 
 def run(*command: str) -> None:
@@ -109,6 +112,140 @@ def validate_all_xlsx(files: list[Path]) -> dict[str, str]:
         return dict(executor.map(inspect, files))
 
 
+def baseline_contract(path: Path, cutoff_value: object) -> dict[str, object]:
+    """Resume el contenido lógico de la base, sin depender del empaquetado XLSX.
+
+    La huella semántica cambia ante cualquier modificación de filas, fechas,
+    CeCo, actividad o evidencia, pero permanece estable si Excel sólo vuelve a
+    empaquetar el mismo libro con metadatos ZIP distintos.
+    """
+    cutoff = parse_datetime(cutoff_value)
+    if cutoff is None:
+        raise RuntimeError("El corte histórico no contiene una fecha cutoff válida")
+    responses, schema = load_responses(path)
+    schema_issues = {
+        "conflictosFilas": schema.get("rowConflicts", []),
+        "conflictosEvidencia": schema.get("evidenceIssues", {}),
+        "conflictosAplicabilidad": schema.get("applicabilityIssues", {}),
+        "conflictosEncuesta": schema.get("surveyIssues", {}),
+    }
+    if any(schema_issues.values()):
+        raise RuntimeError(
+            "La base histórica modificada contiene conflictos: "
+            + json.dumps(schema_issues, ensure_ascii=False, sort_keys=True)
+        )
+    missing_finished = [item["row"] for item in responses if item.get("finished") is None]
+    after_cutoff = [
+        item["row"] for item in responses
+        if item.get("finished") is not None and item["finished"] > cutoff
+    ]
+    source_ids = [str(item.get("sourceId") or "").strip() for item in responses]
+    if missing_finished or after_cutoff or any(not value for value in source_ids):
+        raise RuntimeError(
+            "La base histórica modificada viola el corte: "
+            f"sin fecha={missing_finished[:10]}, posteriores={after_cutoff[:10]}, Id vacío={source_ids.count('')}"
+        )
+    if len(source_ids) != len(set(source_ids)):
+        raise RuntimeError("La base histórica modificada contiene Id de Forms duplicados")
+
+    logical_rows = []
+    for item in responses:
+        logical_rows.append({
+            "sourceId": str(item.get("sourceId") or ""),
+            "started": item["started"].isoformat(timespec="seconds") if item.get("started") else None,
+            "finished": item["finished"].isoformat(timespec="seconds"),
+            "email": item.get("email") or "",
+            "name": item.get("name") or "",
+            "activity": item.get("activity") or "",
+            "ceco": item.get("ceco") or "",
+            "blenderJars": item.get("blenderJars") or "",
+            "coldFoamJars": item.get("coldFoamJars") or "",
+            "confirmedAnswer": item.get("confirmedAnswer") or "",
+            "applicabilityAnswer": item.get("applicabilityAnswer") or "",
+            "surveyAnswers": item.get("surveyAnswers") or {},
+            "evidence": item.get("evidence") or "",
+            "evidenceSourceHeader": item.get("evidenceSourceHeader") or "",
+        })
+    encoded = json.dumps(
+        logical_rows, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return {
+        "version": BASELINE_CONTRACT_VERSION,
+        "rows": len(logical_rows),
+        "contentSha256": hashlib.sha256(encoded).hexdigest(),
+        "maxFinished": max(item["finished"] for item in logical_rows) if logical_rows else None,
+    }
+
+
+def reconcile_cutover_fingerprint() -> dict[str, object]:
+    """Actualiza sólo una huella binaria cuyo contenido lógico sigue intacto.
+
+    La huella anterior también debe coincidir con la última publicación. Esto
+    evita convertir una edición no autorizada en una nueva base válida.
+    """
+    config_path = ROOT / "config" / "cutover.json"
+    if not config_path.is_file():
+        return {"changed": False, "enabled": False}
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    if config.get("enabled") is False:
+        return {"changed": False, "enabled": False}
+    baseline_value = str(config.get("baseline") or "").strip()
+    if not baseline_value:
+        raise RuntimeError("config/cutover.json no contiene baseline")
+    baseline = Path(baseline_value)
+    if not baseline.is_absolute():
+        baseline = ROOT / baseline
+    if not baseline.is_file():
+        raise RuntimeError(f"No existe la base histórica configurada: {baseline}")
+
+    contract = baseline_contract(baseline, config.get("cutoff"))
+    expected_contract = {
+        "version": config.get("baselineContractVersion"),
+        "rows": config.get("baselineRows"),
+        "contentSha256": str(config.get("baselineContentSha256") or "").casefold(),
+    }
+    actual_contract = {
+        "version": contract["version"],
+        "rows": contract["rows"],
+        "contentSha256": contract["contentSha256"],
+    }
+    if expected_contract != actual_contract:
+        raise RuntimeError(
+            "La base histórica cambió su contenido lógico; se detuvo la carga. "
+            "Revisa filas, fechas, CeCo, actividades y evidencias antes de autorizar un nuevo corte"
+        )
+
+    expected = str(config.get("baselineSha256") or "").casefold()
+    current = file_sha256(baseline).casefold()
+    if not expected:
+        raise RuntimeError("config/cutover.json no contiene baselineSha256")
+    if current == expected:
+        return {"changed": False, "enabled": True, **contract}
+
+    try:
+        published = json.loads(GENERATED[0].read_text(encoding="utf-8"))
+        published_hash = str(published["sources"]["baselineSha256"]).casefold()
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        raise RuntimeError("No se pudo validar la cadena de custodia de la base histórica") from error
+    if published_hash != expected:
+        raise RuntimeError(
+            "La huella anterior no coincide con la última publicación; se detuvo la reconciliación"
+        )
+
+    config["supersedesSha256"] = expected
+    config["baselineSha256"] = current
+    config["reconciliationReason"] = "Reempaque XLSX verificado sin cambios semánticos"
+    atomic_write_text(
+        config_path,
+        json.dumps(config, ensure_ascii=False, indent=2) + "\n",
+    )
+    print(
+        "Huella de corte reconciliada · contenido semántico intacto · "
+        f"{str(contract['rows'])} filas · {expected[:12]} → {current[:12]}"
+    )
+    return {"changed": True, "enabled": True, **contract}
+
+
 def outputs_current(fingerprints: dict[str, str]) -> bool:
     if not all(path.is_file() and path.stat().st_size > 0 for path in GENERATED):
         return False
@@ -176,6 +313,28 @@ def generated_backup() -> Iterator[None]:
             raise
 
 
+@contextmanager
+def configuration_backup(*, restore_on_success: bool = False) -> Iterator[None]:
+    """Restaura el corte si falla cualquier validación o si es sólo preflight."""
+    target = ROOT / "config" / "cutover.json"
+    existed = target.exists()
+    original = target.read_bytes() if existed else b""
+    try:
+        yield
+    except BaseException:
+        if existed:
+            atomic_write_text(target, original.decode("utf-8"))
+        else:
+            target.unlink(missing_ok=True)
+        raise
+    else:
+        if restore_on_success:
+            if existed:
+                atomic_write_text(target, original.decode("utf-8"))
+            else:
+                target.unlink(missing_ok=True)
+
+
 def clean_obsolete() -> int:
     obsolete = existing_obsolete_files(ROOT)
     for relative in obsolete:
@@ -241,34 +400,37 @@ def main() -> None:
     with exclusive_lock():
         files = cms_sources()
         before = validate_all_xlsx(files)
-        run(sys.executable, "-X", "utf8", "scripts/validate_sources_resilient.py")
-        current = outputs_current(before)
-        if args.check_only:
-            state = "resultados vigentes" if current else "resultados pendientes de reconstrucción"
-            print(f"Preflight aprobado · {len(files)} XLSX · {state} · sin cambios")
-            return
+        with configuration_backup(restore_on_success=args.check_only):
+            reconciliation = reconcile_cutover_fingerprint()
+            run(sys.executable, "-X", "utf8", "scripts/validate_sources_resilient.py")
+            current = outputs_current(before)
+            if args.check_only:
+                state = "resultados vigentes" if current else "resultados pendientes de reconstrucción"
+                suffix = " · huella reconciliable" if reconciliation.get("changed") else ""
+                print(f"Preflight aprobado · {len(files)} XLSX · {state}{suffix} · sin cambios")
+                return
 
-        removed = clean_obsolete()
-        with generated_backup():
-            if args.force or not current:
-                rebuild()
-            else:
-                isolate_unknown_cecos()
-            after = validate_all_xlsx(files)
-            if before != after:
-                raise RuntimeError("Una fuente CMS cambió durante la actualización; se restauraron los resultados")
-            run(sys.executable, "-X", "utf8", "tests/validate_safe_maintenance.py")
-            run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
-            run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
-            run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
-            run(sys.executable, "-X", "utf8", "tests/validate_project.py")
-            # Las pruebas y exportadores también pueden dejar residuos si un
-            # proceso externo interrumpe una escritura; se limpia antes de auditar.
-            removed += clean_obsolete()
-            run(sys.executable, "-X", "utf8", "scripts/audit_project.py")
-            run(sys.executable, "scripts/clean_obsolete.py", "--check")
-            if before != validate_all_xlsx(cms_sources()) or not outputs_current(before):
-                raise RuntimeError("Las fuentes o el motor cambiaron durante la validación; se restauraron los resultados")
+            removed = clean_obsolete()
+            with generated_backup():
+                if args.force or not current:
+                    rebuild()
+                else:
+                    isolate_unknown_cecos()
+                after = validate_all_xlsx(files)
+                if before != after:
+                    raise RuntimeError("Una fuente CMS cambió durante la actualización; se restauraron los resultados")
+                run(sys.executable, "-X", "utf8", "tests/validate_safe_maintenance.py")
+                run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
+                run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
+                run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
+                run(sys.executable, "-X", "utf8", "tests/validate_project.py")
+                # Las pruebas y exportadores también pueden dejar residuos si un
+                # proceso externo interrumpe una escritura; se limpia antes de auditar.
+                removed += clean_obsolete()
+                run(sys.executable, "-X", "utf8", "scripts/audit_project.py")
+                run(sys.executable, "scripts/clean_obsolete.py", "--check")
+                if before != validate_all_xlsx(cms_sources()) or not outputs_current(before):
+                    raise RuntimeError("Las fuentes o el motor cambiaron durante la validación; se restauraron los resultados")
 
     elapsed = time.perf_counter() - started
     action = "reconstruido" if args.force or not current else "sin reconstrucción innecesaria"

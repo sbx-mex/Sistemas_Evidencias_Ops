@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "18518add89a271f9",
+  "buildVersion": "56b6b8e31a8c3c92",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-22T00:18:52-06:00",
+  "generatedAt": "2026-09-22T00:38:27-06:00",
   "lastUpdated": "2026-09-21T12:14:56",
   "lastUpdatedDisplay": "21/09/2026 12:14",
   "report": {
@@ -60,10 +60,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 98,
+        "completed": 99,
         "expected": 900,
-        "pending": 802,
-        "compliance": 10.9,
+        "pending": 801,
+        "compliance": 11.0,
         "status": "Atención"
       },
       {
@@ -90,10 +90,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 187,
+        "completed": 188,
         "expected": 637,
-        "pending": 450,
-        "compliance": 29.4,
+        "pending": 449,
+        "compliance": 29.5,
         "status": "Atención"
       }
     ]
@@ -102,10 +102,10 @@
     "responses": "Sistema de Evidencias OPS.xlsx",
     "responsesSha256": "5f5dcf4e2fbf4e998ebe775bf8792250f31f26b9eacfd66746b4631ab8a76857",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
-    "baselineSha256": "bef6483a71ff0453974f80f692f22cf1f458d3bfd5db43bf1553f93be45a7470",
+    "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
     "cutoverConfig": "cutover.json",
-    "cutoverConfigSha256": "aaa33a8ae6dcc879b9059e82bdac7d6ef0c624785d9a01f12d4d60a7b920f37f",
+    "cutoverConfigSha256": "a1b95310b14ea7e617946aa0bc145a91eb22f693a9879b0ef869263259eed5a0",
     "directory": "Directorio.xlsx",
     "directorySha256": "0bc5703f3c2aae93d7ae2fd4056368b50d199d836eb10e4aa4be00c1923875f4",
     "directorySheet": "Directorio",
@@ -130,11 +130,11 @@
     "stores": 357,
     "activities": 9,
     "expectedCompletions": 3202,
-    "completedCompletions": 299,
-    "compliance": 9.3,
-    "validResponses": 299,
+    "completedCompletions": 301,
+    "compliance": 9.4,
+    "validResponses": 301,
     "storesComplete": 0,
-    "pendingCompletions": 2903,
+    "pendingCompletions": 2901,
     "notApplicableCompletions": 11
   },
   "quality": {
@@ -226,15 +226,10 @@
       }
     },
     "invalidRows": [
-      213,
-      274,
       30,
       108
     ],
-    "unknownCeCos": [
-      "38599",
-      "94565"
-    ],
+    "unknownCeCos": [],
     "hiddenActivityRows": [
       4,
       5,
@@ -513,7 +508,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 299,
+    "evidenceLinksPublished": 301,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -682,11 +677,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 26,
+      "completedStores": 27,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 331,
-      "compliance": 7.3,
+      "pendingStores": 330,
+      "compliance": 7.6,
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
@@ -704,11 +699,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 120,
+      "completedStores": 121,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 237,
-      "compliance": 33.6,
+      "pendingStores": 236,
+      "compliance": 33.9,
       "deadlineLabel": "En 8 días",
       "deadlineTone": "green",
       "daysRemaining": 8,
@@ -767,12 +762,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 64,
+      "completed": 65,
       "expected": 113,
       "notApplicable": 4,
-      "pending": 49,
+      "pending": 48,
       "pendingStores": 13,
-      "compliance": 56.6,
+      "compliance": 57.5,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -891,6 +886,25 @@
       "rank": 8
     },
     {
+      "dm": "Juan Jesus Zuñiga Flores",
+      "shortName": "Juan Zuñiga",
+      "photo": "assets/dm/juan-zuniga.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 11,
+      "completed": 11,
+      "expected": 99,
+      "notApplicable": 0,
+      "pending": 88,
+      "pendingStores": 11,
+      "compliance": 11.1,
+      "status": "Atención",
+      "rank": 9
+    },
+    {
       "dm": "Manuel Alejandro Avila Molina",
       "shortName": "Manuel Avila",
       "photo": "assets/dm/manuel-avila.webp",
@@ -907,7 +921,7 @@
       "pendingStores": 13,
       "compliance": 11.1,
       "status": "Atención",
-      "rank": 9
+      "rank": 10
     },
     {
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -926,7 +940,7 @@
       "pendingStores": 13,
       "compliance": 11.1,
       "status": "Atención",
-      "rank": 10
+      "rank": 11
     },
     {
       "dm": "Areli Anahi Lazcano Lezama",
@@ -945,7 +959,7 @@
       "pendingStores": 13,
       "compliance": 10.3,
       "status": "Atención",
-      "rank": 11
+      "rank": 12
     },
     {
       "dm": "Daniel Flores Maldonado",
@@ -963,25 +977,6 @@
       "pending": 105,
       "pendingStores": 13,
       "compliance": 10.3,
-      "status": "Atención",
-      "rank": 12
-    },
-    {
-      "dm": "Juan Jesus Zuñiga Flores",
-      "shortName": "Juan Zuñiga",
-      "photo": "assets/dm/juan-zuniga.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 11,
-      "completed": 10,
-      "expected": 99,
-      "notApplicable": 0,
-      "pending": 89,
-      "pendingStores": 11,
-      "compliance": 10.1,
       "status": "Atención",
       "rank": 13
     },
@@ -2332,17 +2327,6 @@
       "ceco": "38659",
       "store": "Sendero Ixtapaluca",
       "dm": "Jesus Antonio Elguera Flores",
-      "completed": 0,
-      "expected": 9,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38764",
-      "store": "Star Medica Napoles",
-      "dm": "Juan Jesus Zuñiga Flores",
       "completed": 0,
       "expected": 9,
       "notApplicable": 0,
@@ -4342,6 +4326,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38764",
+      "store": "Star Medica Napoles",
+      "dm": "Juan Jesus Zuñiga Flores",
+      "completed": 1,
+      "expected": 9,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 11.1,
+      "status": "Atención"
+    },
+    {
       "ceco": "38951",
       "store": "Universidad Panamericana",
       "dm": "Juan Jesus Zuñiga Flores",
@@ -4859,17 +4854,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38590",
-      "store": "Parque Toreo II",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 3,
-      "expected": 8,
-      "notApplicable": 1,
-      "pending": 5,
-      "compliance": 37.5,
-      "status": "Atención"
-    },
-    {
       "ceco": "38401",
       "store": "Coacalco",
       "dm": "Enrique Cesar Flores",
@@ -4950,6 +4934,17 @@
       "ceco": "38442",
       "store": "Sor Juana",
       "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 4,
+      "expected": 8,
+      "notApplicable": 1,
+      "pending": 4,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38590",
+      "store": "Parque Toreo II",
+      "dm": "Yazmin Chabela Guadarrama",
       "completed": 4,
       "expected": 8,
       "notApplicable": 1,
@@ -11769,11 +11764,11 @@
       "dm": "Juan Jesus Zuñiga Flores",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 9,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 11.1,
+      "lastUpdate": "2026-09-10T16:14:50",
       "activities": {
         "Peanuts Linus&Snoopy": false,
         "Max & Min": false,
@@ -11782,7 +11777,7 @@
         "Community Board": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false,
+        "Jarras Blender | Cold Foam": true,
         "Organizacion Refrigeradores Back": false
       },
       "applicableActivities": {
@@ -16631,10 +16626,10 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 8,
       "notApplicable": 1,
-      "compliance": 37.5,
+      "compliance": 50.0,
       "lastUpdate": "2026-09-07T19:48:58",
       "activities": {
         "Peanuts Linus&Snoopy": false,
@@ -16643,7 +16638,7 @@
         "Lay Out": false,
         "Community Board": false,
         "Señaletica Back": true,
-        "Señaletica Lobby": false,
+        "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": false,
         "Organizacion Refrigeradores Back": false
       },
@@ -17356,11 +17351,11 @@
           "label": "Jarras Cold Foam"
         }
       ],
-      "answeredStores": 120,
+      "answeredStores": 121,
       "totals": {
-        "blender": 213,
-        "coldFoam": 124,
-        "total": 337
+        "blender": 215,
+        "coldFoam": 125,
+        "total": 340
       }
     }
   ],
@@ -21027,6 +21022,33 @@
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/IMG-20260910-WA0143_Starbucks%20Corporativ.jpg"
     },
     {
+      "id": "respuesta-5676e75c7f9181a2",
+      "timestamp": "2026-09-10T16:14:50",
+      "timestampDisplay": "10/09/2026 16:14",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38764",
+      "store": "Star Medica Napoles",
+      "dm": "Juan Jesus Zuñiga Flores",
+      "region": "Centro Poniente",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38764",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38764",
+      "evidenceFileName": "1789078364796937074771383309557_Starbucks Medica Nap.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/1789078364796937074771383309557_Starbucks%20Medica%20Nap.jpg"
+    },
+    {
       "id": "respuesta-0b420e9d1c78ca79",
       "timestamp": "2026-09-10T16:13:44",
       "timestampDisplay": "10/09/2026 16:13",
@@ -22210,6 +22232,28 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/289179ED-32C6-4486-A68B-D9DC32498222_Starbucks%20Parque%20Tor.jpeg"
+    },
+    {
+      "id": "respuesta-5d6a7e6f34c6e120",
+      "timestamp": "2026-09-07T18:26:01",
+      "timestampDisplay": "07/09/2026 18:26",
+      "activity": "Señaletica Lobby",
+      "ceco": "38590",
+      "store": "Parque Toreo II",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Senaletica_Lobby_38590",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38590",
+      "evidenceFileName": "C3A4D499-91EA-4764-9DBD-BC34F01D8CA6_Starbucks Parque Tor.jpeg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Back/C3A4D499-91EA-4764-9DBD-BC34F01D8CA6_Starbucks%20Parque%20Tor.jpeg"
     },
     {
       "id": "respuesta-1dabe15be1496815",

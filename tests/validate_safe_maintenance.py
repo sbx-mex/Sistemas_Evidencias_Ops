@@ -80,6 +80,47 @@ def main() -> None:
             except RuntimeError:
                 pass
             assert all(path.read_bytes() == b"estable" for path in safe.GENERATED)
+
+            # Una reexportación binariamente distinta sólo puede reconciliarse
+            # cuando el contrato lógico y la última publicación siguen intactos.
+            (root / "config" / "cutover.json").write_bytes(
+                (ROOT / "config" / "cutover.json").read_bytes()
+            )
+            safe.GENERATED[0].write_bytes(current_data)
+            config_path = root / "config" / "cutover.json"
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            current_baseline_hash = config["baselineSha256"]
+            prior_hash = "0" * 64
+            config["baselineSha256"] = prior_hash
+            config_path.write_text(json.dumps(config, ensure_ascii=False), encoding="utf-8")
+            dashboard = json.loads(safe.GENERATED[0].read_text(encoding="utf-8"))
+            dashboard["sources"]["baselineSha256"] = prior_hash
+            safe.GENERATED[0].write_text(json.dumps(dashboard), encoding="utf-8")
+            result = safe.reconcile_cutover_fingerprint()
+            assert result["changed"] is True
+            assert json.loads(config_path.read_text(encoding="utf-8"))["baselineSha256"] == current_baseline_hash
+
+            # Si la última publicación no confirma la huella anterior, se
+            # detiene sin autorizar el cambio.
+            config["baselineSha256"] = prior_hash
+            config_path.write_text(json.dumps(config, ensure_ascii=False), encoding="utf-8")
+            dashboard["sources"]["baselineSha256"] = "1" * 64
+            safe.GENERATED[0].write_text(json.dumps(dashboard), encoding="utf-8")
+            try:
+                safe.reconcile_cutover_fingerprint()
+            except RuntimeError as error:
+                assert "última publicación" in str(error)
+            else:
+                raise AssertionError("La reconciliación debía rechazar una cadena de custodia rota")
+
+            original_config = config_path.read_bytes()
+            try:
+                with safe.configuration_backup():
+                    config_path.write_text("{}", encoding="utf-8")
+                    raise RuntimeError("fallo posterior simulado")
+            except RuntimeError:
+                pass
+            assert config_path.read_bytes() == original_config
         finally:
             safe.ROOT, safe.GENERATED = old_root, old_generated
 

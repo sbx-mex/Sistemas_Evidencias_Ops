@@ -1,8 +1,11 @@
 {
   "cutoff": "2026-09-17 11:56:57",
   "baseline": "cms/Corte_Forms_2026-09-17_115657.xlsx",
-  "baselineSha256": "bef6483a71ff0453974f80f692f22cf1f458d3bfd5db43bf1553f93be45a7470",
+  "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
+  "baselineContractVersion": 1,
+  "baselineRows": 384,
+  "baselineContentSha256": "d46caaccf7c0fba24ccebbe5e13158e6169c8ed68c449a4c71b5d438cc1a7fff",
   "label": "Corte operativo 17/09/2026 11:56:57 · Lay Out reiniciado",
-  "revisionReason": "Retiro controlado de 41 respuestas históricas de Lay Out; las demás 384 filas permanecen sin cambios",
-  "supersedesSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7"
+  "revisionReason": "Se conservaron 384 filas y se corrigieron los CeCo 38590 y 38764 contra sus correos corporativos; sin cambios de fecha, actividad ni evidencia",
+  "supersedesSha256": "bef6483a71ff0453974f80f692f22cf1f458d3bfd5db43bf1553f93be45a7470"
 }
