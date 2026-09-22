@@ -1,146 +1,748 @@
-# Sistema de Evidencias OPS
+#!/usr/bin/env python3
+from __future__ import annotations
 
-PWA ejecutiva de Centro Norte para medir el cumplimiento de actividades registradas mediante Microsoft Forms.
+import json
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
-## Modelo operativo
+from openpyxl import load_workbook
+from PIL import Image
 
-```text
-Sistema de Evidencias OPS.xlsx
-             +
-Directorio.xlsx
-Sistema_Evidencias_OPS_CMS.xlsx + assets/dm/ + assets/director/
-             ↓
-scripts/build_dashboard.py
-             ↓
-data/dashboard.json → PWA
-```
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from scripts.build_dashboard import (
+    QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
+    canonical_cms_activity, clean_text, compact_key, evidence_key, file_sha256, load_cms,
+    load_cutover, load_directory, load_responses, load_settings, normalize_allowed_hosts,
+    parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
+    setting_list, short_dm_name, validate_webp_asset,
+)
+from scripts.clean_obsolete import OBSOLETE_FILES
 
-El motor identifica estos encabezados aunque cambie su orden o existan columnas repetidas:
+REQUIRED = [
+    "index.html", "styles.css", "app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js", "manifest.webmanifest",
+    "data/dashboard.json", "exports/Resumen_Evidencias_OPS.xlsx", "exports/Resumen_Evidencias_OPS.pdf", "scripts/build_dashboard.py", "scripts/update_directory.py", "scripts/validate_sources.py", "scripts/clean_obsolete.py", "scripts/export_excel.py", "scripts/export_pdf.py", "scripts/prepare_images.py",
+    "scripts/audit_project.py", "config/settings.json", "INSTRUCCION_FORMS.md", "MEJORAS.md",
+    "cms/Directorio.xlsx", "cms/Sistema de Evidencias OPS.xlsx",
+    "cms/Sistema_Evidencias_OPS_CMS.xlsx", ".github/workflows/build-dashboard.yml", ".nojekyll",
+    "assets/icons/icon-64.png", "assets/icons/icon-192.png", "assets/icons/icon-512.png",
+    "assets/icons/icon-64.webp", "assets/icons/icon-192.webp", "assets/icons/icon-512.webp", "assets/icons/ops-logo.webp",
+    "assets/director/jorge-alcantar.webp", "assets/director/raul-sierra.webp", "assets/director/raul-sierra-hero.webp",
+    "assets/director/oliver-perez.webp", "assets/director/jorge-farrera.webp", "assets/director/cielo-morera.webp",
+    "assets/ui/Damos_Seguimiento.webp", "assets/ui/Un_placer_haber_Ayudado.webp", "tests/build_dynamic_xlsx.js", "tests/build_direct_pdf.js",
+    "tests/validate_dynamic_forms_schema.py", "tests/validate_maintenance.py", "scripts/io_utils.py",
+    "scripts/prepare_campaign_theme.py", "assets/campaign/lucy-fall.webp", "assets/campaign/snoopy-fall.webp", "assets/campaign/linus-fall.webp",
+]
+REQUIRED += [f"assets/dm/{name}.webp" for name in (
+    "enrique-cesar", "nancy-carolina", "vanessa-carreno", "veronica-garcia", "yazmin-chabela", "yazmin-garcia",
+    "adriana-tanus", "andrea-nava", "areli-lazcano", "daniel-flores", "erika-contreras", "jose-magos", "juan-zuniga", "manuel-avila",
+)]
+TEXT_SUFFIXES = {".py", ".js", ".css", ".html", ".md", ".yml", ".yaml", ".json"}
 
-1. `Hora de finalización` → **Última actualización**.
-2. `Selecciona la actividad que deseas registrar` → actividad evaluada.
-3. `CeCo` o `CeCo1` → cruce automático con nombre de tienda y DM. Forms puede conservar ambas columnas al cambiar la pregunta. Un valor mal formado o contradictorio se recupera únicamente cuando correo corporativo y nombre exacto confirman la misma tienda abierta; de lo contrario se aísla sólo esa fila.
-4. Las preguntas previas de Hornos y Rack FHW → un `Sí` continúa hacia la evidencia; un `No` explícito significa **No aplica** sólo para la actividad nombrada y la descuenta del ideal.
-5. `Evidencia del avance` o `Evidencia_<Actividad>` → Python elige la columna que coincide con la actividad seleccionada, valida HTTPS y dominio autorizado y genera una etiqueta `Actividad_CeCo`.
 
-También admite el formato largo: si las respuestas nuevas aparecen hacia abajo como más filas y usan una columna genérica de evidencia, cada fila se procesa de forma independiente. Si una fila contiene valores contradictorios, evidencia en la columna de otra actividad o varias evidencias incompatibles, se marca en `quality.responseSchema` y no se publica como válida.
+def fail(message: str) -> None:
+    raise AssertionError(message)
 
-El correo y el nombre del respondente no se publican. Por autorización operativa, el dashboard muestra el nombre real del archivo y el vínculo directo de SharePoint exactamente como viene en Forms, después de validar HTTPS y el dominio permitido.
 
-## Identidad visual Fall 26
+passed: list[str] = []
 
-La experiencia conserva la estructura de verificación y aplica el lenguaje cálido de Fall 26: naranja calabaza, crema, verde Starbucks y acentos de trazo oscuro. El hero permanece limpio, sin póster, e identifica al Director Starbucks México mediante una fotografía WebP ligera; los personajes aparecen únicamente como detalles pequeños en encabezados y pie de página. Los WebP optimizados se generan desde los recortes oficiales proporcionados con:
 
-```bash
-python scripts/prepare_campaign_theme.py --lucy ruta/lucy.png --snoopy ruta/snoopy.png --linus ruta/linus.png
-```
+def approve(name: str) -> None:
+    passed.append(name)
 
-Las fotografías de Directores Regionales funcionan como filtros accesibles: un toque limita el tablero a sus tiendas y un segundo toque restaura el alcance general. Python publica el `filterValue` desde el Directorio/CMS para que la navegación no dependa de nombres escritos manualmente.
 
-`scripts/prepare_images.py` conserva la fotografía completa para exportaciones y crea `raul-sierra-hero.webp` de 160×200 para acelerar la portada.
+def response_recency_key(item: dict) -> tuple[int, str, int, int]:
+    """Replica el orden del motor, incluida la continuación sin fecha."""
+    finished = item.get("finished")
+    timestamp = finished.isoformat() if finished else str(item.get("timestamp") or "")
+    source_order = int(item.get("sourceOrder", 0) or 0)
+    source_row = item.get("row", item.get("_sourceRow", 0))
+    if not timestamp and source_order > 0:
+        return 2, "9999-12-31T23:59:59", source_order, int(source_row or 0)
+    return (1 if timestamp else 0), timestamp, source_order, int(source_row or 0)
 
-El arte acompaña la lectura; no sustituye indicadores, estados ni evidencia operativa.
 
-## Actualización inmediata
+allowed_hosts = {"grupovips-my.sharepoint.com"}
+safe_sample = "https://grupovips-my.sharepoint.com/ruta/imagen.jpg#vista"
+if safe_evidence_url(safe_sample, allowed_hosts) != safe_sample:
+    fail("El enlace SharePoint autorizado fue rechazado")
+for unsafe in ("http://grupovips-my.sharepoint.com/imagen.jpg", "https://usuario@grupovips-my.sharepoint.com/imagen.jpg", "https://example.com/imagen.jpg"):
+    if safe_evidence_url(unsafe, allowed_hosts):
+        fail("La validación aceptó un enlace de evidencia inseguro")
+if response_recency_key({"timestamp": "", "_sourceRow": 8}) >= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 2}):
+    fail("Una fila sin fecha reemplazó una respuesta fechada")
+if response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 8}) <= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 2}):
+    fail("El empate de fecha no conserva la última fila del archivo")
+if response_recency_key({"timestamp": "", "sourceOrder": 1, "_sourceRow": 3}) <= response_recency_key({"timestamp": "2026-09-09T09:00:00", "_sourceRow": 8}):
+    fail("Una continuación Forms sin fecha no prevalece sobre el corte")
 
-1. Reemplaza `cms/Sistema de Evidencias OPS.xlsx` con la descarga más reciente de Forms.
-2. Cuando cambie el directorio, ejecuta `python scripts/update_directory.py Directorio.xlsx`; regiones, DM, tiendas abiertas y la estructura del CMS se agrupan automáticamente.
-3. Ejecuta:
 
-```bash
-pip install -r requirements.txt
-python scripts/build_dashboard.py
-python scripts/export_excel.py
-python scripts/export_pdf.py
-python tests/validate_dynamic_forms_schema.py
-python tests/validate_project.py
-python scripts/audit_project.py
-```
+for relative in REQUIRED:
+    if not (ROOT / relative).is_file():
+        fail(f"Falta archivo requerido: {relative}")
+obsolete_present = [relative for relative in OBSOLETE_FILES if (ROOT / relative).exists()]
+if obsolete_present:
+    fail("Persisten archivos obsoletos: " + ", ".join(obsolete_present))
+public_docs = "\n".join((ROOT / name).read_text(encoding="utf-8") for name in ("ARCHIVOS.md", "MEJORAS.md"))
+obsolete_references = [relative for relative in OBSOLETE_FILES if relative in public_docs]
+if obsolete_references:
+    fail("La documentación conserva rutas obsoletas: " + ", ".join(obsolete_references))
+mojibake_codepoints = {0x00C2, 0x00C3, 0x00E2}
+encoding_issues = []
+for source in ROOT.rglob("*"):
+    if not source.is_file() or ".git" in source.parts or source.suffix.casefold() not in TEXT_SUFFIXES:
+        continue
+    try:
+        source_text = source.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        encoding_issues.append(source.relative_to(ROOT).as_posix())
+        continue
+    if any(ord(character) in mojibake_codepoints for character in source_text):
+        encoding_issues.append(source.relative_to(ROOT).as_posix())
+if encoding_issues:
+    fail("Archivos con codificación dañada: " + ", ".join(sorted(encoding_issues)))
+approve("01 · Archivos requeridos y limpieza de obsoletos")
 
-## CMS maestro
+for relative, expected_size in (
+    ("assets/campaign/lucy-fall.webp", (112, 150)),
+    ("assets/campaign/snoopy-fall.webp", (164, 124)),
+    ("assets/campaign/linus-fall.webp", (164, 124)),
+    ("assets/director/raul-sierra-hero.webp", (160, 200)),
+):
+    with Image.open(ROOT / relative) as campaign_image:
+        if campaign_image.format != "WEBP" or campaign_image.size != expected_size:
+            fail(f"Recurso de campaña inválido: {relative}")
 
-Edita `cms/Sistema_Evidencias_OPS_CMS.xlsx`:
+for name in ("Damos_Seguimiento.webp", "Un_placer_haber_Ayudado.webp"):
+    with Image.open(ROOT / "assets" / "ui" / name) as export_visual:
+        if export_visual.format != "WEBP" or export_visual.size != (768, 512):
+            fail(f"Visual de exportación inválido: {name}")
 
-- `Organigrama`: controla Director Starbucks México y los cuatro Directores Regionales. Los cuatro RD activos requieren fotografía WebP.
-- `Tiendas Abiertas`: vista automática; únicamente `Estatus = Abierta` alimenta el portal.
-- `Gerentes`: conserva el nombre completo como llave y usa `primer nombre + primer apellido` en `Nombre corto`.
-- `Directorio.xlsx > Instrucciones`: documenta CC, Región, Estatus y DM sin modificar la hoja operativa.
+data = json.loads((ROOT / "data/dashboard.json").read_text(encoding="utf-8"))
+manifest = json.loads((ROOT / "manifest.webmanifest").read_text(encoding="utf-8"))
+html = (ROOT / "index.html").read_text(encoding="utf-8")
+css = (ROOT / "styles.css").read_text(encoding="utf-8")
+js = (ROOT / "app.js").read_text(encoding="utf-8")
+sw = (ROOT / "service-worker.js").read_text(encoding="utf-8")
+workflow = (ROOT / ".github/workflows/build-dashboard.yml").read_text(encoding="utf-8")
 
-- `Orden`: posición visual.
-- `Actividad`: debe coincidir con la opción configurada en Forms.
-- `Activo`: `Si` publica la actividad; `No` la retira del cumplimiento esperado.
-- `Descripción`: contexto que verá el usuario en el dashboard.
+if data.get("schemaVersion") != 14:
+    fail("Versión del contrato JSON incorrecta")
+if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "Todas las regiones":
+    fail("Identidad del proyecto incorrecta")
+if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
+    fail("La versión Python para invalidar caché es incorrecta")
+if data.get("sources", {}).get("directorySheet") != "Directorio":
+    fail("No se utilizó la hoja configurada del directorio")
+if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
+    fail("Python no está leyendo el Excel CMS")
+if data.get("lastUpdatedDisplay") != "Sin respuestas" and not re.fullmatch(r"\d{2}/\d{2}/\d{4} \d{2}:\d{2}", data.get("lastUpdatedDisplay", "")):
+    fail("Última actualización incorrecta")
+summary = data.get("summary", {})
+if not data.get("dms") or not data.get("stores") or not data.get("activities"):
+    fail("El dashboard quedó sin alcance operativo")
+if summary.get("dms") != len(data["dms"]) or summary.get("stores") != len(data["stores"]) or summary.get("activities") != len(data["activities"]):
+    fail("Los conteos no coinciden con el alcance generado")
+if data.get("calendar", {}).get("active") != len(data["activities"]):
+    fail("Las actividades vigentes del CMS no fueron calculadas")
+for source_key, path in (
+    ("responsesSha256", ROOT / "cms" / "Sistema de Evidencias OPS.xlsx"),
+    ("directorySha256", ROOT / "cms" / "Directorio.xlsx"),
+    ("cmsSha256", ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"),
+):
+    if data.get("sources", {}).get(source_key) != file_sha256(path):
+        fail(f"La huella de la fuente {source_key} no coincide")
+configured_cutover = load_cutover(ROOT / "config" / "cutover.json")
+if not configured_cutover or not configured_cutover.get("baselineSha256"):
+    fail("El corte no está protegido con una huella SHA-256")
+if configured_cutover["baselineSha256"] != file_sha256(configured_cutover["baseline"]):
+    fail("La huella declarada del corte no coincide con el respaldo")
 
-En `Configuracion` se administran región, privacidad, dominios autorizados y Director Regional. Forms puede seguir acumulando actividades y respuestas, pero **sólo las actividades activas y vigentes del CMS se publican y forman parte del denominador**. Las actividades presentes en Forms pero no habilitadas en CMS se conservan en la fuente y se reportan como ocultas en la auditoría.
+_, _, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
+settings = load_settings(ROOT / "config/settings.json", cms_settings)
+source_stores, _, source_directory_status = load_directory(ROOT / "cms/Directorio.xlsx", settings)
+published_directory = {
+    store["ceco"]: {key: store[key] for key in ("ceco", "store", "dm", "region", "status")}
+    for store in data.get("stores", [])
+}
+if published_directory != source_stores or len(published_directory) != len(data.get("stores", [])):
+    fail("Los cruces CeCo, tienda, DM y región no coinciden con el Directorio vigente")
+activity_names = [item["name"] for item in data.get("activities", [])]
+calculated_exclusions = 0
+for store in data.get("stores", []):
+    applicability = store.get("applicableActivities", {})
+    expected = sum(applicability.get(name, True) is not False for name in activity_names)
+    excluded = len(activity_names) - expected
+    calculated_exclusions += excluded
+    if store.get("expected") != expected or store.get("notApplicable") != excluded:
+        fail(f"Aplicabilidad inconsistente para CeCo {store.get('ceco')}")
+    if any(store.get("activities", {}).get(name) and applicability.get(name, True) is False for name in activity_names):
+        fail(f"CeCo {store.get('ceco')} contabiliza una actividad excluida")
+if summary.get("notApplicableCompletions") != calculated_exclusions:
+    fail("La resta implícita de actividades no coincide con las respuestas Sí/No")
+source_regions = {store["region"] for store in source_stores.values()}
+if set(data.get("regions", [])) != source_regions or summary.get("regions") != len(source_regions) or summary.get("stores") != len(source_stores):
+    fail("El alcance multirregión del Directorio no quedó publicado")
+directory_status = data.get("sources", {}).get("directoryStatus", {})
+if directory_status != source_directory_status:
+    fail("El CMS no controla de forma auditable las tiendas abiertas")
+if any(store.get("status") != "Abierta" for store in data.get("stores", [])):
+    fail("Una tienda no abierta entró en los conteos del dashboard")
+available_photos = [item for item in data.get("dms", []) if item.get("photoStatus") == "Disponible"]
+for item in available_photos:
+    validate_webp_asset(item.get("photo", ""), item.get("dm", "DM"))
+poniente_names = {
+    "Adriana Alejandra Tanus Buhler", "Andrea Nava Guzman", "Areli Anahi Lazcano Lezama",
+    "Daniel Flores Maldonado", "Erika Julieta Contreras Aguilera", "Jose De Jesus Magos Arzaluz",
+    "Juan Jesus Zuñiga Flores", "Manuel Alejandro Avila Molina",
+}
+poniente = [item for item in data.get("dms", []) if item.get("dm") in poniente_names]
+if len(poniente) != 8 or any(item.get("photoStatus") != "Disponible" for item in poniente):
+    fail("Las ocho fotografías de Centro Poniente no quedaron vinculadas")
+if any(item.get("photo") != f"assets/dm/{photo_slug(item.get('shortName'))}.webp" for item in poniente):
+    fail("Las rutas de fotografía de Centro Poniente no siguen el nombre canónico")
+if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):
+    fail("Los DM nuevos no quedaron marcados con foto pendiente")
+unknown_cecos = {str(value).strip() for value in data.get("quality", {}).get("unknownCeCos", []) if str(value).strip()}
+if (
+    any(not re.fullmatch(r"[0-9]{5}", value) for value in unknown_cecos)
+    or unknown_cecos.intersection({str(store.get("ceco", "")) for store in data.get("stores", [])})
+    or unknown_cecos.intersection({str(item.get("ceco", "")) for item in data.get("submissions", [])})
+    or any(
+    row not in {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
+    for row in data.get("quality", {}).get("unsafeEvidenceRows", [])
+    )
+):
+    fail("Calidad inicial incorrecta")
+response_schema = data.get("quality", {}).get("responseSchema", {})
+if not response_schema.get("cecoHeaders"):
+    fail("El motor no detectó las columnas CeCo del archivo vigente")
+if "Ceco12" in response_schema.get("cecoHeaders", []):
+    fail("Una columna ajena Ceco12 fue interpretada como CeCo")
+if any(header in response_schema.get("evidenceHeaders", []) for header in ("Jarra Blender", "Jarras Cold Foam")):
+    fail("Una pregunta numérica de jarras fue interpretada como evidencia")
+expected_survey_fields = {
+    "¿ Modificas Horario Festivo?": "modifiesSchedule",
+    "Cierre 15 de Septiembre": "closingTime",
+    "Apertura 16 de Septiembre": "openingTime",
+}
+survey_header_map = response_schema.get("surveyHeaderMap", {})
+holiday_activity_key = compact_key("Validacion Horario Festivo Sep 26")
+if holiday_activity_key in {compact_key(item.get("name")) for item in data.get("activities", [])} and {
+    header: survey_header_map.get(header, {}).get("field")
+    for header in expected_survey_fields
+} != expected_survey_fields:
+    fail("Las preguntas de horario festivo no fueron detectadas por encabezado")
+ceco_usage = response_schema.get("cecoSourceUsage", {})
+ceco_rows_using_both = response_schema.get("cecoRowsUsingBoth", 0)
+ceco_rows_blank = response_schema.get("cecoRowsBlank", 0)
+if set(ceco_usage) != set(response_schema.get("cecoHeaders", [])) or any(
+    isinstance(count, bool) or not isinstance(count, int) or count < 0
+    for count in ceco_usage.values()
+):
+    fail("El uso dinámico de CeCo/CeCo1 no quedó auditado correctamente")
+if (
+    isinstance(ceco_rows_using_both, bool)
+    or not isinstance(ceco_rows_using_both, int)
+    or ceco_rows_using_both < 0
+    or ceco_rows_using_both > sum(ceco_usage.values()) // 2
+):
+    fail("El traslape entre CeCo y CeCo1 es inválido")
+# Cada respuesta debe aportar una sola llave lógica. Si una fila contiene ambas
+# columnas con el mismo CeCo, se cuenta una vez; si difieren, el motor la rechaza
+# antes de llegar a esta validación. No se fijan cantidades históricas porque
+# Forms seguirá agregando filas nuevas en CeCo1.
+effective_ceco_rows = sum(ceco_usage.values()) - ceco_rows_using_both
+cutover_quality = data.get("quality", {}).get("cutover") or {}
+expected_current_ceco_rows = cutover_quality.get(
+    "newFormsRowsRead", data.get("quality", {}).get("responsesRead")
+)
+if (
+    isinstance(ceco_rows_blank, bool)
+    or not isinstance(ceco_rows_blank, int)
+    or ceco_rows_blank < 0
+    or effective_ceco_rows + ceco_rows_blank != expected_current_ceco_rows
+):
+    fail("La cobertura dinámica de CeCo/CeCo1 no coincide con las respuestas de Forms")
+if cutover_quality:
+    baseline_schema = cutover_quality.get("baselineSchema", {})
+    baseline_usage = baseline_schema.get("cecoSourceUsage", {})
+    baseline_effective = sum(baseline_usage.values()) - baseline_schema.get("cecoRowsUsingBoth", 0)
+    if baseline_effective + baseline_schema.get("cecoRowsBlank", 0) != cutover_quality.get("baselineRowsRead"):
+        fail("La cobertura CeCo/CeCo1 del corte histórico no coincide con su base")
+if data.get("quality", {}).get("unusedIgnoredResponseSourceIds"):
+    fail("El proyecto conserva Id de Forms obsoletos en configuración")
+for module in data.get("surveyModules", []):
+    config = SURVEY_ACTIVITY_CONFIG.get(compact_key(module.get("activity")))
+    if not config or not module.get("responses"):
+        fail("Se publicó un desglose de encuesta vacío o sin configuración")
+    if any(not answer or type(count) is not int or count <= 0 for answer, count in module.get("answerCounts", {}).items()):
+        fail("El gráfico de encuesta contiene categorías vacías o sin valores")
+    response_pairs = [(item.get("ceco"), module.get("activity")) for item in module["responses"]]
+    if len(response_pairs) != len(set(response_pairs)):
+        fail("La encuesta publicó más de una respuesta vigente por tienda")
+if any("email" in row or "submittedBy" in row for row in data.get("submissions", [])):
+    fail("El JSON público expone correo o respondente")
+published = [row for row in data.get("submissions", []) if row.get("valid")]
+published_with_links = [row for row in published if row.get("evidenceUrl")]
+published_without_links = [row for row in published if not row.get("evidenceUrl")]
+forms_responses, forms_schema = load_responses(
+    ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
+    [item["name"] for item in data.get("activities", [])],
+)
+active_by_text, active_by_compact = active_activity_catalog(data.get("activities", []))
+if cutover_quality:
+    configured_cutover = load_cutover(ROOT / "config" / "cutover.json")
+    if not configured_cutover:
+        fail("El dashboard declara un corte sin configuración vigente")
+    baseline_responses, _ = load_responses(
+        configured_cutover["baseline"],
+        [item["name"] for item in data.get("activities", [])],
+    )
+    forms_responses = [
+        {**row, "sourceOrder": 0}
+        for row in baseline_responses
+        if row.get("finished") and row["finished"] <= configured_cutover["cutoff"]
+    ] + [
+        {**row, "sourceOrder": 1}
+        for row in forms_responses
+        if canonical_cms_activity(row.get("activity"), active_by_text, active_by_compact)
+        and (not row.get("finished") or row["finished"] > configured_cutover["cutoff"])
+    ]
+active_by_key = {compact_key(item["name"]): item["name"] for item in data.get("activities", [])}
+allowed_hosts = normalize_allowed_hosts(settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com"))
+ignored_ids = set(setting_list(settings.get("ignoredResponseIds")))
+expected_ignored_rows = [row["row"] for row in forms_responses if row["sourceId"] in ignored_ids]
+if data.get("quality", {}).get("ignoredResponseRows") != expected_ignored_rows:
+    fail("Las exclusiones Forms no coinciden con el CMS")
+evidence_required = {compact_key(item["name"]): item.get("requireEvidence", True) for item in data.get("activities", [])}
+stores_by_ceco = {item["ceco"]: item for item in data.get("stores", [])}
+latest_excel_by_pair = {}
+for row in forms_responses:
+    if row["sourceId"] in ignored_ids:
+        continue
+    activity = canonical_cms_activity(row["activity"], active_by_text, active_by_compact)
+    evidence_url = safe_evidence_url(row["evidence"], allowed_hosts)
+    resolved_ceco, _ = recover_response_ceco(row, stores_by_ceco)
+    if not activity or resolved_ceco not in stores_by_ceco or row["schemaConflict"]:
+        continue
+    not_applicable = bool(row["explicitNo"])
+    quantity_complete = True
+    quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
+    if quantity_config:
+        quantity_complete = all(
+            parse_quantity(row.get(metric["field"]), quantity_config["minimum"], quantity_config["maximum"]) is not None
+            for metric in quantity_config["metrics"]
+        )
+    survey_config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
+    survey_primary = row.get("surveyAnswers", {}).get(survey_config["primaryKey"]) if survey_config else None
+    survey_answered = survey_primary in {"Sí", "No"}
+    survey_complete = True
+    row_evidence_required = evidence_required.get(compact_key(activity), True)
+    if survey_config:
+        detail_fields = [field for field in survey_config["fields"] if field["key"] != survey_config["primaryKey"]]
+        details = row.get("surveyAnswers", {})
+        has_details = all(details.get(field["key"]) for field in detail_fields)
+        has_change = any(
+            details.get(field["key"]) not in (None, *field.get("excludedValues", ()))
+            for field in detail_fields
+        )
+        survey_complete = bool(
+            survey_answered
+            and (survey_primary == "No" or (has_details and has_change and evidence_url))
+        )
+        row_evidence_required = survey_primary == "Sí"
+    valid = bool(
+        row["confirmed"]
+        and not not_applicable
+        and quantity_complete
+        and survey_complete
+        and (evidence_url or not row_evidence_required)
+    )
+    if not (valid or row["applicabilityAnswer"] or survey_answered):
+        continue
+    pair = (resolved_ceco, activity)
+    current = latest_excel_by_pair.get(pair)
+    state = {**row, "valid": valid, "notApplicable": not_applicable, "evidenceUrl": evidence_url}
+    if current is None or response_recency_key(state) > response_recency_key(current):
+        latest_excel_by_pair[pair] = state
+expected_excel_links = {
+    pair: item["evidenceUrl"]
+    for pair, item in latest_excel_by_pair.items()
+    if item["valid"] and not item["notApplicable"] and item["evidenceUrl"] and settings.get("publishEvidenceLinks")
+}
+published_excel_links = {(row["ceco"], row["activity"]): row["evidenceUrl"] for row in published if row.get("evidenceUrl")}
+for correction in data.get("quality", {}).get("correctedCeCos", []):
+    if (
+        correction.get("sourceCeCo") == correction.get("resolvedCeCo")
+        or not clean_text(correction.get("sourceCeCo"))
+        or correction.get("resolvedCeCo") not in stores_by_ceco
+        or correction.get("method") != "correo corporativo + nombre exacto"
+    ):
+        fail("La auditoría de CeCo recuperados contiene una corrección insegura")
+if data.get("quality", {}).get("evidenceLinksPublished") != sum(bool(row.get("evidenceUrl")) for row in data.get("submissions", [])) or summary.get("validResponses") != len(published):
+    fail("El conteo dinámico de vínculos publicados no coincide con las respuestas válidas")
+if any(not row.get("evidenceFileName") or row.get("evidenceLinkLabel") != f"Link_{row.get('evidenceKey')}" or not safe_evidence_url(row["evidenceUrl"], allowed_hosts) for row in published_with_links):
+    fail("Nombre de archivo o vínculo directo inválido")
+if any(
+    row.get("evidenceFileName") != "Sin archivo"
+    or row.get("evidenceAvailable")
+    or row.get("evidenceLinkPublished")
+    for row in published_without_links
+):
+    fail("Una respuesta sin archivo conserva metadatos de evidencia")
+if any(
+    (
+        SURVEY_ACTIVITY_CONFIG.get(compact_key(row.get("activity")))
+        and row.get("surveyAnswers", {}).get(
+            SURVEY_ACTIVITY_CONFIG[compact_key(row.get("activity"))]["primaryKey"]
+        ) != "No"
+    )
+    or (
+        not SURVEY_ACTIVITY_CONFIG.get(compact_key(row.get("activity")))
+        and evidence_required.get(compact_key(row.get("activity")), True)
+    )
+    for row in published_without_links
+):
+    fail("Una respuesta válida omite evidencia obligatoria")
+if published_excel_links != expected_excel_links:
+    missing = len(set(expected_excel_links).difference(published_excel_links))
+    unexpected = len(set(published_excel_links).difference(expected_excel_links))
+    changed = sum(published_excel_links.get(pair) != url for pair, url in expected_excel_links.items() if pair in published_excel_links)
+    fail(f"La última evidencia por tienda y actividad no coincide: faltan {missing}, sobran {unexpected}, cambiaron {changed}")
+quality = data.get("quality", {})
+if (
+    not forms_schema["evidenceHeaders"]
+    or quality.get("unresolvedRowConflicts")
+    or quality.get("unresolvedEvidenceIssues")
+    or quality.get("unresolvedApplicabilityIssues")
+    or quality.get("unresolvedSurveyIssues")
+    or quality.get("unresolvedUnsafeEvidenceRows")
+):
+    fail("El esquema dinámico de evidencias no fue detectado correctamente")
+evidence_header_matches = forms_schema.get("evidenceHeaderMatch", {})
+evidence_header_map = forms_schema.get("evidenceHeaderMap", {})
+if any(match not in {"exact", "affinity", "generic", "unverified"} for match in evidence_header_matches.values()):
+    fail("Un encabezado de evidencia produjo una relación ambigua o insegura")
+for header, match in evidence_header_matches.items():
+    mapped_key = evidence_header_map.get(header)
+    if match in {"exact", "affinity"} and mapped_key not in active_by_key:
+        fail(f"El encabezado {header} declara una actividad CMS inexistente")
+    if match == "unverified" and mapped_key in active_by_key:
+        fail(f"El encabezado {header} dejó sin relacionar una actividad activa del CMS")
+for row in (item for item in published if item.get("evidenceUrl")):
+    expected_name = unquote(urlsplit(row["evidenceUrl"]).path.rsplit("/", 1)[-1])
+    if row["evidenceFileName"] != expected_name:
+        fail("El nombre de archivo no coincide con el vínculo del Excel")
+source_dates = [
+    row["finished"] for row in forms_responses
+    if row["finished"] and row["sourceId"] not in ignored_ids
+    and canonical_cms_activity(row["activity"], active_by_text, active_by_compact)
+    and row["row"] not in {
+        item.get("row")
+        for item in data.get("quality", {}).get("quarantinedResponses", [])
+    }
+    and (
+        row["ceco"] in source_stores
+        or row["row"] in {
+            item.get("row")
+            for item in data.get("quality", {}).get("correctedCeCos", [])
+        }
+    )
+]
+expected_cutoff = max(source_dates).isoformat() if source_dates else None
+if data.get("lastUpdated") != expected_cutoff:
+    fail("La fecha de corte no coincide con las respuestas del alcance CMS")
+for submission in published:
+    store = stores_by_ceco.get(submission["ceco"])
+    if not store or store["store"] != submission["store"] or store["dm"] != submission["dm"]:
+        fail("Una respuesta no cruzó correctamente contra el directorio")
+    if store.get("activities", {}).get(submission["activity"]) is not True:
+        fail("Una respuesta válida no quedó contabilizada por nombre de actividad")
+    if submission["evidenceKey"] != evidence_key(submission["activity"], submission["ceco"]):
+        fail("La llave de evidencia no se construyó desde actividad y CeCo")
+approve("02 · CMS, conteos, CeCo y evidencias seguras")
 
-`responseErrorPolicy = Aislar fila` mantiene disponible la publicación cuando una respuesta nueva trae un dato inválido. `trustedCeCoRecovery = Si` permite recuperar un CeCo sólo con la doble coincidencia de correo corporativo y nombre exacto; nunca adivina por cercanía numérica.
+jar_activity = "Jarras Blender | Cold Foam"
+jar_module = next((item for item in data.get("quantityModules", []) if item.get("activity") == jar_activity), None)
+jar_submissions = [
+    item for item in published
+    if item.get("activity") == jar_activity and item.get("quantities")
+]
+expected_jars = {}
+for (ceco, activity), row in latest_excel_by_pair.items():
+    if activity == jar_activity and row["valid"] and not row["notApplicable"]:
+        blender = parse_quantity(row["blenderJars"])
+        cold_foam = parse_quantity(row["coldFoamJars"])
+        expected_jars[ceco] = {"blender": blender, "coldFoam": cold_foam, "total": blender + cold_foam}
+actual_jars = {item["ceco"]: item["quantities"] for item in jar_submissions}
+if len(jar_submissions) != len(actual_jars) or actual_jars != expected_jars:
+    fail("Las piezas por tienda no coinciden con la última respuesta válida del Excel")
+expected_jar_totals = {key: sum(item[key] for item in expected_jars.values()) for key in ("blender", "coldFoam", "total")}
+if jar_activity in activity_names:
+    if not jar_module or jar_module.get("answeredStores") != len(expected_jars) or jar_module.get("totals") != expected_jar_totals:
+        fail("El consolidado de jarras no coincide con el Excel vigente")
+elif jar_module or jar_submissions:
+    fail("Una actividad de jarras inactiva sigue publicada")
+if data.get("quality", {}).get("quantityResponseIssues"):
+    fail("El archivo vigente contiene cantidades de jarras inválidas")
+approve("02A · Jarras: cumplimiento y piezas consolidadas por separado")
 
-## Evidencias y alcance seguro
+with tempfile.TemporaryDirectory() as temp_dir:
+    generated = Path(temp_dir) / "dashboard.json"
+    subprocess.run([sys.executable, str(ROOT / "scripts/build_dashboard.py"), "--output", str(generated)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    fresh = json.loads(generated.read_text(encoding="utf-8"))
+for payload in (data, fresh):
+    payload.pop("generatedAt", None)
+if data != fresh:
+    fail("data/dashboard.json está desincronizado")
+approve("03 · Python sincronizado con la última actualización")
 
-- El tablero usa los encabezados cortos **Actividad**, **CeCo** y **Evidencia**.
-- Python sólo acepta `https://`, sin usuario/contraseña embebidos, puerto no estándar, fragmentos ni dominios fuera de `evidenceAllowedHosts`.
-- El soporte de evidencias muestra **Actividad**, **Tienda** y **Link del archivo**. El texto visible usa `Link_Actividad_CeCo`; el hipervínculo conserva la URL exacta del Excel y el nombre original queda disponible como descripción accesible.
-- `publishEvidenceLinks = Si` publica únicamente los vínculos que superan la lista de dominios autorizados.
-- El vínculo se conserva tal como viene en el Excel y abre SharePoint en una pestaña aislada con `noopener`, `noreferrer` y sin encabezado `Referer`. SharePoint sigue determinando quién puede ver la imagen.
+static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
+if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Jarras"]:
+    fail("El Excel Python no contiene las cuatro vistas ejecutivas")
+if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("002E24") for sheet in static_excel.sheetnames):
+    fail("Los títulos del Excel Python no conservan el verde oscuro")
+expected_summary_formula = "=IFERROR(A6/(A6+C6),0)"
+if static_excel["Resumen"]["E6"].value != expected_summary_formula or static_excel["Resumen"]["A6"].number_format != "#,##0" or static_excel["Resumen"]["E6"].number_format != "0.0%" or static_excel["Resumen"]._charts:
+    fail("El resumen Excel no conserva fórmula, formato numérico o limpieza visual")
+for sheet_name, header_row in (("Resumen", 9), ("Tiendas", 4), ("Actividades", 4)):
+    headers = [cell.value for cell in static_excel[sheet_name][header_row]]
+    if "Pendientes" not in headers or "Decisión" not in headers or any(label in headers for label in ("Aplican", "No aplica", "N/A")):
+        fail(f"La hoja {sheet_name} no está enfocada únicamente en Realizadas y Pendientes")
+jar_headers = [cell.value for cell in static_excel["Jarras"][4]]
+if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"]:
+    fail("La hoja Jarras no separa respuestas y piezas")
+jar_sheet = static_excel["Jarras"]
+total_row = 5 + len(expected_jars)
+if jar_sheet.max_row != total_row or jar_sheet.cell(total_row, 3).value != "Consolidado":
+    fail("La hoja Jarras no contiene las tiendas vigentes y su consolidado")
+excel_jars = {}
+for cells in jar_sheet.iter_rows(min_row=5, max_row=total_row - 1, values_only=True) if expected_jars else []:
+    ceco, store, dm, blender, cold_foam, total, link = cells
+    if ceco in excel_jars or ceco not in expected_jars:
+        fail("La hoja Jarras repite o agrega una tienda")
+    excel_jars[ceco] = {"blender": blender, "coldFoam": cold_foam, "total": total}
+    source = stores_by_ceco[ceco]
+    if (store, dm) != (source["store"], source["dm"]) or link != published_excel_links.get((ceco, jar_activity), "Validada"):
+        fail("El cruce de tienda o vínculo de jarras no coincide en el Excel")
+if excel_jars != expected_jars:
+    fail("Las cantidades del Excel Jarras no coinciden con Forms")
+for column in ("D", "E", "F"):
+    expected_formula = f"=SUM({column}5:{column}{total_row - 1})" if expected_jars else 0
+    if jar_sheet[f"{column}{total_row}"].value != expected_formula:
+        fail("El consolidado del Excel Jarras no suma todas las filas vigentes")
+with tempfile.TemporaryDirectory() as temp_dir:
+    dynamic_excel = Path(temp_dir) / "dinamico.xlsx"
+    subprocess.run(["node", str(ROOT / "tests" / "build_dynamic_xlsx.js"), str(dynamic_excel)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    dynamic_book = load_workbook(dynamic_excel, data_only=False)
+    dm_sheet = dynamic_book["Tiendas"]
+    if dynamic_book.sheetnames != ["Resumen", "Tiendas", "Actividades"] or dynamic_book["Resumen"]["B5"].value != 0.014 or dynamic_book["Resumen"]["B5"].number_format != "0.0%":
+        fail("El motor XLSX dinámico generó un libro inválido")
+    if any(dynamic_book[sheet]["A1"].fill.fgColor.rgb != "FF002E24" for sheet in dynamic_book.sheetnames):
+        fail("El título verde oscuro no se aplicó a todas las pestañas dinámicas")
+    if [cell.value for cell in dm_sheet[4]] != ["CeCo", "Tienda", "Roll Out", "Rack FHW", "QR - Qualtrics", "Mandil Verde", "Realizadas", "Pendientes", "% Avance", "Estado", "Decisión"]:
+        fail("La hoja Tiendas no contiene el detalle por actividad")
+    if dm_sheet["G5"].value != "=SUM(C5:F5)" or dm_sheet["H5"].value != "=COUNT(C5:F5)-SUM(C5:F5)" or dm_sheet["I5"].value != "=IFERROR(SUM(C5:F5)/COUNT(C5:F5),0)" or dm_sheet["I5"].number_format != "0.0%":
+        fail("Realizadas, Pendientes o porcentaje del DM no son auditables")
+    if dm_sheet["A1"].fill.fgColor.rgb != "FF002E24" or dm_sheet["C5"].fill.fgColor.rgb != "FF1E3932" or dm_sheet["F5"].fill.fgColor.rgb != "FFE9F4EF" or dm_sheet["J5"].fill.fgColor.rgb != "FFFFF0D5" or dm_sheet["K5"].value != "Dar seguimiento" or dm_sheet["D5"].value not in (None, ""):
+        fail("El contraste del título o los estados realizados/pendientes no es consistente")
+approve("04 · XLSX regional y dinámico con formatos congruentes")
+with tempfile.TemporaryDirectory() as temp_dir:
+    direct_pdf = Path(temp_dir) / "directo.pdf"
+    subprocess.run(["node", str(ROOT / "tests" / "build_direct_pdf.js"), str(direct_pdf)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+    pdf_bytes = direct_pdf.read_bytes()
+    if not pdf_bytes.startswith(b"%PDF-1.4") or not pdf_bytes.rstrip().endswith(b"%%EOF"):
+        fail("El motor PDF directo generó un archivo inválido")
+regional_pdf = (ROOT / "exports" / "Resumen_Evidencias_OPS.pdf").read_bytes()
+if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
+    fail("El PDF regional Python no fue generado correctamente")
+approve("05 · PDF regional Python y descarga directa válidos")
 
-## Fotografías y liderazgo regional
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"]:
+    if text not in html:
+        fail(f"Interfaz simplificada incompleta: {text}")
+nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
+section_order = [html.index(f'id="{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
+if nav_order != sorted(nav_order) or section_order != sorted(section_order):
+    fail("Orden de navegación o secciones incorrecto")
+if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
+    fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
+organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
+if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer or "data-region-focus" not in organization_renderer or "aria-pressed" not in organization_renderer or "avance regional" in organization_renderer:
+    fail("La vista regional debe filtrar por fotografía, mostrar sólo el porcentaje y exponer su estado accesible")
+filter_source = js[js.index("function populateFilters"):js.index("function populateEvidenceFilters")]
+evidence_filter_source = js[js.index("function populateEvidenceFilters"):js.index("function fileSafe")]
+if any(label in filter_source + evidence_filter_source for label in ("Todas las regiones", "Todos los DM", "Todas las tiendas", "Todas las actividades")) or (filter_source + evidence_filter_source).count('<option value="">Todos</option>') != 8:
+    fail("Los filtros no usan la etiqueta breve Todos")
+if "data-region-focus" not in js[js.index("function bindEvents"):js.index("async function loadData")]:
+    fail("La fotografía regional no activa el filtro dinámico")
+for removed_copy in ("Vista personalizada", "Filtra, revisa y exporta en un solo flujo", "Lectura rápida del avance seleccionado.", "JUNTÉMONOS MÁS", "Verificamos juntos cada detalle de campaña.", "Sistema de verificación"):
+    if removed_copy in html:
+        fail(f"La navegación conserva texto redundante: {removed_copy}")
+if "Fall 26 · Cada detalle cuenta" in html:
+    fail("El pie conserva el mensaje de campaña solicitado para retirar")
+store_renderer = js[js.index("function renderStores"):js.index("function syncFilterUrl")]
+if "<th>CeCo</th><th>Tienda</th><th>DM</th>" in html or "esc(store.dm)" in store_renderer or 'colspan="7"' in store_renderer:
+    fail("La tabla Tiendas todavía muestra la columna DM")
+for forbidden in ["class=\"sidebar\"", "side-nav", "data-route=", "routeTo(", "--sidebar", "guide-steps", "priority-stores", "quality-strip", "Atención prioritaria", "De mayor a menor avance", "Detalle dinámico", "id=\"filter-notice\"", "id=\"activity-context\"", "id=\"evidence-title\"", "id=\"team-title\"", "id=\"stores-title\"", "id=\"store-summary\"", "id=\"active-scope\"", "id=\"toggle-dates\"", "id=\"commitment-dates\"", "renderActiveScope"]:
+    if forbidden in html + js + css:
+        fail(f"Elemento lateral obsoleto aún presente: {forbidden}")
+approve("06 · Navegación lineal y sin bloques obsoletos")
+for navigation_control in ("renderFilterToolbar", "filterDisplayValue", "data-remove-filter", "focusDynamicCard", 'event.key !== "Escape"', 'aria-pressed="${state.filters.dm === dm.dm}"'):
+    if navigation_control not in js:
+        fail(f"Mejora de navegación incompleta: {navigation_control}")
+for design_control in (".filter-toolbar", ".filter-chip", ".filters label.has-value", 'main[aria-busy="true"]', ".organization-copy em"):
+    if design_control not in css:
+        fail(f"Mejora visual incompleta: {design_control}")
+if 'aria-busy="true"' not in html or "Ver tiendas" not in html or "Restablecer" not in html or "${number(person.stores)} tiendas" not in organization_renderer:
+    fail("La interfaz no comunica carga, alcance regional o accesos rápidos")
+approve("06A · Cinco mejoras de navegación, foco y lectura activa")
+for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".footer-peanuts", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
+    if theme_token not in css:
+        fail(f"El lenguaje visual Fall 26 no se aplicó fuera del hero: {theme_token}")
+stability_controls = data.get("quality", {}).get("stabilityControls", {})
+if tuple(stability_controls) != STABILITY_CONTROLS or not all(stability_controls.values()) or data.get("quality", {}).get("stabilityScore") != "12/12":
+    fail("Los 11 controles Python de estabilidad no están activos")
+for required in [".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"]:
+    if required not in css:
+        fail(f"Actividades no está adaptada a móvil: {required}")
+if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
+    fail("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
+approve("06B · Actividades en una fila y sin desplazamiento horizontal en móvil")
+for text in ["renderSummary", "renderActivities", "renderSurveyModule", "activeSurveyModule", "responseCounts", "renderEvidence", "populateEvidenceFilters", "evidenceFilters", "evidenceLinkLabel", "exportRows", "renderTeam", "renderStores", "syncFilterUrl", "clearDashboardFilters", "back-to-top", "beginExport", "finishExport", "exportImage", "exportPdf", "exportExcel", "buildExcelSpec", "renderPdfPages", "exportProfile", "exportActivityLabel", "exportAdvanceLabel", "AVANCE REGIÓN", "icon-192.webp", "spreadsheetColumn", "Detalle de actividades por tienda", "1 = Realizada · 0 = Pendiente", "acceptExportConfirmation", "Aceptar y descargar", "Valida tu archivo", "Carpeta Descargas", "Cerrar exportación", "export-close", "URL.revokeObjectURL", "AVANCE REALIZADO", "PENDIENTES", "% AVANCE", "Un_placer_haber_Ayudado.webp", "noopener noreferrer", "referrerpolicy", "serviceWorker", "deadlineLabel", "focusRank"]:
+    if text not in js:
+        if text not in html + css:
+            fail(f"Funcionalidad faltante: {text}")
+for forbidden in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Excel", ">Ver archivo<"):
+    if forbidden in html + js + css:
+        fail(f"La confirmación final conserva una acción obsoleta: {forbidden}")
+if "tiendas · ${dm.completed} realizadas" in js:
+    fail("Ranking DM todavía muestra realizadas junto a tiendas")
+for obsolete_summary in ('id="filter-summary"', "renderFilterSummary", "data-clear-dashboard-filters"):
+    if obsolete_summary in html + js + css:
+        fail(f"Resumen redundante todavía visible: {obsolete_summary}")
+for redundant_export_text in (
+    'fillText(meta.motto, 800, 45)',
+    'fillText(meta.motto, 800, 55)',
+    '`Actividad · ${exportActivityLabel()}`',
+    '`ACTIVIDAD  ${exportActivityLabel()}`',
+    '`${director.role} · ${director.name}`',
+):
+    if redundant_export_text in js:
+        fail(f"Exportación redundante: {redundant_export_text}")
+if js.count("./assets/icons/icon-192.webp") < 2 or js.count("context.fillRect(1320,") < 2:
+    fail("PDF e imagen no comparten icono grande o recuadro de avance")
+excel_export_source = js[js.index("function buildExcelSpec"):js.index("async function exportExcel")]
+for required_excel_context in ("const activityLabel = exportActivityLabel()", "exportAdvanceLabel()", "${scope} · ${activityLabel}"):
+    if required_excel_context not in excel_export_source:
+        fail(f"Excel perdió el filtro dinámico: {required_excel_context}")
+if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
+    fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
+export_card_rule = re.search(r"\.export-card\s*\{([^}]+)\}", css)
+export_image_rule = re.search(r"\.export-card\s*>\s*img\s*\{([^}]+)\}", css)
+if not export_card_rule or not export_image_rule:
+    fail("Falta el marco estable de exportación")
+for required_style in (
+    "width: min(1040px, 100%)",
+    "grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr)",
+    "align-items: center",
+):
+    if required_style not in export_card_rule.group(1):
+        fail(f"El marco de exportación perdió su proporción: {required_style}")
+for required_style in ("height: auto", "aspect-ratio: 3 / 2", "object-fit: contain", "object-position: center"):
+    if required_style not in export_image_rule.group(1):
+        fail(f"La imagen de exportación puede recortarse: {required_style}")
+if "object-fit: cover" in export_image_rule.group(1) or "height: 100%" in export_image_rule.group(1):
+    fail("La imagen de exportación conserva reglas que provocan recorte")
+approve("07 · Filtros, confirmación y exportaciones del alcance actual")
+for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
+    if cache_behavior not in js:
+        fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
+for cache_control in ("sistema-evidencias-ops-v34", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+    if cache_control not in sw:
+        fail(f"Actualización PWA incompleta: {cache_control}")
+if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:
+    fail("El Excel CMS no debe publicarse en la caché web")
+core_cache = sw[sw.index("const CORE"):sw.index("];", sw.index("const CORE"))]
+if any(path in core_cache for path in ("/exports/", "/assets/dm/", "/assets/ui/", "icon-192")):
+    fail("La instalación PWA todavía precarga archivos pesados no esenciales")
+if 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html or "Date.now()" in js[js.index("async function loadData"):js.index("async function refreshApplicationData")]:
+    fail("La carga inicial conserva motores pesados o genera entradas de caché únicas")
+gitignore_path = ROOT / ".gitignore"
+if gitignore_path.is_file():
+    gitignore = gitignore_path.read_text(encoding="utf-8")
+    for ignored in ("__pycache__/", "*.py[cod]", "*.tmp", "cms/~$*.xlsx"):
+        if ignored not in gitignore:
+            fail(f"La limpieza local no ignora {ignored}")
+if "window.print" in js or "Tiendas realizadas" in js:
+    fail("La descarga directa o el KPI inicial aún conserva comportamiento obsoleto")
+if "Todas las actividades · Ranking regional de mayor a menor avance" in js + (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8"):
+    fail("El PDF aún conserva el subtítulo regional eliminado")
+export_pdf_source = (ROOT / "scripts/export_pdf.py").read_text(encoding="utf-8")
+if "% PENDIENTE" in js + export_pdf_source or "PÁGINA ${pageIndex" in js or "Página {page_index" in export_pdf_source:
+    fail("La exportación conserva porcentaje pendiente o numeración de página")
+excel_spec_source = js[js.index("function buildExcelSpec"):js.index("async function exportExcel")]
+for forbidden_export_label in ('"Aplican"', '"No aplica"', '"N/A"', "NO APLICA", "REALIZADAS / APLICAN"):
+    if forbidden_export_label in excel_spec_source + export_pdf_source:
+        fail(f"La exportación todavía muestra {forbidden_export_label}")
+if '"Pendientes"' not in excel_spec_source or "AVANCE REALIZADO" not in js + export_pdf_source:
+    fail("Las exportaciones no están enfocadas en avance realizado y pendientes")
+for required in ("SUM(${activityRange})", "COUNT(${activityRange})-SUM(${activityRange})", "profile.photo", 'role: "DM"'):
+    if required not in js:
+        fail(f"Detalle DM incompleto en exportaciones: {required}")
+if "guide" in data:
+    fail("La guía eliminada todavía se publica en el JSON")
+approve("08 · PWA, descarga directa y mensaje final simplificados")
+if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.get("dms", [])) + 1)):
+    fail("Ranking DM inválido")
+director = data.get("report", {}).get("regionalDirector", {})
+organization = data.get("organization", {})
+if data.get("report", {}).get("motto") != "CADA DETALLE CUENTA" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santamaria" or organization.get("nationalDirector", {}).get("heroPhoto") != "assets/director/raul-sierra-hero.webp" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"filterValue", "stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") or item.get("filterValue") != item.get("region") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+    fail("Exportación o fechas compromiso no fueron preparadas por Python")
+expected_short_names = {
+    "Luis Manuel Neri Saldaña": "Luis Neri",
+    "Nancy Carolina Rodriguez Medina": "Nancy Rodriguez",
+    "Jose De Jesus Magos Arzaluz": "Jose Magos",
+}
+if any(short_dm_name(full_name) != short_name for full_name, short_name in expected_short_names.items()):
+    fail("Python no calcula primer nombre + primer apellido")
+published_short_names = {item.get("dm"): item.get("shortName") for item in data.get("dms", [])}
+if any(published_short_names.get(full_name) != short_name for full_name, short_name in expected_short_names.items()):
+    fail("El CMS no publica correctamente los nombres cortos DM")
+focus = data.get("activities", [])
+if [item.get("focusRank") for item in focus] != list(range(1, len(focus) + 1)):
+    fail("El foco de actividades no es consecutivo")
+if '"Aplican"' in js[js.index("function renderSummary"):js.index("function renderActivities")] or "aplican${" in js[js.index("function renderTeam"):js.index("function renderStores")]:
+    fail("El resumen o las tarjetas DM conservan la palabra Aplican")
+if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
+    fail("El nuevo logo no está configurado en todos los tamaños")
+approve("09 · Ranking, fotografía DM e identidad ejecutiva")
+for text in ["pip check", "python -X utf8 scripts/safe_maintenance.py --force", "python -X utf8 scripts/clean_obsolete.py --check", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+    if text not in workflow:
+        fail(f"Workflow incompleto: {text}")
+for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git add -u", "assets/director"]:
+    if text not in workflow:
+        fail(f"Publicación no idempotente: falta {text}")
+if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow:
+    fail("El workflow conserva lógica transitoria para una prueba obsoleta")
+approve("10 · Workflow completo: limpiar, generar, validar y publicar")
 
-La hoja `Gerentes` relaciona el nombre exacto del directorio con su región y fotografía en `assets/dm/`. Los DM nuevos se agregan con estado **Foto pendiente** y el dashboard muestra sus iniciales hasta recibir el WebP. Python sólo detiene la generación cuando una ruta de imagen configurada no existe.
-
-## 10 mejoras de navegación, cálculo y exportación
-
-Consulta [MEJORAS.md](MEJORAS.md) para el detalle verificable. La actualización incorpora navegación compartible, alcance visible, regreso rápido, exportaciones con **Realizadas / Aplican / No aplica / % Avance** y una prueba automática del caso de Hornos.
-
-## Python como producto principal
-
-`scripts/build_dashboard.py` es el motor del proyecto. Valida encabezados, normaliza CeCo, verifica evidencia segura, cruza tienda y DM, comprueba fotografías, deduplica respuestas, protege datos personales y genera `data/dashboard.json`. La prueba ya no congela una hora fija: compara el JSON publicado contra una reconstrucción completa desde el Excel.
-
-`scripts/export_excel.py` construye `exports/Resumen_Evidencias_OPS.xlsx` como respaldo ejecutivo: Resumen, Tiendas y Actividades, con fórmulas recalculables, filtros, congelación de encabezados, semáforo y formatos separados para cantidades y porcentajes. `scripts/export_pdf.py` genera el respaldo regional con la fotografía de Jorge Alcantar. En el dashboard, PDF, imagen y Excel generan una versión nueva con el alcance de los filtros actuales.
-
-## Regla de cumplimiento
-
-Una combinación tienda–actividad cuenta una sola vez cuando:
-
-- el CeCo contiene exactamente cinco dígitos y existe en el directorio;
-- la respuesta de confirmación es `Sí` o, si esa pregunta ya no existe, se encontró la evidencia correspondiente a la actividad;
-- existe vínculo HTTPS en un dominio autorizado;
-- la actividad está activa y vigente en el CMS.
-
-Envíos repetidos se conservan como registros, pero el cumplimiento se deduplica por `CeCo + Actividad`, utilizando el más reciente.
-
-Las respuestas operativas de prueba pueden excluirse temporalmente por el `Id` original de Forms mediante `ignoredResponseIds` en la hoja `Configuracion` del CMS. La exclusión ocurre antes de calcular fecha de corte, aplicabilidad, evidencias o avance; no bloquea el CeCo para respuestas reales.
-
-### Aplicabilidad de Hornos y Rack FHW
-
-Para `Programacion Hornos Merry - Focaccia` y `Rack FHW`, la respuesta explícita `No` registra **No aplica** y elimina esa combinación tienda–actividad del denominador. Una respuesta vacía sigue pendiente. El motor vincula cada pregunta a su actividad concreta, por lo que un `No` de Community Board u otra sección no puede descontar Rack FHW. El texto exacto y la ramificación de Microsoft Forms están en [INSTRUCCION_FORMS.md](INSTRUCCION_FORMS.md).
-
-## Publicación en GitHub Pages
-
-1. Carga el contenido del ZIP en la raíz de un repositorio nuevo.
-2. En **Settings → Pages**, selecciona **Deploy from a branch**.
-3. Elige `main` y la carpeta `/ (root)`.
-4. Guarda y espera la publicación.
-
-La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.json` con estrategia network-first.
-
-## Vistas
-
-- **Resumen:** KPI y lectura rápida del alcance seleccionado.
-- **Ranking DM:** comparativo regional de mayor a menor avance.
-- **Actividades:** catálogo administrable, cumplimiento y fechas compromiso.
-- **Tiendas:** cruce CeCo y avance operativo por tienda.
-- **Evidencias:** soporte plegable al final, con filtros propios por DM, actividad y tienda.
-- **Exportación:** imagen, PDF y Excel con alcance dinámico. Todos los DM exporta el ranking regional; un DM exporta sus tiendas ordenadas de mayor a menor avance.
-
-## Fuente inicial validada
-
-- 357 tiendas `Abierta` de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes. Las 15 tiendas con `Cierre Temporal` o `Cierre Definitivo` permanecen en el Directorio, pero no entran en conteos ni avance.
-- El CMS controla el alcance con `onlyOpenStores = Si` e `includedStoreStatuses = Abierta`.
-- La pestaña CMS `Tiendas Abiertas` se regenera con CC, tienda, región, estatus y DM para revisar visualmente las 357 tiendas publicadas.
-- La pestaña `Organigrama` publica a Raúl Sinohe Sierra Santamaria como Director Starbucks México y a los responsables de Centro Centro, Centro Poniente, Centro Sur y Centro Norte con fotografía.
-- La navegación identifica el apartado como `RD's Centro's`; las tarjetas omiten el rol repetitivo, muestran sus tiendas y mantienen el avance regional dinámico.
-- La barra de vista filtrada permite revisar y quitar cada filtro, saltar directamente a Tiendas o restablecer el alcance. La tecla `Esc` limpia el filtro activo cuando no hay una exportación abierta.
-- 8 actividades activas.
-- Última actualización: `29/08/2026 09:43`.
-- CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.
-- 7 respuestas válidas, 8 columnas dinámicas de evidencia y 0 CeCo sin cruce.
+if len(passed) != 13:
+    fail(f"Se esperaban 13 validaciones y se ejecutaron {len(passed)}")
+print("Validación aprobada · 13/13 controles")
+for check in passed:
+    print(f"OK {check}")
+print("CMS Excel → Python → un JSON consolidado")
+print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM + 1 Director Regional")
+if published:
+    sample_submission = published[0]
+    print(f"{sample_submission['evidenceKey']} → {sample_submission['store']} · vínculo SharePoint validado")
+else:
+    print("Forms sin respuestas válidas · tablero vacío aceptado")
+print("Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes")
+print("Excel: resumen rápido + detalle + actividades")
