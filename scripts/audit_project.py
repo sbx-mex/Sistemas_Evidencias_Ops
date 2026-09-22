@@ -246,19 +246,14 @@ if any(
     for header, match in evidence_header_matches.items()
 ):
     issues.append("La relación entre encabezados de evidencia y actividades CMS es incongruente")
-quarantined_rows = {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
-recovered_conflict_rows = {
-    item.get("row") for item in data.get("quality", {}).get("correctedCeCos", [])
-    if item.get("hadSchemaConflict")
-}
-if any(item.get("row") not in quarantined_rows | recovered_conflict_rows for item in response_schema.get("rowConflicts", [])) or any(
-    key in {"ambiguous-evidence", "ambiguous-matching-evidence", "mismatched-evidence-column", "multiple-evidence-columns"} and rows
-    and not set(rows).issubset(quarantined_rows)
-    for key, rows in response_schema.get("evidenceIssues", {}).items()
-):
+quality = data.get("quality", {})
+quarantined_rows = {item.get("row") for item in quality.get("quarantinedResponses", [])}
+if quality.get("unresolvedRowConflicts") or quality.get("unresolvedEvidenceIssues"):
     issues.append("El Excel Forms contiene columnas o evidencias ambiguas")
-if any(rows for rows in response_schema.get("applicabilityIssues", {}).values()):
+if quality.get("unresolvedApplicabilityIssues"):
     issues.append("El Excel Forms contiene respuestas Sí/No contradictorias")
+if quality.get("unresolvedSurveyIssues"):
+    issues.append("El Excel Forms contiene respuestas de encuesta contradictorias")
 for module in data.get("surveyModules", []):
     if compact_key(module.get("activity")) not in SURVEY_ACTIVITY_CONFIG or not module.get("responses"):
         issues.append("Se publicó un desglose de encuesta vacío o no configurado")
@@ -336,7 +331,7 @@ for module in data.get("quantityModules", []):
         issues.append("El consolidado de piezas no coincide con las respuestas vigentes")
 if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
-if any(row not in quarantined_rows for row in data.get("quality", {}).get("unsafeEvidenceRows", [])):
+if quality.get("unresolvedUnsafeEvidenceRows"):
     issues.append("Una evidencia con vínculo inseguro no quedó aislada")
 if any(
     not item.get("evidenceFileName")

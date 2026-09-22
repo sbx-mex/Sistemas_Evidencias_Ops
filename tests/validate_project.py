@@ -414,20 +414,15 @@ if published_excel_links != expected_excel_links:
     unexpected = len(set(published_excel_links).difference(expected_excel_links))
     changed = sum(published_excel_links.get(pair) != url for pair, url in expected_excel_links.items() if pair in published_excel_links)
     fail(f"La última evidencia por tienda y actividad no coincide: faltan {missing}, sobran {unexpected}, cambiaron {changed}")
-quarantined_rows = {item.get("row") for item in data.get("quality", {}).get("quarantinedResponses", [])}
-recovered_conflict_rows = {
-    item.get("row") for item in data.get("quality", {}).get("correctedCeCos", [])
-    if item.get("hadSchemaConflict")
-}
-unhandled_conflicts = [
-    item for item in forms_schema["rowConflicts"]
-    if item.get("row") not in quarantined_rows | recovered_conflict_rows
-]
-if not forms_schema["evidenceHeaders"] or unhandled_conflicts or any(
-    rows and not set(rows).issubset(quarantined_rows)
-    for key, rows in forms_schema["evidenceIssues"].items()
-    if key != "generic-evidence-fallback"
-) or any(rows and not set(rows).issubset(quarantined_rows) for rows in forms_schema.get("applicabilityIssues", {}).values()):
+quality = data.get("quality", {})
+if (
+    not forms_schema["evidenceHeaders"]
+    or quality.get("unresolvedRowConflicts")
+    or quality.get("unresolvedEvidenceIssues")
+    or quality.get("unresolvedApplicabilityIssues")
+    or quality.get("unresolvedSurveyIssues")
+    or quality.get("unresolvedUnsafeEvidenceRows")
+):
     fail("El esquema dinámico de evidencias no fue detectado correctamente")
 evidence_header_matches = forms_schema.get("evidenceHeaderMatch", {})
 evidence_header_map = forms_schema.get("evidenceHeaderMap", {})
@@ -447,6 +442,17 @@ source_dates = [
     row["finished"] for row in forms_responses
     if row["finished"] and row["sourceId"] not in ignored_ids
     and canonical_cms_activity(row["activity"], active_by_text, active_by_compact)
+    and row["row"] not in {
+        item.get("row")
+        for item in data.get("quality", {}).get("quarantinedResponses", [])
+    }
+    and (
+        row["ceco"] in source_stores
+        or row["row"] in {
+            item.get("row")
+            for item in data.get("quality", {}).get("correctedCeCos", [])
+        }
+    )
 ]
 expected_cutoff = max(source_dates).isoformat() if source_dates else None
 if data.get("lastUpdated") != expected_cutoff:

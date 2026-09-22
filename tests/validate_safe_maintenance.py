@@ -33,8 +33,6 @@ def main() -> None:
         old_root, old_generated = safe.ROOT, safe.GENERATED
         safe.ROOT = root
         safe.GENERATED = (root / "dashboard.json", root / "resumen.xlsx", root / "resumen.pdf")
-        for path in safe.GENERATED:
-            path.write_bytes(b"estable")
         try:
             (root / "config").mkdir()
             settings = root / "config/settings.json"
@@ -48,6 +46,20 @@ def main() -> None:
             )
             current_data = (ROOT / "data/dashboard.json").read_bytes()
             safe.GENERATED[0].write_bytes(current_data)
+            safe.GENERATED[1].write_bytes((ROOT / "exports/Resumen_Evidencias_OPS.xlsx").read_bytes())
+            safe.GENERATED[2].write_bytes((ROOT / "exports/Resumen_Evidencias_OPS.pdf").read_bytes())
+            assert safe.outputs_current(fingerprints)
+            changed_fingerprints = dict(fingerprints)
+            changed_fingerprints["Sistema_Evidencias_OPS_CMS.xlsx"] = "0" * 64
+            assert not safe.outputs_current(changed_fingerprints)
+            valid_excel = safe.GENERATED[1].read_bytes()
+            safe.GENERATED[1].write_bytes(b"archivo incompleto")
+            assert not safe.outputs_current(fingerprints)
+            safe.GENERATED[1].write_bytes(valid_excel)
+            valid_pdf = safe.GENERATED[2].read_bytes()
+            safe.GENERATED[2].write_bytes(b"%PDF-archivo incompleto")
+            assert not safe.outputs_current(fingerprints)
+            safe.GENERATED[2].write_bytes(valid_pdf)
             assert safe.outputs_current(fingerprints)
             # Cambiar el motor/exportador debe invalidar el resultado aunque
             # ninguno de los tres Excel haya cambiado.

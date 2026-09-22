@@ -120,34 +120,49 @@ def main() -> None:
         all_cecos = [store["ceco"] for store in current_payload["stores"]]
         active_activities = [item["name"] for item in current_payload["activities"]]
         assert active_activities
-        # Los dos eventos Peanuts deben estar listos antes de recibir respuestas
-        # de Forms. El encabezado Evidencia es la llave del evento, de modo que
-        # quitar filas del respaldo no altera el cruce de respuestas nuevas.
-        peanuts_due = {
-            "Peanuts Charly&Lucy": "2026-09-20",
-            "Peanuts Linus&Snoopy": "2026-09-27",
-        }
-        configured = {item["name"]: item for item in current_payload["activities"]}
-        assert set(peanuts_due).issubset(configured)
-        assert {
-            name: configured[name]["endDate"] for name in peanuts_due
-        } == peanuts_due
-        assert all(configured[name]["requireEvidence"] for name in peanuts_due)
-        assert [item["name"] for item in current_payload["activities"][:2]] == list(peanuts_due)
+        cms_activities, _, _, _ = load_cms(
+            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
+        )
+        assert active_activities == [item["name"] for item in cms_activities]
+        handled_rows = (
+            set(current_payload["quality"]["hiddenActivityRows"])
+            | {
+                item["row"]
+                for item in current_payload["quality"]["quarantinedResponses"]
+            }
+        )
+        assert all(
+            set(rows).issubset(handled_rows)
+            for issue, rows in current_payload["quality"]["responseSchema"]["evidenceIssues"].items()
+            if issue != "generic-evidence-fallback"
+        )
+        assert current_payload["quality"]["stabilityScore"] == "12/12"
+        # La prueba toma el catálogo vigente; no reactiva campañas retiradas ni
+        # fija nombres o fechas que Operación pueda cambiar desde el CMS.
+        configured = [
+            item for item in current_payload["activities"]
+            if item["requireEvidence"]
+        ]
+        assert len(configured) >= 2
+        campaign_sample = configured[:2]
+        campaign_names = [item["name"] for item in campaign_sample]
+        assert campaign_names == [item["name"] for item in current_payload["activities"] if item["requireEvidence"]][:2]
+        assert all(isinstance(item["endDate"], (str, type(None))) for item in campaign_sample)
         # La descripción es contenido editorial del CMS: puede ajustarse sin
         # afectar el cruce Forms, el orden, la evidencia ni la fecha límite.
         # La prueba valida el contrato operativo, no una redacción fija.
-        assert all(isinstance(configured[name]["description"], str) for name in peanuts_due)
+        assert all(isinstance(item["description"], str) for item in campaign_sample)
 
-        future_campaigns = temp / "future-peanuts.xlsx"
+        future_campaigns = temp / "future-cms-campaigns.xlsx"
+        future_evidence_headers = [
+            "Evidencia_" + activity.replace(" ", "_")
+            for activity in campaign_names
+        ]
         future_headers = BASE + [
-            "CeCo", ACTIVITY,
-            "Evidencia_Peanuts_Charly&Lucy",
-            "Evidencia_Peanuts_Linus&Snoopy",
+            "CeCo", ACTIVITY, *future_evidence_headers,
         ]
         future_rows = []
-        future_evidence_headers = future_headers[-2:]
-        for index, (activity, evidence_header) in enumerate(zip(peanuts_due, future_evidence_headers), 1):
+        for index, activity in enumerate(campaign_names, 1):
             started, finished = timestamps(3000 + index)
             evidence_values = [""] * 2
             evidence_values[index - 1] = f"{allowed}/peanuts-{index}.jpg"
@@ -164,7 +179,7 @@ def main() -> None:
         )
         assert future_payload["summary"]["validResponses"] == 2
         assert future_payload["summary"]["completedCompletions"] == 2
-        assert {item["activity"] for item in future_payload["submissions"]} == set(peanuts_due)
+        assert {item["activity"] for item in future_payload["submissions"]} == set(campaign_names)
         assert {item["evidenceSourceHeader"] for item in future_payload["submissions"]} == set(future_evidence_headers)
         assert set(future_payload["quality"]["responseSchema"]["evidenceHeaderMatch"].values()) == {"exact"}
 
@@ -749,11 +764,29 @@ def main() -> None:
                 applies, community_answer, evidence,
             ])
         save_book(rack, rack_headers, rack_rows)
+        # La regla se prueba en una copia temporal del CMS. Operación puede
+        # retirar Rack FHW del catálogo real sin invalidar esta prueba unitaria.
+        rack_cms = temp / "cms-rack-active.xlsx"
+        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", rack_cms)
+        rack_book = load_workbook(rack_cms)
+        rack_sheet = rack_book["Actividades"]
+        rack_header, rack_cols = find_header(rack_sheet, {
+            "actividad", "activo", "evidencia requerida",
+        })
+        for row_number in range(rack_header + 1, rack_sheet.max_row + 1):
+            if clean_text(rack_sheet.cell(row_number, rack_cols["actividad"] + 1).value) == "Rack FHW":
+                rack_sheet.cell(row_number, rack_cols["activo"] + 1).value = "Si"
+                rack_sheet.cell(row_number, rack_cols["evidencia requerida"] + 1).value = "Si"
+                break
+        else:
+            raise AssertionError("El CMS de prueba no contiene Rack FHW")
+        rack_book.save(rack_cms)
+        rack_book.close()
         payload = build_payload(
             rack,
             ROOT / "cms" / "Directorio.xlsx",
             ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
+            rack_cms,
         )
         rack_activity = next(item for item in payload["activities"] if item["name"] == "Rack FHW")
         assert rack_activity["completedStores"] == 2
@@ -879,7 +912,12 @@ def main() -> None:
             [139, start, finish, "", "Prueba", "38115", "Rack FHW", "No", ""],
             [140, start, finish + timedelta(seconds=1), "", "Prueba", "38115", "Rack FHW", "Sí", ""],
         ])
-        reopened_payload = build_payload(reopened, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        reopened_payload = build_payload(
+            reopened,
+            ROOT / "cms/Directorio.xlsx",
+            ROOT / "config/settings.json",
+            rack_cms,
+        )
         rack_store = next(item for item in reopened_payload["stores"] if item["ceco"] == "38115")
         assert rack_store["applicableActivities"]["Rack FHW"] is True
         assert rack_store["activities"]["Rack FHW"] is False

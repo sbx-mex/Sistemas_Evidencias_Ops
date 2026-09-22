@@ -51,22 +51,17 @@ def main() -> None:
     )
     quality = payload["quality"]
     schema = quality["responseSchema"]
-    conflicting_evidence = {
-        key: rows
-        for key, rows in schema.get("evidenceIssues", {}).items()
-        if key not in {"generic-evidence-fallback"} and rows
-    }
     isolated_unknown_cecos = quality.get("unknownCeCos", [])
     error_policy = quality.get("responseErrorPolicy", "Aislar fila")
     unresolved_row_conflicts = quality.get("unresolvedRowConflicts", [])
     strict_rows = error_policy == "Bloquear archivo"
     blocking_issues = {
         "conflictosFilas": unresolved_row_conflicts if strict_rows else [],
-        "conflictosEvidencia": conflicting_evidence if strict_rows else {},
-        "conflictosAplicabilidad": schema.get("applicabilityIssues", {}) if strict_rows else {},
-        "conflictosEncuesta": schema.get("surveyIssues", {}) if strict_rows else {},
+        "conflictosEvidencia": quality.get("unresolvedEvidenceIssues", {}) if strict_rows else {},
+        "conflictosAplicabilidad": quality.get("unresolvedApplicabilityIssues", {}) if strict_rows else {},
+        "conflictosEncuesta": quality.get("unresolvedSurveyIssues", {}) if strict_rows else {},
         "exclusionesObsoletas": quality.get("unusedIgnoredResponseSourceIds", []),
-        "vinculosInseguros": quality.get("unsafeEvidenceRows", []) if strict_rows else [],
+        "vinculosInseguros": quality.get("unresolvedUnsafeEvidenceRows", []) if strict_rows else [],
     }
     if any(blocking_issues.values()):
         raise SystemExit("Fuentes rechazadas: " + json.dumps(blocking_issues, ensure_ascii=False))

@@ -1574,6 +1574,10 @@ def build_payload(
                 response.get("activity"), configured_by_text, configured_by_compact
             ))
 
+        inactive_current_responses = [
+            response for response in current_responses
+            if not is_active_cms_response(response)
+        ]
         fresh = [
             {**response, "source": "Forms nuevo", "sourceOrder": 1}
             for response in current_responses
@@ -1599,13 +1603,12 @@ def build_payload(
                 bool(item.get("finished") and item["finished"] <= cutoff)
                 for item in current_responses
             ),
-            "newFormsRowsRejectedInactive": sum(
-                bool(not is_active_cms_response(item)) for item in current_responses
-            ),
+            "newFormsRowsRejectedInactive": len(inactive_current_responses),
             "baselineSchema": baseline_schema,
         }
         responses = historical + fresh
     else:
+        inactive_current_responses = []
         responses = [{**response, "source": "Forms", "sourceOrder": 0} for response in current_responses]
 
     # El Forms acumula historia; sólo el CMS decide qué actividades se publican.
@@ -1618,8 +1621,13 @@ def build_payload(
     unknown_cecos = set()
     invalid_rows = []
     unsafe_evidence_rows = []
-    hidden_activity_rows = []
-    hidden_activities = set()
+    # En modo de corte, las filas actuales de actividades inactivas se excluyen
+    # antes de unir el histórico. Se conservan aquí como aislamiento auditable.
+    hidden_activity_rows = [item["row"] for item in inactive_current_responses]
+    hidden_activities = {
+        clean_text(item.get("activity")) for item in inactive_current_responses
+        if clean_text(item.get("activity"))
+    }
     canonicalized_activity_rows = []
     quantity_response_issues = []
     corrected_cecos = []
@@ -2036,10 +2044,38 @@ def build_payload(
         item["row"] for item in corrected_cecos if item.get("hadSchemaConflict")
     }
     quarantined_rows = {item["row"] for item in quarantined_responses}
+    # El esquema conserva todos los hallazgos del Forms para auditoría, pero una
+    # fila que el CMS retiró, una exclusión explícita o una fila ya aislada no
+    # puede degradar la publicación vigente. El CMS sigue siendo la lista blanca
+    # que decide qué actividad participa en conteos, fecha de corte y estabilidad.
+    isolated_quality_rows = (
+        recovered_conflict_rows
+        | quarantined_rows
+        | set(hidden_activity_rows)
+        | set(ignored_response_rows)
+    )
     unresolved_row_conflicts = [
         item for item in response_schema.get("rowConflicts", [])
-        if item["row"] not in recovered_conflict_rows
+        if item["row"] not in isolated_quality_rows
     ]
+    unresolved_evidence_issues = {
+        issue: sorted(set(rows) - isolated_quality_rows)
+        for issue, rows in response_schema.get("evidenceIssues", {}).items()
+        if issue != "generic-evidence-fallback" and set(rows) - isolated_quality_rows
+    }
+    unresolved_applicability_issues = {
+        issue: sorted(set(rows) - isolated_quality_rows)
+        for issue, rows in response_schema.get("applicabilityIssues", {}).items()
+        if set(rows) - isolated_quality_rows
+    }
+    unresolved_survey_issues = {
+        issue: sorted(set(rows) - isolated_quality_rows)
+        for issue, rows in response_schema.get("surveyIssues", {}).items()
+        if set(rows) - isolated_quality_rows
+    }
+    unresolved_unsafe_evidence_rows = sorted(
+        set(unsafe_evidence_rows) - isolated_quality_rows
+    )
     published_pairs = [(item["ceco"], item["activity"]) for item in submissions]
     stability_controls = {
         "sourceIntegrity": True,
@@ -2047,12 +2083,11 @@ def build_payload(
         "externalFormsIsolation": all(item["activity"] in activity_names for item in submissions),
         "canonicalActivityMatching": all(item["activity"] in activity_names for item in submissions),
         "evidenceHeaderSafety": not any(
-            rows for issue, rows in response_schema.get("evidenceIssues", {}).items()
-            if issue in BLOCKING_EVIDENCE_ISSUES and not set(rows).issubset(quarantined_rows)
+            rows for issue, rows in unresolved_evidence_issues.items()
+            if issue in BLOCKING_EVIDENCE_ISSUES
         ),
-        "surveyHeaderSafety": not any(
-            row not in quarantined_rows
-            for row in response_schema.get("surveyIssues", {}).get("conflicting-survey-answers", [])
+        "surveyHeaderSafety": not unresolved_survey_issues.get(
+            "conflicting-survey-answers", []
         ),
         "columnOrderIndependence": bool(
             response_schema.get("activityHeaders")
@@ -2063,25 +2098,14 @@ def build_payload(
         "directoryUniqueness": bool(stores) and len(stores) == len(set(stores)),
         "safeEvidenceLinks": not any(item.get("evidenceUrl") and not item.get("evidenceAvailable") for item in submissions),
         "rowQuarantine": (
-            all(
-                item["row"] in recovered_conflict_rows or item["row"] in quarantined_rows
-                for item in response_schema.get("rowConflicts", [])
-            )
-            and all(
-                set(rows).issubset(quarantined_rows)
-                for issue, rows in response_schema.get("evidenceIssues", {}).items()
+            not unresolved_row_conflicts
+            and not any(
+                rows for issue, rows in unresolved_evidence_issues.items()
                 if issue in BLOCKING_EVIDENCE_ISSUES
             )
-            and all(
-                set(rows).issubset(quarantined_rows)
-                for rows in response_schema.get("applicabilityIssues", {}).values()
-            )
-            and all(
-                set(rows).issubset(quarantined_rows)
-                for issue, rows in response_schema.get("surveyIssues", {}).items()
-                if issue == "conflicting-survey-answers"
-            )
-            and set(unsafe_evidence_rows).issubset(quarantined_rows)
+            and not unresolved_applicability_issues
+            and not unresolved_survey_issues.get("conflicting-survey-answers", [])
+            and not unresolved_unsafe_evidence_rows
         ),
         "atomicPublication": True,
     }
@@ -2153,6 +2177,10 @@ def build_payload(
             "correctedCeCos": corrected_cecos,
             "quarantinedResponses": quarantined_responses,
             "unresolvedRowConflicts": unresolved_row_conflicts,
+            "unresolvedEvidenceIssues": unresolved_evidence_issues,
+            "unresolvedApplicabilityIssues": unresolved_applicability_issues,
+            "unresolvedSurveyIssues": unresolved_survey_issues,
+            "unresolvedUnsafeEvidenceRows": unresolved_unsafe_evidence_rows,
             "responseErrorPolicy": settings.get("responseErrorPolicy", "Aislar fila"),
             "trustedCeCoRecovery": bool(settings.get("trustedCeCoRecovery", True)),
             "ignoredResponseRows": ignored_response_rows,

@@ -332,17 +332,14 @@ def main() -> None:
     payload = build_payload(args.responses, args.directory, args.settings, args.cms)
     quality = payload["quality"]
     schema = quality["responseSchema"]
-    conflicting_evidence = {
-        key: rows for key, rows in schema.get("evidenceIssues", {}).items()
-        if key not in {"generic-evidence-fallback"} and rows
-    }
     blocking_issues = {
-        "conflictosFilas": schema.get("rowConflicts", []),
-        "conflictosEvidencia": conflicting_evidence,
-        "conflictosAplicabilidad": schema.get("applicabilityIssues", {}),
+        "conflictosFilas": quality.get("unresolvedRowConflicts", []),
+        "conflictosEvidencia": quality.get("unresolvedEvidenceIssues", {}),
+        "conflictosAplicabilidad": quality.get("unresolvedApplicabilityIssues", {}),
+        "conflictosEncuesta": quality.get("unresolvedSurveyIssues", {}),
         "cecosDesconocidos": quality.get("unknownCeCos", []),
         "exclusionesObsoletas": quality.get("unusedIgnoredResponseSourceIds", []),
-        "vinculosInseguros": quality.get("unsafeEvidenceRows", []),
+        "vinculosInseguros": quality.get("unresolvedUnsafeEvidenceRows", []),
     }
     if any(blocking_issues.values()):
         raise SystemExit("Fuentes rechazadas: " + json.dumps(blocking_issues, ensure_ascii=False))

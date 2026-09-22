@@ -1,23 +1,24 @@
 # Auditoría de carga segura
 
-Fecha de revisión: 19 de septiembre de 2026
+Fecha de revisión: 22 de septiembre de 2026
 
 Repositorio: `sbx-mex/Sistemas_Evidencias_Ops`  
-Base auditada: `main` en `e4101f0`
+Base auditada: `main` en `44463b9`, con el CMS actualizado por Operación
 
 ## Resultado
 
-La carga vigente es funcional y la ejecución más reciente de GitHub Actions terminó correctamente.
+La actualización local completa terminó correctamente y quedó lista para GitHub Actions.
 
-- 451 filas de Forms leídas.
-- 425 filas conservadas en el corte histórico.
-- 26 filas nuevas incorporadas.
+- 426 filas combinadas entre el corte histórico y Forms vigente.
+- 384 filas conservadas en el corte histórico.
+- 42 filas nuevas activas incorporadas.
 - 357 tiendas con `Estatus = Abierta`.
 - 4 regiones y 28 DM.
-- 11 actividades activas.
-- 397 cumplimientos de 3,911 esperados.
-- 10.2% de avance regional.
+- 9 actividades activas definidas por el CMS.
+- 299 cumplimientos de 3,202 esperados.
+- 9.3% de avance regional.
 - 13 de 13 controles del proyecto aprobados.
+- 12 de 12 controles de estabilidad aprobados.
 - 0 vínculos inseguros.
 - 0 referencias faltantes.
 - 0 archivos obsoletos.
@@ -34,27 +35,27 @@ La respuesta de prueba quedó publicada correctamente.
 - Encabezado detectado: `Evidencia_Organizacion_Refrigeradores_Back`
 - Resultado: coincidencia exacta, evidencia HTTPS de SharePoint válida y cumplimiento contabilizado.
 
-## Hallazgo corregido
+## Hallazgos corregidos
 
-El CMS contenía una segunda fila de encabezados dentro de:
+- La prueba de campaña exigía dos actividades Peanuts aunque el CMS ya hubiera desactivado una.
+- Una evidencia histórica de una actividad inactiva podía degradar la estabilidad del build.
+- La auditoría revisaba incidencias crudas de Forms sin distinguir filas aisladas, inactivas o excluidas.
+- La vigencia de resultados sólo comprobaba que los exportables existieran; ahora también valida la estructura XLSX y el cierre correcto del PDF.
+- La base histórica fue reemplazada sin actualizar su huella, por lo que el workflow se detuvo correctamente.
 
-- `Gerentes`
-- `Organigrama`
-- `Tiendas Abiertas`
-- `Configuracion`
+El motor toma la lista activa directamente del CMS. `Activo = No` retira la actividad del denominador y aísla sus filas históricas antes de evaluar estabilidad. La incidencia sigue visible en la auditoría del esquema, pero no modifica conteos ni fecha de corte.
 
-Python ignoraba esas filas y por eso el proceso podía terminar en verde, pero eran redundantes y afectaban la lectura del archivo. El paquete elimina esas filas y agrega una validación que detiene futuras cargas si un encabezado vuelve a quedar repetido dentro de los datos.
+La nueva base histórica se comparó fila por fila contra la anterior: conserva 384 respuestas sin cambios y retira únicamente 41 registros de `Lay Out`. `config/cutover.json` registra la nueva huella, la huella sustituida y el motivo del reinicio.
 
 ## Mejoras incluidas
 
-- CMS sin encabezados internos duplicados.
-- Filas preparadas para agregar actividades nuevas.
-- Listas desplegables para `Activo`, `Evidencia requerida` y `Prioridad`.
-- Fórmula de `Estado fecha` preparada para filas nuevas y vacía mientras no exista una actividad.
-- Texto de ayuda más directo en cada hoja.
-- Directorio con encabezado claro, congelación de fila superior y validación de estatus.
-- Prueba integral de alta dinámica: fila CMS nueva + pregunta Forms nueva.
-- Validación explícita contra encabezados repetidos.
+- Catálogo de pruebas construido desde las actividades realmente activas del CMS.
+- Aislamiento explícito de filas inactivas, ignoradas o en cuarentena.
+- Validación estricta basada sólo en incidencias no resueltas.
+- Reconstrucción atómica de JSON, Excel y PDF con rollback.
+- Verificación de huellas SHA-256 antes y después de ejecutar.
+- Detección de exportables incompletos o truncados.
+- Prueba de regresión que confirma que el JSON respeta exactamente el catálogo CMS.
 
 ## Advertencias no bloqueantes
 
@@ -64,6 +65,8 @@ Los CeCo `38599` y `94565` permanecen aislados y no afectan el avance:
 - `94565` no existe en el Directorio revisado.
 
 No deben agregarse por aproximación. Se recuperarán automáticamente cuando exista un registro válido en el Directorio controlado.
+
+Las filas 30 y 108 del Forms vigente permanecen en cuarentena por contener más de una evidencia coincidente. El resto del archivo se publica normalmente.
 
 ## Regla para nuevas actividades
 
@@ -85,5 +88,5 @@ El resultado esperado incluye:
 - `Forms dinámico aprobado`
 - `Mantenimiento aprobado`
 - `Validación aprobada · 13/13 controles`
-- `Organizacion_Refrigeradores_Back_38371 → Montevideo DT`
-
+- `issues: []`
+- `Actualización segura aprobada`

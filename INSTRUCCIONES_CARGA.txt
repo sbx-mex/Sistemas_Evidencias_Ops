@@ -1,107 +1,40 @@
-#!/usr/bin/env python3
-"""Prueba que el corte conserva avance y continúa con cualquier actividad CMS."""
+PAQUETE DE CORRECCIÓN
 
-from __future__ import annotations
+1. Descomprime el ZIP.
+2. Conserva exactamente las carpetas cms, scripts y tests.
+3. Sube el contenido al nivel raíz de sbx-mex/Sistemas_Evidencias_Ops.
+4. Reemplaza únicamente los archivos incluidos.
+5. El paquete no incluye archivos de cms/: conserva siempre tu CMS y Forms más recientes.
+6. No borres cms/Sistema de Evidencias OPS.xlsx ni config/cutover.json.
+7. Espera a que GitHub Actions ejecute “Actualizar Sistema de Evidencias OPS”.
+8. Confirma que “Validar los tres motores Excel” y “Validar sintaxis y controles del proyecto” estén en verde.
 
-from datetime import datetime, timedelta
-import json
-from pathlib import Path
-import sys
-import tempfile
+El workflow regenerará data/dashboard.json y los archivos de exports.
 
-from openpyxl import Workbook
+ARCHIVOS DEL PAQUETE
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+- scripts/build_dashboard.py
+- scripts/safe_maintenance.py
+- scripts/audit_project.py
+- scripts/validate_sources.py
+- scripts/validate_sources_resilient.py
+- tests/validate_dynamic_forms_schema.py
+- tests/validate_cutover.py
+- tests/validate_project.py
+- tests/validate_safe_maintenance.py
+- config/cutover.json
+- data/dashboard.json
+- exports/Resumen_Evidencias_OPS.xlsx
+- exports/Resumen_Evidencias_OPS.pdf
+- AUDITORIA_CARGA_SEGURA.md
+- VALIDACION_EN_VERDE.md
 
-from scripts.build_dashboard import build_payload, load_cutover
+CONTROL PRINCIPAL
 
-
-def create_new_forms(path: Path, rows: list[list[object]]) -> None:
-    workbook = Workbook()
-    sheet = workbook.active
-    sheet.title = "Respuestas Forms"
-    sheet.append([
-        "Id", "Hora de inicio", "Hora de finalización", "Correo electrónico",
-        "Nombre", "CeCo", "Selecciona la actividad que deseas registrar", "Evidencia del avance",
-    ])
-    for row in rows:
-        sheet.append(row)
-    workbook.save(path)
-
-
-def main() -> None:
-    with tempfile.TemporaryDirectory() as temp_dir:
-        temp = Path(temp_dir)
-        cutover_file = temp / "cutover.json"
-        cutover_file.write_text(json.dumps({
-            "cutoff": "2026-09-17 11:56:57",
-            "baseline": str(ROOT / "cms" / "Corte_Forms_2026-09-17_115657.xlsx"),
-            "label": "Corte de prueba",
-        }), encoding="utf-8")
-        cutover = load_cutover(cutover_file)
-        assert cutover
-        forms = Path(temp_dir) / "Forms_nuevo.xlsx"
-        baseline = build_payload(
-            ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
-            ROOT / "cms" / "Directorio.xlsx",
-            ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
-            baseline_path=cutover["baseline"],
-            cutoff=cutover["cutoff"],
-            cutover_config_path=cutover_file,
-        )
-        # Usa una actividad vigente tomada del CMS. Operación puede retirar
-        # Rack FHW u otra campaña sin volver obsoleta la prueba del corte.
-        activity = next(
-            item["name"] for item in baseline["activities"]
-            if any(not store["activities"][item["name"]] for store in baseline["stores"])
-        )
-        candidate = next(store for store in baseline["stores"] if not store["activities"][activity])
-        baseline_rows_included = baseline["quality"]["cutover"]["baselineRowsIncluded"]
-        after = cutover["cutoff"] + timedelta(seconds=1)
-        before = cutover["cutoff"] - timedelta(seconds=1)
-        evidence = "https://grupovips-my.sharepoint.com/evidencias/prueba.jpg"
-        continuation_evidence = "https://grupovips-my.sharepoint.com/evidencias/continuacion.jpg"
-        create_new_forms(forms, [
-            [1, after, after, "", candidate["store"], candidate["ceco"], activity, evidence],
-            [2, after, after, "", candidate["store"], candidate["ceco"], "Roll Out", evidence],
-            [3, before, before, "", candidate["store"], candidate["ceco"], activity, evidence],
-            [4, "", "", "", candidate["store"], candidate["ceco"], activity, continuation_evidence],
-        ])
-        payload = build_payload(
-            forms,
-            ROOT / "cms" / "Directorio.xlsx",
-            ROOT / "config" / "settings.json",
-            ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx",
-            baseline_path=cutover["baseline"],
-            cutoff=cutover["cutoff"],
-            cutover_config_path=cutover_file,
-        )
-        cut = payload["quality"]["cutover"]
-        assert cut == {
-            **cut,
-            "enabled": True,
-            "baselineRowsIncluded": baseline_rows_included,
-            "newFormsRowsRead": 4,
-            "newFormsRowsIncluded": 2,
-            "newFormsRowsIncludedWithoutTimestamp": 1,
-            "newFormsRowsRejectedAtOrBeforeCutoff": 1,
-            "newFormsRowsRejectedInactive": 1,
-        }
-        updated_store = next(store for store in payload["stores"] if store["ceco"] == candidate["ceco"])
-        assert updated_store["activities"][activity] is True
-        assert any(
-            item["ceco"] == candidate["ceco"] and item["activity"] == activity and item["valid"]
-            for item in payload["submissions"]
-        )
-        continuation = next(item for item in payload["submissions"] if item["ceco"] == candidate["ceco"] and item["activity"] == activity)
-        assert continuation["evidenceUrl"].endswith("continuacion.jpg")
-        assert "Roll Out" not in {item["name"] for item in payload["activities"]}
-        assert all(item["activity"] != "Roll Out" for item in payload["submissions"])
-        assert payload["sources"]["cutoff"] == "2026-09-17T11:56:57"
-    print("Corte histórico aprobado · conserva avance · suma cualquier actividad activa · CMS filtra actividades ocultas")
-
-
-if __name__ == "__main__":
-    main()
+Directorio.xlsx controla tienda, región, Estatus y DM.
+Sólo Estatus = Abierta se publica y contabiliza.
+Una nueva fila de CMS se descubre por encabezados, no por número de fila.
+Una nueva evidencia de Forms debe llamarse Evidencia_<Actividad>.
+Activo = No excluye la actividad, sus filas históricas y sus incidencias del avance vigente.
+Python conserva esas filas en auditoría, pero no permite que bloqueen la publicación.
+config/cutover.json registra la huella de la base histórica vigente y el reinicio controlado de Lay Out.

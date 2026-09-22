@@ -114,6 +114,13 @@ def outputs_current(fingerprints: dict[str, str]) -> bool:
         return False
     try:
         data = json.loads(GENERATED[0].read_text(encoding="utf-8"))
+        validate_xlsx(GENERATED[1], "el Excel generado")
+        with GENERATED[2].open("rb") as source:
+            signature = source.read(5)
+            source.seek(max(GENERATED[2].stat().st_size - 1024, 0))
+            trailer = source.read()
+        if signature != b"%PDF-" or b"%%EOF" not in trailer:
+            return False
         sources = data["sources"]
         saved = {
             "responsesSha256": sources.get("responsesSha256"),
@@ -235,12 +242,13 @@ def main() -> None:
         files = cms_sources()
         before = validate_all_xlsx(files)
         run(sys.executable, "-X", "utf8", "scripts/validate_sources_resilient.py")
+        current = outputs_current(before)
         if args.check_only:
-            print(f"Preflight aprobado · {len(files)} XLSX · sin cambios")
+            state = "resultados vigentes" if current else "resultados pendientes de reconstrucción"
+            print(f"Preflight aprobado · {len(files)} XLSX · {state} · sin cambios")
             return
 
         removed = clean_obsolete()
-        current = outputs_current(before)
         with generated_backup():
             if args.force or not current:
                 rebuild()

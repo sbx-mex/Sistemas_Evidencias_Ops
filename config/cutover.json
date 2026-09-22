@@ -1,6 +1,8 @@
 {
   "cutoff": "2026-09-17 11:56:57",
   "baseline": "cms/Corte_Forms_2026-09-17_115657.xlsx",
-  "baselineSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7",
-  "label": "Corte operativo 17/09/2026 11:56:57 · respaldo inicial"
+  "baselineSha256": "bef6483a71ff0453974f80f692f22cf1f458d3bfd5db43bf1553f93be45a7470",
+  "label": "Corte operativo 17/09/2026 11:56:57 · Lay Out reiniciado",
+  "revisionReason": "Retiro controlado de 41 respuestas históricas de Lay Out; las demás 384 filas permanecen sin cambios",
+  "supersedesSha256": "f4b9b53ed2b42f5a32f0c0fb9d865f6b16df199de8a536eca6487dd05b9d6ab7"
 }

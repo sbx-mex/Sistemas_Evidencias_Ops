@@ -51,10 +51,14 @@ def main() -> None:
             cutoff=cutover["cutoff"],
             cutover_config_path=cutover_file,
         )
-        # Rack FHW existe también en la base histórica y evita depender del
-        # orden editorial de los nuevos eventos Peanuts.
-        activity = "Rack FHW"
+        # Usa una actividad vigente tomada del CMS. Operación puede retirar
+        # Rack FHW u otra campaña sin volver obsoleta la prueba del corte.
+        activity = next(
+            item["name"] for item in baseline["activities"]
+            if any(not store["activities"][item["name"]] for store in baseline["stores"])
+        )
         candidate = next(store for store in baseline["stores"] if not store["activities"][activity])
+        baseline_rows_included = baseline["quality"]["cutover"]["baselineRowsIncluded"]
         after = cutover["cutoff"] + timedelta(seconds=1)
         before = cutover["cutoff"] - timedelta(seconds=1)
         evidence = "https://grupovips-my.sharepoint.com/evidencias/prueba.jpg"
@@ -78,7 +82,7 @@ def main() -> None:
         assert cut == {
             **cut,
             "enabled": True,
-            "baselineRowsIncluded": 425,
+            "baselineRowsIncluded": baseline_rows_included,
             "newFormsRowsRead": 4,
             "newFormsRowsIncluded": 2,
             "newFormsRowsIncludedWithoutTimestamp": 1,
