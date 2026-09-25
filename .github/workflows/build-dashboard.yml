@@ -26,6 +26,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 concurrency:
   group: evidencias-ops-${{ github.ref }}
@@ -68,6 +69,7 @@ jobs:
           node --check pdf-export.js
           node --check xlsx-export.js
           node --check service-worker.js
+          python -X utf8 tests/validate_publish_safe.py
           git diff --check
           python -X utf8 scripts/clean_obsolete.py --check
 
@@ -76,19 +78,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf
-          git add -A -- config assets/dm assets/icons assets/director assets/campaign
-          git add -u
+          python -X utf8 scripts/publish_safe.py
 
-          if git diff --cached --quiet; then
-            echo "Los datos, exportaciones y limpieza ya están actualizados."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "data: actualizar evidencias OPS"
-          git push
+      - name: Actualizar GitHub Pages con los datos validados
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${{ github.repository }}/pages/builds"
 
       - name: Resumen de actualización
         if: always()
