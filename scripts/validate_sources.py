@@ -51,6 +51,7 @@ def reject_repeated_header_rows(
     fields: tuple[str, ...],
 ) -> None:
     """Evita que una segunda fila de encabezados pase como borrador o dato."""
+    fields = tuple(field for field in fields if field in cols)
     expected = tuple(
         key_text(ws.cell(header_row, cols[field] + 1).value)
         for field in fields

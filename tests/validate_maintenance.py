@@ -285,6 +285,64 @@ def test_activity_row_count_independence(temp: Path) -> None:
     assert {item["name"] for item in expanded_activities} == baseline_names | {"Actividad de estabilidad"}
 
 
+def test_cms_header_contract(temp: Path) -> None:
+    """Las columnas se resuelven por nombre; nunca por su posición física."""
+    original = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
+    expected = load_cms(original)
+    expected_audit = validate_cms_engine(original)
+    reordered = temp / "cms_columnas_reordenadas.xlsx"
+    workbook = load_workbook(original)
+    contracts = {
+        "Actividades": {"orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo"},
+        "Gerentes": {"dm", "nombre corto", "foto webp", "activo"},
+        "Configuracion": {"clave", "valor"},
+        "Organigrama": {"nivel", "region", "nombre", "rol", "foto webp", "activo", "orden"},
+        "Tiendas Abiertas": {"cc", "cc nombre", "region", "estatus", "dm"},
+    }
+    for name, required in contracts.items():
+        sheet = workbook[name]
+        header, _ = find_header(sheet, required)
+        rows = list(sheet.iter_rows(min_row=header, values_only=True))
+        for merged in list(sheet.merged_cells.ranges):
+            sheet.unmerge_cells(str(merged))
+        for number, values in enumerate(rows, header):
+            for column, value in enumerate(reversed(values), 1):
+                sheet.cell(number, column).value = value
+    workbook.save(reordered)
+    assert load_cms(reordered) == expected
+    assert validate_cms_engine(reordered) == expected_audit
+
+    # Columnas informativas opcionales no deben producir un KeyError.
+    optional = temp / "cms_sin_columnas_informativas.xlsx"
+    workbook = load_workbook(original)
+    for name, field in (("Gerentes", "region"), ("Gerentes", "estado foto"), ("Configuracion", "descripcion")):
+        sheet = workbook[name]
+        _, cols = find_header(sheet, contracts[name])
+        if field in cols:
+            sheet.delete_cols(cols[field] + 1)
+    workbook.save(optional)
+    assert load_cms(optional) == expected
+    assert validate_cms_engine(optional) == expected_audit
+
+    duplicate = temp / "cms_encabezado_ambiguo.xlsx"
+    workbook = load_workbook(original)
+    sheet = workbook["Actividades"]
+    header, _ = find_header(sheet, contracts["Actividades"])
+    sheet.cell(header, sheet.max_column + 1, " Evidencia Requerida ")
+    workbook.save(duplicate)
+    expect_error(lambda: load_cms(duplicate), "Encabezados CMS duplicados")
+    expect_error(lambda: validate_cms_engine(duplicate), "Encabezados CMS duplicados")
+
+    missing = temp / "cms_encabezado_faltante.xlsx"
+    workbook = load_workbook(original)
+    sheet = workbook["Actividades"]
+    header, cols = find_header(sheet, contracts["Actividades"])
+    sheet.cell(header, cols["actividad"] + 1).value = "Encabezado incorrecto"
+    workbook.save(missing)
+    expect_error(lambda: load_cms(missing), "No se encontró encabezado")
+    expect_error(lambda: validate_cms_engine(missing), "No se encontró encabezado")
+
+
 def test_manager_photo_guards(temp: Path) -> None:
     """Detecta el WebP canónico y bloquea rutas o contenidos inseguros."""
     cms = temp / "cms_foto_autodetectada.xlsx"
@@ -329,6 +387,7 @@ def main() -> None:
         test_structural_guards(temp)
         test_flexible_cms(temp)
         test_activity_row_count_independence(temp)
+        test_cms_header_contract(temp)
         test_manager_photo_guards(temp)
     print("Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros")
 

@@ -1006,7 +1006,7 @@ def find_header(ws, required: set[str]) -> tuple[int, dict[str, int]]:
                 positions[key_text(value)].append(index)
         normalized = {key: indices[0] for key, indices in positions.items()}
         if required.issubset(normalized):
-            duplicated = sorted(key for key in required if len(positions[key]) > 1)
+            duplicated = sorted(key for key in positions if len(positions[key]) > 1)
             if duplicated:
                 raise ValueError(
                     f"Encabezados CMS duplicados en {ws.title}: " + ", ".join(duplicated)

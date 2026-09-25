@@ -15,7 +15,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import (
-    QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
+    BLOCKING_EVIDENCE_ISSUES, QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
     canonical_cms_activity, clean_text, compact_key, evidence_key, file_sha256, load_cms,
     load_cutover, load_directory, load_responses, load_settings, normalize_allowed_hosts,
     parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
@@ -327,8 +327,27 @@ for row in forms_responses:
         continue
     activity = canonical_cms_activity(row["activity"], active_by_text, active_by_compact)
     evidence_url = safe_evidence_url(row["evidence"], allowed_hosts)
-    resolved_ceco, _ = recover_response_ceco(row, stores_by_ceco)
-    if not activity or resolved_ceco not in stores_by_ceco or row["schemaConflict"]:
+    resolved_ceco, correction = recover_response_ceco(
+        row, stores_by_ceco,
+        enabled=bool(settings.get("trustedCeCoRecovery", True)),
+    )
+    # La recuperación verificada resuelve exclusivamente el conflicto CeCo.
+    # Conservamos una reconstrucción independiente del estado publicado.
+    if correction:
+        remaining = [field for field in row.get("schemaConflictFields", []) if field != "ceco"]
+        row = {
+            **row, "ceco": resolved_ceco,
+            "schemaConflictFields": remaining, "schemaConflict": bool(remaining),
+            "confirmed": bool(row.get("activity")) and not remaining,
+        }
+    quarantined = (
+        row["schemaConflict"]
+        or row.get("evidenceIssue") in BLOCKING_EVIDENCE_ISSUES
+        or row.get("surveyIssue") == "conflicting-survey-answers"
+        or row.get("applicabilityConflict")
+        or (row["evidence"] and not evidence_url)
+    )
+    if not activity or resolved_ceco not in stores_by_ceco or quarantined:
         continue
     not_applicable = bool(row["explicitNo"])
     quantity_complete = True
