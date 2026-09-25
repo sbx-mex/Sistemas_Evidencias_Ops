@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "2ab046008c2dc181",
+  "buildVersion": "b631b7f763553039",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-25T06:30:50+00:00",
+  "generatedAt": "2026-09-25T06:40:56+00:00",
   "lastUpdated": "2026-09-24T11:50:55",
   "lastUpdatedDisplay": "24/09/2026 11:50",
   "report": {
@@ -121,7 +121,7 @@
       "excludedStatusCounts": {}
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "cb3f0619e7102690cbc62b9dbac79abfdb6b65bf5e094b294c25e1fe5e35c18e",
+    "cmsSha256": "122f9ad090b4b5e29c51e59c1b16600c3b01c06687b6f5427aa1fb885286c692",
     "settingsSha256": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524"
   },
   "summary": {
@@ -578,7 +578,7 @@
     {
       "name": "Max & Min",
       "description": "Actualiza Max & Min y evidencia el acomodo correcto de Back.",
-      "order": 4,
+      "order": 2,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -600,7 +600,7 @@
     {
       "name": "Mandil Verde",
       "description": "Evidencia la correcta implementación de Mandil Verde en tienda.",
-      "order": 5,
+      "order": 3,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -622,7 +622,7 @@
     {
       "name": "Lay Out",
       "description": "Valida con DM cada Lay Out",
-      "order": 6,
+      "order": 4,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -644,7 +644,7 @@
     {
       "name": "Community Board",
       "description": "Confirma si aplica y evidencia el Community Board actualizado.",
-      "order": 7,
+      "order": 5,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -666,7 +666,7 @@
     {
       "name": "Señaletica Back",
       "description": "Evidencia la señalética de Back vigente, visible y actualizada.",
-      "order": 8,
+      "order": 6,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -688,7 +688,7 @@
     {
       "name": "Señaletica Lobby",
       "description": "Evidencia la señalética de Lobby vigente, visible y actualizada.",
-      "order": 9,
+      "order": 7,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -710,7 +710,7 @@
     {
       "name": "Jarras Blender | Cold Foam",
       "description": "Registra y evidencia jarras completas, sin daños y listas para operar.",
-      "order": 10,
+      "order": 8,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -732,7 +732,7 @@
     {
       "name": "Organizacion Refrigeradores Back",
       "description": "Valida el acomodo de refrigeradores de Back y optimiza espacios",
-      "order": 11,
+      "order": 9,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
@@ -754,7 +754,7 @@
     {
       "name": "Va X Cuenta",
       "description": "Valida Donativos Va x Cuenta por plantilla",
-      "order": 12,
+      "order": 10,
       "startDate": "2026-09-18",
       "endDate": "2026-09-30",
       "commitmentDateDisplay": "30/09/26",
