@@ -741,10 +741,10 @@ if '"Aplican"' in js[js.index("function renderSummary"):js.index("function rende
 if not any(icon.get("sizes") == "64x64" for icon in manifest.get("icons", [])):
     fail("El nuevo logo no está configurado en todos los tamaños")
 approve("09 · Ranking, fotografía DM e identidad ejecutiva")
-for text in ["pip check", "python -X utf8 scripts/safe_maintenance.py --force", "python -X utf8 scripts/clean_obsolete.py --check", "git add -- data/dashboard.json exports/Resumen_Evidencias_OPS.xlsx exports/Resumen_Evidencias_OPS.pdf"]:
+for text in ["pip check", "python -X utf8 scripts/safe_maintenance.py --force", "python -X utf8 scripts/clean_obsolete.py --check", "python -X utf8 scripts/publish_safe.py", "python -X utf8 tests/validate_publish_safe.py", "pages: write", "/pages/builds"]:
     if text not in workflow:
         fail(f"Workflow incompleto: {text}")
-for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail", "git diff --cached --quiet", "git add -u", "assets/director"]:
+for text in ["PYTHONUTF8: '1'", "PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache", "node --check service-worker.js", "git diff --check", "set -euo pipefail"]:
     if text not in workflow:
         fail(f"Publicación no idempotente: falta {text}")
 if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow:

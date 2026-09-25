@@ -167,7 +167,7 @@ if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or '
     issues.append("Los motores de exportación no se cargan bajo demanda")
 if "Date.now()" in js[js.index("async function loadData"):js.index("async function refreshApplicationData")]:
     issues.append("La consulta de datos crea claves de caché distintas en cada carga")
-if not all(token in workflow for token in ("set -euo pipefail", "git diff --cached --quiet")):
+if not all(token in workflow for token in ("set -euo pipefail", "python -X utf8 scripts/publish_safe.py", "python -X utf8 tests/validate_publish_safe.py", "/pages/builds")):
     issues.append("El workflow no publica de forma idempotente")
 if "validate_horno_applicability.py" in workflow or "obsolete_test=" in workflow:
     issues.append("El workflow conserva lógica transitoria para una prueba obsoleta")

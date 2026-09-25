@@ -9,12 +9,12 @@ from pathlib import Path
 import sys
 import tempfile
 
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import build_payload, load_cutover
+from scripts.build_dashboard import build_payload, load_cutover, find_header
 
 
 def create_new_forms(path: Path, rows: list[list[object]]) -> None:
@@ -78,6 +78,24 @@ def main() -> None:
             cutoff=cutover["cutoff"],
             cutover_config_path=cutover_file,
         )
+        # Retirar una actividad debe retirar también su historia y denominador.
+        cms_off = temp / "cms_inactivo.xlsx"
+        workbook = load_workbook(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
+        sheet = workbook["Actividades"]
+        header, columns = find_header(sheet, {"actividad", "activo", "evidencia requerida"})
+        for row in range(header + 1, sheet.max_row + 1):
+            if sheet.cell(row, columns["actividad"] + 1).value == activity:
+                sheet.cell(row, columns["activo"] + 1, "No")
+                sheet.cell(row, columns["evidencia requerida"] + 1, "No")
+        workbook.save(cms_off)
+        hidden = build_payload(
+            forms, ROOT / "cms" / "Directorio.xlsx", ROOT / "config" / "settings.json", cms_off,
+            baseline_path=cutover["baseline"], cutoff=cutover["cutoff"], cutover_config_path=cutover_file,
+        )
+        assert activity not in {item["name"] for item in hidden["activities"]}
+        assert all(item["activity"] != activity for item in hidden["submissions"])
+        assert all(activity not in item["activities"] for item in hidden["stores"])
+        assert hidden["summary"]["activities"] == payload["summary"]["activities"] - 1
         cut = payload["quality"]["cutover"]
         assert cut == {
             **cut,
