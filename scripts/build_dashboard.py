@@ -2020,6 +2020,7 @@ def build_payload(
             totals["percentage"] = round(totals[numerator] / totals["total"] * 100, 1) if totals["total"] else None
         quantity_modules.append({
             "activity": config["activity"],
+            "requireEvidence": bool(evidence_rules.get(key_text(config["activity"]), settings.get("requireEvidence", True))),
             "title": config["title"],
             "minimum": config["minimum"],
             "maximum": config["maximum"],

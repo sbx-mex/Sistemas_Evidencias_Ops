@@ -421,7 +421,10 @@ body > footer.campaign-footer { position: relative; display: grid; width: min(ca
 .export-menu .export-actions .button { justify-content: flex-start; white-space: nowrap; }
 .ratio-mode .quantity-totals.ratio { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .ratio-mode .quantity-totals.ratio .quantity-total { min-width: 0; padding: 10px 12px; }
-.ratio-mode .quantity-totals.ratio .quantity-total.total { grid-column: auto; }
+.ratio-mode .quantity-totals.ratio .quantity-total.featured { grid-column: 1/-1; border-color: var(--green); background: var(--dark); padding: 16px; }
+.ratio-mode .quantity-totals.ratio .quantity-total.featured strong { color: white; font-size: 2rem; line-height: 1; }
+.ratio-mode .quantity-totals.ratio .quantity-total.featured span { color: #d1e8dc; }
+.ratio-mode .quantity-totals.ratio .quantity-total.featured small { color: #d1e8dc; font-size: .65rem; font-weight: 700; }
 .ratio-mode .quantity-totals.ratio .quantity-total strong { font-size: 1.38rem; }
 .ratio-mode .quantity-totals.ratio .quantity-total span { font-size: .64rem; }
 .ratio-mode .quantity-group-shell table { min-width: 0; table-layout: fixed; }

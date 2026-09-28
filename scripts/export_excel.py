@@ -248,13 +248,14 @@ def build_workbook(data: dict) -> Workbook:
     for module in data.get("quantityModules", []):
         metrics = module["metrics"]
         has_percentage = bool(module.get("percentageMetric"))
-        width = len(metrics) + (7 if has_percentage else 5)
+        show_evidence = module.get("requireEvidence", True)
+        width = len(metrics) + (6 if has_percentage else 4) + int(show_evidence)
         sheet_name = "Jarras" if module["activity"] == "Jarras Blender | Cold Foam" else module["activity"][:31]
         sheet = workbook.create_sheet(sheet_name)
         style_title(sheet, width, module["title"], f"{region} · Corte {cut}")
         sheet.append(["CeCo", "Tienda", *(["Región"] if has_percentage else []), "DM",
                       *[metric["label"] for metric in metrics], module.get("totalLabel", "Piezas totales"),
-                      *([module["percentageLabel"]] if has_percentage else []), "Evidencia"])
+                      *([module["percentageLabel"]] if has_percentage else []), *(["Evidencia"] if show_evidence else [])])
         records = sorted(
             (item for item in data.get("submissions", []) if item.get("valid")
              and item.get("activity") == module["activity"] and item.get("quantities")),
@@ -265,7 +266,7 @@ def build_workbook(data: dict) -> Workbook:
             sheet.append([item.get("ceco"), item.get("store"), *([item.get("region")] if has_percentage else []), item.get("dm"),
                           *[quantities[metric["key"]] for metric in metrics], quantities["total"],
                           *([quantities["percentage"] / 100 if quantities["percentage"] is not None else None] if has_percentage else []),
-                          item.get("evidenceUrl", "Validada")])
+                          *([item.get("evidenceUrl") or ""] if show_evidence else [])])
         last_row = sheet.max_row
         total_row = last_row + 1
         first_metric_column = 5 if has_percentage else 4
@@ -295,7 +296,7 @@ def build_workbook(data: dict) -> Workbook:
             if has_percentage:
                 sheet.cell(row=row, column=total_column + 1).number_format = "0.0%"
         set_widths(sheet, [13, 28, *([18] if has_percentage else []), 30,
-                           *[20 for _ in metrics], 20, *([16] if has_percentage else []), 46])
+                           *[20 for _ in metrics], 20, *([16] if has_percentage else []), *([46] if show_evidence else [])])
         sheet.print_title_rows = "1:4"
         sheet.page_setup.orientation = "landscape"
         sheet.page_setup.fitToWidth = 1

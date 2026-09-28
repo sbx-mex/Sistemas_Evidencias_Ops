@@ -281,6 +281,7 @@ function renderQuantityModule() {
   if (!module) return;
 
   const ratio = Boolean(module.percentageMetric);
+  const showEvidence = module.requireEvidence !== false;
   const oneDm = Boolean(state.filters.dm || state.filters.store);
   const showDm = !ratio && !oneDm;
   section.classList.toggle("ratio-mode", ratio);
@@ -288,7 +289,7 @@ function renderQuantityModule() {
   nav.textContent = module.activity === "Jarras Blender | Cold Foam" ? "Jarras" : module.activity;
   $("#quantity-heading").textContent = module.title;
   $("#quantity-response-table").closest("table").querySelector("thead tr").innerHTML =
-    `<th>Tienda</th>${showDm ? "<th>DM</th>" : ""}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}<th>Evidencia</th>`;
+    `<th>Tienda</th>${showDm ? "<th>DM</th>" : ""}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}${showEvidence ? "<th>Evidencia</th>" : ""}`;
 
   const eligibleStores = filteredStores().filter((store) => store.applicableActivities?.[module.activity] !== false).length;
   const responses = filteredQuantityResponses(module)
@@ -306,6 +307,7 @@ function renderQuantityModule() {
   $("#quantity-response-chip").textContent = `${number(responses.length)} / ${number(eligibleStores)} tiendas`;
   $("#quantity-response-rate").textContent = percent(responseRate);
   $("#quantity-response-bar").style.setProperty("--progress", `${Math.min(responseRate, 100)}%`);
+  $("#quantity-consolidation-title").textContent = ratio ? "Participación" : "Consolidado de respuestas";
   $("#quantity-scope").textContent = currentScope();
   $("#quantity-response-table").innerHTML = responses.length ? responses.map((item) => `<tr>
     <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}${ratio && !oneDm ? ` · ${esc(item.dm)}` : ""}</small></td>
@@ -313,17 +315,22 @@ function renderQuantityModule() {
     ${module.metrics.map((metric) => `<td><strong>${number(item.quantities[metric.key])}</strong></td>`).join("")}
     <td><strong>${number(item.quantities.total)}</strong></td>
     ${module.percentageMetric ? `<td><strong>${item.quantities.percentage == null ? "—" : percent(item.quantities.percentage)}</strong></td>` : ""}
-    <td>${item.evidenceLinkPublished && item.evidenceUrl
+    ${showEvidence ? `<td>${item.evidenceLinkPublished && item.evidenceUrl
       ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
-      : "Validada"}</td>
-  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 3 + Number(showDm) + Number(ratio)}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
+      : "—"}</td>` : ""}
+  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 2 + Number(showDm) + Number(ratio) + Number(showEvidence)}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
 
   $("#quantity-totals").classList.toggle("ratio", ratio);
-  $("#quantity-totals").innerHTML = [
-    ...module.metrics.map((metric) => [number(totals[metric.key]), shortLabel(metric.label)]),
-    [number(totals.total), shortLabel(module.totalLabel || "Piezas totales")],
-    ...(ratio ? [[participation == null ? "—" : percent(participation), shortLabel(module.percentageLabel)]] : []),
-  ].map(([value, label], index) => `<article class="quantity-total${index >= module.metrics.length ? " total" : ""}"><strong>${value}</strong><span>${esc(label)}</span></article>`).join("");
+  const totalCards = ratio ? [
+    [participation == null ? "—" : percent(participation), shortLabel(module.percentageLabel),
+      `${number(totals[module.percentageMetric])} de ${number(totals.total)} · ${shortLabel(module.totalLabel || "Total")}`, " featured"],
+    ...module.metrics.map((metric) => [number(totals[metric.key]), shortLabel(metric.label), "", ""]),
+  ] : [
+    ...module.metrics.map((metric) => [number(totals[metric.key]), shortLabel(metric.label), "", ""]),
+    [number(totals.total), shortLabel(module.totalLabel || "Piezas totales"), "", " total"],
+  ];
+  $("#quantity-totals").innerHTML = totalCards.map(([value, label, detail, style]) =>
+    `<article class="quantity-total${style}"><strong>${value}</strong><span>${esc(label)}</span>${detail ? `<small>${esc(detail)}</small>` : ""}</article>`).join("");
   // Las barras vuelven a mostrar exactamente los totales de las tarjetas.
   $("#quantity-bars").hidden = true;
   $("#quantity-bars").innerHTML = "";
@@ -1023,13 +1030,14 @@ function buildExcelSpec() {
   const quantityModule = activeQuantityModule();
   const quantityResponses = quantityModule ? filteredQuantityResponses(quantityModule) : [];
   const ratioModule = Boolean(quantityModule?.percentageMetric);
+  const quantityEvidence = quantityModule?.requireEvidence !== false;
   const quantityRows = quantityModule ? quantityResponses
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
     .map((item) => [
       item.ceco, item.store, ...ratioModule ? [item.region] : [], item.dm,
       ...quantityModule.metrics.map((metric) => Number(item.quantities[metric.key] || 0)),
       Number(item.quantities.total || 0), ...ratioModule ? [item.quantities.percentage == null ? "" : {value: item.quantities.percentage / 100, style: 3}] : [],
-      item.evidenceLinkPublished ? item.evidenceUrl : "Validada",
+      ...quantityEvidence ? [item.evidenceLinkPublished ? item.evidenceUrl : ""] : [],
     ]) : [];
   const evidenceRows = state.data.submissions
     .filter((entry) => entry.valid && entry.evidenceLinkPublished && storesByCeco.has(entry.ceco)
@@ -1078,8 +1086,8 @@ function buildExcelSpec() {
       },
       ...(quantityModule ? [{
         name: quantityModule.activity === "Jarras Blender | Cold Foam" ? "Jarras" : quantityModule.activity,
-        rows: [[quantityModule.title, ...Array(quantityModule.metrics.length + (ratioModule ? 6 : 4)).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + (ratioModule ? 6 : 4)).fill("")], [], ["CeCo", "Tienda", ...ratioModule ? ["Región"] : [], "DM", ...quantityModule.metrics.map((metric) => metric.label), quantityModule.totalLabel || "Piezas totales", ...ratioModule ? [quantityModule.percentageLabel] : [], "Evidencia"], ...quantityRows],
-        widths: [13, 30, ...ratioModule ? [18] : [], 32, ...quantityModule.metrics.map(() => 20), 20, ...ratioModule ? [16] : [], 42], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 7 : 5))}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 7 : 5))}2`], headerRows: [4], countColumns: quantityModule.metrics.map((_, index) => index + (ratioModule ? 5 : 4)).concat(quantityModule.metrics.length + (ratioModule ? 5 : 4)), percentColumns: ratioModule ? [quantityModule.metrics.length + 6] : [], freezeRow: 4, autoFilter: `A4:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 7 : 5))}${4 + quantityRows.length}`, tabColor: "FFD8A243",
+        rows: [[quantityModule.title, ...Array(quantityModule.metrics.length + (ratioModule ? 5 : 3) + Number(quantityEvidence)).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + (ratioModule ? 5 : 3) + Number(quantityEvidence)).fill("")], [], ["CeCo", "Tienda", ...ratioModule ? ["Región"] : [], "DM", ...quantityModule.metrics.map((metric) => metric.label), quantityModule.totalLabel || "Piezas totales", ...ratioModule ? [quantityModule.percentageLabel] : [], ...quantityEvidence ? ["Evidencia"] : []], ...quantityRows],
+        widths: [13, 30, ...ratioModule ? [18] : [], 32, ...quantityModule.metrics.map(() => 20), 20, ...ratioModule ? [16] : [], ...quantityEvidence ? [42] : []], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 6 : 4) + Number(quantityEvidence))}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 6 : 4) + Number(quantityEvidence))}2`], headerRows: [4], countColumns: quantityModule.metrics.map((_, index) => index + (ratioModule ? 5 : 4)).concat(quantityModule.metrics.length + (ratioModule ? 5 : 4)), percentColumns: ratioModule ? [quantityModule.metrics.length + 6] : [], freezeRow: 4, autoFilter: `A4:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 6 : 4) + Number(quantityEvidence))}${4 + quantityRows.length}`, tabColor: "FFD8A243",
       }] : []),
       ...(ratioModule ? [{
         name: "Participación",

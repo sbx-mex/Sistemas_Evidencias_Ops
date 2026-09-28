@@ -1044,6 +1044,7 @@ def main() -> None:
         save_book(fhw, fhw_headers, fhw_rows)
         fhw_payload = build_payload(fhw, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
         fhw_module = next(item for item in fhw_payload["quantityModules"] if item["activity"] == "FHW")
+        assert fhw_module["requireEvidence"] is True
         assert fhw_module["answeredStores"] == 2
         assert fhw_module["totals"] == {"cutlery": 40, "cups3Oz": 20, "total": 60}
         assert [(metric["label"], metric["maximum"]) for metric in fhw_module["metrics"]] == [
@@ -1129,6 +1130,7 @@ def main() -> None:
         ])
         donation = build_payload(donate, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
         module = next(item for item in donation["quantityModules"] if item["activity"] == "Va X Cuenta")
+        assert module["requireEvidence"] is False
         assert module["totalLabel"] == "Plantilla reportada" and module["percentageMetric"] == "yesDonate"
         assert module["totals"] == {"yesDonate": 14, "noDonate": 1, "total": 15, "percentage": 93.3}
         assert module["answeredStores"] == 2
@@ -1142,6 +1144,9 @@ def main() -> None:
         assert sum(item["totals"]["total"] for item in module["byPortfolio"]) == 15
         assert donation["quality"]["quantityResponseIssues"] == [{"row": 4, "issue": "Sí dona: fuera de rango"}]
         donation_sheet = build_workbook(donation)["Va X Cuenta"]
+        assert [cell.value for cell in donation_sheet[4]] == [
+            "CeCo", "Tienda", "Región", "DM", "Sí dona", "No dona", "Plantilla reportada", "% Sí dona",
+        ]
         assert donation_sheet["H7"].value == '=IF(G7=0,"",E7/G7)'
         assert donation_sheet["H5"].number_format == "0.0%"
 

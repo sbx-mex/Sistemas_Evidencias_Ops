@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from math import isclose
 import re
 import subprocess
 import sys
@@ -162,7 +163,7 @@ if not configured_cutover or not configured_cutover.get("baselineSha256"):
 if configured_cutover["baselineSha256"] != file_sha256(configured_cutover["baseline"]):
     fail("La huella declarada del corte no coincide con el respaldo")
 
-_, _, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
+cms_activities, _, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
 settings = load_settings(ROOT / "config/settings.json", cms_settings)
 source_stores, _, source_directory_status = load_directory(ROOT / "cms/Directorio.xlsx", settings)
 published_directory = {
@@ -567,6 +568,10 @@ if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam",
 if [cell.value for cell in static_excel["FHW"][4]] != ["CeCo", "Tienda", "DM", "Cubiertos FHW", "Tazas 3 Oz", "Piezas totales", "Evidencia"]:
     fail("La hoja FHW no incluye las dos respuestas numéricas")
 donation = next((module for module in data["quantityModules"] if module["activity"] == "Va X Cuenta"), None)
+evidence_by_activity = {item["name"]: item["requireEvidence"] for item in cms_activities}
+if any(module.get("requireEvidence") is not evidence_by_activity[module["activity"]]
+       for module in data.get("quantityModules", [])):
+    fail("Los módulos numéricos no respetan Evidencia requerida del CMS")
 donation_records = [item for item in published if item["activity"] == "Va X Cuenta" and item.get("quantities")]
 donation_by_store = {item["ceco"]: item for item in donation_records}
 if not donation or len(donation_records) != len(donation_by_store) or donation["answeredStores"] != len(donation_records):
@@ -595,7 +600,7 @@ if regions:
     fail("Falta una región con respuestas de Va X Cuenta")
 donation_sheet = static_excel["Va X Cuenta"]
 donation_rows = list(donation_sheet.iter_rows(min_row=5, max_row=4 + len(donation_records), values_only=True))
-if [cell.value for cell in static_excel["Va X Cuenta"][4]] != ["CeCo", "Tienda", "Región", "DM", "Sí dona", "No dona", "Plantilla reportada", "% Sí dona", "Evidencia"]:
+if [cell.value for cell in static_excel["Va X Cuenta"][4]] != ["CeCo", "Tienda", "Región", "DM", "Sí dona", "No dona", "Plantilla reportada", "% Sí dona", *(["Evidencia"] if donation["requireEvidence"] else [])]:
     fail("Va X Cuenta no publica # y % por tienda")
 if len(donation_rows) != len(donation_records) or donation_sheet.max_row != 5 + len(donation_records):
     fail("El Excel de Va X Cuenta no contiene exactamente las tiendas vigentes")
@@ -605,10 +610,10 @@ for row in donation_rows:
     if not item or (row[1], row[2], row[3]) != (item["store"], item["region"], item["dm"]):
         fail("Tienda, región o DM de Va X Cuenta no coincide con Directorio")
     quantities = item["quantities"]
-    if (row[4], row[5], row[6], row[7]) != (
-        quantities["yesDonate"], quantities["noDonate"], quantities["total"],
-        None if quantities["percentage"] is None else quantities["percentage"] / 100,
-    ):
+    expected_percent = None if quantities["percentage"] is None else quantities["percentage"] / 100
+    percent_matches = (row[7] is None if expected_percent is None else
+                       isinstance(row[7], (int, float)) and isclose(row[7], expected_percent, rel_tol=0, abs_tol=1e-12))
+    if tuple(row[4:7]) != (quantities["yesDonate"], quantities["noDonate"], quantities["total"]) or not percent_matches:
         fail("Las cantidades y el porcentaje por tienda no coinciden con Forms")
 if donation_by_store:
     fail("Faltan tiendas de Va X Cuenta en el Excel")
