@@ -211,6 +211,11 @@ function renderQuantityModule() {
   nav.hidden = !module;
   if (!module) return;
 
+  nav.textContent = module.activity === "Jarras Blender | Cold Foam" ? "Jarras" : module.activity;
+  $("#quantity-heading").textContent = module.title;
+  $("#quantity-response-table").closest("table").querySelector("thead tr").innerHTML =
+    `<th>Tienda</th><th>DM</th>${module.metrics.map((metric) => `<th>${esc(metric.label)}</th>`).join("")}<th>Evidencia</th>`;
+
   const eligibleStores = filteredStores().length;
   const responses = filteredQuantityResponses(module)
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
@@ -228,12 +233,11 @@ function renderQuantityModule() {
   $("#quantity-response-table").innerHTML = responses.length ? responses.map((item) => `<tr>
     <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></td>
     <td>${esc(item.dm)}</td>
-    <td><strong>${number(item.quantities.blender)}</strong></td>
-    <td><strong>${number(item.quantities.coldFoam)}</strong></td>
+    ${module.metrics.map((metric) => `<td><strong>${number(item.quantities[metric.key])}</strong></td>`).join("")}
     <td>${item.evidenceLinkPublished && item.evidenceUrl
       ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
       : "Validada"}</td>
-  </tr>`).join("") : '<tr><td colspan="5"><div class="empty-state">Aún no hay respuestas completas en este filtro.</div></td></tr>';
+  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 3}"><div class="empty-state">Aún no hay respuestas completas en este filtro.</div></td></tr>`;
 
   $("#quantity-totals").innerHTML = [
     ...module.metrics.map((metric) => [number(totals[metric.key]), metric.label]),
@@ -904,7 +908,7 @@ function buildExcelSpec() {
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
     .map((item) => [
       item.ceco, item.store, item.dm,
-      Number(item.quantities.blender || 0), Number(item.quantities.coldFoam || 0),
+      ...quantityModule.metrics.map((metric) => Number(item.quantities[metric.key] || 0)),
       Number(item.quantities.total || 0), item.evidenceLinkPublished ? item.evidenceUrl : "Validada",
     ]) : [];
   return {
@@ -943,9 +947,9 @@ function buildExcelSpec() {
         widths: [10, 40, 14, 14, 14, 20, 16, 20], merges: ["A1:H1", "A2:H2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:H${4 + activityRows.length}`, tabColor: "FF16845B",
       },
       ...(quantityModule ? [{
-        name: "Jarras",
-        rows: [["Jarras en buen estado", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", ""], [], ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"], ...quantityRows],
-        widths: [13, 30, 32, 17, 19, 17, 42], merges: ["A1:G1", "A2:G2"], headerRows: [4], countColumns: [4, 5, 6], freezeRow: 4, autoFilter: `A4:G${4 + quantityRows.length}`, tabColor: "FFD8A243",
+        name: quantityModule.activity === "Jarras Blender | Cold Foam" ? "Jarras" : quantityModule.activity,
+        rows: [[quantityModule.title, ...Array(quantityModule.metrics.length + 4).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + 4).fill("")], [], ["CeCo", "Tienda", "DM", ...quantityModule.metrics.map((metric) => metric.label), "Piezas totales", "Evidencia"], ...quantityRows],
+        widths: [13, 30, 32, ...quantityModule.metrics.map(() => 20), 17, 42], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + 5)}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + 5)}2`], headerRows: [4], countColumns: quantityModule.metrics.map((_, index) => index + 4).concat(quantityModule.metrics.length + 4), freezeRow: 4, autoFilter: `A4:${spreadsheetColumn(quantityModule.metrics.length + 5)}${4 + quantityRows.length}`, tabColor: "FFD8A243",
       }] : []),
     ],
   };

@@ -54,6 +54,8 @@ RESPONSE_FIELDS = {
     "ceco": ("CeCo", "CeCo1", "CC", "Centro de costo"),
     "blenderJars": ("Jarra Blender", "Jarras Blender"),
     "coldFoamJars": ("Jarras Cold Foam", "Jarra Cold Foam"),
+    "fhwCutlery": ("Cubiertos FHW",),
+    "fhwCups3Oz": ("Tazas 3 Oz", "Tazas 3 oz"),
 }
 
 QUANTITY_ACTIVITY_CONFIG = {
@@ -66,6 +68,16 @@ QUANTITY_ACTIVITY_CONFIG = {
         ),
         "minimum": 0,
         "maximum": 5,
+    },
+    "fhw": {
+        "activity": "FHW",
+        "title": "Insumos FHW disponibles",
+        "metrics": (
+            {"key": "cutlery", "field": "fhwCutlery", "label": "Cubiertos FHW", "minimum": 0, "maximum": 40},
+            {"key": "cups3Oz", "field": "fhwCups3Oz", "label": "Tazas 3 Oz", "minimum": 0, "maximum": 20},
+        ),
+        "minimum": 0,
+        "maximum": 40,
     },
 }
 
@@ -584,9 +596,12 @@ def parse_quantity(value: Any, minimum: int = 0, maximum: int = 5) -> int | None
     # Cero es una respuesta válida; clean_text usa `value or ""` y por ello
     # aquí se normaliza explícitamente antes de validar el entero.
     text = "" if value is None else str(value).strip()
-    if not re.fullmatch(r"\d+", text):
+    if not re.fullmatch(r"\d+(?:\.0+)?", text):
         return None
-    quantity = int(text)
+    digits = text.split(".", 1)[0].lstrip("0") or "0"
+    if len(digits) > len(str(maximum)):
+        return None
+    quantity = int(digits)
     return quantity if minimum <= quantity <= maximum else None
 
 
@@ -1458,6 +1473,8 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "cecoCandidates": ceco_candidates,
             "blenderJars": values["blenderJars"],
             "coldFoamJars": values["coldFoamJars"],
+            "fhwCutlery": values["fhwCutlery"],
+            "fhwCups3Oz": values["fhwCups3Oz"],
             "confirmedAnswer": "Sí" if values["activity"] else "",
             "confirmed": confirmed and not row_has_conflict,
             "applicabilityAnswer": "Sí" if applicability is True else ("No" if applicability is False else ""),
@@ -1498,6 +1515,11 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
                 "kind": item["kind"],
             }
             for item in survey_group
+        },
+        "quantityHeaderMap": {
+            clean_text(headers[index]): field
+            for field in ("blenderJars", "coldFoamJars", "fhwCutlery", "fhwCups3Oz")
+            for index in column_groups[field]
         },
         "evidenceHeaders": [item["header"] for item in evidence_group],
         "evidenceHeaderMap": {
@@ -1716,8 +1738,8 @@ def build_payload(
                 raw_value = response.get(field, "")
                 quantity = parse_quantity(
                     raw_value,
-                    quantity_config["minimum"],
-                    quantity_config["maximum"],
+                    metric.get("minimum", quantity_config["minimum"]),
+                    metric.get("maximum", quantity_config["maximum"]),
                 )
                 if quantity is None:
                     issue_type = "faltante" if not clean_text(raw_value) else "fuera de rango"
@@ -1812,7 +1834,7 @@ def build_payload(
         submissions.append(public)
 
         if store and activity and not response["schemaConflict"] and (
-            valid or response["applicabilityAnswer"] or survey_answered
+            valid or response["applicabilityAnswer"] or survey_answered or quantity_config
         ):
             pair = (response["ceco"], activity)
             state = {**response, "valid": valid, "notApplicable": not_applicable, "public": public}
@@ -1867,7 +1889,11 @@ def build_payload(
             "minimum": config["minimum"],
             "maximum": config["maximum"],
             "metrics": [
-                {"key": metric["key"], "label": metric["label"]}
+                {
+                    "key": metric["key"], "label": metric["label"],
+                    "minimum": metric.get("minimum", config["minimum"]),
+                    "maximum": metric.get("maximum", config["maximum"]),
+                }
                 for metric in config["metrics"]
             ],
             "answeredStores": len(records),

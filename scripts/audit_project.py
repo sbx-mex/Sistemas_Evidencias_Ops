@@ -161,7 +161,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v34", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v35", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -195,6 +195,11 @@ expected_survey_fields = {
     "Apertura 16 de Septiembre": "openingTime",
 }
 survey_header_map = response_schema.get("surveyHeaderMap", {})
+if "FHW" in {item.get("name") for item in data.get("activities", [])} and {
+    header: response_schema.get("quantityHeaderMap", {}).get(header)
+    for header in ("Cubiertos FHW", "Tazas 3 Oz")
+} != {"Cubiertos FHW": "fhwCutlery", "Tazas 3 Oz": "fhwCups3Oz"}:
+    issues.append("Las cantidades FHW no fueron detectadas por encabezado Forms")
 holiday_activity_key = compact_key("Validacion Horario Festivo Sep 26")
 if holiday_activity_key in {compact_key(item.get("name")) for item in data.get("activities", [])} and {
     header: survey_header_map.get(header, {}).get("field")
@@ -322,7 +327,11 @@ for module in data.get("quantityModules", []):
     metric_keys = [metric["key"] for metric in module["metrics"]]
     for item in records:
         values = item.get("quantities", {})
-        if any(type(values.get(key)) is not int or not module["minimum"] <= values[key] <= module["maximum"] for key in metric_keys):
+        if any(
+            type(values.get(metric["key"])) is not int
+            or not metric.get("minimum", module["minimum"]) <= values[metric["key"]] <= metric.get("maximum", module["maximum"])
+            for metric in module["metrics"]
+        ):
             issues.append("Una respuesta vigente contiene cantidades inválidas")
         elif values.get("total") != sum(values[key] for key in metric_keys):
             issues.append("Las piezas totales de una tienda no coinciden")

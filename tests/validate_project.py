@@ -223,7 +223,7 @@ if not response_schema.get("cecoHeaders"):
     fail("El motor no detectó las columnas CeCo del archivo vigente")
 if "Ceco12" in response_schema.get("cecoHeaders", []):
     fail("Una columna ajena Ceco12 fue interpretada como CeCo")
-if any(header in response_schema.get("evidenceHeaders", []) for header in ("Jarra Blender", "Jarras Cold Foam")):
+if any(header in response_schema.get("evidenceHeaders", []) for header in ("Jarra Blender", "Jarras Cold Foam", "Cubiertos FHW", "Tazas 3 Oz")):
     fail("Una pregunta numérica de jarras fue interpretada como evidencia")
 expected_survey_fields = {
     "¿ Modificas Horario Festivo?": "modifiesSchedule",
@@ -354,7 +354,7 @@ for row in forms_responses:
     quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
     if quantity_config:
         quantity_complete = all(
-            parse_quantity(row.get(metric["field"]), quantity_config["minimum"], quantity_config["maximum"]) is not None
+            parse_quantity(row.get(metric["field"]), metric.get("minimum", quantity_config["minimum"]), metric.get("maximum", quantity_config["maximum"])) is not None
             for metric in quantity_config["metrics"]
         )
     survey_config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
@@ -382,7 +382,7 @@ for row in forms_responses:
         and survey_complete
         and (evidence_url or not row_evidence_required)
     )
-    if not (valid or row["applicabilityAnswer"] or survey_answered):
+    if not (valid or row["applicabilityAnswer"] or survey_answered or quantity_config):
         continue
     pair = (resolved_ceco, activity)
     current = latest_excel_by_pair.get(pair)
@@ -522,8 +522,8 @@ if data != fresh:
 approve("03 · Python sincronizado con la última actualización")
 
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
-if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Jarras"]:
-    fail("El Excel Python no contiene las cuatro vistas ejecutivas")
+if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Jarras", "FHW"]:
+    fail("El Excel Python no contiene las vistas ejecutivas y las cantidades FHW")
 if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("002E24") for sheet in static_excel.sheetnames):
     fail("Los títulos del Excel Python no conservan el verde oscuro")
 expected_summary_formula = "=IFERROR(A6/(A6+C6),0)"
@@ -536,6 +536,8 @@ for sheet_name, header_row in (("Resumen", 9), ("Tiendas", 4), ("Actividades", 4
 jar_headers = [cell.value for cell in static_excel["Jarras"][4]]
 if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam", "Piezas totales", "Evidencia"]:
     fail("La hoja Jarras no separa respuestas y piezas")
+if [cell.value for cell in static_excel["FHW"][4]] != ["CeCo", "Tienda", "DM", "Cubiertos FHW", "Tazas 3 Oz", "Piezas totales", "Evidencia"]:
+    fail("La hoja FHW no incluye las dos respuestas numéricas")
 jar_sheet = static_excel["Jarras"]
 total_row = 5 + len(expected_jars)
 if jar_sheet.max_row != total_row or jar_sheet.cell(total_row, 3).value != "Consolidado":
@@ -682,7 +684,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v34", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v35", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:

@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, find_header, load_cms, load_responses, parse_datetime, parse_quantity
+from scripts.export_excel import build_workbook
 
 
 BASE = ["Id", "Hora de inicio", "Hora de finalización", "Correo electrónico", "Nombre"]
@@ -935,9 +936,101 @@ def main() -> None:
         inactive_book.save(inactive_cms)
         inactive_book.close()
         inactive_payload = build_payload(tied_jars, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json", inactive_cms)
-        assert inactive_payload["quantityModules"] == []
+        assert [item["activity"] for item in inactive_payload["quantityModules"]] == ["FHW"]
         assert inactive_payload["submissions"] == []
         assert inactive_payload["summary"]["completedCompletions"] == 0
+
+        # FHW se activa desde el CMS; sus dos cantidades viajan por encabezado,
+        # aunque Forms mueva columnas o almacene cero como valor numérico.
+        assert "FHW" in [item["name"] for item in cms_activities]
+        fhw = temp / "fhw-reordered.xlsx"
+        fhw_headers = BASE + ["Tazas 3 Oz", "Evidencia_FHW", "CeCo", "Cubiertos FHW", ACTIVITY]
+        fhw_rows = []
+        for source_id, ceco, cups, cutlery in (
+            (201, "38115", 0, 0),
+            (202, "38119", 20, 40),
+            (203, "38120", 21, 3),
+            (204, "38121", 3, 41),
+            (205, "38122", "", 1),
+            (206, "38123", 2.5, 1),
+        ):
+            started, finished = timestamps(source_id)
+            fhw_rows.append([source_id, started, finished, "", "Prueba", cups,
+                             f"{allowed}/fhw-{source_id}.jpg", ceco, cutlery, "FHW"])
+        save_book(fhw, fhw_headers, fhw_rows)
+        fhw_payload = build_payload(fhw, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        fhw_module = next(item for item in fhw_payload["quantityModules"] if item["activity"] == "FHW")
+        assert fhw_module["answeredStores"] == 2
+        assert fhw_module["totals"] == {"cutlery": 40, "cups3Oz": 20, "total": 60}
+        assert [(metric["label"], metric["maximum"]) for metric in fhw_module["metrics"]] == [
+            ("Cubiertos FHW", 40), ("Tazas 3 Oz", 20),
+        ]
+        assert fhw_payload["quality"]["responseSchema"]["quantityHeaderMap"] == {
+            "Cubiertos FHW": "fhwCutlery", "Tazas 3 Oz": "fhwCups3Oz",
+        }
+        assert all(header not in fhw_payload["quality"]["responseSchema"]["evidenceHeaders"]
+                   for header in ("Cubiertos FHW", "Tazas 3 Oz"))
+        assert [item["ceco"] for item in fhw_payload["submissions"]] == ["38119", "38115"]
+        assert len(fhw_payload["quality"]["quantityResponseIssues"]) == 4
+        fhw_sheet = build_workbook(fhw_payload)["FHW"]
+        assert [cell.value for cell in fhw_sheet[4]] == [
+            "CeCo", "Tienda", "DM", "Cubiertos FHW", "Tazas 3 Oz", "Piezas totales", "Evidencia",
+        ]
+        assert sorted((fhw_sheet.cell(row, 4).value, fhw_sheet.cell(row, 5).value)
+                      for row in (5, 6)) == [(0, 0), (40, 20)]
+        assert fhw_sheet["D7"].value == "=SUM(D5:D6)" and fhw_sheet["E7"].value == "=SUM(E5:E6)"
+        assert parse_quantity("20.0", maximum=20) == 20
+        assert parse_quantity("20.5", maximum=20) is None
+        assert parse_quantity("9" * 5000, maximum=40) is None
+
+        # Una captura posterior fuera de rango deja pendiente esa tienda;
+        # nunca mantiene como vigente su captura anterior.
+        later_invalid = temp / "fhw-later-invalid.xlsx"
+        started, finished = timestamps(207)
+        save_book(later_invalid, fhw_headers, [fhw_rows[0], [207, started, finished,
+            "", "Prueba", 21, f"{allowed}/fhw-207.jpg", "38115", 1, "FHW"]])
+        pending = build_payload(later_invalid, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        assert pending["summary"]["completedCompletions"] == 0
+        assert pending["quantityModules"][1]["answeredStores"] == 0
+
+        duplicate_fhw = temp / "fhw-duplicate-heading.xlsx"
+        save_book(duplicate_fhw, fhw_headers + ["Tazas 3 Oz"], [fhw_rows[0] + [1]])
+        duplicated = build_payload(duplicate_fhw, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        assert duplicated["submissions"] == []
+        assert {item["field"] for item in duplicated["quality"]["responseSchema"]["rowConflicts"]} == {"fhwCups3Oz"}
+
+        reordered_cms_fhw = temp / "cms-fhw-reordered-columns.xlsx"
+        cms_book = load_workbook(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
+        activity_sheet = cms_book["Actividades"]
+        activity_cells = list(activity_sheet.values)
+        for merged_range in list(activity_sheet.merged_cells.ranges):
+            activity_sheet.unmerge_cells(str(merged_range))
+        permutation = [1, 5, 0, 6, 2, 4, 3, 7, 8]
+        for row_index, old in enumerate(activity_cells, 1):
+            for col_index, original_index in enumerate(permutation, 1):
+                activity_sheet.cell(row_index, col_index).value = old[original_index]
+        cms_book.save(reordered_cms_fhw)
+        cms_book.close()
+        reordered_payload = build_payload(fhw, ROOT / "cms/Directorio.xlsx",
+                                          ROOT / "config/settings.json", reordered_cms_fhw)
+        assert reordered_payload["quantityModules"][1]["totals"] == fhw_module["totals"]
+        assert reordered_payload["summary"]["completedCompletions"] == fhw_payload["summary"]["completedCompletions"]
+
+        # La actividad deja de participar por completo cuando CMS la marca No.
+        cms_book = load_workbook(reordered_cms_fhw)
+        activity_sheet = cms_book["Actividades"]
+        _, columns = find_header(activity_sheet, {"actividad", "activo"})
+        for row_index in range(2, activity_sheet.max_row + 1):
+            if activity_sheet.cell(row_index, columns["actividad"] + 1).value == "FHW":
+                activity_sheet.cell(row_index, columns["activo"] + 1).value = "No"
+        inactive_fhw = temp / "cms-fhw-inactive.xlsx"
+        cms_book.save(inactive_fhw)
+        cms_book.close()
+        hidden = build_payload(fhw, ROOT / "cms/Directorio.xlsx",
+                               ROOT / "config/settings.json", inactive_fhw)
+        assert all(module["activity"] != "FHW" for module in hidden["quantityModules"])
+        assert hidden["submissions"] == []
+        assert hidden["summary"]["completedCompletions"] == 0
 
         # Escenario 14: horario festivo cuenta Sí/No en general y publica sólo
         # horarios con valor. El último registro de cada tienda prevalece.
