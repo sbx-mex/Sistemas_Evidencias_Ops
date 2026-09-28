@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "40de6486ed876899",
+  "buildVersion": "8ecde9c6cd38376c",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T18:45:21+00:00",
-  "lastUpdated": "2026-09-28T12:41:45",
-  "lastUpdatedDisplay": "28/09/2026 12:41",
+  "generatedAt": "2026-09-28T19:09:33+00:00",
+  "lastUpdated": "2026-09-28T12:53:46",
+  "lastUpdatedDisplay": "28/09/2026 12:53",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "28/09/26 · 12:41 h",
+    "cutOffDisplay": "28/09/26 · 12:53 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 96,
+        "completed": 97,
         "expected": 998,
-        "pending": 902,
-        "compliance": 9.6,
+        "pending": 901,
+        "compliance": 9.7,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 246,
+        "completed": 248,
         "expected": 719,
-        "pending": 473,
-        "compliance": 34.2,
+        "pending": 471,
+        "compliance": 34.5,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "95a04f2ab61e5b36c19714cedcb87839081cb970c1c7f3db90a65ccd1fe1d6f9",
+    "responsesSha256": "b6e32fd45f065bb590c8ae4417e336295a002af09472e5e46825518962d305ae",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 358,
     "activities": 10,
     "expectedCompletions": 3567,
-    "completedCompletions": 441,
+    "completedCompletions": 444,
     "compliance": 12.4,
-    "validResponses": 441,
+    "validResponses": 444,
     "storesComplete": 1,
-    "pendingCompletions": 3126,
+    "pendingCompletions": 3123,
     "notApplicableCompletions": 13
   },
   "quality": {
-    "responsesRead": 583,
+    "responsesRead": 586,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 292,
-      "newFormsRowsIncluded": 199,
+      "newFormsRowsRead": 295,
+      "newFormsRowsIncluded": 202,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 93,
@@ -460,7 +460,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 292
+        "CeCo": 295
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -536,7 +536,7 @@
     },
     "notApplicableResponses": 13,
     "notApplicablePairs": 13,
-    "evidenceLinksPublished": 386,
+    "evidenceLinksPublished": 388,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -705,11 +705,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 128,
+      "completedStores": 129,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 230,
-      "compliance": 35.8,
+      "pendingStores": 229,
+      "compliance": 36.0,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -749,11 +749,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 55,
+      "completedStores": 56,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 303,
-      "compliance": 15.4,
+      "pendingStores": 302,
+      "compliance": 15.6,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -771,11 +771,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 2,
+      "completedStores": 3,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 0.6,
+      "pendingStores": 355,
+      "compliance": 0.8,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -812,12 +812,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 62,
+      "completed": 63,
       "expected": 97,
       "notApplicable": 3,
-      "pending": 35,
+      "pending": 34,
       "pendingStores": 10,
-      "compliance": 63.9,
+      "compliance": 64.9,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -850,12 +850,12 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 40,
+      "completed": 41,
       "expected": 138,
       "notApplicable": 2,
-      "pending": 98,
+      "pending": 97,
       "pendingStores": 14,
-      "compliance": 29.0,
+      "compliance": 29.7,
       "status": "Atención",
       "rank": 4
     },
@@ -888,12 +888,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 24,
+      "completed": 25,
       "expected": 130,
       "notApplicable": 0,
-      "pending": 106,
+      "pending": 105,
       "pendingStores": 13,
-      "compliance": 18.5,
+      "compliance": 19.2,
       "status": "Atención",
       "rank": 6
     },
@@ -4497,17 +4497,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38535",
-      "store": "City Center Esmeralda",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38270",
       "store": "Lomas Verdes II",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4695,6 +4684,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38535",
+      "store": "City Center Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38507",
       "store": "Espacio Vista del Valle",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4860,17 +4860,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38615",
-      "store": "Grand San Jeronimo",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 5,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38571",
       "store": "Jolie Place",
       "dm": "Cesar Alfonso Castillo Romero",
@@ -4884,17 +4873,6 @@
     {
       "ceco": "38401",
       "store": "Coacalco",
-      "dm": "Enrique Cesar Flores",
-      "completed": 5,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38894",
-      "store": "Galerias Perinorte",
       "dm": "Enrique Cesar Flores",
       "completed": 5,
       "expected": 10,
@@ -5011,6 +4989,28 @@
       "notApplicable": 1,
       "pending": 4,
       "compliance": 55.6,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38615",
+      "store": "Grand San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 6,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 60.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "completed": 6,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 60.0,
       "status": "Seguimiento"
     },
     {
@@ -7376,11 +7376,11 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-28T12:41:45",
+      "compliance": 60.0,
+      "lastUpdate": "2026-09-28T12:53:46",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -7388,7 +7388,7 @@
         "Community Board": false,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": false,
+        "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
@@ -8420,11 +8420,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-28T09:18:54",
+      "compliance": 60.0,
+      "lastUpdate": "2026-09-28T12:51:31",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -8435,7 +8435,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -17780,11 +17780,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:22:14",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T12:45:58",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -17794,7 +17794,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -18157,11 +18157,11 @@
           "maximum": 5
         }
       ],
-      "answeredStores": 128,
+      "answeredStores": 129,
       "totals": {
-        "blender": 225,
-        "coldFoam": 133,
-        "total": 358
+        "blender": 227,
+        "coldFoam": 134,
+        "total": 361
       },
       "byRegion": [
         {
@@ -18184,11 +18184,11 @@
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 8,
+          "answeredStores": 9,
           "totals": {
-            "blender": 12,
-            "coldFoam": 7,
-            "total": 19
+            "blender": 14,
+            "coldFoam": 8,
+            "total": 22
           }
         }
       ],
@@ -18326,11 +18326,11 @@
         {
           "region": "Centro Sur",
           "dm": "Cesar Alfonso Castillo Romero",
-          "answeredStores": 5,
+          "answeredStores": 6,
           "totals": {
-            "blender": 7,
-            "coldFoam": 5,
-            "total": 12
+            "blender": 9,
+            "coldFoam": 6,
+            "total": 15
           }
         },
         {
@@ -18366,20 +18366,20 @@
           "maximum": 20
         }
       ],
-      "answeredStores": 2,
+      "answeredStores": 3,
       "totals": {
-        "cutlery": 65,
-        "cups3Oz": 9,
-        "total": 74
+        "cutlery": 68,
+        "cups3Oz": 15,
+        "total": 83
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 1,
+          "answeredStores": 2,
           "totals": {
-            "cutlery": 36,
-            "cups3Oz": 5,
-            "total": 41
+            "cutlery": 39,
+            "cups3Oz": 11,
+            "total": 50
           }
         },
         {
@@ -18393,6 +18393,16 @@
         }
       ],
       "byPortfolio": [
+        {
+          "region": "Centro Norte",
+          "dm": "Enrique Cesar Flores",
+          "answeredStores": 1,
+          "totals": {
+            "cutlery": 3,
+            "cups3Oz": 6,
+            "total": 9
+          }
+        },
         {
           "region": "Centro Norte",
           "dm": "Yazmin Chabela Guadarrama",
@@ -18438,22 +18448,22 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 55,
+      "answeredStores": 56,
       "totals": {
-        "yesDonate": 654,
-        "noDonate": 108,
-        "total": 762,
-        "percentage": 85.8
+        "yesDonate": 674,
+        "noDonate": 116,
+        "total": 790,
+        "percentage": 85.3
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 53,
+          "answeredStores": 54,
           "totals": {
-            "yesDonate": 638,
-            "noDonate": 106,
-            "total": 744,
-            "percentage": 85.8
+            "yesDonate": 658,
+            "noDonate": 114,
+            "total": 772,
+            "percentage": 85.2
           }
         },
         {
@@ -18526,12 +18536,12 @@
         {
           "region": "Centro Norte",
           "dm": "Yazmin Haydee Garcia Gonzalez",
-          "answeredStores": 11,
+          "answeredStores": 12,
           "totals": {
-            "yesDonate": 107,
-            "noDonate": 19,
-            "total": 126,
-            "percentage": 84.9
+            "yesDonate": 127,
+            "noDonate": 27,
+            "total": 154,
+            "percentage": 82.5
           }
         },
         {
@@ -18561,6 +18571,87 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-23df756c722248ec",
+      "timestamp": "2026-09-28T12:53:46",
+      "timestampDisplay": "28/09/2026 12:53",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38615",
+      "store": "Grand San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38615",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38615",
+      "evidenceFileName": "17906215172309032253877619866021_Starbucks Grand San.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17906215172309032253877619866021_Starbucks%20Grand%20San.jpg"
+    },
+    {
+      "id": "respuesta-8f3752aa4adc2de4",
+      "timestamp": "2026-09-28T12:51:31",
+      "timestampDisplay": "28/09/2026 12:51",
+      "activity": "FHW",
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38894",
+      "evidenceLinkLabel": "Link_FHW_38894",
+      "evidenceFileName": "image_Starbucks Galerias P.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 3,
+        "cups3Oz": 6,
+        "total": 9
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/image_Starbucks%20Galerias%20P.jpg"
+    },
+    {
+      "id": "respuesta-7031c185bc239ad1",
+      "timestamp": "2026-09-28T12:45:58",
+      "timestampDisplay": "28/09/2026 12:45",
+      "activity": "Va X Cuenta",
+      "ceco": "38535",
+      "store": "City Center Esmeralda",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38535",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38535",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 20,
+        "noDonate": 8,
+        "total": 28,
+        "percentage": 71.4
+      }
+    },
     {
       "id": "respuesta-491786c9e493fdcc",
       "timestamp": "2026-09-28T12:41:45",
