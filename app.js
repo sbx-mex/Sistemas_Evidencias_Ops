@@ -189,14 +189,18 @@ function renderSummary() {
   $("#score-message").textContent = !item.expected
     ? "Sin actividades disponibles para el alcance seleccionado."
     : item.pending
-      ? `${number(item.completed)} realizadas · ${number(item.pending)} pendientes · ${signal.label}.`
-      : "El alcance seleccionado está completo.";
-  $("#kpi-grid").innerHTML = [
-    [number(item.regions), item.regions === 1 ? "Región" : "Regiones"],
-    [number(item.dms), "DM"],
-    [number(item.activities), "Actividades"],
-    [number(item.stores), "Tiendas"],
-  ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
+      ? `${number(item.completed)} de ${number(item.expected)} registros completos · ${number(item.pending)} pendientes.`
+      : `${number(item.completed)} de ${number(item.expected)} registros completos.`;
+  const cards = [
+    [item.stores, item.stores === 1 ? "Tienda" : "Tiendas"],
+    [item.activities, item.activities === 1 ? "Actividad" : "Actividades"],
+  ];
+  if (!state.filters.dm && !state.filters.store) cards.push([item.dms, "DM"]);
+  if (!state.filters.region && !state.filters.dm && !state.filters.store) {
+    cards.push([item.regions, item.regions === 1 ? "Región" : "Regiones"]);
+  }
+  $("#kpi-grid").innerHTML = cards.map(([value, label]) =>
+    `<article class="kpi"><strong>${number(value)}</strong><span>${label}</span></article>`).join("");
 }
 
 function hasSelectedDetail() {

@@ -454,9 +454,26 @@ def main() -> None:
 
         actual_refrigerators = build_payload(ROOT / "cms/Sistema de Evidencias OPS.xlsx",
                                            ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
-        assert refrigerator in {activity["name"] for activity in actual_refrigerators["activities"]}
-        assert next(activity for activity in actual_refrigerators["activities"]
-                    if activity["name"] == refrigerator)["completedStores"] == 5
+        refrigerator_activity = next((
+            activity for activity in actual_refrigerators["activities"]
+            if activity["name"] == refrigerator
+        ), None)
+        refrigerator_submissions = [
+            item for item in actual_refrigerators["submissions"]
+            if item["activity"] == refrigerator and item["valid"]
+        ]
+        completed_cecos = {item["ceco"] for item in refrigerator_submissions}
+        # Forms crece y el CMS puede desactivar la actividad sin editar el test.
+        assert len(refrigerator_submissions) == len(completed_cecos)
+        if refrigerator_activity is None:
+            assert not refrigerator_submissions
+        else:
+            assert refrigerator_activity["completedStores"] == len(completed_cecos)
+        assert all(
+            [(file["label"], file["sourceHeader"]) for file in item["evidenceFiles"]]
+            == [("Antes", before_header), ("Después", after_header)]
+            for item in refrigerator_submissions
+        )
 
         # Escenario 6: dos actividades fuera del catálogo activo CMS se ignoran.
         # Una no existe y otra sí existe en el CMS, pero está desactivada. El orden
