@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "d8e101e83ba93ff1",
+  "buildVersion": "3f42a0764a138cb7",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T05:28:14+00:00",
+  "generatedAt": "2026-09-28T05:29:27+00:00",
   "lastUpdated": "2026-09-27T16:58:09",
   "lastUpdatedDisplay": "27/09/2026 16:58",
   "report": {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 190,
+        "completed": 189,
         "expected": 709,
-        "pending": 519,
-        "compliance": 26.8,
+        "pending": 520,
+        "compliance": 26.7,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "5c57a70588321d887b9f0c05c9c39421b640199aa6467a5eaf60850d5eddb119",
+    "responsesSha256": "ac15cd4ac3b5766a8c3479d14c941988e6ea9199bcedda666877bc185875fc38",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 10,
     "expectedCompletions": 3559,
-    "completedCompletions": 352,
+    "completedCompletions": 351,
     "compliance": 9.9,
-    "validResponses": 352,
+    "validResponses": 351,
     "storesComplete": 0,
-    "pendingCompletions": 3207,
+    "pendingCompletions": 3208,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 492,
+    "responsesRead": 491,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 196,
-      "newFormsRowsIncluded": 108,
+      "newFormsRowsRead": 195,
+      "newFormsRowsIncluded": 107,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 88,
@@ -230,11 +230,11 @@
       }
     },
     "invalidRows": [
-      32,
-      124,
-      172,
-      177,
-      181
+      31,
+      123,
+      171,
+      176,
+      180
     ],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -257,23 +257,24 @@
       22,
       23,
       26,
+      27,
       28,
       29,
-      30,
-      33,
+      32,
+      34,
       35,
       36,
       37,
       38,
-      39,
-      41,
+      40,
+      42,
       43,
-      44,
-      47,
-      50,
+      46,
+      49,
+      53,
       54,
       55,
-      56,
+      57,
       58,
       59,
       60,
@@ -283,49 +284,48 @@
       64,
       65,
       66,
-      67,
+      68,
       69,
       70,
       71,
       72,
-      73,
+      74,
       75,
       76,
       77,
       78,
-      79,
+      80,
       81,
       82,
       83,
       84,
-      85,
-      99,
+      98,
+      100,
       101,
-      102,
-      108,
-      112,
-      116,
+      107,
+      111,
+      115,
+      120,
       121,
-      122,
-      128,
-      130,
+      127,
+      129,
+      131,
       132,
-      133,
+      134,
       135,
       136,
       137,
       138,
       139,
-      140,
+      142,
       143,
       144,
-      145,
-      161,
-      163,
+      160,
+      162,
+      177,
       178,
       179,
-      180,
-      185,
+      184,
       3,
       4,
       5,
@@ -420,7 +420,7 @@
     "quantityResponseIssues": [],
     "correctedCeCos": [
       {
-        "row": 159,
+        "row": 158,
         "sourceCeCo": "3850",
         "resolvedCeCo": "38501",
         "store": "Patio Universidad",
@@ -430,31 +430,31 @@
     ],
     "quarantinedResponses": [
       {
-        "row": 32,
+        "row": 31,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
       },
       {
-        "row": 124,
+        "row": 123,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
       },
       {
-        "row": 172,
+        "row": 171,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
       },
       {
-        "row": 177,
+        "row": 176,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
       },
       {
-        "row": 181,
+        "row": 180,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
@@ -483,7 +483,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 196
+        "CeCo": 195
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -543,17 +543,17 @@
       },
       "rowConflicts": [
         {
-          "row": 159,
+          "row": 158,
           "field": "ceco"
         }
       ],
       "evidenceIssues": {
         "ambiguous-matching-evidence": [
-          32,
-          124,
-          172,
-          177,
-          181
+          31,
+          123,
+          171,
+          176,
+          180
         ]
       },
       "applicabilityIssues": {},
@@ -561,7 +561,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 350,
+    "evidenceLinksPublished": 349,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -752,11 +752,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 1,
+      "completedStores": 0,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 356,
-      "compliance": 0.3,
+      "pendingStores": 357,
+      "compliance": 0.0,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -1132,25 +1132,6 @@
       "rank": 17
     },
     {
-      "dm": "Vanessa Carreño Rios",
-      "shortName": "Vanessa Carreño",
-      "photo": "assets/dm/vanessa-carreno.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 13,
-      "completed": 3,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 127,
-      "pendingStores": 13,
-      "compliance": 2.3,
-      "status": "Atención",
-      "rank": 18
-    },
-    {
       "dm": "Luis Alberto Quevedo Rodriguez",
       "shortName": "Luis Quevedo",
       "photo": "assets/dm/luis-quevedo.webp",
@@ -1167,7 +1148,7 @@
       "pendingStores": 14,
       "compliance": 2.1,
       "status": "Atención",
-      "rank": 19
+      "rank": 18
     },
     {
       "dm": "Jaqueline Cortes Ayala",
@@ -1177,6 +1158,25 @@
       "photoStatus": "Disponible",
       "regions": [
         "Centro Sur"
+      ],
+      "stores": 13,
+      "completed": 2,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 128,
+      "pendingStores": 13,
+      "compliance": 1.5,
+      "status": "Atención",
+      "rank": 19
+    },
+    {
+      "dm": "Vanessa Carreño Rios",
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
       ],
       "stores": 13,
       "completed": 2,
@@ -4544,6 +4544,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38371",
+      "store": "Montevideo DT",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38546",
       "store": "Patio Claveria",
       "dm": "Vanessa Carreño Rios",
@@ -4811,17 +4822,6 @@
       "ceco": "38374",
       "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
       "completed": 2,
       "expected": 10,
       "notApplicable": 0,
@@ -16509,11 +16509,11 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-19T15:31:21",
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-09T17:13:38",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -16522,7 +16522,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
-        "Organización Refrigeradores Back": true,
+        "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
         "FHW": false
       },
@@ -20025,28 +20025,6 @@
         "total": 3
       },
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17898572434496167251908049569087_Starbucks%20Patio%20Ecat.jpg"
-    },
-    {
-      "id": "respuesta-2d0d3a72b093c6f4",
-      "timestamp": "2026-09-19T15:31:21",
-      "timestampDisplay": "19/09/2026 15:31",
-      "activity": "Organización Refrigeradores Back",
-      "ceco": "38371",
-      "store": "Montevideo DT",
-      "dm": "Vanessa Carreño Rios",
-      "region": "Centro Norte",
-      "evidenceKey": "Organizacion_Refrigeradores_Back_38371",
-      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38371",
-      "evidenceFileName": "ChatGPT Image 19 sept 2026, 15_22_18_Enrique Cesar Flores.png",
-      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/ChatGPT%20Image%2019%20sept%202026,%2015_22_18_Enrique%20Cesar%20Flores.png"
     },
     {
       "id": "respuesta-b137df62822002cb",
