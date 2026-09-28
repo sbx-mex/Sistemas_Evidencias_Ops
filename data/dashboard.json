@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "cc2376f5d5d861a0",
+  "buildVersion": "a27756ddfa36ca06",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T05:14:48+00:00",
-  "lastUpdated": "2026-09-24T11:50:55",
-  "lastUpdatedDisplay": "24/09/2026 11:50",
+  "generatedAt": "2026-09-28T05:16:55+00:00",
+  "lastUpdated": "2026-09-27T16:58:09",
+  "lastUpdatedDisplay": "27/09/2026 16:58",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "24/09/26 · 11:50 h",
+    "cutOffDisplay": "27/09/26 · 16:58 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 52,
+        "completed": 63,
         "expected": 1000,
-        "pending": 948,
-        "compliance": 5.2,
+        "pending": 937,
+        "compliance": 6.3,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 189,
+        "completed": 190,
         "expected": 709,
-        "pending": 520,
-        "compliance": 26.7,
+        "pending": 519,
+        "compliance": 26.8,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "b89d50065e855e9634c0b91b8010c39572e9300c4c26aae2bb964659fb33a843",
+    "responsesSha256": "5c57a70588321d887b9f0c05c9c39421b640199aa6467a5eaf60850d5eddb119",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,26 +130,26 @@
     "stores": 357,
     "activities": 10,
     "expectedCompletions": 3559,
-    "completedCompletions": 340,
-    "compliance": 9.6,
-    "validResponses": 340,
+    "completedCompletions": 352,
+    "compliance": 9.9,
+    "validResponses": 352,
     "storesComplete": 0,
-    "pendingCompletions": 3219,
+    "pendingCompletions": 3207,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 477,
+    "responsesRead": 492,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 180,
-      "newFormsRowsIncluded": 93,
+      "newFormsRowsRead": 196,
+      "newFormsRowsIncluded": 108,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
-      "newFormsRowsRejectedInactive": 87,
+      "newFormsRowsRejectedInactive": 88,
       "baselineSchema": {
         "sheet": "Respuestas corte",
         "headerRow": 1,
@@ -229,8 +229,8 @@
       32,
       124,
       172,
-      175,
-      179
+      177,
+      181
     ],
     "unknownCeCos": [],
     "hiddenActivityRows": [
@@ -318,9 +318,10 @@
       145,
       161,
       163,
-      176,
-      177,
       178,
+      179,
+      180,
+      185,
       3,
       4,
       5,
@@ -443,13 +444,13 @@
         ]
       },
       {
-        "row": 175,
+        "row": 177,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
       },
       {
-        "row": 179,
+        "row": 181,
         "reasons": [
           "ambiguous-matching-evidence"
         ]
@@ -465,12 +466,12 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 31,
+    "duplicateValidResponses": 34,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
       "headerRow": 1,
-      "columns": 24,
+      "columns": 26,
       "activityHeaders": [
         "Selecciona la actividad que deseas registrar"
       ],
@@ -478,7 +479,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 180
+        "CeCo": 196
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -500,9 +501,9 @@
         "Evidencia_Señaletica_Back",
         "Evidencia_Señaletica_Lobby",
         "Evidencia_Jarras_Blender_&_Cold_Foam",
-        "Evidencia_Va_X_Cuenta",
         "Evidencia_Organizacion_Refrigeradores_Back_Antes",
-        "Evidencia_Organizacion_Refrigeradores_Back_Despues"
+        "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+        "Evidencia_FHW"
       ],
       "evidenceHeaderMap": {
         "Evidencia_Rack_FHW": "rackfhw",
@@ -513,9 +514,9 @@
         "Evidencia_Señaletica_Back": "senaleticaback",
         "Evidencia_Señaletica_Lobby": "senaleticalobby",
         "Evidencia_Jarras_Blender_&_Cold_Foam": "jarrasblendercoldfoam",
-        "Evidencia_Va_X_Cuenta": "vaxcuenta",
         "Evidencia_Organizacion_Refrigeradores_Back_Antes": "organizacionrefrigeradoresback",
-        "Evidencia_Organizacion_Refrigeradores_Back_Despues": "organizacionrefrigeradoresback"
+        "Evidencia_Organizacion_Refrigeradores_Back_Despues": "organizacionrefrigeradoresback",
+        "Evidencia_FHW": "fhw"
       },
       "evidenceHeaderMatch": {
         "Evidencia_Rack_FHW": "unverified",
@@ -526,9 +527,9 @@
         "Evidencia_Señaletica_Back": "exact",
         "Evidencia_Señaletica_Lobby": "exact",
         "Evidencia_Jarras_Blender_&_Cold_Foam": "exact",
-        "Evidencia_Va_X_Cuenta": "exact",
         "Evidencia_Organizacion_Refrigeradores_Back_Antes": "affinity",
-        "Evidencia_Organizacion_Refrigeradores_Back_Despues": "affinity"
+        "Evidencia_Organizacion_Refrigeradores_Back_Despues": "affinity",
+        "Evidencia_FHW": "exact"
       },
       "rowConflicts": [
         {
@@ -541,8 +542,8 @@
           32,
           124,
           172,
-          175,
-          179
+          177,
+          181
         ]
       },
       "applicabilityIssues": {},
@@ -550,7 +551,7 @@
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 340,
+    "evidenceLinksPublished": 350,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -587,11 +588,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 35,
+      "completedStores": 37,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 322,
-      "compliance": 9.8,
+      "pendingStores": 320,
+      "compliance": 10.4,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -609,11 +610,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 63,
+      "completedStores": 64,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 294,
-      "compliance": 17.6,
+      "pendingStores": 293,
+      "compliance": 17.9,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -631,11 +632,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 38,
+      "completedStores": 41,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 319,
-      "compliance": 10.6,
+      "pendingStores": 316,
+      "compliance": 11.5,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -653,11 +654,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": true,
-      "completedStores": 26,
+      "completedStores": 27,
       "applicableStores": 346,
       "notApplicableStores": 11,
-      "pendingStores": 320,
-      "compliance": 7.5,
+      "pendingStores": 319,
+      "compliance": 7.8,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -675,11 +676,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 28,
+      "completedStores": 29,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 329,
-      "compliance": 7.8,
+      "pendingStores": 328,
+      "compliance": 8.1,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -697,11 +698,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 27,
+      "completedStores": 28,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 330,
-      "compliance": 7.6,
+      "pendingStores": 329,
+      "compliance": 7.8,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -719,11 +720,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 122,
+      "completedStores": 123,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 235,
-      "compliance": 34.2,
+      "pendingStores": 234,
+      "compliance": 34.5,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -763,11 +764,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 2,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 357,
-      "compliance": 0.0,
+      "pendingStores": 355,
+      "compliance": 0.6,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -855,6 +856,25 @@
       "rank": 3
     },
     {
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "shortName": "Ariana Gutierrez",
+      "photo": "assets/dm/ariana-gutierrez.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 12,
+      "completed": 22,
+      "expected": 120,
+      "notApplicable": 0,
+      "pending": 98,
+      "pendingStores": 12,
+      "compliance": 18.3,
+      "status": "Atención",
+      "rank": 4
+    },
+    {
       "dm": "Veronica Garcia Ortega",
       "shortName": "Veronica Garcia",
       "photo": "assets/dm/veronica-garcia.webp",
@@ -871,7 +891,7 @@
       "pendingStores": 11,
       "compliance": 16.5,
       "status": "Atención",
-      "rank": 4
+      "rank": 5
     },
     {
       "dm": "Jesus Antonio Elguera Flores",
@@ -890,7 +910,7 @@
       "pendingStores": 10,
       "compliance": 14.0,
       "status": "Atención",
-      "rank": 5
+      "rank": 6
     },
     {
       "dm": "Andrea Nava Guzman",
@@ -909,26 +929,26 @@
       "pendingStores": 8,
       "compliance": 11.2,
       "status": "Atención",
-      "rank": 6
+      "rank": 7
     },
     {
-      "dm": "Ariana Janet Gutierrez Martinez",
-      "shortName": "Ariana Gutierrez",
-      "photo": "assets/dm/ariana-gutierrez.webp",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "shortName": "Yazmin Garcia",
+      "photo": "assets/dm/yazmin-garcia.webp",
       "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
-        "Centro Sur"
+        "Centro Norte"
       ],
-      "stores": 12,
-      "completed": 13,
-      "expected": 120,
+      "stores": 13,
+      "completed": 14,
+      "expected": 130,
       "notApplicable": 0,
-      "pending": 107,
-      "pendingStores": 12,
+      "pending": 116,
+      "pendingStores": 13,
       "compliance": 10.8,
       "status": "Atención",
-      "rank": 7
+      "rank": 8
     },
     {
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -947,7 +967,7 @@
       "pendingStores": 12,
       "compliance": 10.0,
       "status": "Atención",
-      "rank": 8
+      "rank": 9
     },
     {
       "dm": "Erika Julieta Contreras Aguilera",
@@ -966,7 +986,7 @@
       "pendingStores": 15,
       "compliance": 10.0,
       "status": "Atención",
-      "rank": 9
+      "rank": 10
     },
     {
       "dm": "Jose De Jesus Magos Arzaluz",
@@ -985,7 +1005,7 @@
       "pendingStores": 15,
       "compliance": 10.0,
       "status": "Atención",
-      "rank": 10
+      "rank": 11
     },
     {
       "dm": "Juan Jesus Zuñiga Flores",
@@ -1004,7 +1024,7 @@
       "pendingStores": 11,
       "compliance": 10.0,
       "status": "Atención",
-      "rank": 11
+      "rank": 12
     },
     {
       "dm": "Manuel Alejandro Avila Molina",
@@ -1014,25 +1034,6 @@
       "photoStatus": "Disponible",
       "regions": [
         "Centro Poniente"
-      ],
-      "stores": 13,
-      "completed": 13,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 117,
-      "pendingStores": 13,
-      "compliance": 10.0,
-      "status": "Atención",
-      "rank": 12
-    },
-    {
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "shortName": "Yazmin Garcia",
-      "photo": "assets/dm/yazmin-garcia.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
       ],
       "stores": 13,
       "completed": 13,
@@ -1159,6 +1160,25 @@
       "rank": 19
     },
     {
+      "dm": "Jaqueline Cortes Ayala",
+      "shortName": "Jaqueline Cortes",
+      "photo": "assets/dm/jaqueline-cortes.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 13,
+      "completed": 2,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 128,
+      "pendingStores": 13,
+      "compliance": 1.5,
+      "status": "Atención",
+      "rank": 20
+    },
+    {
       "dm": "Fernando Eduardo Verdugo Saldaña",
       "shortName": "Fernando Verdugo",
       "photo": "assets/dm/fernando-verdugo.webp",
@@ -1175,7 +1195,7 @@
       "pendingStores": 12,
       "compliance": 0.8,
       "status": "Atención",
-      "rank": 20
+      "rank": 21
     },
     {
       "dm": "Alberto Torrado Aguilar Cauz",
@@ -1194,7 +1214,7 @@
       "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 21
+      "rank": 22
     },
     {
       "dm": "Guadalupe Ibarra Martínez",
@@ -1213,7 +1233,7 @@
       "pendingStores": 12,
       "compliance": 0.0,
       "status": "Atención",
-      "rank": 22
+      "rank": 23
     },
     {
       "dm": "Hazar Susim Trejo Hernandez",
@@ -1230,25 +1250,6 @@
       "notApplicable": 0,
       "pending": 120,
       "pendingStores": 12,
-      "compliance": 0.0,
-      "status": "Atención",
-      "rank": 23
-    },
-    {
-      "dm": "Jaqueline Cortes Ayala",
-      "shortName": "Jaqueline Cortes",
-      "photo": "assets/dm/jaqueline-cortes.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Sur"
-      ],
-      "stores": 13,
-      "completed": 0,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 130,
-      "pendingStores": 13,
       "compliance": 0.0,
       "status": "Atención",
       "rank": 24
@@ -1497,30 +1498,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38611",
-      "store": "Plaza Basica",
-      "dm": "Ariana Janet Gutierrez Martinez",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38645",
       "store": "Plaza Central",
-      "dm": "Ariana Janet Gutierrez Martinez",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38289",
-      "store": "Tezontle l",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 0,
       "expected": 10,
@@ -2124,30 +2103,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38430",
-      "store": "Prisma Insurgentes",
-      "dm": "Jaqueline Cortes Ayala",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43025",
       "store": "Punto MAQ",
-      "dm": "Jaqueline Cortes Ayala",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38417",
-      "store": "San Jose Insurgentes",
       "dm": "Jaqueline Cortes Ayala",
       "completed": 0,
       "expected": 10,
@@ -3455,6 +3412,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38611",
+      "store": "Plaza Basica",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38418",
       "store": "Plaza Oriente l",
       "dm": "Ariana Janet Gutierrez Martinez",
@@ -3488,8 +3456,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38279",
-      "store": "Tezontle ll",
+      "ceco": "38289",
+      "store": "Tezontle l",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 1,
       "expected": 10,
@@ -3499,8 +3467,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38226",
-      "store": "Via kiosko 515",
+      "ceco": "38279",
+      "store": "Tezontle ll",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 1,
       "expected": 10,
@@ -3876,6 +3844,28 @@
       "ceco": "38472",
       "store": "Plaza America DT",
       "dm": "Fernando Eduardo Verdugo Saldaña",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38430",
+      "store": "Prisma Insurgentes",
+      "dm": "Jaqueline Cortes Ayala",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38417",
+      "store": "San Jose Insurgentes",
+      "dm": "Jaqueline Cortes Ayala",
       "completed": 1,
       "expected": 10,
       "notApplicable": 0,
@@ -4720,17 +4710,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38925",
-      "store": "Star Medica Lomas Verdes",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "43130",
       "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4855,6 +4834,17 @@
       "ceco": "38965",
       "store": "Parque Tepeyac Piso 2",
       "dm": "Veronica Garcia Ortega",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 2,
       "expected": 10,
       "notApplicable": 0,
@@ -5257,6 +5247,17 @@
       "pending": 3,
       "compliance": 70.0,
       "status": "Seguimiento"
+    },
+    {
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 8,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
     }
   ],
   "stores": [
@@ -6994,15 +6995,15 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-27T14:50:23",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
-        "Lay Out": false,
+        "Lay Out": true,
         "Community Board": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
@@ -7210,13 +7211,13 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-27T13:12:36",
       "activities": {
-        "Max & Min": false,
+        "Max & Min": true,
         "Mandil Verde": false,
         "Lay Out": false,
         "Community Board": false,
@@ -7282,21 +7283,21 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-24T05:01:43",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-27T14:38:38",
       "activities": {
-        "Max & Min": false,
-        "Mandil Verde": false,
+        "Max & Min": true,
+        "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false,
+        "Community Board": true,
+        "Señaletica Back": true,
+        "Señaletica Lobby": true,
+        "Jarras Blender | Cold Foam": true,
         "Organizacion Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -10882,15 +10883,15 @@
       "dm": "Jaqueline Cortes Ayala",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-26T13:27:21",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
-        "Lay Out": false,
+        "Lay Out": true,
         "Community Board": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
@@ -10954,15 +10955,15 @@
       "dm": "Jaqueline Cortes Ayala",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-27T16:58:09",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
-        "Lay Out": false,
+        "Lay Out": true,
         "Community Board": false,
         "Señaletica Back": false,
         "Señaletica Lobby": false,
@@ -17974,11 +17975,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:58:12",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-27T15:36:33",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -17988,7 +17989,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organizacion Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -18129,16 +18130,283 @@
           "label": "Jarras Cold Foam"
         }
       ],
-      "answeredStores": 122,
+      "answeredStores": 123,
       "totals": {
-        "blender": 216,
-        "coldFoam": 127,
-        "total": 343
+        "blender": 218,
+        "coldFoam": 128,
+        "total": 346
       }
     }
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-f1261a04cf8e4201",
+      "timestamp": "2026-09-27T16:58:09",
+      "timestampDisplay": "27/09/2026 16:58",
+      "activity": "Lay Out",
+      "ceco": "38417",
+      "store": "San Jose Insurgentes",
+      "dm": "Jaqueline Cortes Ayala",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38417",
+      "evidenceLinkLabel": "Link_Lay_Out_38417",
+      "evidenceFileName": "IMG_7174_Starbucks San José I.jpeg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/IMG_7174_Starbucks%20San%20Jos%C3%A9%20I.jpeg"
+    },
+    {
+      "id": "respuesta-2847691210b604e7",
+      "timestamp": "2026-09-27T15:36:33",
+      "timestampDisplay": "27/09/2026 15:36",
+      "activity": "Va X Cuenta",
+      "ceco": "38925",
+      "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38925",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38925",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true
+    },
+    {
+      "id": "respuesta-e89591c7af6b27df",
+      "timestamp": "2026-09-27T14:50:23",
+      "timestampDisplay": "27/09/2026 14:50",
+      "activity": "Lay Out",
+      "ceco": "38611",
+      "store": "Plaza Basica",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38611",
+      "evidenceLinkLabel": "Link_Lay_Out_38611",
+      "evidenceFileName": "1790542158367636061683927823618_Starbucks Plaza Basi.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/1790542158367636061683927823618_Starbucks%20Plaza%20Basi.jpg"
+    },
+    {
+      "id": "respuesta-c8adf60a54cf47ea",
+      "timestamp": "2026-09-27T14:38:38",
+      "timestampDisplay": "27/09/2026 14:38",
+      "activity": "Max & Min",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Max_Min_38226",
+      "evidenceLinkLabel": "Link_Max_Min_38226",
+      "evidenceFileName": "17905414969817677405354813048964_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Max&Min",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%204/17905414969817677405354813048964_Starbucks%20Via%20515%20Ki.jpg"
+    },
+    {
+      "id": "respuesta-d39bdf5a132c60c4",
+      "timestamp": "2026-09-27T14:36:23",
+      "timestampDisplay": "27/09/2026 14:36",
+      "activity": "Va X Cuenta",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Va_X_Cuenta_38226",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38226",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true
+    },
+    {
+      "id": "respuesta-090dfb84e276584a",
+      "timestamp": "2026-09-27T14:35:22",
+      "timestampDisplay": "27/09/2026 14:35",
+      "activity": "Señaletica Lobby",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Senaletica_Lobby_38226",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38226",
+      "evidenceFileName": "17905412966355443828689864925311_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Back/17905412966355443828689864925311_Starbucks%20Via%20515%20Ki.jpg"
+    },
+    {
+      "id": "respuesta-a3f6db267bdb06e3",
+      "timestamp": "2026-09-27T14:34:30",
+      "timestampDisplay": "27/09/2026 14:34",
+      "activity": "Señaletica Back",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Senaletica_Back_38226",
+      "evidenceLinkLabel": "Link_Senaletica_Back_38226",
+      "evidenceFileName": "1790541241117953011283015265567_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Back",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/1790541241117953011283015265567_Starbucks%20Via%20515%20Ki.jpg"
+    },
+    {
+      "id": "respuesta-7adb13364a8bee53",
+      "timestamp": "2026-09-27T14:33:19",
+      "timestampDisplay": "27/09/2026 14:33",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38226",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38226",
+      "evidenceFileName": "17905411384285127109932030182708_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17905411384285127109932030182708_Starbucks%20Via%20515%20Ki.jpg"
+    },
+    {
+      "id": "respuesta-d5b303a62b5058f4",
+      "timestamp": "2026-09-27T14:30:50",
+      "timestampDisplay": "27/09/2026 14:30",
+      "activity": "Community Board",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Community_Board_38226",
+      "evidenceLinkLabel": "Link_Community_Board_38226",
+      "evidenceFileName": "17905410261288703079577566209805_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Community_Board",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Lay_Out%201/17905410261288703079577566209805_Starbucks%20Via%20515%20Ki.jpg"
+    },
+    {
+      "id": "respuesta-637b16d3de48afb1",
+      "timestamp": "2026-09-27T14:29:55",
+      "timestampDisplay": "27/09/2026 14:29",
+      "activity": "Mandil Verde",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Mandil_Verde_38226",
+      "evidenceLinkLabel": "Link_Mandil_Verde_38226",
+      "evidenceFileName": "17905409283343111364720168768447_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/17905409283343111364720168768447_Starbucks%20Via%20515%20Ki.jpg"
+    },
+    {
+      "id": "respuesta-0b4e6cdffdf6c9d9",
+      "timestamp": "2026-09-27T13:12:36",
+      "timestampDisplay": "27/09/2026 13:12",
+      "activity": "Max & Min",
+      "ceco": "38289",
+      "store": "Tezontle l",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Max_Min_38289",
+      "evidenceLinkLabel": "Link_Max_Min_38289",
+      "evidenceFileName": "17905363291005096352290417547468_Starbucks Tezontle.jpg",
+      "evidenceSourceHeader": "Evidencia_Max&Min",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%204/17905363291005096352290417547468_Starbucks%20Tezontle.jpg"
+    },
+    {
+      "id": "respuesta-82e41595583a61f1",
+      "timestamp": "2026-09-26T13:27:21",
+      "timestampDisplay": "26/09/2026 13:27",
+      "activity": "Lay Out",
+      "ceco": "38430",
+      "store": "Prisma Insurgentes",
+      "dm": "Jaqueline Cortes Ayala",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38430",
+      "evidenceLinkLabel": "Link_Lay_Out_38430",
+      "evidenceFileName": "17904507892586859638888024589976_Starbucks Prisma Ins.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/17904507892586859638888024589976_Starbucks%20Prisma%20Ins.jpg"
+    },
     {
       "id": "respuesta-89e1c5f8a4cb2c88",
       "timestamp": "2026-09-24T11:50:55",
