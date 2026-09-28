@@ -47,26 +47,33 @@ function selectedActivities() {
 }
 
 function quantityChoices(module) {
-  return (module?.metrics || []).flatMap((metric) => {
+  if (!module?.metrics?.length) return [];
+  const choices = module.metrics.flatMap((metric) => {
     const upper = Number(metric.maximum ?? module.maximum);
-    const ranges = [{value: "zero", label: "0"}];
-    if (upper >= 1) ranges.push({value: "1-5", label: `1–${Math.min(5, upper)}`});
-    if (upper >= 6) ranges.push({value: "6-20", label: `6–${Math.min(20, upper)}`});
-    if (upper >= 21) ranges.push({value: "21+", label: `21–${upper}`});
-    ranges.push({value: "pending", label: "Sin respuesta válida"});
-    return ranges.map((range) => ({value: `${metric.key}|${range.value}`, label: `${metric.label} · ${range.label}`}));
+    const lower = Number(metric.minimum ?? module.minimum);
+    const ranges = lower <= 0 ? [{value: "zero", label: "0"}] : [];
+    if (upper >= 1 && lower <= 5) ranges.push({value: "1-5", label: `${Math.max(1, lower)}–${Math.min(5, upper)}`});
+    if (upper >= 6 && lower <= 20) ranges.push({value: "6-20", label: `${Math.max(6, lower)}–${Math.min(20, upper)}`});
+    if (upper >= 21) ranges.push({value: "21+", label: `${Math.max(21, lower)}+`});
+    const label = module.percentageMetric ? metric.label.replace(/\s+dona$/i, "") : metric.label;
+    return ranges.map((range) => ({value: `${metric.key}|${range.value}`, label: `${label} · ${range.label}`}));
   });
+  return [...choices, {value: "pending", label: "Sin respuesta"}];
 }
 
 function matchingQuantityStores() {
   const module = (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity);
   const choice = quantityChoices(module).find((item) => item.value === state.filters.quantity);
   if (!choice) return null;
+  if (choice.value === "pending") {
+    const answered = new Set(state.data.submissions.filter((item) => item.valid && item.activity === module.activity && item.quantities).map((item) => item.ceco));
+    return new Set(state.data.stores.filter((store) => store.applicableActivities?.[module.activity] !== false && !answered.has(store.ceco)).map((store) => store.ceco));
+  }
   const [key, band] = choice.value.split("|");
   const answers = new Map(state.data.submissions.filter((item) => item.valid && item.activity === module.activity && item.quantities)
     .map((item) => [item.ceco, item.quantities[key]]));
   return new Set(state.data.stores.filter((store) => {
-    if (!answers.has(store.ceco)) return band === "pending";
+    if (!answers.has(store.ceco)) return false;
     const value = answers.get(store.ceco);
     return band === "zero" ? value === 0 : band === "1-5" ? value >= 1 && value <= 5
       : band === "6-20" ? value >= 6 && value <= 20 : band === "21+" ? value >= 21 : false;
@@ -241,7 +248,7 @@ function quantityRollup(responses, metrics, groupFields, percentageMetric) {
     if (!groups.has(key)) groups.set(key, { labels, stores: 0, totals: Object.fromEntries(metrics.map((metric) => [metric.key, 0])) });
     const group = groups.get(key);
     group.stores += 1;
-    metrics.forEach((metric) => { group.totals[metric.key] += item.quantities[metric.key]; });
+    metrics.forEach((metric) => { group.totals[metric.key] += Number(item.quantities[metric.key] || 0); });
   }
   return [...groups.values()].sort((a, b) => a.labels.join(' ').localeCompare(b.labels.join(' '), 'es-MX')).map((group) => {
     group.totals.total = metrics.reduce((sum, metric) => sum + group.totals[metric.key], 0);
@@ -259,12 +266,15 @@ function renderQuantityModule() {
   nav.hidden = !module;
   if (!module) return;
 
+  const ratio = Boolean(module.percentageMetric);
+  section.classList.toggle("ratio-mode", ratio);
+  const shortLabel = (label) => ratio ? String(label).replace(/\s+dona$/i, "").replace(/\s+reportada$/i, "") : label;
   nav.textContent = module.activity === "Jarras Blender | Cold Foam" ? "Jarras" : module.activity;
   $("#quantity-heading").textContent = module.title;
   $("#quantity-response-table").closest("table").querySelector("thead tr").innerHTML =
-    `<th>Tienda</th><th>DM</th>${module.metrics.map((metric) => `<th>${esc(metric.label)}</th>`).join("")}<th>${esc(module.totalLabel || "Piezas totales")}</th>${module.percentageMetric ? `<th>${esc(module.percentageLabel)}</th>` : ""}<th>Evidencia</th>`;
+    `<th>Tienda</th>${ratio ? "" : "<th>DM</th>"}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}<th>Evidencia</th>`;
 
-  const eligibleStores = filteredStores().length;
+  const eligibleStores = filteredStores().filter((store) => store.applicableActivities?.[module.activity] !== false).length;
   const responses = filteredQuantityResponses(module)
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
   const responseRate = eligibleStores ? responses.length / eligibleStores * 100 : 0;
@@ -275,35 +285,41 @@ function renderQuantityModule() {
   totals.total = Object.values(totals).reduce((sum, value) => sum + value, 0);
   const participation = module.percentageMetric && totals.total ? totals[module.percentageMetric] / totals.total * 100 : null;
 
-  $("#quantity-response-chip").textContent = `${number(responses.length)} de ${number(eligibleStores)} tiendas`;
+  $("#quantity-response-chip").textContent = `${number(responses.length)} / ${number(eligibleStores)} tiendas`;
   $("#quantity-response-rate").textContent = percent(responseRate);
   $("#quantity-response-bar").style.setProperty("--progress", `${Math.min(responseRate, 100)}%`);
   $("#quantity-scope").textContent = currentScope();
   $("#quantity-response-table").innerHTML = responses.length ? responses.map((item) => `<tr>
-    <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></td>
-    <td>${esc(item.dm)}</td>
+    <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}${ratio ? ` · ${esc(item.dm)}` : ""}</small></td>
+    ${ratio ? "" : `<td>${esc(item.dm)}</td>`}
     ${module.metrics.map((metric) => `<td><strong>${number(item.quantities[metric.key])}</strong></td>`).join("")}
     <td><strong>${number(item.quantities.total)}</strong></td>
     ${module.percentageMetric ? `<td><strong>${item.quantities.percentage == null ? "—" : percent(item.quantities.percentage)}</strong></td>` : ""}
     <td>${item.evidenceLinkPublished && item.evidenceUrl
       ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
       : "Validada"}</td>
-  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + (module.percentageMetric ? 5 : 4)}"><div class="empty-state">Aún no hay respuestas completas en este filtro.</div></td></tr>`;
+  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 4}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
 
+  $("#quantity-totals").classList.toggle("ratio", ratio);
   $("#quantity-totals").innerHTML = [
-    ...module.metrics.map((metric) => [number(totals[metric.key]), metric.label]),
-    [number(totals.total), module.totalLabel || "Piezas totales"],
-    ...(module.percentageMetric ? [[participation == null ? "—" : percent(participation), module.percentageLabel]] : []),
+    ...module.metrics.map((metric) => [number(totals[metric.key]), shortLabel(metric.label)]),
+    [number(totals.total), shortLabel(module.totalLabel || "Piezas totales")],
+    ...(ratio ? [[participation == null ? "—" : percent(participation), shortLabel(module.percentageLabel)]] : []),
   ].map(([value, label], index) => `<article class="quantity-total${index >= module.metrics.length ? " total" : ""}"><strong>${value}</strong><span>${esc(label)}</span></article>`).join("");
   const maximum = Math.max(...module.metrics.map((metric) => totals[metric.key]), 1);
+  $("#quantity-bars").hidden = ratio;
   $("#quantity-bars").innerHTML = module.metrics.map((metric) => `<div><span>${esc(metric.label)}</span><b>${number(totals[metric.key])}</b><i><em style="--progress:${totals[metric.key] / maximum * 100}%"></em></i></div>`).join("");
   const breakdowns = $("#quantity-breakdowns");
-  breakdowns.hidden = !module.percentageMetric;
-  if (module.percentageMetric) {
-    const columns = [...module.metrics.map((metric) => metric.label), module.totalLabel || "Total", module.percentageLabel];
-    const makeTable = (title, groups) => `<div class="quantity-breakdown"><h4>${esc(title)}</h4><div class="table-shell quantity-group-shell"><table><thead><tr><th>Ámbito</th><th>Tiendas</th>${columns.map((label) => `<th>${esc(label)}</th>`).join("")}</tr></thead><tbody>${groups.map((group) => `<tr><td>${esc(group.labels.join(" · "))}</td><td>${number(group.stores)}</td>${module.metrics.map((metric) => `<td>${number(group.totals[metric.key])}</td>`).join("")}<td>${number(group.totals.total)}</td><td><strong>${group.totals.percentage == null ? "—" : percent(group.totals.percentage)}</strong></td></tr>`).join("") || `<tr><td colspan="${columns.length + 2}">Sin respuestas</td></tr>`}</tbody></table></div></div>`;
-    breakdowns.innerHTML = makeTable("Por región", quantityRollup(responses, module.metrics, ["region"], module.percentageMetric))
-      + makeTable("Por portafolio (DM)", quantityRollup(responses, module.metrics, ["region", "dm"], module.percentageMetric));
+  breakdowns.hidden = !ratio;
+  if (ratio) {
+    const makeTable = (title, field, groups) => `<div class="quantity-breakdown"><h4>${esc(title)}</h4><div class="table-shell quantity-group-shell"><table><thead><tr><th scope="col">${esc(field)}</th><th scope="col">Tiendas</th>${module.metrics.map((metric) => `<th scope="col">${esc(shortLabel(metric.label))}</th>`).join("")}<th scope="col">${esc(shortLabel(module.totalLabel || "Total"))}</th></tr></thead><tbody>${groups.map((group) => {
+      const dm = field === "DM" ? state.data.dms?.find((item) => item.dm === group.labels[1]) : null;
+      const label = field === "DM" ? dm?.shortName || group.labels[1] : group.labels[0];
+      const sublabel = field === "DM" && !state.filters.region ? `<small>${esc(group.labels[0])}</small>` : "";
+      return `<tr><th scope="row">${esc(label)}${sublabel}</th><td>${number(group.stores)}</td>${module.metrics.map((metric) => `<td>${metric.key === module.percentageMetric ? `<strong>${number(group.totals[metric.key])}</strong><small>${group.totals.percentage == null ? "—" : percent(group.totals.percentage)}</small>` : number(group.totals[metric.key])}</td>`).join("")}<td><strong>${number(group.totals.total)}</strong></td></tr>`;
+    }).join("") || `<tr><td colspan="${module.metrics.length + 3}">Sin respuestas</td></tr>`}</tbody></table></div></div>`;
+    breakdowns.innerHTML = makeTable("Por región", "Región", quantityRollup(responses, module.metrics, ["region"], module.percentageMetric))
+      + makeTable("Por DM", "DM", quantityRollup(responses, module.metrics, ["region", "dm"], module.percentageMetric));
   } else breakdowns.innerHTML = "";
 }
 
@@ -545,7 +561,7 @@ function populateFilters() {
   const numericModule = (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity);
   const choices = quantityChoices(numericModule);
   $("#quantity-filter-label").hidden = !numericModule;
-  $("#filter-quantity").innerHTML = '<option value="">Todas las cantidades</option>' + choices.map((item) => `<option value="${esc(item.value)}">${esc(item.label)}</option>`).join("");
+  $("#filter-quantity").innerHTML = '<option value="">Todas</option>' + choices.map((item) => `<option value="${esc(item.value)}">${esc(item.label)}</option>`).join("");
   if (!choices.some((item) => item.value === state.filters.quantity)) state.filters.quantity = "";
   $("#filter-quantity").value = state.filters.quantity;
 }
@@ -1039,9 +1055,9 @@ function buildExcelSpec() {
       }] : []),
       ...(ratioModule ? [{
         name: "Participación",
-        rows: [["Consolidado de participación", ...Array(quantityModule.metrics.length + 5).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + 5).fill("")], [], ["Ámbito", "Región", "Portafolio DM", "Tiendas", ...quantityModule.metrics.map((metric) => metric.label), quantityModule.totalLabel, quantityModule.percentageLabel],
-          ...[["Región", quantityRollup(quantityResponses, quantityModule.metrics, ["region"], quantityModule.percentageMetric)], ["Portafolio", quantityRollup(quantityResponses, quantityModule.metrics, ["region", "dm"], quantityModule.percentageMetric)]].flatMap(([kind, groups]) => groups.map((group) => [kind, group.labels[0], kind === "Portafolio" ? group.labels[1] : "", group.stores, ...quantityModule.metrics.map((metric) => group.totals[metric.key]), group.totals.total, group.totals.percentage == null ? "" : {value: group.totals.percentage / 100, style: 3}]))],
-        widths: [16, 20, 34, 12, ...quantityModule.metrics.map(() => 18), 20, 16], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + 6)}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + 6)}2`], headerRows: [4], percentColumns: [quantityModule.metrics.length + 6], countColumns: [4, ...quantityModule.metrics.map((_, index) => index + 5), quantityModule.metrics.length + 5], freezeRow: 4, tabColor: "FF006241",
+        rows: [["Participación por región y DM", ...Array(quantityModule.metrics.length + 3).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + 3).fill("")], [], ["Región / DM", "Tiendas", ...quantityModule.metrics.map((metric) => metric.label.replace(/\s+dona$/i, "")), String(quantityModule.totalLabel).replace(/\s+reportada$/i, ""), String(quantityModule.percentageLabel).replace(/\s+dona$/i, "")],
+          ...[["Región", quantityRollup(quantityResponses, quantityModule.metrics, ["region"], quantityModule.percentageMetric)], ["DM", quantityRollup(quantityResponses, quantityModule.metrics, ["region", "dm"], quantityModule.percentageMetric)]].flatMap(([kind, groups]) => groups.map((group) => [kind === "Región" ? group.labels[0] : `${group.labels[0]} · ${state.data.dms?.find((item) => item.dm === group.labels[1])?.shortName || group.labels[1]}`, group.stores, ...quantityModule.metrics.map((metric) => group.totals[metric.key]), group.totals.total, group.totals.percentage == null ? "" : {value: group.totals.percentage / 100, style: 3}]))],
+        widths: [42, 12, ...quantityModule.metrics.map(() => 14), 16, 14], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + 4)}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + 4)}2`], headerRows: [4], percentColumns: [quantityModule.metrics.length + 4], countColumns: [2, ...quantityModule.metrics.map((_, index) => index + 3), quantityModule.metrics.length + 3], freezeRow: 4, tabColor: "FF006241",
       }] : []),
     ],
   };
@@ -1122,10 +1138,12 @@ function bindEvents() {
   $("#export-modal-close").addEventListener("click", closeExportModal);
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
+    if ($("#export-menu").open) { $("#export-menu").open = false; $("#export-menu > summary").focus(); return; }
     if (!$("#export-modal").hidden && !state.exporting) closeExportModal();
     else if (Object.values(state.filters).some(Boolean)) { clearDashboardFilters(); $("#filter-region").focus(); }
   });
   document.addEventListener("click", (event) => {
+    if (!$("#export-menu").contains(event.target) || event.target.closest("#export-menu .export-actions button")) $("#export-menu").open = false;
     const removeFilter = event.target.closest("[data-remove-filter]");
     if (removeFilter) {
       const key = removeFilter.dataset.removeFilter;

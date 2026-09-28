@@ -519,8 +519,11 @@ if jar_activity in activity_names:
         fail("El consolidado de jarras no coincide con el Excel vigente")
 elif jar_module or jar_submissions:
     fail("Una actividad de jarras inactiva sigue publicada")
-if data.get("quality", {}).get("quantityResponseIssues"):
-    fail("El archivo vigente contiene cantidades de jarras inválidas")
+quantity_issues = data.get("quality", {}).get("quantityResponseIssues", [])
+invalid_source_rows = set(data.get("quality", {}).get("invalidRows", []))
+if any(not isinstance(issue.get("row"), int) or issue["row"] not in invalid_source_rows
+       or not issue.get("issue") for issue in quantity_issues):
+    fail("Una cantidad inválida no quedó aislada y auditada por Python")
 approve("02A · Jarras: cumplimiento y piezas consolidadas por separado")
 
 with tempfile.TemporaryDirectory() as temp_dir:
@@ -564,18 +567,53 @@ if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam",
 if [cell.value for cell in static_excel["FHW"][4]] != ["CeCo", "Tienda", "DM", "Cubiertos FHW", "Tazas 3 Oz", "Piezas totales", "Evidencia"]:
     fail("La hoja FHW no incluye las dos respuestas numéricas")
 donation = next((module for module in data["quantityModules"] if module["activity"] == "Va X Cuenta"), None)
-if not donation or donation["totals"] != {"yesDonate": 13, "noDonate": 2, "total": 15, "percentage": 86.7}:
-    fail("Va X Cuenta no consolida 13 Sí y 2 No sobre 15 personas")
-if sorted((row["region"], row["totals"]["total"]) for row in donation["byRegion"]) != [("Centro Norte", 8), ("Centro Sur", 7)]:
-    fail("El consolidado regional de donación no coincide con Forms")
-donation_rows = list(static_excel["Va X Cuenta"].iter_rows(min_row=5, max_row=6, values_only=True))
+donation_records = [item for item in published if item["activity"] == "Va X Cuenta" and item.get("quantities")]
+donation_by_store = {item["ceco"]: item for item in donation_records}
+if not donation or len(donation_records) != len(donation_by_store) or donation["answeredStores"] != len(donation_records):
+    fail("Va X Cuenta debe publicar una sola respuesta válida por tienda")
+yes = sum(item["quantities"]["yesDonate"] for item in donation_records)
+no = sum(item["quantities"]["noDonate"] for item in donation_records)
+reported = yes + no
+expected_percentage = round(yes / reported * 100, 1) if reported else None
+if donation["totals"] != {"yesDonate": yes, "noDonate": no, "total": reported, "percentage": expected_percentage}:
+    fail("Va X Cuenta no reconcilia Sí + No = Plantilla con Forms")
+regions = {}
+for item in donation_records:
+    bucket = regions.setdefault(item["region"], {"yesDonate": 0, "noDonate": 0, "total": 0, "answeredStores": 0})
+    bucket["answeredStores"] += 1
+    for field in ("yesDonate", "noDonate", "total"):
+        bucket[field] += item["quantities"][field]
+for row in donation["byRegion"]:
+    expected = regions.pop(row["region"], None)
+    if expected is None or row["answeredStores"] != expected["answeredStores"]:
+        fail("El total de tiendas por región no coincide con Forms")
+    totals = {key: expected[key] for key in ("yesDonate", "noDonate", "total")}
+    totals["percentage"] = round(totals["yesDonate"] / totals["total"] * 100, 1) if totals["total"] else None
+    if row["totals"] != totals:
+        fail("El consolidado regional de Va X Cuenta no coincide con Forms")
+if regions:
+    fail("Falta una región con respuestas de Va X Cuenta")
+donation_sheet = static_excel["Va X Cuenta"]
+donation_rows = list(donation_sheet.iter_rows(min_row=5, max_row=4 + len(donation_records), values_only=True))
 if [cell.value for cell in static_excel["Va X Cuenta"][4]] != ["CeCo", "Tienda", "Región", "DM", "Sí dona", "No dona", "Plantilla reportada", "% Sí dona", "Evidencia"]:
     fail("Va X Cuenta no publica # y % por tienda")
-if sorted((row[0], row[4], row[5], row[6], round(row[7], 3)) for row in donation_rows) != [
-    ("38226", 5, 2, 7, 0.714), ("38925", 8, 0, 8, 1.0),
-]:
-    fail("Los porcentajes por tienda no coinciden con las cantidades de Forms")
-if static_excel["Va X Cuenta"]["H7"].value != '=IF(G7=0,"",E7/G7)' or static_excel["Va X Cuenta"]["H7"].number_format != "0.0%":
+if len(donation_rows) != len(donation_records) or donation_sheet.max_row != 5 + len(donation_records):
+    fail("El Excel de Va X Cuenta no contiene exactamente las tiendas vigentes")
+for row in donation_rows:
+    ceco = row[0]
+    item = donation_by_store.pop(ceco, None)
+    if not item or (row[1], row[2], row[3]) != (item["store"], item["region"], item["dm"]):
+        fail("Tienda, región o DM de Va X Cuenta no coincide con Directorio")
+    quantities = item["quantities"]
+    if (row[4], row[5], row[6], row[7]) != (
+        quantities["yesDonate"], quantities["noDonate"], quantities["total"],
+        None if quantities["percentage"] is None else quantities["percentage"] / 100,
+    ):
+        fail("Las cantidades y el porcentaje por tienda no coinciden con Forms")
+if donation_by_store:
+    fail("Faltan tiendas de Va X Cuenta en el Excel")
+donation_total_row = 5 + len(donation_records)
+if donation_sheet[f"H{donation_total_row}"].value != f'=IF(G{donation_total_row}=0,"",E{donation_total_row}/G{donation_total_row})' or donation_sheet[f"H{donation_total_row}"].number_format != "0.0%":
     fail("El consolidado Excel Va X Cuenta carece de porcentaje recalculable")
 jar_sheet = static_excel["Jarras"]
 total_row = 5 + len(expected_jars)

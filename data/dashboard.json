@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "2e7e4cefb3eccad2",
+  "buildVersion": "451740301b5a14ae",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T06:15:11+00:00",
-  "lastUpdated": "2026-09-27T16:58:09",
-  "lastUpdatedDisplay": "27/09/2026 16:58",
+  "generatedAt": "2026-09-28T15:56:02+09:00",
+  "lastUpdated": "2026-09-28T00:32:58",
+  "lastUpdatedDisplay": "28/09/2026 00:32",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "27/09/26 · 16:58 h",
+    "cutOffDisplay": "28/09/26 · 00:32 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 191,
+        "completed": 201,
         "expected": 709,
-        "pending": 518,
-        "compliance": 26.9,
+        "pending": 508,
+        "compliance": 28.3,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "abc8bee6caee6becaea492dda78ff0cf5f8bf22792b5ef0045f1fe44e333572c",
+    "responsesSha256": "af097b06416f2d85437e5ba4fb076988f4f98f6e7f8d936a5605f2c5598dd165",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 357,
     "activities": 10,
     "expectedCompletions": 3559,
-    "completedCompletions": 356,
-    "compliance": 10.0,
-    "validResponses": 356,
+    "completedCompletions": 366,
+    "compliance": 10.3,
+    "validResponses": 366,
     "storesComplete": 0,
-    "pendingCompletions": 3203,
+    "pendingCompletions": 3193,
     "notApplicableCompletions": 11
   },
   "quality": {
-    "responsesRead": 491,
+    "responsesRead": 501,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 195,
-      "newFormsRowsIncluded": 107,
+      "newFormsRowsRead": 205,
+      "newFormsRowsIncluded": 117,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 88,
@@ -446,7 +446,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 195
+        "CeCo": 205
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -731,11 +731,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 2,
+      "completedStores": 12,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 355,
-      "compliance": 0.6,
+      "pendingStores": 345,
+      "compliance": 3.4,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -775,12 +775,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 52,
+      "completed": 62,
       "expected": 97,
       "notApplicable": 3,
-      "pending": 45,
+      "pending": 35,
       "pendingStores": 10,
-      "compliance": 53.6,
+      "compliance": 63.9,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -4875,39 +4875,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38401",
-      "store": "Coacalco",
-      "dm": "Enrique Cesar Flores",
-      "completed": 4,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 40.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38894",
-      "store": "Galerias Perinorte",
-      "dm": "Enrique Cesar Flores",
-      "completed": 4,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 40.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38368",
-      "store": "Luna Park",
-      "dm": "Enrique Cesar Flores",
-      "completed": 4,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 40.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38230",
       "store": "ITEMS Edo de Mexico",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4974,8 +4941,30 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38333",
-      "store": "Izcalli Mega",
+      "ceco": "38401",
+      "store": "Coacalco",
+      "dm": "Enrique Cesar Flores",
+      "completed": 5,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 5,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "completed": 5,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 5,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38368",
+      "store": "Luna Park",
       "dm": "Enrique Cesar Flores",
       "completed": 5,
       "expected": 10,
@@ -5029,39 +5018,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38604",
-      "store": "Cosmopol",
-      "dm": "Enrique Cesar Flores",
-      "completed": 5,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 4,
-      "compliance": 55.6,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "43193",
-      "store": "Cosmopol N1",
-      "dm": "Enrique Cesar Flores",
-      "completed": 5,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 4,
-      "compliance": 55.6,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38456",
-      "store": "Plaza las Flores",
-      "dm": "Enrique Cesar Flores",
-      "completed": 5,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 4,
-      "compliance": 55.6,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38186",
       "store": "Arboledas",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -5106,8 +5062,8 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38862",
-      "store": "San Miguel Izcalli",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
       "dm": "Enrique Cesar Flores",
       "completed": 6,
       "expected": 10,
@@ -5172,19 +5128,41 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38515",
-      "store": "Patio Ecatepec",
+      "ceco": "38604",
+      "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
-      "completed": 7,
-      "expected": 10,
-      "notApplicable": 0,
+      "completed": 6,
+      "expected": 9,
+      "notApplicable": 1,
       "pending": 3,
-      "compliance": 70.0,
+      "compliance": 66.7,
       "status": "Seguimiento"
     },
     {
-      "ceco": "38339",
-      "store": "San Marcos",
+      "ceco": "43193",
+      "store": "Cosmopol N1",
+      "dm": "Enrique Cesar Flores",
+      "completed": 6,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 3,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "completed": 6,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 3,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
       "dm": "Enrique Cesar Flores",
       "completed": 7,
       "expected": 10,
@@ -5208,6 +5186,28 @@
       "ceco": "43070",
       "store": "Rojo Gomez DT",
       "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 8,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38515",
+      "store": "Patio Ecatepec",
+      "dm": "Enrique Cesar Flores",
+      "completed": 8,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38339",
+      "store": "San Marcos",
+      "dm": "Enrique Cesar Flores",
       "completed": 8,
       "expected": 10,
       "notApplicable": 0,
@@ -8294,11 +8294,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 40.0,
-      "lastUpdate": "2026-09-19T18:46:10",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-28T00:30:07",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8308,7 +8308,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8330,11 +8330,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 55.6,
-      "lastUpdate": "2026-09-09T18:09:32",
+      "compliance": 66.7,
+      "lastUpdate": "2026-09-28T00:31:40",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8344,7 +8344,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8366,11 +8366,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 55.6,
-      "lastUpdate": "2026-09-09T18:24:51",
+      "compliance": 66.7,
+      "lastUpdate": "2026-09-28T00:32:58",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8380,7 +8380,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8402,11 +8402,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 40.0,
-      "lastUpdate": "2026-09-14T18:43:31",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-28T00:32:34",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -8416,7 +8416,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8438,11 +8438,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-19T14:24:20",
+      "compliance": 60.0,
+      "lastUpdate": "2026-09-28T00:27:50",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8452,7 +8452,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8474,11 +8474,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 40.0,
-      "lastUpdate": "2026-09-20T13:46:45",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-28T00:29:26",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8488,7 +8488,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8510,11 +8510,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 70.0,
-      "lastUpdate": "2026-09-19T16:53:26",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-28T00:31:08",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8524,7 +8524,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": true,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8546,11 +8546,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 55.6,
-      "lastUpdate": "2026-09-14T17:09:15",
+      "compliance": 66.7,
+      "lastUpdate": "2026-09-28T00:30:29",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8560,7 +8560,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8582,11 +8582,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 70.0,
-      "lastUpdate": "2026-09-19T19:57:58",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-28T00:28:23",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8596,7 +8596,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -8618,11 +8618,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 60.0,
-      "lastUpdate": "2026-09-15T08:49:10",
+      "compliance": 70.0,
+      "lastUpdate": "2026-09-28T00:32:03",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8632,7 +8632,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -18331,22 +18331,22 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 2,
+      "answeredStores": 12,
       "totals": {
-        "yesDonate": 13,
-        "noDonate": 2,
-        "total": 15,
-        "percentage": 86.7
+        "yesDonate": 152,
+        "noDonate": 4,
+        "total": 156,
+        "percentage": 97.4
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 1,
+          "answeredStores": 11,
           "totals": {
-            "yesDonate": 8,
-            "noDonate": 0,
-            "total": 8,
-            "percentage": 100.0
+            "yesDonate": 147,
+            "noDonate": 2,
+            "total": 149,
+            "percentage": 98.7
           }
         },
         {
@@ -18361,6 +18361,17 @@
         }
       ],
       "byPortfolio": [
+        {
+          "region": "Centro Norte",
+          "dm": "Enrique Cesar Flores",
+          "answeredStores": 10,
+          "totals": {
+            "yesDonate": 139,
+            "noDonate": 2,
+            "total": 141,
+            "percentage": 98.6
+          }
+        },
         {
           "region": "Centro Norte",
           "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -18388,6 +18399,276 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-0a9589133e99a70e",
+      "timestamp": "2026-09-28T00:32:58",
+      "timestampDisplay": "28/09/2026 00:32",
+      "activity": "Va X Cuenta",
+      "ceco": "43193",
+      "store": "Cosmopol N1",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_43193",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_43193",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 9,
+        "noDonate": 0,
+        "total": 9,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-2ecb88c697f5e1bb",
+      "timestamp": "2026-09-28T00:32:34",
+      "timestampDisplay": "28/09/2026 00:32",
+      "activity": "Va X Cuenta",
+      "ceco": "38894",
+      "store": "Galerias Perinorte",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38894",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38894",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 15,
+        "noDonate": 0,
+        "total": 15,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-dfa622c12538b22f",
+      "timestamp": "2026-09-28T00:32:03",
+      "timestampDisplay": "28/09/2026 00:32",
+      "activity": "Va X Cuenta",
+      "ceco": "38862",
+      "store": "San Miguel Izcalli",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38862",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38862",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 17,
+        "noDonate": 0,
+        "total": 17,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-02cf2465a592b5cf",
+      "timestamp": "2026-09-28T00:31:40",
+      "timestampDisplay": "28/09/2026 00:31",
+      "activity": "Va X Cuenta",
+      "ceco": "38604",
+      "store": "Cosmopol",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38604",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38604",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 16,
+        "noDonate": 0,
+        "total": 16,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-1a5508cbbaecadaa",
+      "timestamp": "2026-09-28T00:31:08",
+      "timestampDisplay": "28/09/2026 00:31",
+      "activity": "Va X Cuenta",
+      "ceco": "38515",
+      "store": "Patio Ecatepec",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38515",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38515",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 15,
+        "noDonate": 0,
+        "total": 15,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-6837b60c1a48ff15",
+      "timestamp": "2026-09-28T00:30:29",
+      "timestampDisplay": "28/09/2026 00:30",
+      "activity": "Va X Cuenta",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38456",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38456",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 12,
+        "noDonate": 0,
+        "total": 12,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-86d18461c1641691",
+      "timestamp": "2026-09-28T00:30:07",
+      "timestampDisplay": "28/09/2026 00:30",
+      "activity": "Va X Cuenta",
+      "ceco": "38401",
+      "store": "Coacalco",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38401",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38401",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 8,
+        "noDonate": 0,
+        "total": 8,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-3137cbc9b66c962f",
+      "timestamp": "2026-09-28T00:29:26",
+      "timestampDisplay": "28/09/2026 00:29",
+      "activity": "Va X Cuenta",
+      "ceco": "38368",
+      "store": "Luna Park",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38368",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38368",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 14,
+        "noDonate": 2,
+        "total": 16,
+        "percentage": 87.5
+      }
+    },
+    {
+      "id": "respuesta-f08d245fae8f669b",
+      "timestamp": "2026-09-28T00:28:23",
+      "timestampDisplay": "28/09/2026 00:28",
+      "activity": "Va X Cuenta",
+      "ceco": "38339",
+      "store": "San Marcos",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38339",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38339",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 15,
+        "noDonate": 0,
+        "total": 15,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-f29b5eac17a14f01",
+      "timestamp": "2026-09-28T00:27:50",
+      "timestampDisplay": "28/09/2026 00:27",
+      "activity": "Va X Cuenta",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38333",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38333",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 18,
+        "noDonate": 0,
+        "total": 18,
+        "percentage": 100.0
+      }
+    },
     {
       "id": "respuesta-f1261a04cf8e4201",
       "timestamp": "2026-09-27T16:58:09",

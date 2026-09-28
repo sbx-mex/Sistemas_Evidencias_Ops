@@ -16,9 +16,15 @@ assert(filteredQuantityResponses(module).every(item => item.quantities.blender =
 state.filters.quantity = 'blender|1-5';
 assert(filteredQuantityResponses(module).every(item => item.quantities.blender >= 1 && item.quantities.blender <= 5));
 state.filters.activity = 'FHW';
-state.filters.quantity = 'cutlery|pending';
+state.filters.quantity = 'pending';
 const fhwAnswered = new Set(state.data.submissions.filter(item => item.valid && item.activity === 'FHW' && item.quantities).map(item => item.ceco));
 assert.equal(filteredStores().length, state.data.stores.length - fhwAnswered.size);
+const missingFhw = state.data.stores.find(item => !fhwAnswered.has(item.ceco));
+const originalApplicability = missingFhw.applicableActivities?.FHW;
+missingFhw.applicableActivities.FHW = false;
+assert.equal(filteredStores().length, state.data.stores.length - fhwAnswered.size - 1);
+if (originalApplicability === undefined) delete missingFhw.applicableActivities.FHW;
+else missingFhw.applicableActivities.FHW = originalApplicability;
 state.filters.quantity = 'cutlery|zero';
 const fhwZero = state.data.submissions.filter(item => item.valid && item.activity === 'FHW' && item.quantities?.cutlery === 0).length;
 assert.equal(filteredStores().length, fhwZero);
@@ -29,25 +35,48 @@ assert.equal(state.data.submissions.filter(item => item.activity === state.filte
 state.filters.activity = 'Va X Cuenta';
 const donation = activeQuantityModule();
 assert.equal(donation.totalLabel, 'Plantilla reportada');
-assert.deepEqual([donation.totals.yesDonate, donation.totals.noDonate, donation.totals.total, donation.totals.percentage], [13, 2, 15, 86.7]);
+const records = state.data.submissions.filter(item => item.valid && item.activity === donation.activity && item.quantities);
+const yes = records.reduce((sum,item) => sum + item.quantities.yesDonate, 0);
+const no = records.reduce((sum,item) => sum + item.quantities.noDonate, 0);
+assert.deepEqual([donation.answeredStores, donation.totals.yesDonate, donation.totals.noDonate, donation.totals.total, donation.totals.percentage],
+  [records.length, yes, no, yes + no, yes + no ? Math.round(yes / (yes + no) * 1000) / 10 : null]);
+assert.equal(quantityChoices(donation).filter(item => item.value === 'pending').length, 1);
+assert(quantityChoices(donation).some(item => item.label === 'Sí · 21+'));
 const regional = quantityRollup(filteredQuantityResponses(donation), donation.metrics, ['region'], donation.percentageMetric);
-assert.deepEqual(regional.map(item => [item.labels[0], item.totals.total, item.totals.percentage]), [['Centro Norte',8,100],['Centro Sur',7,71.4]]);
-state.filters.region = 'Centro Sur';
+assert.equal(regional.reduce((sum,item) => sum + item.totals.total, 0), yes + no);
+assert.equal(regional.reduce((sum,item) => sum + item.stores, 0), records.length);
+state.filters.region = records[0].region;
 const portfolio = quantityRollup(filteredQuantityResponses(donation), donation.metrics, ['region','dm'], donation.percentageMetric);
-assert.equal(portfolio.length, 1);
-assert.deepEqual([portfolio[0].totals.yesDonate, portfolio[0].totals.noDonate, portfolio[0].totals.total, portfolio[0].totals.percentage], [5,2,7,71.4]);
+assert.equal(portfolio.reduce((sum,item) => sum + item.totals.total, 0),
+  records.filter(item => item.region === state.filters.region).reduce((sum,item) => sum + item.quantities.total, 0));
 state.filters.region = '';
 state.filters.quantity = 'noDonate|zero';
-assert.equal(filteredStores().map(item => item.ceco).join(','), '38925');
+assert.deepEqual(new Set(filteredStores().map(item => item.ceco)),
+  new Set(records.filter(item => item.quantities.noDonate === 0).map(item => item.ceco)));
 state.filters.quantity = '';
 const spec = buildExcelSpec();
 const donationSheet = spec.sheets.find(item => item.name === 'Va X Cuenta');
 const summarySheet = spec.sheets.find(item => item.name === 'Participación');
 assert.equal(donationSheet.rows[3].join(','), 'CeCo,Tienda,Región,DM,Sí dona,No dona,Plantilla reportada,% Sí dona,Evidencia');
-assert.equal(donationSheet.rows.length, 6);
-assert.equal(donationSheet.rows[4][7].value, 1);
-assert.equal(summarySheet.rows[3].join(','), 'Ámbito,Región,Portafolio DM,Tiendas,Sí dona,No dona,Plantilla reportada,% Sí dona');
-assert.equal(summarySheet.rows.length, 8);
+assert.equal(donationSheet.rows.length, 4 + records.length);
+assert.equal(summarySheet.rows[3].join(','), 'Región / DM,Tiendas,Sí,No,Plantilla,% Sí');
+assert.equal(summarySheet.rows.length, 4 + regional.length + quantityRollup(records, donation.metrics, ['region','dm'], donation.percentageMetric).length);
+assert.equal(summarySheet.rows.slice(4).reduce((sum,row) => sum + row[4], 0), 2 * (yes + no));
+const elements = new Map();
+const getElement = selector => {
+  if (!elements.has(selector)) elements.set(selector, {
+    hidden:false, textContent:'', innerHTML:'', classList:{toggle(){}}, style:{setProperty(){}},
+    closest(){return {querySelector:()=>getElement('table-head')}}
+  });
+  return elements.get(selector);
+};
+const document = {querySelector:getElement};
+renderQuantityModule();
+assert.deepEqual(getElement('#quantity-breakdowns').innerHTML.split('<th scope="col">').slice(1,6).map(piece => piece.split('</th>')[0]),
+  ['Región','Tiendas','Sí','No','Plantilla']);
+assert(!getElement('#quantity-breakdowns').innerHTML.includes('<th>Ámbito</th>'));
+assert.equal(getElement('#quantity-bars').hidden,true);
+assert.equal(getElement('#quantity-totals').innerHTML.match(/class="quantity-total/g).length,4);
 `;
 vm.runInNewContext(source + checks, {data, assert, console}, {filename:'app.js'});
 console.log('Filtro numérico validado · cero · rangos · pendiente · cambio de actividad');
