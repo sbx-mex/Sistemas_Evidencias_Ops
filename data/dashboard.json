@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "734ae265c32a8ec7",
+  "buildVersion": "edf31d9a958659ce",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T05:33:07+00:00",
+  "generatedAt": "2026-09-28T14:43:31+09:00",
   "lastUpdated": "2026-09-27T16:58:09",
   "lastUpdatedDisplay": "27/09/2026 16:58",
   "report": {
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 63,
+        "completed": 66,
         "expected": 1000,
-        "pending": 937,
-        "compliance": 6.3,
+        "pending": 934,
+        "compliance": 6.6,
         "status": "Atención"
       },
       {
@@ -90,10 +90,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 72,
-        "completed": 189,
+        "completed": 191,
         "expected": 709,
-        "pending": 520,
-        "compliance": 26.7,
+        "pending": 518,
+        "compliance": 26.9,
         "status": "Atención"
       }
     ]
@@ -121,7 +121,7 @@
       "excludedStatusCounts": {}
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "a06769931a70538bc8b5ec0aad93e5849451ae39fc62df9a7c685db885387969",
+    "cmsSha256": "14bea7899ea3f3caaa9ec0546e8d8a826805fb3b84df4ebeffca43d36a6b9cf7",
     "settingsSha256": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524"
   },
   "summary": {
@@ -130,11 +130,11 @@
     "stores": 357,
     "activities": 10,
     "expectedCompletions": 3559,
-    "completedCompletions": 351,
-    "compliance": 9.9,
-    "validResponses": 351,
+    "completedCompletions": 356,
+    "compliance": 10.0,
+    "validResponses": 356,
     "storesComplete": 0,
-    "pendingCompletions": 3208,
+    "pendingCompletions": 3203,
     "notApplicableCompletions": 11
   },
   "quality": {
@@ -229,13 +229,7 @@
         "surveyIssues": {}
       }
     },
-    "invalidRows": [
-      31,
-      123,
-      171,
-      176,
-      180
-    ],
+    "invalidRows": [],
     "unknownCeCos": [],
     "hiddenActivityRows": [
       2,
@@ -428,38 +422,7 @@
         "hadSchemaConflict": true
       }
     ],
-    "quarantinedResponses": [
-      {
-        "row": 31,
-        "reasons": [
-          "ambiguous-matching-evidence"
-        ]
-      },
-      {
-        "row": 123,
-        "reasons": [
-          "ambiguous-matching-evidence"
-        ]
-      },
-      {
-        "row": 171,
-        "reasons": [
-          "ambiguous-matching-evidence"
-        ]
-      },
-      {
-        "row": 176,
-        "reasons": [
-          "ambiguous-matching-evidence"
-        ]
-      },
-      {
-        "row": 180,
-        "reasons": [
-          "ambiguous-matching-evidence"
-        ]
-      }
-    ],
+    "quarantinedResponses": [],
     "unresolvedRowConflicts": [],
     "unresolvedEvidenceIssues": {},
     "unresolvedApplicabilityIssues": {},
@@ -547,21 +510,13 @@
           "field": "ceco"
         }
       ],
-      "evidenceIssues": {
-        "ambiguous-matching-evidence": [
-          31,
-          123,
-          171,
-          176,
-          180
-        ]
-      },
+      "evidenceIssues": {},
       "applicabilityIssues": {},
       "surveyIssues": {}
     },
     "notApplicableResponses": 11,
     "notApplicablePairs": 11,
-    "evidenceLinksPublished": 349,
+    "evidenceLinksPublished": 354,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -752,11 +707,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 0,
+      "completedStores": 5,
       "applicableStores": 357,
       "notApplicableStores": 0,
-      "pendingStores": 357,
-      "compliance": 0.0,
+      "pendingStores": 352,
+      "compliance": 1.4,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -818,12 +773,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 51,
+      "completed": 52,
       "expected": 97,
       "notApplicable": 3,
-      "pending": 46,
+      "pending": 45,
       "pendingStores": 10,
-      "compliance": 52.6,
+      "compliance": 53.6,
       "status": "Seguimiento",
       "rank": 1
     },
@@ -837,12 +792,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 66,
+      "completed": 67,
       "expected": 126,
       "notApplicable": 4,
-      "pending": 60,
+      "pending": 59,
       "pendingStores": 13,
-      "compliance": 52.4,
+      "compliance": 53.2,
       "status": "Seguimiento",
       "rank": 2
     },
@@ -875,12 +830,12 @@
         "Centro Sur"
       ],
       "stores": 12,
-      "completed": 22,
+      "completed": 24,
       "expected": 120,
       "notApplicable": 0,
-      "pending": 98,
+      "pending": 96,
       "pendingStores": 12,
-      "compliance": 18.3,
+      "compliance": 20.0,
       "status": "Atención",
       "rank": 4
     },
@@ -1122,12 +1077,12 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 9,
+      "completed": 10,
       "expected": 140,
       "notApplicable": 0,
-      "pending": 131,
+      "pending": 130,
       "pendingStores": 14,
-      "compliance": 6.4,
+      "compliance": 7.1,
       "status": "Atención",
       "rank": 17
     },
@@ -3543,17 +3498,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38116",
-      "store": "Santa Teresa",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38957",
       "store": "Avándaro",
       "dm": "Daniel Flores Maldonado",
@@ -4797,6 +4741,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38116",
+      "store": "Santa Teresa",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "43164",
       "store": "Blvd Ojo de Agua DT",
       "dm": "Monica Selene Morales Ibarra",
@@ -5149,17 +5104,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38515",
-      "store": "Patio Ecatepec",
-      "dm": "Enrique Cesar Flores",
-      "completed": 6,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 60.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38862",
       "store": "San Miguel Izcalli",
       "dm": "Enrique Cesar Flores",
@@ -5184,17 +5128,6 @@
     {
       "ceco": "38695",
       "store": "Cetram 4 Caminos",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 6,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 60.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38458",
-      "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 6,
       "expected": 10,
@@ -5237,9 +5170,9 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "43070",
-      "store": "Rojo Gomez DT",
-      "dm": "Ariana Janet Gutierrez Martinez",
+      "ceco": "38515",
+      "store": "Patio Ecatepec",
+      "dm": "Enrique Cesar Flores",
       "completed": 7,
       "expected": 10,
       "notApplicable": 0,
@@ -5259,14 +5192,36 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38226",
-      "store": "Via kiosko 515",
+      "ceco": "38458",
+      "store": "El Rosario",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 7,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 70.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "43070",
+      "store": "Rojo Gomez DT",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 8,
       "expected": 10,
       "notApplicable": 0,
       "pending": 2,
       "compliance": 80.0,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 9,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 1,
+      "compliance": 90.0,
       "status": "En meta"
     }
   ],
@@ -7185,11 +7140,11 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 70.0,
-      "lastUpdate": "2026-09-21T12:12:35",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-21T12:22:09",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -7198,7 +7153,7 @@
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Organización Refrigeradores Back": false,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
       },
@@ -7293,10 +7248,10 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 8,
+      "completed": 9,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 80.0,
+      "compliance": 90.0,
       "lastUpdate": "2026-09-27T14:38:38",
       "activities": {
         "Max & Min": true,
@@ -7306,7 +7261,7 @@
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Organización Refrigeradores Back": false,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": true,
         "FHW": false
       },
@@ -7833,11 +7788,11 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-22T21:10:54",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-23T19:23:51",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -7846,7 +7801,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
-        "Organización Refrigeradores Back": false,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
       },
@@ -8553,11 +8508,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 60.0,
-      "lastUpdate": "2026-09-19T16:34:17",
+      "compliance": 70.0,
+      "lastUpdate": "2026-09-19T16:53:26",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8566,7 +8521,7 @@
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Organización Refrigeradores Back": false,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
       },
@@ -17265,11 +17220,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 60.0,
-      "lastUpdate": "2026-09-19T13:01:09",
+      "compliance": 70.0,
+      "lastUpdate": "2026-09-24T09:37:59",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -17278,7 +17233,7 @@
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
-        "Organización Refrigeradores Back": false,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
       },
@@ -18492,6 +18447,78 @@
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/IMG_7442_Johan%20Aldair%20Sanchez.jpeg"
     },
     {
+      "id": "respuesta-3b397570ea9d926f",
+      "timestamp": "2026-09-24T09:37:59",
+      "timestampDisplay": "24/09/2026 09:37",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "38458",
+      "store": "El Rosario",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38458",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38458",
+      "evidenceFileName": "CF4C21AA-92CD-423F-ACF7-DF771110D205_Brenda Ashanti Menez.jpeg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/CF4C21AA-92CD-423F-ACF7-DF771110D205_Brenda%20Ashanti%20Menez.jpeg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/CF4C21AA-92CD-423F-ACF7-DF771110D205_Brenda%20Ashanti%20Menez.jpeg",
+          "fileName": "CF4C21AA-92CD-423F-ACF7-DF771110D205_Brenda Ashanti Menez.jpeg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/IMG_7924_Brenda%20Ashanti%20Menez.jpeg",
+          "fileName": "IMG_7924_Brenda Ashanti Menez.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-9ade1613bd8c5b54",
+      "timestamp": "2026-09-24T05:04:47",
+      "timestampDisplay": "24/09/2026 05:04",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "38226",
+      "store": "Via kiosko 515",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38226",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38226",
+      "evidenceFileName": "IMG-20260922-WA0124_Starbucks Via 515 Ki.jpg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG-20260922-WA0124_Starbucks%20Via%20515%20Ki.jpg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG-20260922-WA0124_Starbucks%20Via%20515%20Ki.jpg",
+          "fileName": "IMG-20260922-WA0124_Starbucks Via 515 Ki.jpg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/IMG-20260922-WA0124_Starbucks%20Via%20515%20Ki.jpg",
+          "fileName": "IMG-20260922-WA0124_Starbucks Via 515 Ki.jpg"
+        }
+      ]
+    },
+    {
       "id": "respuesta-8f0d96f7b77aa32a",
       "timestamp": "2026-09-24T05:01:43",
       "timestampDisplay": "24/09/2026 05:01",
@@ -18534,6 +18561,42 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/IMG_2996_Luis%20Eduardo%20Saucedo.png"
+    },
+    {
+      "id": "respuesta-495a8a5c1abbc022",
+      "timestamp": "2026-09-23T19:23:51",
+      "timestampDisplay": "23/09/2026 19:23",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "38116",
+      "store": "Santa Teresa",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38116",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38116",
+      "evidenceFileName": "IMG_6638_Starbucks Santa Tere.jpeg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG_6638_Starbucks%20Santa%20Tere.jpeg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG_6638_Starbucks%20Santa%20Tere.jpeg",
+          "fileName": "IMG_6638_Starbucks Santa Tere.jpeg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/IMG_6639_Starbucks%20Santa%20Tere.jpeg",
+          "fileName": "IMG_6639_Starbucks Santa Tere.jpeg"
+        }
+      ]
     },
     {
       "id": "respuesta-3a48dcd9a37f96e0",
@@ -19132,6 +19195,42 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/image_Starbucks%20Plaza%20Ermi.jpg"
+    },
+    {
+      "id": "respuesta-59f2836e392331f8",
+      "timestamp": "2026-09-21T12:22:09",
+      "timestampDisplay": "21/09/2026 12:22",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "43070",
+      "store": "Rojo Gomez DT",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_43070",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_43070",
+      "evidenceFileName": "85a00fe0-7cf9-445c-a250-3d68aacc3729_Starbucks Rojo Gomez.jpeg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/85a00fe0-7cf9-445c-a250-3d68aacc3729_Starbucks%20Rojo%20Gomez.jpeg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/85a00fe0-7cf9-445c-a250-3d68aacc3729_Starbucks%20Rojo%20Gomez.jpeg",
+          "fileName": "85a00fe0-7cf9-445c-a250-3d68aacc3729_Starbucks Rojo Gomez.jpeg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/image_Starbucks%20Rojo%20Gomez.jpg",
+          "fileName": "image_Starbucks Rojo Gomez.jpg"
+        }
+      ]
     },
     {
       "id": "respuesta-16b910a7fc70319c",
@@ -19998,6 +20097,42 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/9C8C2B16-63E5-4D07-975E-962DE02956A7_Starbucks%20Viveros%20Sa.jpeg"
+    },
+    {
+      "id": "respuesta-0fcd5fe0fac554ea",
+      "timestamp": "2026-09-19T16:53:26",
+      "timestampDisplay": "19/09/2026 16:53",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "38515",
+      "store": "Patio Ecatepec",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38515",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38515",
+      "evidenceFileName": "17898578066011103601279025610229_Starbucks Patio Ecat.jpg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/17898578066011103601279025610229_Starbucks%20Patio%20Ecat.jpg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/17898578066011103601279025610229_Starbucks%20Patio%20Ecat.jpg",
+          "fileName": "17898578066011103601279025610229_Starbucks Patio Ecat.jpg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/17898583584755546269641779007481_Starbucks%20Patio%20Ecat.jpg",
+          "fileName": "17898583584755546269641779007481_Starbucks Patio Ecat.jpg"
+        }
+      ]
     },
     {
       "id": "respuesta-445441d69c06f5b7",

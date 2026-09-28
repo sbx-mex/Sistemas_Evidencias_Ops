@@ -433,6 +433,16 @@ if published_excel_links != expected_excel_links:
     unexpected = len(set(published_excel_links).difference(expected_excel_links))
     changed = sum(published_excel_links.get(pair) != url for pair, url in expected_excel_links.items() if pair in published_excel_links)
     fail(f"La última evidencia por tienda y actividad no coincide: faltan {missing}, sobran {unexpected}, cambiaron {changed}")
+published_by_pair = {(row["ceco"], row["activity"]): row for row in published}
+for pair, source in latest_excel_by_pair.items():
+    if not source["valid"] or len(source.get("evidenceFiles", [])) < 2:
+        continue
+    actual = published_by_pair.get(pair, {}).get("evidenceFiles", [])
+    expected = [(file["label"], file["header"], file["value"]) for file in source["evidenceFiles"]]
+    if [(file.get("label"), file.get("sourceHeader"), file.get("url")) for file in actual] != expected:
+        fail("Los vínculos Antes/Después no coinciden exactamente con Forms")
+    if any(not safe_evidence_url(file["url"], allowed_hosts) for file in actual):
+        fail("Un vínculo múltiple no superó la validación de seguridad")
 quality = data.get("quality", {})
 if (
     not forms_schema["evidenceHeaders"]
@@ -522,8 +532,21 @@ if data != fresh:
 approve("03 · Python sincronizado con la última actualización")
 
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
-if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Jarras", "FHW"]:
+if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Evidencias", "Jarras", "FHW"]:
     fail("El Excel Python no contiene las vistas ejecutivas y las cantidades FHW")
+refrigerator_excel = [row for row in static_excel["Evidencias"].iter_rows(min_row=5, values_only=True)
+                      if row[2] == "Organización Refrigeradores Back"]
+expected_refrigerator_files = [
+    (item["ceco"], file["label"])
+    for item in published if item["activity"] == "Organización Refrigeradores Back"
+    for file in item["evidenceFiles"]
+]
+if len(expected_refrigerator_files) < 10 or sorted((row[0], row[3]) for row in refrigerator_excel) != sorted(expected_refrigerator_files):
+    fail("El Excel no conserva ambas evidencias de Refrigeradores Back")
+if any(row[5] != next(file["url"] for item in published if item["ceco"] == row[0]
+                      and item["activity"] == row[2] for file in item["evidenceFiles"]
+                      if file["label"] == row[3]) for row in refrigerator_excel):
+    fail("El Excel cambia un vínculo Antes/Después")
 if any(not str(static_excel[sheet]["A1"].fill.fgColor.rgb).endswith("002E24") for sheet in static_excel.sheetnames):
     fail("Los títulos del Excel Python no conservan el verde oscuro")
 expected_summary_formula = "=IFERROR(A6/(A6+C6),0)"
@@ -684,7 +707,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v35", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v36", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:

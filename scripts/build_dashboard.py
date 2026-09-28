@@ -168,7 +168,7 @@ ROW_ERROR_POLICIES = {"aislar fila": "Aislar fila", "bloquear archivo": "Bloquea
 BLOCKING_EVIDENCE_ISSUES = {
     "ambiguous-evidence", "ambiguous-matching-evidence",
     "ambiguous-evidence-header", "mismatched-evidence-column",
-    "multiple-evidence-columns",
+    "multiple-evidence-columns", "incomplete-multi-evidence",
 }
 
 
@@ -909,7 +909,7 @@ def resolve_evidence_value(
     row: tuple[Any, ...],
     columns: list[dict[str, Any]],
     activity: str,
-) -> tuple[str, str, str | None]:
+) -> tuple[str, str, str | None, list[dict[str, str]]]:
     """Selecciona la evidencia por actividad y reporta ambigüedades sin mezclar archivos."""
     populated = []
     for column in columns:
@@ -918,31 +918,47 @@ def resolve_evidence_value(
         if value:
             populated.append({**column, "value": value})
     if not populated:
-        return "", "", None
+        return "", "", None, []
 
     if any(item.get("matchType") == "ambiguous" for item in populated):
-        return "", "", "ambiguous-evidence-header"
+        return "", "", "ambiguous-evidence-header", []
 
     activity_key = compact_key(activity)
     exact = [item for item in populated if item["activityKey"] == activity_key]
+    configured = [item for item in columns if item["activityKey"] == activity_key]
+    def stage(item: dict[str, Any]) -> str:
+        normalized = compact_key(item["header"])
+        return "Antes" if normalized.endswith("antes") else ("Después" if normalized.endswith("despues") else "")
+
+    # Un par Antes/Después es una sola respuesta con dos archivos obligatorios.
+    # Sólo se admite cuando ambos encabezados identifican la misma actividad CMS.
+    stages = {stage(item) for item in configured}
+    if stages == {"Antes", "Después"} and len(configured) == 2:
+        if len(exact) != 2:
+            return "", "", "incomplete-multi-evidence", []
+        if len(populated) != 2:
+            return "", "", "multiple-evidence-columns", []
+        ordered = sorted(exact, key=lambda item: 0 if stage(item) == "Antes" else 1)
+        files = [{"label": stage(item), "header": item["header"], "value": item["value"]} for item in ordered]
+        return files[0]["value"], files[0]["header"], None, files
     exact_values = list(dict.fromkeys(item["value"] for item in exact))
     all_values = list(dict.fromkeys(item["value"] for item in populated))
     if len(exact_values) == 1:
         issue = "multiple-evidence-columns" if len(all_values) > 1 else None
         source = next(item["header"] for item in exact if item["value"] == exact_values[0])
-        return exact_values[0], source, issue
+        return exact_values[0], source, issue, [{"label": "Evidencia", "header": source, "value": exact_values[0]}]
     if len(exact_values) > 1:
-        return "", "", "ambiguous-matching-evidence"
+        return "", "", "ambiguous-matching-evidence", []
 
     generic = [item for item in populated if item["activityKey"] is None]
     generic_values = list(dict.fromkeys(item["value"] for item in generic))
     if len(generic_values) == 1 and len(all_values) == 1:
         source = next(item["header"] for item in generic if item["value"] == generic_values[0])
-        return generic_values[0], source, "generic-evidence-fallback"
+        return generic_values[0], source, "generic-evidence-fallback", [{"label": "Evidencia", "header": source, "value": generic_values[0]}]
     if len(all_values) == 1:
         # Una evidencia en la columna de otra actividad no se reasigna por inferencia.
-        return "", "", "mismatched-evidence-column"
-    return "", "", "ambiguous-evidence"
+        return "", "", "mismatched-evidence-column", []
+    return "", "", "ambiguous-evidence", []
 
 
 def load_settings(path: Path, cms_settings: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -1142,6 +1158,62 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     if not activities:
         raise ValueError("El CMS no contiene actividades activas para publicar")
     active_activity_catalog(activities)
+
+    # Una hoja opcional permite incorporar futuras preguntas numéricas sin
+    # cambiar Python. La actividad y su visibilidad siguen viniendo del CMS.
+    numeric_config: dict[str, dict[str, Any]] = {}
+    managed_numeric_keys: set[str] = set()
+    if "Preguntas Numericas" in workbook.sheetnames:
+        numeric_ws = workbook["Preguntas Numericas"]
+        numeric_header, numeric_cols = find_header(numeric_ws, {
+            "orden", "actividad", "clave", "campo", "encabezado forms",
+            "etiqueta", "minimo", "maximo", "activo", "titulo modulo",
+        })
+        active_names = {compact_key(item["name"]): item["name"] for item in activities}
+        seen_fields: set[str] = set()
+        seen_headers: set[str] = set()
+        for row_number, row in enumerate(numeric_ws.iter_rows(min_row=numeric_header + 1, values_only=True), numeric_header + 1):
+            activity_name = clean_text(row[numeric_cols["actividad"]]) if len(row) > numeric_cols["actividad"] else ""
+            if not activity_name:
+                continue
+            activity_key = compact_key(activity_name)
+            managed_numeric_keys.add(activity_key)
+            if not is_yes(row[numeric_cols["activo"]]) or activity_key not in active_names:
+                continue
+            field = clean_text(row[numeric_cols["campo"]])
+            key = clean_text(row[numeric_cols["clave"]])
+            header = clean_text(row[numeric_cols["encabezado forms"]])
+            label = clean_text(row[numeric_cols["etiqueta"]])
+            if not re.fullmatch(r"[A-Za-z][A-Za-z0-9]*", field) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9]*", key) or not header or not label:
+                raise ValueError(f"Pregunta numérica CMS incompleta o inválida en fila {row_number}")
+            minimum, maximum, order = (
+                parse_quantity(row[numeric_cols[name]], 0, 1000000)
+                for name in ("minimo", "maximo", "orden")
+            )
+            if None in (minimum, maximum, order) or maximum < minimum:
+                raise ValueError(f"Rango numérico CMS inválido en fila {row_number}")
+            if field in seen_fields or key_text(header) in seen_headers:
+                raise ValueError(f"Pregunta numérica CMS duplicada en fila {row_number}")
+            seen_fields.add(field)
+            seen_headers.add(key_text(header))
+            config = numeric_config.setdefault(activity_key, {
+                "activity": active_names[activity_key],
+                "title": clean_text(row[numeric_cols["titulo modulo"]]) or active_names[activity_key],
+                "metrics": [], "minimum": minimum, "maximum": maximum,
+            })
+            config["minimum"] = min(config["minimum"], minimum)
+            config["maximum"] = max(config["maximum"], maximum)
+            config["metrics"].append({
+                "key": key, "field": field, "label": label, "aliases": (header,),
+                "minimum": minimum, "maximum": maximum, "order": order,
+            })
+        for config in numeric_config.values():
+            keys = [metric["key"] for metric in config["metrics"]]
+            if len(keys) != len(set(keys)):
+                raise ValueError(f"Claves de preguntas numéricas duplicadas: {config['activity']}")
+            config["metrics"] = tuple(sorted(config["metrics"], key=lambda item: (item["order"], item["key"])))
+    cms_settings["_quantityConfig"] = numeric_config
+    cms_settings["_quantityManaged"] = managed_numeric_keys
 
     manager_ws = workbook["Gerentes"]
     manager_header, manager_cols = find_header(manager_ws, {"dm", "nombre corto", "foto webp", "activo"})
@@ -1353,7 +1425,10 @@ def find_response_source(workbook, activity_names: list[str] | None = None) -> t
     return ws, header_row, headers
 
 
-def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def load_responses(
+    path: Path, activity_names: list[str] | None = None,
+    quantity_configs: dict[str, dict[str, Any]] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Lee exportaciones Forms antiguas, anchas o normalizadas por filas.
 
     Soporta una sola columna genérica de evidencia, múltiples columnas
@@ -1363,7 +1438,12 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
     workbook = load_workbook(path, read_only=True, data_only=True)
     ws, header_row, headers = find_response_source(workbook, activity_names)
     rows = ws.iter_rows(min_row=header_row + 1, values_only=True)
-    column_groups = {field: matching_columns(headers, aliases) for field, aliases in RESPONSE_FIELDS.items()}
+    numeric_fields = {
+        metric["field"]: tuple(metric.get("aliases", RESPONSE_FIELDS.get(metric["field"], ())))
+        for config in (quantity_configs or {}).values() for metric in config["metrics"]
+    }
+    contract = {**RESPONSE_FIELDS, **numeric_fields}
+    column_groups = {field: matching_columns(headers, aliases) for field, aliases in contract.items()}
     missing = [RESPONSE_FIELDS[field][0] for field in REQUIRED_RESPONSE_FIELDS if not column_groups[field]]
     if missing:
         raise ValueError("Faltan encabezados requeridos: " + ", ".join(missing))
@@ -1431,7 +1511,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         evidence_activity = canonical_cms_activity(
             values["activity"], response_activity_by_text, response_activity_by_compact
         ) or values["activity"]
-        evidence, evidence_source, evidence_issue = resolve_evidence_value(
+        evidence, evidence_source, evidence_issue, evidence_files = resolve_evidence_value(
             row, evidence_group, evidence_activity
         )
         if evidence_issue:
@@ -1458,7 +1538,8 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         # cuando así lo define el CMS.
         confirmed = bool(values["activity"])
         response_id = stable_response_id(
-            values["started"], values["finished"], values["ceco"], values["activity"], evidence
+            values["started"], values["finished"], values["ceco"], values["activity"],
+            *(item["value"] for item in evidence_files) if evidence_files else (evidence,)
         )
         responses.append({
             "row": row_number,
@@ -1475,6 +1556,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "coldFoamJars": values["coldFoamJars"],
             "fhwCutlery": values["fhwCutlery"],
             "fhwCups3Oz": values["fhwCups3Oz"],
+            **{field: values[field] for field in numeric_fields},
             "confirmedAnswer": "Sí" if values["activity"] else "",
             "confirmed": confirmed and not row_has_conflict,
             "applicabilityAnswer": "Sí" if applicability is True else ("No" if applicability is False else ""),
@@ -1485,6 +1567,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
             "surveySourceHeaders": survey_sources,
             "surveyIssue": survey_issue,
             "evidence": evidence,
+            "evidenceFiles": evidence_files,
             "evidenceSourceHeader": evidence_source,
             "schemaConflict": row_has_conflict,
             "schemaConflictFields": list(dict.fromkeys(row_conflict_fields)),
@@ -1518,7 +1601,7 @@ def load_responses(path: Path, activity_names: list[str] | None = None) -> tuple
         },
         "quantityHeaderMap": {
             clean_text(headers[index]): field
-            for field in ("blenderJars", "coldFoamJars", "fhwCutlery", "fhwCups3Oz")
+            for field in dict.fromkeys(("blenderJars", "coldFoamJars", "fhwCutlery", "fhwCups3Oz", *numeric_fields))
             for index in column_groups[field]
         },
         "evidenceHeaders": [item["header"] for item in evidence_group],
@@ -1564,6 +1647,12 @@ def build_payload(
     initial_source_hashes = source_fingerprints(source_paths)
     activities, managers, cms_settings, calendar = load_cms(cms_path)
     organization = cms_settings.pop("_organization")
+    cms_numeric_config = cms_settings.pop("_quantityConfig", {})
+    managed_numeric_keys = cms_settings.pop("_quantityManaged", set())
+    quantity_configs = {
+        **{key: value for key, value in QUANTITY_ACTIVITY_CONFIG.items() if key not in managed_numeric_keys},
+        **cms_numeric_config,
+    }
     national_photo = Path(organization["nationalDirector"].get("photo", ""))
     hero_photo = national_photo.with_name(f"{national_photo.stem}-hero.webp").as_posix()
     if hero_photo and (ROOT / hero_photo).is_file():
@@ -1580,12 +1669,12 @@ def build_payload(
     stores, directory_sheet, directory_status = load_directory(directory_path, settings)
     active_names = [item["name"] for item in activities]
     configured_by_text, configured_by_compact = active_activity_catalog(activities)
-    current_responses, response_schema = load_responses(responses_path, active_names)
+    current_responses, response_schema = load_responses(responses_path, active_names, quantity_configs)
     cutover_quality: dict[str, Any] | None = None
     if baseline_path or cutoff:
         if not baseline_path or not cutoff:
             raise ValueError("El corte requiere baseline_path y cutoff")
-        baseline_responses, baseline_schema = load_responses(baseline_path, active_names)
+        baseline_responses, baseline_schema = load_responses(baseline_path, active_names, quantity_configs)
         historical = [
             {**response, "source": "corte histórico", "sourceOrder": 0}
             for response in baseline_responses
@@ -1683,7 +1772,7 @@ def build_payload(
                 "confirmed": bool(response.get("activity")) and not remaining_conflicts,
                 "id": stable_response_id(
                     response["started"], response["finished"], resolved_ceco,
-                    response["activity"], response["evidence"],
+                    response["activity"], *(item["value"] for item in response.get("evidenceFiles", [])) or (response["evidence"],),
                 ),
             }
         store = stores.get(response["ceco"])
@@ -1714,9 +1803,13 @@ def build_payload(
             continue
         if response["ceco"] and not store:
             unknown_cecos.add(response["ceco"])
-        evidence_url = safe_evidence_url(response["evidence"], allowed_hosts)
-        evidence_available = evidence_url is not None
-        if response["evidence"] and not evidence_available:
+        validated_files = [
+            {**item, "url": safe_evidence_url(item["value"], allowed_hosts)}
+            for item in response.get("evidenceFiles", [])
+        ]
+        evidence_url = validated_files[0]["url"] if validated_files else None
+        evidence_available = bool(validated_files) and all(item["url"] for item in validated_files)
+        if validated_files and not evidence_available:
             unsafe_evidence_rows.append(response["row"])
             quarantined_responses.append({
                 "row": response["row"],
@@ -1728,7 +1821,7 @@ def build_payload(
         # Las filas aisladas ya terminaron antes de este punto.
         if store and response["finished"] and (latest_update is None or response["finished"] > latest_update):
             latest_update = response["finished"]
-        quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
+        quantity_config = quantity_configs.get(compact_key(activity))
         survey_config = SURVEY_ACTIVITY_CONFIG.get(compact_key(activity))
         quantities: dict[str, int] = {}
         quantity_issue = ""
@@ -1828,6 +1921,12 @@ def build_payload(
             }
         if settings.get("publishEvidenceLinks") and evidence_url:
             public["evidenceUrl"] = evidence_url
+            if len(validated_files) > 1:
+                public["evidenceFiles"] = [
+                    {"label": item["label"], "sourceHeader": item["header"],
+                     "url": item["url"], "fileName": evidence_filename(item["url"])}
+                    for item in validated_files
+                ]
         if settings.get("publishPersonalData"):
             public["submittedBy"] = response["name"]
             public["email"] = response["email"]
@@ -1872,7 +1971,7 @@ def build_payload(
         if state["valid"] or state["notApplicable"]
     ]
     quantity_modules = []
-    for config in QUANTITY_ACTIVITY_CONFIG.values():
+    for config in quantity_configs.values():
         if config["activity"] not in activity_names:
             continue
         records = [

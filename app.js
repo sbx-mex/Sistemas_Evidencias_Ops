@@ -1,6 +1,6 @@
 const state = {
   data: null,
-  filters: { region: "", dm: "", store: "", activity: "" },
+  filters: { region: "", dm: "", store: "", activity: "", quantity: "" },
   evidenceFilters: { region: "", dm: "", store: "", activity: "" },
   showAllEvidence: false,
   exporting: false,
@@ -46,11 +46,40 @@ function selectedActivities() {
   return state.filters.activity ? [state.filters.activity] : state.data.activities.map((item) => item.name);
 }
 
+function quantityChoices(module) {
+  return (module?.metrics || []).flatMap((metric) => {
+    const upper = Number(metric.maximum ?? module.maximum);
+    const ranges = [{value: "zero", label: "0"}];
+    if (upper >= 1) ranges.push({value: "1-5", label: `1–${Math.min(5, upper)}`});
+    if (upper >= 6) ranges.push({value: "6-20", label: `6–${Math.min(20, upper)}`});
+    if (upper >= 21) ranges.push({value: "21+", label: `21–${upper}`});
+    ranges.push({value: "pending", label: "Sin respuesta válida"});
+    return ranges.map((range) => ({value: `${metric.key}|${range.value}`, label: `${metric.label} · ${range.label}`}));
+  });
+}
+
+function matchingQuantityStores() {
+  const module = (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity);
+  const choice = quantityChoices(module).find((item) => item.value === state.filters.quantity);
+  if (!choice) return null;
+  const [key, band] = choice.value.split("|");
+  const answers = new Map(state.data.submissions.filter((item) => item.valid && item.activity === module.activity && item.quantities)
+    .map((item) => [item.ceco, item.quantities[key]]));
+  return new Set(state.data.stores.filter((store) => {
+    if (!answers.has(store.ceco)) return band === "pending";
+    const value = answers.get(store.ceco);
+    return band === "zero" ? value === 0 : band === "1-5" ? value >= 1 && value <= 5
+      : band === "6-20" ? value >= 6 && value <= 20 : band === "21+" ? value >= 21 : false;
+  }).map((store) => store.ceco));
+}
+
 function filteredStores() {
+  const quantityStores = matchingQuantityStores();
   return state.data.stores.filter((store) =>
     (!state.filters.region || store.region === state.filters.region) &&
     (!state.filters.dm || store.dm === state.filters.dm) &&
-    (!state.filters.store || store.ceco === state.filters.store));
+    (!state.filters.store || store.ceco === state.filters.store) &&
+    (!quantityStores || quantityStores.has(store.ceco)));
 }
 
 function completionFor(store, activities = selectedActivities()) {
@@ -196,8 +225,9 @@ function activeQuantityModule() {
 }
 
 function filteredQuantityResponses(module) {
+  const included = new Set(filteredStores().map((store) => store.ceco));
   return state.data.submissions.filter((item) =>
-    item.valid && item.activity === module.activity && item.quantities &&
+    item.valid && item.activity === module.activity && item.quantities && included.has(item.ceco) &&
     (!state.filters.region || item.region === state.filters.region) &&
     (!state.filters.dm || item.dm === state.filters.dm) &&
     (!state.filters.store || item.ceco === state.filters.store));
@@ -319,8 +349,10 @@ function renderSurveyModule() {
 }
 
 function filteredEvidence() {
+  const quantityStores = matchingQuantityStores();
   return state.data.submissions.filter((item) =>
     item.valid && item.evidenceAvailable &&
+    (!quantityStores || quantityStores.has(item.ceco)) &&
     (!state.evidenceFilters.region || item.region === state.evidenceFilters.region) &&
     (!state.evidenceFilters.dm || item.dm === state.evidenceFilters.dm) &&
     (!state.evidenceFilters.store || item.ceco === state.evidenceFilters.store) &&
@@ -330,12 +362,13 @@ function filteredEvidence() {
 function renderEvidence() {
   const rows = filteredEvidence();
   const visible = state.showAllEvidence ? rows : rows.slice(0, 6);
-  $("#evidence-count").textContent = `${rows.length} ${rows.length === 1 ? "archivo" : "archivos"}`;
+  const fileCount = rows.reduce((total, item) => total + (item.evidenceFiles?.length || 1), 0);
+  $("#evidence-count").textContent = `${fileCount} ${fileCount === 1 ? "archivo" : "archivos"}`;
   $("#evidence-grid").innerHTML = visible.length ? visible.map((item) => `<article class="evidence-row">
     <span class="evidence-cell" data-label="Actividad"><strong>${esc(item.activity)}</strong></span>
     <span class="evidence-cell evidence-store" data-label="Tienda"><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></span>
     ${item.evidenceLinkPublished && item.evidenceUrl
-      ? `<a class="evidence-link" data-label="Link del archivo" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" title="${esc(item.evidenceFileName)}" aria-label="Abrir ${esc(item.evidenceFileName)}">${esc(item.evidenceLinkLabel)}</a>`
+      ? `<div class="evidence-links" data-label="Link del archivo">${(item.evidenceFiles?.length ? item.evidenceFiles : [{url:item.evidenceUrl,fileName:item.evidenceFileName,label:"Evidencia"}]).map((file) => `<a class="evidence-link" href="${esc(file.url)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" title="${esc(file.fileName)}" aria-label="Abrir ${esc(file.label)}: ${esc(file.fileName)}">${esc(item.evidenceLinkLabel)}${file.label === "Evidencia" ? "" : ` · ${esc(file.label)}`}</a>`).join("")}</div>`
       : `<span class="evidence-locked" data-label="Link del archivo">Link no disponible</span>`}
   </article>`).join("") : '<div class="empty-state">No hay evidencias para el alcance seleccionado.</div>';
   $("#evidence-toggle").hidden = rows.length <= 6;
@@ -411,7 +444,7 @@ function renderStores() {
 
 function syncFilterUrl() {
   const url = new URL(location.href);
-  [["region", state.filters.region], ["dm", state.filters.dm], ["store", state.filters.store], ["activity", state.filters.activity]].forEach(([key, value]) => {
+  [["region", state.filters.region], ["dm", state.filters.dm], ["store", state.filters.store], ["activity", state.filters.activity], ["quantity", state.filters.quantity]].forEach(([key, value]) => {
     if (value) url.searchParams.set(key, value); else url.searchParams.delete(key);
   });
   history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
@@ -419,7 +452,7 @@ function syncFilterUrl() {
 
 function readFilterUrl() {
   const params = new URLSearchParams(location.search);
-  state.filters = { region: params.get("region") || "", dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "" };
+  state.filters = { region: params.get("region") || "", dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "", quantity: params.get("quantity") || "" };
 }
 
 function renderAll() {
@@ -427,6 +460,7 @@ function renderAll() {
 }
 
 function filterDisplayValue(key, value) {
+  if (key === "quantity") return $("#filter-quantity").selectedOptions[0]?.textContent || value;
   if (key === "store") {
     const store = state.data.stores.find((item) => item.ceco === value);
     return store ? `${store.ceco} · ${store.store}` : value;
@@ -435,7 +469,7 @@ function filterDisplayValue(key, value) {
 }
 
 function renderFilterToolbar() {
-  const labels = { region: "Región", dm: "DM", store: "Tienda", activity: "Actividad" };
+  const labels = { region: "Región", dm: "DM", store: "Tienda", activity: "Actividad", quantity: "Subcategoría" };
   const active = Object.entries(state.filters).filter(([, value]) => value);
   const toolbar = $("#filter-toolbar");
   toolbar.hidden = active.length === 0;
@@ -448,7 +482,7 @@ function renderFilterToolbar() {
 }
 
 function clearDashboardFilters() {
-  state.filters = { region: "", dm: "", store: "", activity: "" };
+  state.filters = { region: "", dm: "", store: "", activity: "", quantity: "" };
   state.showAllEvidence = false;
   populateFilters();
   renderAll();
@@ -478,6 +512,12 @@ function populateFilters() {
   $("#filter-activity").innerHTML = '<option value="">Todos</option>' + state.data.activities.map((item) => `<option value="${esc(item.name)}">${esc(item.name)}</option>`).join("");
   if (!state.data.activities.some((item) => item.name === state.filters.activity)) state.filters.activity = "";
   $("#filter-activity").value = state.filters.activity;
+  const numericModule = (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity);
+  const choices = quantityChoices(numericModule);
+  $("#quantity-filter-label").hidden = !numericModule;
+  $("#filter-quantity").innerHTML = '<option value="">Todas las cantidades</option>' + choices.map((item) => `<option value="${esc(item.value)}">${esc(item.label)}</option>`).join("");
+  if (!choices.some((item) => item.value === state.filters.quantity)) state.filters.quantity = "";
+  $("#filter-quantity").value = state.filters.quantity;
 }
 
 function populateEvidenceFilters() {
@@ -526,7 +566,10 @@ function reportScope() {
 }
 
 function exportActivityLabel() {
-  return state.filters.activity || "Todas las actividades";
+  const activity = state.filters.activity || "Todas las actividades";
+  const module = (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity);
+  const choice = quantityChoices(module).find((item) => item.value === state.filters.quantity);
+  return choice ? `${activity} · ${choice.label}` : activity;
 }
 
 function exportAdvanceLabel() {
@@ -911,6 +954,11 @@ function buildExcelSpec() {
       ...quantityModule.metrics.map((metric) => Number(item.quantities[metric.key] || 0)),
       Number(item.quantities.total || 0), item.evidenceLinkPublished ? item.evidenceUrl : "Validada",
     ]) : [];
+  const evidenceRows = state.data.submissions
+    .filter((entry) => entry.valid && entry.evidenceLinkPublished && storesByCeco.has(entry.ceco)
+      && (!state.filters.activity || entry.activity === state.filters.activity))
+    .flatMap((entry) => (entry.evidenceFiles?.length ? entry.evidenceFiles : [{label:"Evidencia",fileName:entry.evidenceFileName,url:entry.evidenceUrl}])
+      .map((file) => [entry.ceco, entry.store, entry.activity, file.label, file.fileName, file.url]));
   return {
     title: `Sistema de Evidencias OPS · ${scope} · ${activityLabel}`,
     sheets: [
@@ -945,6 +993,11 @@ function buildExcelSpec() {
         name: "Actividades",
         rows: [["Avance por actividad", "", "", "", "", "", "", ""], [`${scope} · Corte ${cutStamp()}`, "", "", "", "", "", "", ""], [], ["Orden", "Actividad", "Realizadas", "Pendientes", "% Avance", "Fecha compromiso", "Estado", "Decisión"], ...activityRows],
         widths: [10, 40, 14, 14, 14, 20, 16, 20], merges: ["A1:H1", "A2:H2"], headerRows: [4], percentColumns: [5], freezeRow: 4, autoFilter: `A4:H${4 + activityRows.length}`, tabColor: "FF16845B",
+      },
+      {
+        name: "Evidencias",
+        rows: [["Evidencias verificadas", "", "", "", "", ""], [`${scope} · ${activityLabel}`, "", "", "", "", ""], [], ["CeCo", "Tienda", "Actividad", "Etapa", "Archivo", "Vínculo"], ...evidenceRows],
+        widths: [13, 32, 42, 16, 45, 80], merges: ["A1:F1", "A2:F2"], headerRows: [4], freezeRow: 4, autoFilter: `A4:F${4 + evidenceRows.length}`, tabColor: "FF16845B",
       },
       ...(quantityModule ? [{
         name: quantityModule.activity === "Jarras Blender | Cold Foam" ? "Jarras" : quantityModule.activity,
@@ -998,10 +1051,17 @@ function bindEvents() {
   $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
   $("#filter-activity").addEventListener("change", (event) => {
     state.filters.activity = event.target.value;
+    state.filters.quantity = "";
     state.showAllEvidence = false;
+    populateFilters();
     renderAll();
     const detailTarget = activeQuantityModule() ? $("#inventario-jarras") : activeSurveyModule() ? $("#detalle-actividad") : null;
     if (detailTarget && !detailTarget.hidden) requestAnimationFrame(() => detailTarget.scrollIntoView({ behavior: "smooth", block: "start" }));
+  });
+  $("#filter-quantity").addEventListener("change", (event) => {
+    state.filters.quantity = event.target.value;
+    state.showAllEvidence = false;
+    renderAll();
   });
   $("#clear-filters").addEventListener("click", clearDashboardFilters);
   $("#evidence-toggle").addEventListener("click", () => { state.showAllEvidence = !state.showAllEvidence; renderEvidence(); });
@@ -1033,6 +1093,7 @@ function bindEvents() {
       state.filters[key] = "";
       if (key === "region") { state.filters.dm = ""; state.filters.store = ""; }
       if (key === "dm") state.filters.store = "";
+      if (key === "activity") state.filters.quantity = "";
       state.showAllEvidence = false; populateFilters(); renderAll(); $("#filter-" + key)?.focus({ preventScroll: true });
       return;
     }

@@ -225,6 +225,26 @@ def build_workbook(data: dict) -> Workbook:
     style_decision_column(activities_sheet, 5, activities_sheet.max_row, 8)
     set_widths(activities_sheet, [10, 40, 14, 14, 14, 20, 16, 20])
 
+    evidence_sheet = workbook.create_sheet("Evidencias")
+    style_title(evidence_sheet, 6, "Evidencias verificadas", f"{region} · Corte {cut}")
+    evidence_sheet.append(["CeCo", "Tienda", "Actividad", "Etapa", "Archivo", "Vínculo"])
+    for item in data.get("submissions", []):
+        if not item.get("valid") or not item.get("evidenceUrl"):
+            continue
+        files = item.get("evidenceFiles") or [{
+            "label": "Evidencia", "fileName": item["evidenceFileName"], "url": item["evidenceUrl"],
+        }]
+        for file in files:
+            evidence_sheet.append([item["ceco"], item["store"], item["activity"],
+                                   file["label"], file["fileName"], file["url"]])
+    style_header(evidence_sheet, 4, 1, 6)
+    style_table(evidence_sheet, 5, evidence_sheet.max_row, 6)
+    evidence_sheet.freeze_panes = "A5"
+    evidence_sheet.auto_filter.ref = f"A4:F{evidence_sheet.max_row}"
+    for row in range(5, evidence_sheet.max_row + 1):
+        evidence_sheet[f"A{row}"].number_format = "@"
+    set_widths(evidence_sheet, [13, 28, 40, 15, 50, 80])
+
     for module in data.get("quantityModules", []):
         metrics = module["metrics"]
         width = len(metrics) + 5

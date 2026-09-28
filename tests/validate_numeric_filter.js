@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+const fs = require('node:fs');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const data = JSON.parse(fs.readFileSync('data/dashboard.json', 'utf8'));
+const source = fs.readFileSync('app.js', 'utf8').replace(/bindEvents\(\); updateConnection\(\); loadData\(\);[\s\S]*$/, '');
+const checks = `
+state.data = data;
+state.filters.activity = 'Jarras Blender | Cold Foam';
+const module = state.data.quantityModules.find(item => item.activity === state.filters.activity);
+assert(quantityChoices(module).some(item => item.value === 'blender|zero'));
+const zero = new Set(state.data.submissions.filter(item => item.valid && item.activity === module.activity && item.quantities?.blender === 0).map(item => item.ceco));
+state.filters.quantity = 'blender|zero';
+assert.deepEqual(new Set(filteredStores().map(item => item.ceco)), zero);
+assert(filteredQuantityResponses(module).every(item => item.quantities.blender === 0));
+state.filters.quantity = 'blender|1-5';
+assert(filteredQuantityResponses(module).every(item => item.quantities.blender >= 1 && item.quantities.blender <= 5));
+state.filters.activity = 'FHW';
+state.filters.quantity = 'cutlery|pending';
+const fhwAnswered = new Set(state.data.submissions.filter(item => item.valid && item.activity === 'FHW' && item.quantities).map(item => item.ceco));
+assert.equal(filteredStores().length, state.data.stores.length - fhwAnswered.size);
+state.filters.quantity = 'cutlery|zero';
+const fhwZero = state.data.submissions.filter(item => item.valid && item.activity === 'FHW' && item.quantities?.cutlery === 0).length;
+assert.equal(filteredStores().length, fhwZero);
+state.filters.activity = 'Organización Refrigeradores Back';
+state.filters.quantity = '';
+assert.equal(filteredStores().length, state.data.stores.length);
+assert.equal(state.data.submissions.filter(item => item.activity === state.filters.activity && item.evidenceFiles?.length === 2).length >= 5, true);
+`;
+vm.runInNewContext(source + checks, {data, assert, console}, {filename:'app.js'});
+console.log('Filtro numérico validado · cero · rangos · pendiente · cambio de actividad');

@@ -13,7 +13,7 @@ from PIL import Image
 # La auditoría no debe crear residuos que después ella misma reporte.
 sys.dont_write_bytecode = True
 
-from build_dashboard import STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, short_dm_name, validate_xlsx
+from build_dashboard import STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, load_cms, short_dm_name, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -161,7 +161,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v35", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v36", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -241,6 +241,15 @@ for correction in data.get("quality", {}).get("correctedCeCos", []):
     ):
         issues.append("La auditoría contiene una corrección CeCo insegura")
 active_activity_keys = {compact_key(item.get("name")) for item in data.get("activities", [])}
+_, _, cms_settings, _ = load_cms(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx")
+numeric_config = cms_settings.get("_quantityConfig", {})
+for key, config in numeric_config.items():
+    if key in active_activity_keys:
+        module = next((item for item in data.get("quantityModules", []) if compact_key(item.get("activity")) == key), None)
+        if not module or [(item["key"], item["minimum"], item["maximum"]) for item in module["metrics"]] != [
+            (metric["key"], metric["minimum"], metric["maximum"]) for metric in config["metrics"]
+        ]:
+            issues.append(f"El módulo numérico no coincide con el CMS: {config['activity']}")
 evidence_header_matches = response_schema.get("evidenceHeaderMatch", {})
 evidence_header_map = response_schema.get("evidenceHeaderMap", {})
 if any(match not in {"exact", "affinity", "generic", "unverified"} for match in evidence_header_matches.values()):
@@ -294,6 +303,14 @@ for full_name, expected in (("Luis Manuel Neri Saldaña", "Luis Neri"), ("Nancy 
     if short_dm_name(full_name) != expected:
         issues.append(f"Nombre corto DM incorrecto: {full_name}")
 published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
+for item in published_evidence:
+    files = item.get("evidenceFiles", [])
+    if files and (
+        [file.get("label") for file in files] != ["Antes", "Después"]
+        or item.get("evidenceUrl") != files[0].get("url")
+        or any(file.get("fileName") != unquote(urlsplit(file.get("url", "")).path.rsplit("/", 1)[-1]) for file in files)
+    ):
+        issues.append("Una evidencia Antes/Después no conserva sus vínculos originales")
 linked_evidence = [item for item in published_evidence if item.get("evidenceUrl")]
 unlinked_evidence = [item for item in published_evidence if not item.get("evidenceUrl")]
 activity_evidence_rules = {

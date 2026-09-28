@@ -230,6 +230,43 @@ def main() -> None:
         assert dynamic_payload["submissions"][0]["evidenceSourceHeader"] == new_evidence_header
         assert dynamic_payload["quality"]["responseSchema"]["evidenceHeaderMatch"][new_evidence_header] == "exact"
 
+        # Una pregunta numérica futura se incorpora desde la hoja CMS: cero,
+        # límite, rango inválido y cambio de orden de columnas Forms.
+        numeric_cms = temp / "cms-numeric-future.xlsx"
+        numeric_book = load_workbook(future_cms)
+        numeric_book["Preguntas Numericas"].append([
+            1, new_activity, "pieces", "futurePieces", "Piezas futuras",
+            "Piezas futuras", 0, 7, "Si", "Insumos futuros",
+        ])
+        numeric_book.save(numeric_cms)
+        numeric_book.close()
+        numeric_form = temp / "forms-numeric-future.xlsx"
+        numeric_headers = BASE + ["Piezas futuras", new_evidence_header, "CeCo", ACTIVITY]
+        save_book(numeric_form, numeric_headers, [
+            [16001, started, finished, "", "Simulación", 0, f"{allowed}/cero.jpg", "38115", new_activity],
+            [16002, started, finished, "", "Simulación", 7, f"{allowed}/siete.jpg", "38119", new_activity],
+            [16003, started, finished, "", "Simulación", 8, f"{allowed}/ocho.jpg", "38120", new_activity],
+        ])
+        numeric_payload = build_payload(numeric_form, ROOT / "cms/Directorio.xlsx",
+                                        ROOT / "config/settings.json", numeric_cms)
+        numeric_module = next(module for module in numeric_payload["quantityModules"] if module["activity"] == new_activity)
+        assert numeric_module["totals"] == {"pieces": 7, "total": 7}
+        assert numeric_module["answeredStores"] == 2
+        assert numeric_payload["quality"]["responseSchema"]["quantityHeaderMap"]["Piezas futuras"] == "futurePieces"
+        assert numeric_payload["quality"]["quantityResponseIssues"] == [{"row": 4, "issue": "Piezas futuras: fuera de rango"}]
+        assert {item["ceco"] for item in numeric_payload["submissions"]} == {"38115", "38119"}
+        assert build_workbook(numeric_payload)[new_activity[:31]]["D5"].value in {0, 7}
+
+        numeric_book = load_workbook(numeric_cms)
+        numeric_sheet = numeric_book["Preguntas Numericas"]
+        numeric_sheet.cell(numeric_sheet.max_row, 9).value = "No"
+        disabled_numeric_cms = temp / "cms-numeric-disabled.xlsx"
+        numeric_book.save(disabled_numeric_cms)
+        numeric_book.close()
+        disabled_numeric = build_payload(numeric_form, ROOT / "cms/Directorio.xlsx",
+                                         ROOT / "config/settings.json", disabled_numeric_cms)
+        assert all(module["activity"] != new_activity for module in disabled_numeric["quantityModules"])
+
         simulation_activity = active_activities[0]
         all_ceco1 = temp / "all-ceco1.xlsx"
         # La columna genérica permite probar el cruce CeCo/CeCo1 sin acoplar
@@ -390,6 +427,36 @@ def main() -> None:
         rows, schema = load_responses(mismatched)
         assert rows[0]["evidence"] == "" and rows[0]["confirmed"] is True
         assert schema["evidenceIssues"]["mismatched-evidence-column"] == [2]
+
+        # Antes y Después pertenecen al mismo registro de Refrigeradores Back.
+        # Se exige el par completo y no se rescata un archivo de otra actividad.
+        refrigerator = "Organización Refrigeradores Back"
+        before_header = "Evidencia_Organizacion_Refrigeradores_Back_Antes"
+        after_header = "Evidencia_Organizacion_Refrigeradores_Back_Despues"
+        refrigerator_book = temp / "refrigeradores.xlsx"
+        refrigerator_headers = BASE + [after_header, ACTIVITY, "CeCo", before_header, "Evidencia_Lay_Out"]
+        started, finished = timestamps(15)
+        save_book(refrigerator_book, refrigerator_headers, [
+            [15, started, finished, "", "Prueba", f"{allowed}/despues.jpg", refrigerator, "38115", f"{allowed}/antes.jpg", ""],
+            [16, started, finished, "", "Prueba", "", refrigerator, "38119", f"{allowed}/solo-antes.jpg", ""],
+            [17, started, finished, "", "Prueba", f"{allowed}/despues.jpg", refrigerator, "38120", f"{allowed}/antes.jpg", f"{allowed}/ajeno.jpg"],
+        ])
+        refrigerator_payload = build_payload(refrigerator_book, ROOT / "cms/Directorio.xlsx",
+                                           ROOT / "config/settings.json")
+        assert refrigerator_payload["summary"]["completedCompletions"] == 1
+        assert len(refrigerator_payload["submissions"]) == 1
+        assert [(file["label"], file["sourceHeader"]) for file in refrigerator_payload["submissions"][0]["evidenceFiles"]] == [
+            ("Antes", before_header), ("Después", after_header),
+        ]
+        assert refrigerator_payload["quality"]["responseSchema"]["evidenceIssues"] == {
+            "incomplete-multi-evidence": [3], "multiple-evidence-columns": [4],
+        }
+
+        actual_refrigerators = build_payload(ROOT / "cms/Sistema de Evidencias OPS.xlsx",
+                                           ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        assert refrigerator in {activity["name"] for activity in actual_refrigerators["activities"]}
+        assert next(activity for activity in actual_refrigerators["activities"]
+                    if activity["name"] == refrigerator)["completedStores"] == 5
 
         # Escenario 6: dos actividades fuera del catálogo activo CMS se ignoran.
         # Una no existe y otra sí existe en el CMS, pero está desactivada. El orden

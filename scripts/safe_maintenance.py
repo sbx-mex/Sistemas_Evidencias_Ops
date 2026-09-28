@@ -35,6 +35,7 @@ LOCK = ROOT / ".safe-maintenance.lock"
 REQUIRED_VALIDATORS = (
     "tests/validate_safe_maintenance.py",
     "tests/validate_dynamic_forms_schema.py",
+    "tests/validate_numeric_filter.js",
     "tests/validate_cutover.py",
     "tests/validate_maintenance.py",
     "tests/validate_project.py",
@@ -421,6 +422,7 @@ def main() -> None:
                     raise RuntimeError("Una fuente CMS cambió durante la actualización; se restauraron los resultados")
                 run(sys.executable, "-X", "utf8", "tests/validate_safe_maintenance.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
+                run("node", "tests/validate_numeric_filter.js")
                 run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_project.py")
