@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "8ecde9c6cd38376c",
+  "buildVersion": "0a7b3d4fd7529fa2",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T19:09:33+00:00",
-  "lastUpdated": "2026-09-28T12:53:46",
-  "lastUpdatedDisplay": "28/09/2026 12:53",
+  "generatedAt": "2026-09-28T20:09:22+00:00",
+  "lastUpdated": "2026-09-28T14:08:07",
+  "lastUpdatedDisplay": "28/09/2026 14:08",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "28/09/26 · 12:53 h",
+    "cutOffDisplay": "28/09/26 · 14:08 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 97,
-        "expected": 998,
-        "pending": 901,
-        "compliance": 9.7,
+        "completed": 107,
+        "expected": 996,
+        "pending": 889,
+        "compliance": 10.7,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 248,
+        "completed": 264,
         "expected": 719,
-        "pending": 471,
-        "compliance": 34.5,
+        "pending": 455,
+        "compliance": 36.7,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "b6e32fd45f065bb590c8ae4417e336295a002af09472e5e46825518962d305ae",
+    "responsesSha256": "e0098c96d42ca850190c71a6e557a7fca95770cf858099f5b631fcdffca60d83",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -129,27 +129,27 @@
     "dms": 28,
     "stores": 358,
     "activities": 10,
-    "expectedCompletions": 3567,
-    "completedCompletions": 444,
-    "compliance": 12.4,
-    "validResponses": 444,
+    "expectedCompletions": 3565,
+    "completedCompletions": 470,
+    "compliance": 13.2,
+    "validResponses": 470,
     "storesComplete": 1,
-    "pendingCompletions": 3123,
-    "notApplicableCompletions": 13
+    "pendingCompletions": 3095,
+    "notApplicableCompletions": 15
   },
   "quality": {
-    "responsesRead": 586,
+    "responsesRead": 617,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 295,
-      "newFormsRowsIncluded": 202,
+      "newFormsRowsRead": 329,
+      "newFormsRowsIncluded": 233,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
-      "newFormsRowsRejectedInactive": 93,
+      "newFormsRowsRejectedInactive": 96,
       "baselineSchema": {
         "sheet": "Respuestas corte",
         "headerRow": 1,
@@ -327,6 +327,9 @@
       267,
       271,
       278,
+      297,
+      298,
+      302,
       3,
       4,
       5,
@@ -427,6 +430,14 @@
         "store": "Patio Universidad",
         "method": "correo corporativo + nombre exacto",
         "hadSchemaConflict": true
+      },
+      {
+        "row": 318,
+        "sourceCeCo": "38448",
+        "resolvedCeCo": "38447",
+        "store": "Hospital Angeles del Pedregal",
+        "method": "correo corporativo + nombre exacto",
+        "hadSchemaConflict": false
       }
     ],
     "quarantinedResponses": [
@@ -447,7 +458,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 38,
+    "duplicateValidResponses": 41,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -460,7 +471,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 295
+        "CeCo": 329
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -534,9 +545,9 @@
       "applicabilityIssues": {},
       "surveyIssues": {}
     },
-    "notApplicableResponses": 13,
-    "notApplicablePairs": 13,
-    "evidenceLinksPublished": 388,
+    "notApplicableResponses": 15,
+    "notApplicablePairs": 15,
+    "evidenceLinksPublished": 400,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -573,11 +584,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 39,
+      "completedStores": 40,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 319,
-      "compliance": 10.9,
+      "pendingStores": 318,
+      "compliance": 11.2,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -595,11 +606,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 69,
+      "completedStores": 70,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 289,
-      "compliance": 19.3,
+      "pendingStores": 288,
+      "compliance": 19.6,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -640,10 +651,10 @@
       "autoDetected": false,
       "conditionalApplicability": true,
       "completedStores": 29,
-      "applicableStores": 345,
-      "notApplicableStores": 13,
-      "pendingStores": 316,
-      "compliance": 8.4,
+      "applicableStores": 343,
+      "notApplicableStores": 15,
+      "pendingStores": 314,
+      "compliance": 8.5,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -661,11 +672,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 33,
+      "completedStores": 35,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 325,
-      "compliance": 9.2,
+      "pendingStores": 323,
+      "compliance": 9.8,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -683,11 +694,11 @@
       "priority": "Media",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 31,
+      "completedStores": 33,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 327,
-      "compliance": 8.7,
+      "pendingStores": 325,
+      "compliance": 9.2,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -705,11 +716,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 129,
+      "completedStores": 131,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 229,
-      "compliance": 36.0,
+      "pendingStores": 227,
+      "compliance": 36.6,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -727,11 +738,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 10,
+      "completedStores": 11,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 348,
-      "compliance": 2.8,
+      "pendingStores": 347,
+      "compliance": 3.1,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -749,11 +760,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 56,
+      "completedStores": 70,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 302,
-      "compliance": 15.6,
+      "pendingStores": 288,
+      "compliance": 19.6,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -771,11 +782,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 3,
+      "completedStores": 6,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 355,
-      "compliance": 0.8,
+      "pendingStores": 352,
+      "compliance": 1.7,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -783,6 +794,25 @@
     }
   ],
   "dms": [
+    {
+      "dm": "Enrique Cesar Flores",
+      "shortName": "Enrique César",
+      "photo": "assets/dm/enrique-cesar.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 10,
+      "completed": 65,
+      "expected": 97,
+      "notApplicable": 3,
+      "pending": 32,
+      "pendingStores": 10,
+      "compliance": 67.0,
+      "status": "Seguimiento",
+      "rank": 1
+    },
     {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
@@ -800,25 +830,6 @@
       "pendingStores": 12,
       "compliance": 65.1,
       "status": "Seguimiento",
-      "rank": 1
-    },
-    {
-      "dm": "Enrique Cesar Flores",
-      "shortName": "Enrique César",
-      "photo": "assets/dm/enrique-cesar.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 10,
-      "completed": 63,
-      "expected": 97,
-      "notApplicable": 3,
-      "pending": 34,
-      "pendingStores": 10,
-      "compliance": 64.9,
-      "status": "Seguimiento",
       "rank": 2
     },
     {
@@ -831,13 +842,13 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 44,
+      "completed": 51,
       "expected": 127,
       "notApplicable": 3,
-      "pending": 83,
+      "pending": 76,
       "pendingStores": 13,
-      "compliance": 34.6,
-      "status": "Atención",
+      "compliance": 40.2,
+      "status": "Seguimiento",
       "rank": 3
     },
     {
@@ -850,14 +861,33 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 41,
-      "expected": 138,
-      "notApplicable": 2,
-      "pending": 97,
+      "completed": 51,
+      "expected": 136,
+      "notApplicable": 4,
+      "pending": 85,
       "pendingStores": 14,
-      "compliance": 29.7,
+      "compliance": 37.5,
       "status": "Atención",
       "rank": 4
+    },
+    {
+      "dm": "Veronica Garcia Ortega",
+      "shortName": "Veronica Garcia",
+      "photo": "assets/dm/veronica-garcia.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 11,
+      "completed": 25,
+      "expected": 109,
+      "notApplicable": 1,
+      "pending": 84,
+      "pendingStores": 11,
+      "compliance": 22.9,
+      "status": "Atención",
+      "rank": 5
     },
     {
       "dm": "Ariana Janet Gutierrez Martinez",
@@ -876,7 +906,7 @@
       "pendingStores": 12,
       "compliance": 20.0,
       "status": "Atención",
-      "rank": 5
+      "rank": 6
     },
     {
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -888,31 +918,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 25,
+      "completed": 26,
       "expected": 130,
       "notApplicable": 0,
-      "pending": 105,
+      "pending": 104,
       "pendingStores": 13,
-      "compliance": 19.2,
-      "status": "Atención",
-      "rank": 6
-    },
-    {
-      "dm": "Veronica Garcia Ortega",
-      "shortName": "Veronica Garcia",
-      "photo": "assets/dm/veronica-garcia.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 11,
-      "completed": 20,
-      "expected": 109,
-      "notApplicable": 1,
-      "pending": 89,
-      "pendingStores": 11,
-      "compliance": 18.3,
+      "compliance": 20.0,
       "status": "Atención",
       "rank": 7
     },
@@ -936,6 +947,25 @@
       "rank": 8
     },
     {
+      "dm": "Vanessa Carreño Rios",
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 13,
+      "completed": 15,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 115,
+      "pendingStores": 13,
+      "compliance": 11.5,
+      "status": "Atención",
+      "rank": 9
+    },
+    {
       "dm": "Andrea Nava Guzman",
       "shortName": "Andrea Nava",
       "photo": "assets/dm/andrea-nava.webp",
@@ -951,25 +981,6 @@
       "pending": 71,
       "pendingStores": 8,
       "compliance": 11.2,
-      "status": "Atención",
-      "rank": 9
-    },
-    {
-      "dm": "Vanessa Carreño Rios",
-      "shortName": "Vanessa Carreño",
-      "photo": "assets/dm/vanessa-carreno.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 13,
-      "completed": 14,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 116,
-      "pendingStores": 13,
-      "compliance": 10.8,
       "status": "Atención",
       "rank": 10
     },
@@ -2561,17 +2572,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38694",
-      "store": "Villas de la Hacienda",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38483",
       "store": "Forum Buenavista",
       "dm": "Nora Caracas Saldaña",
@@ -2883,17 +2883,6 @@
       "ceco": "38785",
       "store": "Versalles",
       "dm": "Vacante",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38677",
-      "store": "Patio la Raza",
-      "dm": "Vanessa Carreño Rios",
       "completed": 0,
       "expected": 10,
       "notApplicable": 0,
@@ -3312,17 +3301,6 @@
       "ceco": "38279",
       "store": "Tezontle ll",
       "dm": "Ariana Janet Gutierrez Martinez",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38447",
-      "store": "Hospital Angeles del Pedregal",
-      "dm": "Cesar Alfonso Castillo Romero",
       "completed": 1,
       "expected": 10,
       "notApplicable": 0,
@@ -4332,6 +4310,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "43194",
       "store": "Atana Lindavista",
       "dm": "Vanessa Carreño Rios",
@@ -4409,6 +4398,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38677",
+      "store": "Patio la Raza",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "43132",
       "store": "Plaza Vista Norte",
       "dm": "Vanessa Carreño Rios",
@@ -4442,50 +4442,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38930",
-      "store": "Blvd. Aeropuerto dt",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38431",
-      "store": "Eduardo Molina",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38995",
-      "store": "Encuentro Oceania II",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38924",
-      "store": "Plaza Aeropuerto",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38811",
       "store": "Plaza Tepeyac",
       "dm": "Veronica Garcia Ortega",
@@ -4494,28 +4450,6 @@
       "notApplicable": 0,
       "pending": 9,
       "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38270",
-      "store": "Lomas Verdes II",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38845",
-      "store": "Mundo E II",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 1,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 8,
-      "compliance": 11.1,
       "status": "Atención"
     },
     {
@@ -4574,28 +4508,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38460",
-      "store": "Santa Monica",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38374",
-      "store": "Valle Dorado",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 2,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 8,
-      "compliance": 20.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38371",
       "store": "Montevideo DT",
       "dm": "Vanessa Carreño Rios",
@@ -4618,8 +4530,30 @@
       "status": "Atención"
     },
     {
-      "ceco": "38937",
-      "store": "Parque Tepeyac Piso 1",
+      "ceco": "38930",
+      "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38995",
+      "store": "Encuentro Oceania II",
       "dm": "Veronica Garcia Ortega",
       "completed": 2,
       "expected": 10,
@@ -4631,6 +4565,17 @@
     {
       "ceco": "38965",
       "store": "Parque Tepeyac Piso 2",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38924",
+      "store": "Plaza Aeropuerto",
       "dm": "Veronica Garcia Ortega",
       "completed": 2,
       "expected": 10,
@@ -4728,6 +4673,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38270",
+      "store": "Lomas Verdes II",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38266",
       "store": "San Mateo",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4783,14 +4739,14 @@
       "status": "Atención"
     },
     {
-      "ceco": "38580",
-      "store": "Pasaje San Jeronimo",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 3,
-      "expected": 10,
-      "notApplicable": 0,
+      "ceco": "38845",
+      "store": "Mundo E II",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 2,
+      "expected": 9,
+      "notApplicable": 1,
       "pending": 7,
-      "compliance": 30.0,
+      "compliance": 22.2,
       "status": "Atención"
     },
     {
@@ -4805,9 +4761,31 @@
       "status": "Atención"
     },
     {
-      "ceco": "38674",
-      "store": "Mundo E",
+      "ceco": "38460",
+      "store": "Santa Monica",
       "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 3,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 30.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38374",
+      "store": "Valle Dorado",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 3,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 7,
+      "compliance": 30.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38937",
+      "store": "Parque Tepeyac Piso 1",
+      "dm": "Veronica Garcia Ortega",
       "completed": 3,
       "expected": 10,
       "notApplicable": 0,
@@ -4840,6 +4818,17 @@
     {
       "ceco": "38661",
       "store": "Jinetes",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 4,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 40.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38674",
+      "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 4,
       "expected": 10,
@@ -4895,28 +4884,6 @@
     {
       "ceco": "38230",
       "store": "ITEMS Edo de Mexico",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 5,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38792",
-      "store": "Pasaje Tlanepantla",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 5,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38136",
-      "store": "Punta Norte",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 5,
       "expected": 10,
@@ -5014,9 +4981,9 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38333",
-      "store": "Izcalli Mega",
-      "dm": "Enrique Cesar Flores",
+      "ceco": "38502",
+      "store": "San Marcos DT",
+      "dm": "Jesus Antonio Elguera Flores",
       "completed": 6,
       "expected": 10,
       "notApplicable": 0,
@@ -5025,9 +4992,20 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38502",
-      "store": "San Marcos DT",
-      "dm": "Jesus Antonio Elguera Flores",
+      "ceco": "38792",
+      "store": "Pasaje Tlanepantla",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 6,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 60.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38136",
+      "store": "Punta Norte",
+      "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 6,
       "expected": 10,
       "notApplicable": 0,
@@ -5058,6 +5036,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 6,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 3,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38604",
       "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
@@ -5071,17 +5060,6 @@
     {
       "ceco": "43193",
       "store": "Cosmopol N1",
-      "dm": "Enrique Cesar Flores",
-      "completed": 6,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 3,
-      "compliance": 66.7,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38456",
-      "store": "Plaza las Flores",
       "dm": "Enrique Cesar Flores",
       "completed": 6,
       "expected": 9,
@@ -5121,6 +5099,17 @@
       "notApplicable": 1,
       "pending": 3,
       "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "completed": 7,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 70.0,
       "status": "Seguimiento"
     },
     {
@@ -5179,6 +5168,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "completed": 7,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 2,
+      "compliance": 77.8,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "43070",
       "store": "Rojo Gomez DT",
       "dm": "Ariana Janet Gutierrez Martinez",
@@ -5225,6 +5225,17 @@
     {
       "ceco": "38428",
       "store": "Jardines del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 8,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 1,
+      "compliance": 88.9,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
       "dm": "Cesar Alfonso Castillo Romero",
       "completed": 8,
       "expected": 9,
@@ -7412,19 +7423,19 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-22T19:48:22",
+      "completed": 6,
+      "expected": 9,
+      "notApplicable": 1,
+      "compliance": 66.7,
+      "lastUpdate": "2026-09-28T13:44:02",
       "activities": {
-        "Max & Min": false,
-        "Mandil Verde": false,
+        "Max & Min": true,
+        "Mandil Verde": true,
         "Lay Out": true,
         "Community Board": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false,
+        "Señaletica Back": true,
+        "Señaletica Lobby": true,
+        "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
         "FHW": false
@@ -7433,7 +7444,7 @@
         "Max & Min": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true,
+        "Community Board": false,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
@@ -7592,28 +7603,28 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 3,
-      "expected": 10,
-      "notApplicable": 0,
-      "compliance": 30.0,
-      "lastUpdate": "2026-09-23T14:03:21",
+      "completed": 8,
+      "expected": 9,
+      "notApplicable": 1,
+      "compliance": 88.9,
+      "lastUpdate": "2026-09-28T13:54:01",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
         "Lay Out": true,
         "Community Board": false,
-        "Señaletica Back": false,
-        "Señaletica Lobby": false,
-        "Jarras Blender | Cold Foam": false,
-        "Organización Refrigeradores Back": false,
+        "Señaletica Back": true,
+        "Señaletica Lobby": true,
+        "Jarras Blender | Cold Foam": true,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
         "Mandil Verde": true,
         "Lay Out": true,
-        "Community Board": true,
+        "Community Board": false,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": true,
@@ -8456,11 +8467,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 60.0,
-      "lastUpdate": "2026-09-28T00:27:50",
+      "compliance": 70.0,
+      "lastUpdate": "2026-09-28T13:53:01",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8471,7 +8482,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -8564,11 +8575,11 @@
       "dm": "Enrique Cesar Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 66.7,
-      "lastUpdate": "2026-09-28T09:34:43",
+      "compliance": 77.8,
+      "lastUpdate": "2026-09-28T13:55:00",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -8579,7 +8590,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -14972,11 +14983,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 30.0,
-      "lastUpdate": "2026-09-02T16:26:23",
+      "compliance": 40.0,
+      "lastUpdate": "2026-09-28T13:36:21",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -14986,7 +14997,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -15008,11 +15019,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 11.1,
-      "lastUpdate": "2026-09-09T16:30:32",
+      "compliance": 22.2,
+      "lastUpdate": "2026-09-28T13:30:58",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -15022,7 +15033,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -15044,11 +15055,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-07T10:49:12",
+      "compliance": 60.0,
+      "lastUpdate": "2026-09-28T14:08:07",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -15058,7 +15069,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -15080,11 +15091,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-07T10:45:51",
+      "compliance": 60.0,
+      "lastUpdate": "2026-09-28T13:37:55",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -15094,7 +15105,7 @@
         "Señaletica Lobby": true,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -15116,11 +15127,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-09T16:30:04",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-28T13:31:49",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -15130,7 +15141,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -15224,11 +15235,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-07T14:15:10",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-28T13:27:19",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": false,
@@ -15238,7 +15249,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -15260,11 +15271,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-28T13:31:25",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -15274,7 +15285,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -16664,11 +16675,11 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-28T13:54:38",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -16678,7 +16689,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -16808,11 +16819,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:23:32",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T14:05:59",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -16822,7 +16833,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -16880,11 +16891,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T17:20:57",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T13:39:58",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -16894,7 +16905,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -16952,11 +16963,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:40:05",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T13:59:09",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -16966,7 +16977,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -16988,11 +16999,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 20.0,
-      "lastUpdate": "2026-09-09T15:43:43",
+      "compliance": 30.0,
+      "lastUpdate": "2026-09-28T13:53:48",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -17002,7 +17013,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -17060,11 +17071,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:28:13",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T13:35:17",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -17074,7 +17085,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -17924,11 +17935,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T20:16:15",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T13:19:09",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -17938,7 +17949,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -18157,11 +18168,11 @@
           "maximum": 5
         }
       ],
-      "answeredStores": 129,
+      "answeredStores": 131,
       "totals": {
-        "blender": 227,
-        "coldFoam": 134,
-        "total": 361
+        "blender": 231,
+        "coldFoam": 136,
+        "total": 367
       },
       "byRegion": [
         {
@@ -18184,11 +18195,11 @@
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 9,
+          "answeredStores": 11,
           "totals": {
-            "blender": 14,
-            "coldFoam": 8,
-            "total": 22
+            "blender": 18,
+            "coldFoam": 10,
+            "total": 28
           }
         }
       ],
@@ -18326,11 +18337,11 @@
         {
           "region": "Centro Sur",
           "dm": "Cesar Alfonso Castillo Romero",
-          "answeredStores": 6,
+          "answeredStores": 8,
           "totals": {
-            "blender": 9,
-            "coldFoam": 6,
-            "total": 15
+            "blender": 13,
+            "coldFoam": 8,
+            "total": 21
           }
         },
         {
@@ -18366,29 +18377,29 @@
           "maximum": 20
         }
       ],
-      "answeredStores": 3,
+      "answeredStores": 6,
       "totals": {
-        "cutlery": 68,
-        "cups3Oz": 15,
-        "total": 83
+        "cutlery": 174,
+        "cups3Oz": 27,
+        "total": 201
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 2,
+          "answeredStores": 4,
           "totals": {
-            "cutlery": 39,
-            "cups3Oz": 11,
-            "total": 50
+            "cutlery": 115,
+            "cups3Oz": 21,
+            "total": 136
           }
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 1,
+          "answeredStores": 2,
           "totals": {
-            "cutlery": 29,
-            "cups3Oz": 4,
-            "total": 33
+            "cutlery": 59,
+            "cups3Oz": 6,
+            "total": 65
           }
         }
       ],
@@ -18396,11 +18407,11 @@
         {
           "region": "Centro Norte",
           "dm": "Enrique Cesar Flores",
-          "answeredStores": 1,
+          "answeredStores": 3,
           "totals": {
-            "cutlery": 3,
-            "cups3Oz": 6,
-            "total": 9
+            "cutlery": 79,
+            "cups3Oz": 16,
+            "total": 95
           }
         },
         {
@@ -18416,11 +18427,11 @@
         {
           "region": "Centro Sur",
           "dm": "Cesar Alfonso Castillo Romero",
-          "answeredStores": 1,
+          "answeredStores": 2,
           "totals": {
-            "cutlery": 29,
-            "cups3Oz": 4,
-            "total": 33
+            "cutlery": 59,
+            "cups3Oz": 6,
+            "total": 65
           }
         }
       ]
@@ -18448,22 +18459,22 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 56,
+      "answeredStores": 70,
       "totals": {
-        "yesDonate": 674,
-        "noDonate": 116,
-        "total": 790,
-        "percentage": 85.3
+        "yesDonate": 814,
+        "noDonate": 160,
+        "total": 974,
+        "percentage": 83.6
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 54,
+          "answeredStores": 68,
           "totals": {
-            "yesDonate": 658,
-            "noDonate": 114,
-            "total": 772,
-            "percentage": 85.2
+            "yesDonate": 798,
+            "noDonate": 158,
+            "total": 956,
+            "percentage": 83.5
           }
         },
         {
@@ -18492,34 +18503,34 @@
         {
           "region": "Centro Norte",
           "dm": "Nancy Carolina Rodriguez Medina",
-          "answeredStores": 6,
+          "answeredStores": 13,
           "totals": {
-            "yesDonate": 70,
-            "noDonate": 7,
-            "total": 77,
-            "percentage": 90.9
+            "yesDonate": 123,
+            "noDonate": 33,
+            "total": 156,
+            "percentage": 78.8
           }
         },
         {
           "region": "Centro Norte",
           "dm": "Vanessa Carreño Rios",
-          "answeredStores": 12,
+          "answeredStores": 13,
           "totals": {
-            "yesDonate": 133,
-            "noDonate": 51,
-            "total": 184,
-            "percentage": 72.3
+            "yesDonate": 146,
+            "noDonate": 54,
+            "total": 200,
+            "percentage": 73.0
           }
         },
         {
           "region": "Centro Norte",
           "dm": "Veronica Garcia Ortega",
-          "answeredStores": 2,
+          "answeredStores": 7,
           "totals": {
-            "yesDonate": 25,
-            "noDonate": 6,
-            "total": 31,
-            "percentage": 80.6
+            "yesDonate": 91,
+            "noDonate": 18,
+            "total": 109,
+            "percentage": 83.5
           }
         },
         {
@@ -18536,12 +18547,12 @@
         {
           "region": "Centro Norte",
           "dm": "Yazmin Haydee Garcia Gonzalez",
-          "answeredStores": 12,
+          "answeredStores": 13,
           "totals": {
-            "yesDonate": 127,
-            "noDonate": 27,
-            "total": 154,
-            "percentage": 82.5
+            "yesDonate": 135,
+            "noDonate": 30,
+            "total": 165,
+            "percentage": 81.8
           }
         },
         {
@@ -18571,6 +18582,795 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-73f4c6f5868c5744",
+      "timestamp": "2026-09-28T14:08:07",
+      "timestampDisplay": "28/09/2026 14:08",
+      "activity": "Va X Cuenta",
+      "ceco": "38792",
+      "store": "Pasaje Tlanepantla",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38792",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38792",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 5,
+        "noDonate": 8,
+        "total": 13,
+        "percentage": 38.5
+      }
+    },
+    {
+      "id": "respuesta-f8f8ff0d3d1d2ef5",
+      "timestamp": "2026-09-28T14:05:59",
+      "timestampDisplay": "28/09/2026 14:05",
+      "activity": "Va X Cuenta",
+      "ceco": "38930",
+      "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38930",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38930",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 20,
+        "noDonate": 6,
+        "total": 26,
+        "percentage": 76.9
+      }
+    },
+    {
+      "id": "respuesta-617694138d546848",
+      "timestamp": "2026-09-28T13:59:09",
+      "timestampDisplay": "28/09/2026 13:59",
+      "activity": "Va X Cuenta",
+      "ceco": "38995",
+      "store": "Encuentro Oceania II",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38995",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38995",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 10,
+        "noDonate": 1,
+        "total": 11,
+        "percentage": 90.9
+      }
+    },
+    {
+      "id": "respuesta-884ad7ce21098f12",
+      "timestamp": "2026-09-28T13:55:00",
+      "timestampDisplay": "28/09/2026 13:55",
+      "activity": "FHW",
+      "ceco": "38456",
+      "store": "Plaza las Flores",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38456",
+      "evidenceLinkLabel": "Link_FHW_38456",
+      "evidenceFileName": "17906248660798027879660485910940_Ramon Espinosa Macia.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 36,
+        "cups3Oz": 6,
+        "total": 42
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/17906248660798027879660485910940_Ramon%20Espinosa%20Macia.jpg"
+    },
+    {
+      "id": "respuesta-2ba47fa6b7dc0986",
+      "timestamp": "2026-09-28T13:54:38",
+      "timestampDisplay": "28/09/2026 13:54",
+      "activity": "Va X Cuenta",
+      "ceco": "38677",
+      "store": "Patio la Raza",
+      "dm": "Vanessa Carreño Rios",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38677",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38677",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 13,
+        "noDonate": 3,
+        "total": 16,
+        "percentage": 81.2
+      }
+    },
+    {
+      "id": "respuesta-a666721a9399e93f",
+      "timestamp": "2026-09-28T13:54:01",
+      "timestampDisplay": "28/09/2026 13:54",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38580",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38580",
+      "evidenceFileName": "IMG_20260928_135208_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG_20260928_135208_Amparo%20Delgado%20Res%C3%A9n.jpg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG_20260928_135208_Amparo%20Delgado%20Res%C3%A9n.jpg",
+          "fileName": "IMG_20260928_135208_Amparo Delgado Resén.jpg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/IMG_20260928_135208_Amparo%20Delgado%20Res%C3%A9n.jpg",
+          "fileName": "IMG_20260928_135208_Amparo Delgado Resén.jpg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-95defb1a9c8e8b67",
+      "timestamp": "2026-09-28T13:53:48",
+      "timestampDisplay": "28/09/2026 13:53",
+      "activity": "Va X Cuenta",
+      "ceco": "38937",
+      "store": "Parque Tepeyac Piso 1",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38937",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38937",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 13,
+        "noDonate": 2,
+        "total": 15,
+        "percentage": 86.7
+      }
+    },
+    {
+      "id": "respuesta-f8bac9a0b9f0a0e4",
+      "timestamp": "2026-09-28T13:53:01",
+      "timestampDisplay": "28/09/2026 13:53",
+      "activity": "FHW",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique Cesar Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38333",
+      "evidenceLinkLabel": "Link_FHW_38333",
+      "evidenceFileName": "D510E489-431E-4D9A-9DCC-D0BEF33C84F5_Starbucks Mega Izcal.jpeg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 40,
+        "cups3Oz": 4,
+        "total": 44
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/D510E489-431E-4D9A-9DCC-D0BEF33C84F5_Starbucks%20Mega%20Izcal.jpeg"
+    },
+    {
+      "id": "respuesta-fae155c839b710eb",
+      "timestamp": "2026-09-28T13:44:02",
+      "timestampDisplay": "28/09/2026 13:44",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38447",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38447",
+      "evidenceFileName": "3d72dffb-61fa-4c53-a420-27f819a535bc_Starbucks Hospital A.jpeg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 2,
+        "total": 4
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/3d72dffb-61fa-4c53-a420-27f819a535bc_Starbucks%20Hospital%20A.jpeg"
+    },
+    {
+      "id": "respuesta-9b4922c5ec83360d",
+      "timestamp": "2026-09-28T13:39:58",
+      "timestampDisplay": "28/09/2026 13:39",
+      "activity": "Va X Cuenta",
+      "ceco": "38431",
+      "store": "Eduardo Molina",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38431",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38431",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 11,
+        "noDonate": 3,
+        "total": 14,
+        "percentage": 78.6
+      }
+    },
+    {
+      "id": "respuesta-8299e71549dac716",
+      "timestamp": "2026-09-28T13:39:25",
+      "timestampDisplay": "28/09/2026 13:39",
+      "activity": "FHW",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "FHW_38580",
+      "evidenceLinkLabel": "Link_FHW_38580",
+      "evidenceFileName": "IMG_20260928_133856_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 30,
+        "cups3Oz": 2,
+        "total": 32
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/IMG_20260928_133856_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
+    {
+      "id": "respuesta-e4549f28ad184fae",
+      "timestamp": "2026-09-28T13:37:55",
+      "timestampDisplay": "28/09/2026 13:37",
+      "activity": "Va X Cuenta",
+      "ceco": "38136",
+      "store": "Punta Norte",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38136",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38136",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 9,
+        "noDonate": 2,
+        "total": 11,
+        "percentage": 81.8
+      }
+    },
+    {
+      "id": "respuesta-cf6c694d23c96022",
+      "timestamp": "2026-09-28T13:37:26",
+      "timestampDisplay": "28/09/2026 13:37",
+      "activity": "Señaletica Lobby",
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Senaletica_Lobby_38447",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38447",
+      "evidenceFileName": "e049d5a8-5df8-439a-94bd-fbebbdcb426f_Starbucks Hospital A.jpeg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Back/e049d5a8-5df8-439a-94bd-fbebbdcb426f_Starbucks%20Hospital%20A.jpeg"
+    },
+    {
+      "id": "respuesta-7df1211c40542490",
+      "timestamp": "2026-09-28T13:36:21",
+      "timestampDisplay": "28/09/2026 13:36",
+      "activity": "Va X Cuenta",
+      "ceco": "38674",
+      "store": "Mundo E",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38674",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38674",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 6,
+        "noDonate": 4,
+        "total": 10,
+        "percentage": 60.0
+      }
+    },
+    {
+      "id": "respuesta-398044ccd7acfc55",
+      "timestamp": "2026-09-28T13:35:17",
+      "timestampDisplay": "28/09/2026 13:35",
+      "activity": "Va X Cuenta",
+      "ceco": "38924",
+      "store": "Plaza Aeropuerto",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38924",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38924",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 12,
+        "noDonate": 0,
+        "total": 12,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-7060ce9dcab742c1",
+      "timestamp": "2026-09-28T13:33:00",
+      "timestampDisplay": "28/09/2026 13:33",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38580",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38580",
+      "evidenceFileName": "17906239264083416231501546352865_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 0,
+        "total": 2
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17906239264083416231501546352865_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
+    {
+      "id": "respuesta-3509a29489d62318",
+      "timestamp": "2026-09-28T13:31:49",
+      "timestampDisplay": "28/09/2026 13:31",
+      "activity": "Va X Cuenta",
+      "ceco": "38460",
+      "store": "Santa Monica",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38460",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38460",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 11,
+        "noDonate": 0,
+        "total": 11,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-4eb7a7ebf4956482",
+      "timestamp": "2026-09-28T13:31:25",
+      "timestampDisplay": "28/09/2026 13:31",
+      "activity": "Va X Cuenta",
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38694",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38694",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 5,
+        "noDonate": 8,
+        "total": 13,
+        "percentage": 38.5
+      }
+    },
+    {
+      "id": "respuesta-67dfc0cf6f9e769c",
+      "timestamp": "2026-09-28T13:30:58",
+      "timestampDisplay": "28/09/2026 13:30",
+      "activity": "Va X Cuenta",
+      "ceco": "38845",
+      "store": "Mundo E II",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38845",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38845",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 8,
+        "noDonate": 2,
+        "total": 10,
+        "percentage": 80.0
+      }
+    },
+    {
+      "id": "respuesta-dad35b10b631ee9d",
+      "timestamp": "2026-09-28T13:30:10",
+      "timestampDisplay": "28/09/2026 13:30",
+      "activity": "Señaletica Lobby",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Senaletica_Lobby_38580",
+      "evidenceLinkLabel": "Link_Senaletica_Lobby_38580",
+      "evidenceFileName": "IMG_20260928_132957_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Lobby",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Back/IMG_20260928_132957_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
+    {
+      "id": "respuesta-62fb32653d598199",
+      "timestamp": "2026-09-28T13:27:19",
+      "timestampDisplay": "28/09/2026 13:27",
+      "activity": "Va X Cuenta",
+      "ceco": "38374",
+      "store": "Valle Dorado",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38374",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38374",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 9,
+        "noDonate": 2,
+        "total": 11,
+        "percentage": 81.8
+      }
+    },
+    {
+      "id": "respuesta-6b19e235381457bd",
+      "timestamp": "2026-09-28T13:26:28",
+      "timestampDisplay": "28/09/2026 13:26",
+      "activity": "Señaletica Back",
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Senaletica_Back_38447",
+      "evidenceLinkLabel": "Link_Senaletica_Back_38447",
+      "evidenceFileName": "b2977134-a039-4eba-a0ec-8e2c08899eac_Starbucks Hospital A.jpeg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Back",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/b2977134-a039-4eba-a0ec-8e2c08899eac_Starbucks%20Hospital%20A.jpeg"
+    },
+    {
+      "id": "respuesta-e10acbb1f038f612",
+      "timestamp": "2026-09-28T13:23:08",
+      "timestampDisplay": "28/09/2026 13:23",
+      "activity": "Señaletica Back",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Senaletica_Back_38580",
+      "evidenceLinkLabel": "Link_Senaletica_Back_38580",
+      "evidenceFileName": "IMG_20260928_132249_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Señaletica_Back",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Activacion_PSL_Sharpie/IMG_20260928_132249_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
+    {
+      "id": "respuesta-6afb53fdf763d4eb",
+      "timestamp": "2026-09-28T13:19:09",
+      "timestampDisplay": "28/09/2026 13:19",
+      "activity": "Va X Cuenta",
+      "ceco": "38270",
+      "store": "Lomas Verdes II",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38270",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38270",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 8,
+        "noDonate": 3,
+        "total": 11,
+        "percentage": 72.7
+      }
+    },
+    {
+      "id": "respuesta-56618080122fa1ad",
+      "timestamp": "2026-09-28T13:16:02",
+      "timestampDisplay": "28/09/2026 13:16",
+      "activity": "Community Board",
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Community_Board_38447",
+      "evidenceLinkLabel": "Link_Community_Board_38447",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": true,
+      "status": "No aplica",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": false
+    },
+    {
+      "id": "respuesta-aca729a631700e31",
+      "timestamp": "2026-09-28T13:15:57",
+      "timestampDisplay": "28/09/2026 13:15",
+      "activity": "Community Board",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Community_Board_38580",
+      "evidenceLinkLabel": "Link_Community_Board_38580",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": true,
+      "status": "No aplica",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": false
+    },
+    {
+      "id": "respuesta-3eb8eb1405efcc04",
+      "timestamp": "2026-09-28T13:15:26",
+      "timestampDisplay": "28/09/2026 13:15",
+      "activity": "Lay Out",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38580",
+      "evidenceLinkLabel": "Link_Lay_Out_38580",
+      "evidenceFileName": "IMG_20260928_131507_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/IMG_20260928_131507_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
+    {
+      "id": "respuesta-4aedfd6d70932396",
+      "timestamp": "2026-09-28T13:13:41",
+      "timestampDisplay": "28/09/2026 13:13",
+      "activity": "Max & Min",
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Max_Min_38447",
+      "evidenceLinkLabel": "Link_Max_Min_38447",
+      "evidenceFileName": "image_Starbucks Hospital A.jpg",
+      "evidenceSourceHeader": "Evidencia_Max&Min",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%204/image_Starbucks%20Hospital%20A.jpg"
+    },
+    {
+      "id": "respuesta-80a840383b9bae38",
+      "timestamp": "2026-09-28T13:08:02",
+      "timestampDisplay": "28/09/2026 13:08",
+      "activity": "Mandil Verde",
+      "ceco": "38447",
+      "store": "Hospital Angeles del Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Mandil_Verde_38447",
+      "evidenceLinkLabel": "Link_Mandil_Verde_38447",
+      "evidenceFileName": "image_Starbucks Hospital A.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/image_Starbucks%20Hospital%20A.jpg"
+    },
+    {
+      "id": "respuesta-412ea06aa20f3d36",
+      "timestamp": "2026-09-28T13:07:50",
+      "timestampDisplay": "28/09/2026 13:07",
+      "activity": "Mandil Verde",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Mandil_Verde_38580",
+      "evidenceLinkLabel": "Link_Mandil_Verde_38580",
+      "evidenceFileName": "17906224487814490315058580141368_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Mandil Verde",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/17906224487814490315058580141368_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
+    {
+      "id": "respuesta-0190b15325b98c4c",
+      "timestamp": "2026-09-28T13:05:29",
+      "timestampDisplay": "28/09/2026 13:05",
+      "activity": "Max & Min",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Max_Min_38580",
+      "evidenceLinkLabel": "Link_Max_Min_38580",
+      "evidenceFileName": "IMG_20260928_130336_Amparo Delgado Resén.jpg",
+      "evidenceSourceHeader": "Evidencia_Max&Min",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%204/IMG_20260928_130336_Amparo%20Delgado%20Res%C3%A9n.jpg"
+    },
     {
       "id": "respuesta-23df756c722248ec",
       "timestamp": "2026-09-28T12:53:46",
@@ -21474,72 +22274,6 @@
       "evidenceLinkPublished": true,
       "valid": true,
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/1790195368256614559275051203577_Laila%20America%20Mu%C3%B1oz.jpg"
-    },
-    {
-      "id": "respuesta-1ff8a7c6a1b1c8d8",
-      "timestamp": "2026-09-23T14:03:21",
-      "timestampDisplay": "23/09/2026 14:03",
-      "activity": "Lay Out",
-      "ceco": "38580",
-      "store": "Pasaje San Jeronimo",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "region": "Centro Sur",
-      "evidenceKey": "Lay_Out_38580",
-      "evidenceLinkLabel": "Link_Lay_Out_38580",
-      "evidenceFileName": "1790193629379774261185301935512_Amparo Delgado Resén.jpg",
-      "evidenceSourceHeader": "Evidencia_Lay_Out",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/1790193629379774261185301935512_Amparo%20Delgado%20Res%C3%A9n.jpg"
-    },
-    {
-      "id": "respuesta-558f14679f572fd1",
-      "timestamp": "2026-09-23T13:57:43",
-      "timestampDisplay": "23/09/2026 13:57",
-      "activity": "Mandil Verde",
-      "ceco": "38580",
-      "store": "Pasaje San Jeronimo",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "region": "Centro Sur",
-      "evidenceKey": "Mandil_Verde_38580",
-      "evidenceLinkLabel": "Link_Mandil_Verde_38580",
-      "evidenceFileName": "17901933805794670410385059896639_Amparo Delgado Resén.jpg",
-      "evidenceSourceHeader": "Evidencia_Mandil Verde",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%206/17901933805794670410385059896639_Amparo%20Delgado%20Res%C3%A9n.jpg"
-    },
-    {
-      "id": "respuesta-cf1d96ded500f0a9",
-      "timestamp": "2026-09-23T13:55:05",
-      "timestampDisplay": "23/09/2026 13:55",
-      "activity": "Max & Min",
-      "ceco": "38580",
-      "store": "Pasaje San Jeronimo",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "region": "Centro Sur",
-      "evidenceKey": "Max_Min_38580",
-      "evidenceLinkLabel": "Link_Max_Min_38580",
-      "evidenceFileName": "179019325615147291057976648724_Amparo Delgado Resén.jpg",
-      "evidenceSourceHeader": "Evidencia_Max&Min",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%204/179019325615147291057976648724_Amparo%20Delgado%20Res%C3%A9n.jpg"
     },
     {
       "id": "respuesta-be87ae45676823db",
