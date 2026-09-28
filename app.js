@@ -233,6 +233,24 @@ function filteredQuantityResponses(module) {
     (!state.filters.store || item.ceco === state.filters.store));
 }
 
+function quantityRollup(responses, metrics, groupFields, percentageMetric) {
+  const groups = new Map();
+  for (const item of responses) {
+    const labels = groupFields.map((field) => item[field]);
+    const key = JSON.stringify(labels);
+    if (!groups.has(key)) groups.set(key, { labels, stores: 0, totals: Object.fromEntries(metrics.map((metric) => [metric.key, 0])) });
+    const group = groups.get(key);
+    group.stores += 1;
+    metrics.forEach((metric) => { group.totals[metric.key] += item.quantities[metric.key]; });
+  }
+  return [...groups.values()].sort((a, b) => a.labels.join(' ').localeCompare(b.labels.join(' '), 'es-MX')).map((group) => {
+    group.totals.total = metrics.reduce((sum, metric) => sum + group.totals[metric.key], 0);
+    if (percentageMetric) group.totals.percentage = group.totals.total
+      ? Math.round(group.totals[percentageMetric] / group.totals.total * 1000) / 10 : null;
+    return group;
+  });
+}
+
 function renderQuantityModule() {
   const section = $("#inventario-jarras");
   const nav = $("#quantity-nav");
@@ -244,7 +262,7 @@ function renderQuantityModule() {
   nav.textContent = module.activity === "Jarras Blender | Cold Foam" ? "Jarras" : module.activity;
   $("#quantity-heading").textContent = module.title;
   $("#quantity-response-table").closest("table").querySelector("thead tr").innerHTML =
-    `<th>Tienda</th><th>DM</th>${module.metrics.map((metric) => `<th>${esc(metric.label)}</th>`).join("")}<th>Evidencia</th>`;
+    `<th>Tienda</th><th>DM</th>${module.metrics.map((metric) => `<th>${esc(metric.label)}</th>`).join("")}<th>${esc(module.totalLabel || "Piezas totales")}</th>${module.percentageMetric ? `<th>${esc(module.percentageLabel)}</th>` : ""}<th>Evidencia</th>`;
 
   const eligibleStores = filteredStores().length;
   const responses = filteredQuantityResponses(module)
@@ -255,6 +273,7 @@ function renderQuantityModule() {
     responses.reduce((sum, item) => sum + Number(item.quantities?.[metric.key] || 0), 0),
   ]));
   totals.total = Object.values(totals).reduce((sum, value) => sum + value, 0);
+  const participation = module.percentageMetric && totals.total ? totals[module.percentageMetric] / totals.total * 100 : null;
 
   $("#quantity-response-chip").textContent = `${number(responses.length)} de ${number(eligibleStores)} tiendas`;
   $("#quantity-response-rate").textContent = percent(responseRate);
@@ -264,17 +283,28 @@ function renderQuantityModule() {
     <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}</small></td>
     <td>${esc(item.dm)}</td>
     ${module.metrics.map((metric) => `<td><strong>${number(item.quantities[metric.key])}</strong></td>`).join("")}
+    <td><strong>${number(item.quantities.total)}</strong></td>
+    ${module.percentageMetric ? `<td><strong>${item.quantities.percentage == null ? "—" : percent(item.quantities.percentage)}</strong></td>` : ""}
     <td>${item.evidenceLinkPublished && item.evidenceUrl
       ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
       : "Validada"}</td>
-  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 3}"><div class="empty-state">Aún no hay respuestas completas en este filtro.</div></td></tr>`;
+  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + (module.percentageMetric ? 5 : 4)}"><div class="empty-state">Aún no hay respuestas completas en este filtro.</div></td></tr>`;
 
   $("#quantity-totals").innerHTML = [
     ...module.metrics.map((metric) => [number(totals[metric.key]), metric.label]),
-    [number(totals.total), "Piezas totales"],
-  ].map(([value, label], index) => `<article class="quantity-total${index === module.metrics.length ? " total" : ""}"><strong>${value}</strong><span>${esc(label)}</span></article>`).join("");
+    [number(totals.total), module.totalLabel || "Piezas totales"],
+    ...(module.percentageMetric ? [[participation == null ? "—" : percent(participation), module.percentageLabel]] : []),
+  ].map(([value, label], index) => `<article class="quantity-total${index >= module.metrics.length ? " total" : ""}"><strong>${value}</strong><span>${esc(label)}</span></article>`).join("");
   const maximum = Math.max(...module.metrics.map((metric) => totals[metric.key]), 1);
   $("#quantity-bars").innerHTML = module.metrics.map((metric) => `<div><span>${esc(metric.label)}</span><b>${number(totals[metric.key])}</b><i><em style="--progress:${totals[metric.key] / maximum * 100}%"></em></i></div>`).join("");
+  const breakdowns = $("#quantity-breakdowns");
+  breakdowns.hidden = !module.percentageMetric;
+  if (module.percentageMetric) {
+    const columns = [...module.metrics.map((metric) => metric.label), module.totalLabel || "Total", module.percentageLabel];
+    const makeTable = (title, groups) => `<div class="quantity-breakdown"><h4>${esc(title)}</h4><div class="table-shell quantity-group-shell"><table><thead><tr><th>Ámbito</th><th>Tiendas</th>${columns.map((label) => `<th>${esc(label)}</th>`).join("")}</tr></thead><tbody>${groups.map((group) => `<tr><td>${esc(group.labels.join(" · "))}</td><td>${number(group.stores)}</td>${module.metrics.map((metric) => `<td>${number(group.totals[metric.key])}</td>`).join("")}<td>${number(group.totals.total)}</td><td><strong>${group.totals.percentage == null ? "—" : percent(group.totals.percentage)}</strong></td></tr>`).join("") || `<tr><td colspan="${columns.length + 2}">Sin respuestas</td></tr>`}</tbody></table></div></div>`;
+    breakdowns.innerHTML = makeTable("Por región", quantityRollup(responses, module.metrics, ["region"], module.percentageMetric))
+      + makeTable("Por portafolio (DM)", quantityRollup(responses, module.metrics, ["region", "dm"], module.percentageMetric));
+  } else breakdowns.innerHTML = "";
 }
 
 function activeSurveyModule() {
@@ -947,12 +977,15 @@ function buildExcelSpec() {
     return [index + 1, activity.name, completed, pending, value, activity.commitmentDateDisplay || "Sin fecha", { value: decision.status, style: decision.style }, { value: decision.action, style: decision.style }];
   });
   const quantityModule = activeQuantityModule();
-  const quantityRows = quantityModule ? filteredQuantityResponses(quantityModule)
+  const quantityResponses = quantityModule ? filteredQuantityResponses(quantityModule) : [];
+  const ratioModule = Boolean(quantityModule?.percentageMetric);
+  const quantityRows = quantityModule ? quantityResponses
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
     .map((item) => [
-      item.ceco, item.store, item.dm,
+      item.ceco, item.store, ...ratioModule ? [item.region] : [], item.dm,
       ...quantityModule.metrics.map((metric) => Number(item.quantities[metric.key] || 0)),
-      Number(item.quantities.total || 0), item.evidenceLinkPublished ? item.evidenceUrl : "Validada",
+      Number(item.quantities.total || 0), ...ratioModule ? [item.quantities.percentage == null ? "" : {value: item.quantities.percentage / 100, style: 3}] : [],
+      item.evidenceLinkPublished ? item.evidenceUrl : "Validada",
     ]) : [];
   const evidenceRows = state.data.submissions
     .filter((entry) => entry.valid && entry.evidenceLinkPublished && storesByCeco.has(entry.ceco)
@@ -1001,8 +1034,14 @@ function buildExcelSpec() {
       },
       ...(quantityModule ? [{
         name: quantityModule.activity === "Jarras Blender | Cold Foam" ? "Jarras" : quantityModule.activity,
-        rows: [[quantityModule.title, ...Array(quantityModule.metrics.length + 4).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + 4).fill("")], [], ["CeCo", "Tienda", "DM", ...quantityModule.metrics.map((metric) => metric.label), "Piezas totales", "Evidencia"], ...quantityRows],
-        widths: [13, 30, 32, ...quantityModule.metrics.map(() => 20), 17, 42], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + 5)}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + 5)}2`], headerRows: [4], countColumns: quantityModule.metrics.map((_, index) => index + 4).concat(quantityModule.metrics.length + 4), freezeRow: 4, autoFilter: `A4:${spreadsheetColumn(quantityModule.metrics.length + 5)}${4 + quantityRows.length}`, tabColor: "FFD8A243",
+        rows: [[quantityModule.title, ...Array(quantityModule.metrics.length + (ratioModule ? 6 : 4)).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + (ratioModule ? 6 : 4)).fill("")], [], ["CeCo", "Tienda", ...ratioModule ? ["Región"] : [], "DM", ...quantityModule.metrics.map((metric) => metric.label), quantityModule.totalLabel || "Piezas totales", ...ratioModule ? [quantityModule.percentageLabel] : [], "Evidencia"], ...quantityRows],
+        widths: [13, 30, ...ratioModule ? [18] : [], 32, ...quantityModule.metrics.map(() => 20), 20, ...ratioModule ? [16] : [], 42], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 7 : 5))}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 7 : 5))}2`], headerRows: [4], countColumns: quantityModule.metrics.map((_, index) => index + (ratioModule ? 5 : 4)).concat(quantityModule.metrics.length + (ratioModule ? 5 : 4)), percentColumns: ratioModule ? [quantityModule.metrics.length + 6] : [], freezeRow: 4, autoFilter: `A4:${spreadsheetColumn(quantityModule.metrics.length + (ratioModule ? 7 : 5))}${4 + quantityRows.length}`, tabColor: "FFD8A243",
+      }] : []),
+      ...(ratioModule ? [{
+        name: "Participación",
+        rows: [["Consolidado de participación", ...Array(quantityModule.metrics.length + 5).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(quantityModule.metrics.length + 5).fill("")], [], ["Ámbito", "Región", "Portafolio DM", "Tiendas", ...quantityModule.metrics.map((metric) => metric.label), quantityModule.totalLabel, quantityModule.percentageLabel],
+          ...[["Región", quantityRollup(quantityResponses, quantityModule.metrics, ["region"], quantityModule.percentageMetric)], ["Portafolio", quantityRollup(quantityResponses, quantityModule.metrics, ["region", "dm"], quantityModule.percentageMetric)]].flatMap(([kind, groups]) => groups.map((group) => [kind, group.labels[0], kind === "Portafolio" ? group.labels[1] : "", group.stores, ...quantityModule.metrics.map((metric) => group.totals[metric.key]), group.totals.total, group.totals.percentage == null ? "" : {value: group.totals.percentage / 100, style: 3}]))],
+        widths: [16, 20, 34, 12, ...quantityModule.metrics.map(() => 18), 20, 16], merges: [`A1:${spreadsheetColumn(quantityModule.metrics.length + 6)}1`, `A2:${spreadsheetColumn(quantityModule.metrics.length + 6)}2`], headerRows: [4], percentColumns: [quantityModule.metrics.length + 6], countColumns: [4, ...quantityModule.metrics.map((_, index) => index + 5), quantityModule.metrics.length + 5], freezeRow: 4, tabColor: "FF006241",
       }] : []),
     ],
   };

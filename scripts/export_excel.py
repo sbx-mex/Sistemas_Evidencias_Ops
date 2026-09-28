@@ -247,11 +247,14 @@ def build_workbook(data: dict) -> Workbook:
 
     for module in data.get("quantityModules", []):
         metrics = module["metrics"]
-        width = len(metrics) + 5
+        has_percentage = bool(module.get("percentageMetric"))
+        width = len(metrics) + (7 if has_percentage else 5)
         sheet_name = "Jarras" if module["activity"] == "Jarras Blender | Cold Foam" else module["activity"][:31]
         sheet = workbook.create_sheet(sheet_name)
         style_title(sheet, width, module["title"], f"{region} · Corte {cut}")
-        sheet.append(["CeCo", "Tienda", "DM", *[metric["label"] for metric in metrics], "Piezas totales", "Evidencia"])
+        sheet.append(["CeCo", "Tienda", *(["Región"] if has_percentage else []), "DM",
+                      *[metric["label"] for metric in metrics], module.get("totalLabel", "Piezas totales"),
+                      *([module["percentageLabel"]] if has_percentage else []), "Evidencia"])
         records = sorted(
             (item for item in data.get("submissions", []) if item.get("valid")
              and item.get("activity") == module["activity"] and item.get("quantities")),
@@ -259,15 +262,25 @@ def build_workbook(data: dict) -> Workbook:
         )
         for item in records:
             quantities = item["quantities"]
-            sheet.append([item.get("ceco"), item.get("store"), item.get("dm"),
+            sheet.append([item.get("ceco"), item.get("store"), *([item.get("region")] if has_percentage else []), item.get("dm"),
                           *[quantities[metric["key"]] for metric in metrics], quantities["total"],
+                          *([quantities["percentage"] / 100 if quantities["percentage"] is not None else None] if has_percentage else []),
                           item.get("evidenceUrl", "Validada")])
         last_row = sheet.max_row
         total_row = last_row + 1
-        sheet.cell(total_row, 3, "Consolidado")
-        for column in range(4, width):
+        first_metric_column = 5 if has_percentage else 4
+        total_column = first_metric_column + len(metrics)
+        sheet.cell(total_row, 4 if has_percentage else 3, "Consolidado")
+        for column in range(first_metric_column, total_column + 1):
             letter = get_column_letter(column)
             sheet.cell(total_row, column, f"=SUM({letter}5:{letter}{last_row})" if last_row >= 5 else 0)
+        if has_percentage:
+            numerator_column = first_metric_column + next(index for index, metric in enumerate(metrics)
+                                                    if metric["key"] == module["percentageMetric"])
+            numerator_letter = get_column_letter(numerator_column)
+            total_letter = get_column_letter(total_column)
+            sheet.cell(total_row, total_column + 1,
+                       f'=IF({total_letter}{total_row}=0,"",{numerator_letter}{total_row}/{total_letter}{total_row})')
         style_header(sheet, 4, 1, width)
         style_table(sheet, 5, total_row, width)
         for cell in sheet[total_row][:width]:
@@ -277,9 +290,12 @@ def build_workbook(data: dict) -> Workbook:
         sheet.auto_filter.ref = f"A4:{get_column_letter(width)}{last_row}"
         for row in range(5, total_row + 1):
             sheet[f"A{row}"].number_format = "@"
-            for column in range(4, width):
+            for column in range(first_metric_column, total_column + 1):
                 sheet.cell(row=row, column=column).number_format = "#,##0"
-        set_widths(sheet, [13, 28, 30, *[20 for _ in metrics], 17, 46])
+            if has_percentage:
+                sheet.cell(row=row, column=total_column + 1).number_format = "0.0%"
+        set_widths(sheet, [13, 28, *([18] if has_percentage else []), 30,
+                           *[20 for _ in metrics], 20, *([16] if has_percentage else []), 46])
         sheet.print_title_rows = "1:4"
         sheet.page_setup.orientation = "landscape"
         sheet.page_setup.fitToWidth = 1

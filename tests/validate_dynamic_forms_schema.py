@@ -1003,7 +1003,7 @@ def main() -> None:
         inactive_book.save(inactive_cms)
         inactive_book.close()
         inactive_payload = build_payload(tied_jars, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json", inactive_cms)
-        assert [item["activity"] for item in inactive_payload["quantityModules"]] == ["FHW"]
+        assert [item["activity"] for item in inactive_payload["quantityModules"]] == ["FHW", "Va X Cuenta"]
         assert inactive_payload["submissions"] == []
         assert inactive_payload["summary"]["completedCompletions"] == 0
 
@@ -1098,6 +1098,44 @@ def main() -> None:
         assert all(module["activity"] != "FHW" for module in hidden["quantityModules"])
         assert hidden["submissions"] == []
         assert hidden["summary"]["completedCompletions"] == 0
+
+        # Va X Cuenta: dos cantidades enteras, cero válido y porcentaje con
+        # denominador calculado. Un registro posterior inválido no conserva el
+        # porcentaje anterior. Forms puede cambiar el orden de las preguntas.
+        donate = temp / "donation-reordered.xlsx"
+        donate_headers = BASE + ["No Dona", "CeCo", ACTIVITY, "Si Dona", "Evidencia del avance"]
+        start, finish = timestamps(400)
+        save_book(donate, donate_headers, [
+            [400, start, finish, "", "Prueba", 1, "38115", "Va X Cuenta", 14, ""],
+            [401, start, finish + timedelta(seconds=1), "", "Prueba", 0, "38119", "Va X Cuenta", 0, ""],
+            [402, start, finish + timedelta(seconds=2), "", "Prueba", 0, "38120", "Va X Cuenta", "2.5", ""],
+        ])
+        donation = build_payload(donate, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        module = next(item for item in donation["quantityModules"] if item["activity"] == "Va X Cuenta")
+        assert module["totalLabel"] == "Plantilla reportada" and module["percentageMetric"] == "yesDonate"
+        assert module["totals"] == {"yesDonate": 14, "noDonate": 1, "total": 15, "percentage": 93.3}
+        assert module["answeredStores"] == 2
+        assert donation["quality"]["responseSchema"]["quantityHeaderMap"]["Si Dona"] == "donationYes"
+        answers = {item["ceco"]: item["quantities"] for item in donation["submissions"] if item["activity"] == "Va X Cuenta"}
+        assert answers == {
+            "38115": {"yesDonate": 14, "noDonate": 1, "total": 15, "percentage": 93.3},
+            "38119": {"yesDonate": 0, "noDonate": 0, "total": 0, "percentage": None},
+        }
+        assert sum(item["totals"]["total"] for item in module["byRegion"]) == 15
+        assert sum(item["totals"]["total"] for item in module["byPortfolio"]) == 15
+        assert donation["quality"]["quantityResponseIssues"] == [{"row": 4, "issue": "Sí dona: fuera de rango"}]
+        donation_sheet = build_workbook(donation)["Va X Cuenta"]
+        assert donation_sheet["H7"].value == '=IF(G7=0,"",E7/G7)'
+        assert donation_sheet["H5"].number_format == "0.0%"
+
+        later_invalid = temp / "donation-later-invalid.xlsx"
+        save_book(later_invalid, donate_headers, [
+            [400, start, finish, "", "Prueba", 1, "38115", "Va X Cuenta", 14, ""],
+            [403, start, finish + timedelta(seconds=3), "", "Prueba", -1, "38115", "Va X Cuenta", 14, ""],
+        ])
+        invalid_donation = build_payload(later_invalid, ROOT / "cms/Directorio.xlsx", ROOT / "config/settings.json")
+        invalid_module = next(item for item in invalid_donation["quantityModules"] if item["activity"] == "Va X Cuenta")
+        assert invalid_module["answeredStores"] == 0 and invalid_module["totals"]["percentage"] is None
 
         # Escenario 14: horario festivo cuenta Sí/No en general y publica sólo
         # horarios con valor. El último registro de cada tienda prevalece.

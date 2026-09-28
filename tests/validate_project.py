@@ -293,6 +293,7 @@ published_without_links = [row for row in published if not row.get("evidenceUrl"
 forms_responses, forms_schema = load_responses(
     ROOT / "cms" / "Sistema de Evidencias OPS.xlsx",
     [item["name"] for item in data.get("activities", [])],
+    cms_settings.get("_quantityConfig", {}),
 )
 active_by_text, active_by_compact = active_activity_catalog(data.get("activities", []))
 if cutover_quality:
@@ -302,6 +303,7 @@ if cutover_quality:
     baseline_responses, _ = load_responses(
         configured_cutover["baseline"],
         [item["name"] for item in data.get("activities", [])],
+        cms_settings.get("_quantityConfig", {}),
     )
     forms_responses = [
         {**row, "sourceOrder": 0}
@@ -351,7 +353,7 @@ for row in forms_responses:
         continue
     not_applicable = bool(row["explicitNo"])
     quantity_complete = True
-    quantity_config = QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
+    quantity_config = cms_settings.get("_quantityConfig", {}).get(compact_key(activity)) or QUANTITY_ACTIVITY_CONFIG.get(compact_key(activity))
     if quantity_config:
         quantity_complete = all(
             parse_quantity(row.get(metric["field"]), metric.get("minimum", quantity_config["minimum"]), metric.get("maximum", quantity_config["maximum"])) is not None
@@ -532,8 +534,8 @@ if data != fresh:
 approve("03 · Python sincronizado con la última actualización")
 
 static_excel = load_workbook(ROOT / "exports" / "Resumen_Evidencias_OPS.xlsx", data_only=False)
-if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Evidencias", "Jarras", "FHW"]:
-    fail("El Excel Python no contiene las vistas ejecutivas y las cantidades FHW")
+if static_excel.sheetnames != ["Resumen", "Tiendas", "Actividades", "Evidencias", "Jarras", "FHW", "Va X Cuenta"]:
+    fail("El Excel Python no contiene el desglose Va X Cuenta")
 refrigerator_excel = [row for row in static_excel["Evidencias"].iter_rows(min_row=5, values_only=True)
                       if row[2] == "Organización Refrigeradores Back"]
 expected_refrigerator_files = [
@@ -561,6 +563,20 @@ if jar_headers != ["CeCo", "Tienda", "DM", "Jarras Blender", "Jarras Cold Foam",
     fail("La hoja Jarras no separa respuestas y piezas")
 if [cell.value for cell in static_excel["FHW"][4]] != ["CeCo", "Tienda", "DM", "Cubiertos FHW", "Tazas 3 Oz", "Piezas totales", "Evidencia"]:
     fail("La hoja FHW no incluye las dos respuestas numéricas")
+donation = next((module for module in data["quantityModules"] if module["activity"] == "Va X Cuenta"), None)
+if not donation or donation["totals"] != {"yesDonate": 13, "noDonate": 2, "total": 15, "percentage": 86.7}:
+    fail("Va X Cuenta no consolida 13 Sí y 2 No sobre 15 personas")
+if sorted((row["region"], row["totals"]["total"]) for row in donation["byRegion"]) != [("Centro Norte", 8), ("Centro Sur", 7)]:
+    fail("El consolidado regional de donación no coincide con Forms")
+donation_rows = list(static_excel["Va X Cuenta"].iter_rows(min_row=5, max_row=6, values_only=True))
+if [cell.value for cell in static_excel["Va X Cuenta"][4]] != ["CeCo", "Tienda", "Región", "DM", "Sí dona", "No dona", "Plantilla reportada", "% Sí dona", "Evidencia"]:
+    fail("Va X Cuenta no publica # y % por tienda")
+if sorted((row[0], row[4], row[5], row[6], round(row[7], 3)) for row in donation_rows) != [
+    ("38226", 5, 2, 7, 0.714), ("38925", 8, 0, 8, 1.0),
+]:
+    fail("Los porcentajes por tienda no coinciden con las cantidades de Forms")
+if static_excel["Va X Cuenta"]["H7"].value != '=IF(G7=0,"",E7/G7)' or static_excel["Va X Cuenta"]["H7"].number_format != "0.0%":
+    fail("El consolidado Excel Va X Cuenta carece de porcentaje recalculable")
 jar_sheet = static_excel["Jarras"]
 total_row = 5 + len(expected_jars)
 if jar_sheet.max_row != total_row or jar_sheet.cell(total_row, 3).value != "Consolidado":
@@ -607,7 +623,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -707,7 +723,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v36", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v37", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:

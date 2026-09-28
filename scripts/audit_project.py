@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import re
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -68,7 +68,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Quiénes respondieron", "Consolidado de piezas", "quantity-response-table", "quantity-totals", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -161,7 +161,7 @@ for source_key, source_path, label in (
     if data.get("sources", {}).get(source_key) != source_fingerprints[source_key]:
         issues.append(f"La fuente {label} cambió sin reconstruir data/dashboard.json")
 
-if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v36", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
+if not all(token in texts["service-worker.js"] for token in ("sistema-evidencias-ops-v37", "staleWhileRevalidate", "CACHE_PREFIX", 'cache: "no-store"', "skipWaiting", "clients.claim", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp")):
     issues.append("La PWA no fuerza lectura de red ni limpia versiones anteriores")
 if any(token not in js for token in ("loadScriptOnce", "loadExportEngine")) or 'src="./pdf-export.js"' in html or 'src="./xlsx-export.js"' in html:
     issues.append("Los motores de exportación no se cargan bajo demanda")
@@ -248,7 +248,7 @@ for key, config in numeric_config.items():
         module = next((item for item in data.get("quantityModules", []) if compact_key(item.get("activity")) == key), None)
         if not module or [(item["key"], item["minimum"], item["maximum"]) for item in module["metrics"]] != [
             (metric["key"], metric["minimum"], metric["maximum"]) for metric in config["metrics"]
-        ]:
+        ] or module.get("percentageMetric") != config.get("percentageMetric") or module.get("totalLabel") != config.get("totalLabel", "Piezas totales"):
             issues.append(f"El módulo numérico no coincide con el CMS: {config['activity']}")
 evidence_header_matches = response_schema.get("evidenceHeaderMatch", {})
 evidence_header_map = response_schema.get("evidenceHeaderMap", {})
@@ -353,8 +353,28 @@ for module in data.get("quantityModules", []):
         elif values.get("total") != sum(values[key] for key in metric_keys):
             issues.append("Las piezas totales de una tienda no coinciden")
     totals = {key: sum(item.get("quantities", {}).get(key, 0) for item in records) for key in metric_keys}
-    if module.get("answeredStores") != len(records) or module.get("totals") != {**totals, "total": sum(totals.values())}:
+    totals["total"] = sum(totals.values())
+    numerator = module.get("percentageMetric")
+    if numerator:
+        totals["percentage"] = round(totals[numerator] / totals["total"] * 100, 1) if totals["total"] else None
+        if any(item["quantities"].get("percentage") != (round(item["quantities"][numerator] / item["quantities"]["total"] * 100, 1)
+                 if item["quantities"]["total"] else None) for item in records):
+            issues.append("El porcentaje por tienda no coincide con las cantidades")
+    if module.get("answeredStores") != len(records) or module.get("totals") != totals:
         issues.append("El consolidado de piezas no coincide con las respuestas vigentes")
+    for grouping, fields in (("byRegion", ("region",)), ("byPortfolio", ("region", "dm"))):
+        buckets = defaultdict(list)
+        for item in records:
+            buckets[tuple(item[field] for field in fields)].append(item)
+        expected = []
+        for key, members in sorted(buckets.items()):
+            values = {metric: sum(item["quantities"][metric] for item in members) for metric in metric_keys}
+            values["total"] = sum(values.values())
+            if numerator:
+                values["percentage"] = round(values[numerator] / values["total"] * 100, 1) if values["total"] else None
+            expected.append({**dict(zip(fields, key)), "answeredStores": len(members), "totals": values})
+        if module.get(grouping) != expected:
+            issues.append(f"El consolidado {grouping} no coincide con las tiendas")
 if data.get("quality", {}).get("duplicateValidResponses", 0) < 0:
     issues.append("El contador de respuestas históricas deduplicadas es inválido")
 if quality.get("unresolvedUnsafeEvidenceRows"):

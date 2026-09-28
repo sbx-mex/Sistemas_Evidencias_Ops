@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "70087c957046ed33",
+  "buildVersion": "2e7e4cefb3eccad2",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T05:55:37+00:00",
+  "generatedAt": "2026-09-28T15:06:32+09:00",
   "lastUpdated": "2026-09-27T16:58:09",
   "lastUpdatedDisplay": "27/09/2026 16:58",
   "report": {
@@ -121,7 +121,7 @@
       "excludedStatusCounts": {}
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "14bea7899ea3f3caaa9ec0546e8d8a826805fb3b84df4ebeffca43d36a6b9cf7",
+    "cmsSha256": "ab84d425fc8c6fbbeb80c67727b41fce797a7d220c8874c0f3b2a3da8bdb68eb",
     "settingsSha256": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524"
   },
   "summary": {
@@ -463,7 +463,9 @@
         "Jarra Blender": "blenderJars",
         "Jarras Cold Foam": "coldFoamJars",
         "Cubiertos FHW": "fhwCutlery",
-        "Tazas 3 Oz": "fhwCups3Oz"
+        "Tazas 3 Oz": "fhwCups3Oz",
+        "Si Dona": "donationYes",
+        "No Dona": "donationNo"
       },
       "evidenceHeaders": [
         "Evidencia_Rack_FHW",
@@ -18085,6 +18087,7 @@
       "title": "Jarras en buen estado",
       "minimum": 0,
       "maximum": 5,
+      "totalLabel": "Piezas totales",
       "metrics": [
         {
           "key": "blender",
@@ -18104,13 +18107,185 @@
         "blender": 218,
         "coldFoam": 128,
         "total": 346
-      }
+      },
+      "byRegion": [
+        {
+          "region": "Centro Norte",
+          "answeredStores": 23,
+          "totals": {
+            "blender": 49,
+            "coldFoam": 27,
+            "total": 76
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "answeredStores": 97,
+          "totals": {
+            "blender": 164,
+            "coldFoam": 99,
+            "total": 263
+          }
+        },
+        {
+          "region": "Centro Sur",
+          "answeredStores": 3,
+          "totals": {
+            "blender": 5,
+            "coldFoam": 2,
+            "total": 7
+          }
+        }
+      ],
+      "byPortfolio": [
+        {
+          "region": "Centro Norte",
+          "dm": "Enrique Cesar Flores",
+          "answeredStores": 10,
+          "totals": {
+            "blender": 20,
+            "coldFoam": 12,
+            "total": 32
+          }
+        },
+        {
+          "region": "Centro Norte",
+          "dm": "Nancy Carolina Rodriguez Medina",
+          "answeredStores": 2,
+          "totals": {
+            "blender": 3,
+            "coldFoam": 1,
+            "total": 4
+          }
+        },
+        {
+          "region": "Centro Norte",
+          "dm": "Vanessa Carreño Rios",
+          "answeredStores": 1,
+          "totals": {
+            "blender": 2,
+            "coldFoam": 1,
+            "total": 3
+          }
+        },
+        {
+          "region": "Centro Norte",
+          "dm": "Yazmin Chabela Guadarrama",
+          "answeredStores": 10,
+          "totals": {
+            "blender": 24,
+            "coldFoam": 13,
+            "total": 37
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Adriana Alejandra Tanus Buhler",
+          "answeredStores": 12,
+          "totals": {
+            "blender": 16,
+            "coldFoam": 11,
+            "total": 27
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Andrea Nava Guzman",
+          "answeredStores": 8,
+          "totals": {
+            "blender": 17,
+            "coldFoam": 7,
+            "total": 24
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Areli Anahi Lazcano Lezama",
+          "answeredStores": 12,
+          "totals": {
+            "blender": 22,
+            "coldFoam": 14,
+            "total": 36
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Daniel Flores Maldonado",
+          "answeredStores": 11,
+          "totals": {
+            "blender": 15,
+            "coldFoam": 9,
+            "total": 24
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Erika Julieta Contreras Aguilera",
+          "answeredStores": 15,
+          "totals": {
+            "blender": 24,
+            "coldFoam": 12,
+            "total": 36
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Jose De Jesus Magos Arzaluz",
+          "answeredStores": 15,
+          "totals": {
+            "blender": 22,
+            "coldFoam": 16,
+            "total": 38
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Juan Jesus Zuñiga Flores",
+          "answeredStores": 11,
+          "totals": {
+            "blender": 22,
+            "coldFoam": 14,
+            "total": 36
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Manuel Alejandro Avila Molina",
+          "answeredStores": 13,
+          "totals": {
+            "blender": 26,
+            "coldFoam": 16,
+            "total": 42
+          }
+        },
+        {
+          "region": "Centro Sur",
+          "dm": "Ariana Janet Gutierrez Martinez",
+          "answeredStores": 2,
+          "totals": {
+            "blender": 3,
+            "coldFoam": 1,
+            "total": 4
+          }
+        },
+        {
+          "region": "Centro Sur",
+          "dm": "Jesus Antonio Elguera Flores",
+          "answeredStores": 1,
+          "totals": {
+            "blender": 2,
+            "coldFoam": 1,
+            "total": 3
+          }
+        }
+      ]
     },
     {
       "activity": "FHW",
       "title": "Insumos FHW disponibles",
       "minimum": 0,
       "maximum": 40,
+      "totalLabel": "Piezas totales",
       "metrics": [
         {
           "key": "cutlery",
@@ -18130,7 +18305,85 @@
         "cutlery": 0,
         "cups3Oz": 0,
         "total": 0
-      }
+      },
+      "byRegion": [],
+      "byPortfolio": []
+    },
+    {
+      "activity": "Va X Cuenta",
+      "title": "Participación Va X Cuenta",
+      "minimum": 0,
+      "maximum": 1000,
+      "totalLabel": "Plantilla reportada",
+      "percentageMetric": "yesDonate",
+      "percentageLabel": "% Sí dona",
+      "metrics": [
+        {
+          "key": "yesDonate",
+          "label": "Sí dona",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        {
+          "key": "noDonate",
+          "label": "No dona",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      ],
+      "answeredStores": 2,
+      "totals": {
+        "yesDonate": 13,
+        "noDonate": 2,
+        "total": 15,
+        "percentage": 86.7
+      },
+      "byRegion": [
+        {
+          "region": "Centro Norte",
+          "answeredStores": 1,
+          "totals": {
+            "yesDonate": 8,
+            "noDonate": 0,
+            "total": 8,
+            "percentage": 100.0
+          }
+        },
+        {
+          "region": "Centro Sur",
+          "answeredStores": 1,
+          "totals": {
+            "yesDonate": 5,
+            "noDonate": 2,
+            "total": 7,
+            "percentage": 71.4
+          }
+        }
+      ],
+      "byPortfolio": [
+        {
+          "region": "Centro Norte",
+          "dm": "Yazmin Haydee Garcia Gonzalez",
+          "answeredStores": 1,
+          "totals": {
+            "yesDonate": 8,
+            "noDonate": 0,
+            "total": 8,
+            "percentage": 100.0
+          }
+        },
+        {
+          "region": "Centro Sur",
+          "dm": "Ariana Janet Gutierrez Martinez",
+          "answeredStores": 1,
+          "totals": {
+            "yesDonate": 5,
+            "noDonate": 2,
+            "total": 7,
+            "percentage": 71.4
+          }
+        }
+      ]
     }
   ],
   "surveyModules": [],
@@ -18176,7 +18429,13 @@
       "status": "Realizada",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
-      "valid": true
+      "valid": true,
+      "quantities": {
+        "yesDonate": 8,
+        "noDonate": 0,
+        "total": 8,
+        "percentage": 100.0
+      }
     },
     {
       "id": "respuesta-e89591c7af6b27df",
@@ -18241,7 +18500,13 @@
       "status": "Realizada",
       "evidenceAvailable": false,
       "evidenceLinkPublished": false,
-      "valid": true
+      "valid": true,
+      "quantities": {
+        "yesDonate": 5,
+        "noDonate": 2,
+        "total": 7,
+        "percentage": 71.4
+      }
     },
     {
       "id": "respuesta-090dfb84e276584a",

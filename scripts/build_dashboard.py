@@ -1169,6 +1169,11 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             "orden", "actividad", "clave", "campo", "encabezado forms",
             "etiqueta", "minimo", "maximo", "activo", "titulo modulo",
         })
+        numeric_headers = next(numeric_ws.iter_rows(min_row=numeric_header, max_row=numeric_header, values_only=True))
+        percentage_col = next((index for index, cell in enumerate(numeric_headers)
+                               if key_text(cell) == key_text("Porcentaje del total")), None)
+        total_label_col = next((index for index, cell in enumerate(numeric_headers)
+                                if key_text(cell) == key_text("Etiqueta total")), None)
         active_names = {compact_key(item["name"]): item["name"] for item in activities}
         seen_fields: set[str] = set()
         seen_headers: set[str] = set()
@@ -1201,12 +1206,21 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
                 "title": clean_text(row[numeric_cols["titulo modulo"]]) or active_names[activity_key],
                 "metrics": [], "minimum": minimum, "maximum": maximum,
             })
+            if total_label_col is not None and total_label_col < len(row) and clean_text(row[total_label_col]):
+                total_label = clean_text(row[total_label_col])
+                if config.get("totalLabel", total_label) != total_label:
+                    raise ValueError(f"Etiqueta total contradictoria en el CMS: {config['activity']}")
+                config["totalLabel"] = total_label
             config["minimum"] = min(config["minimum"], minimum)
             config["maximum"] = max(config["maximum"], maximum)
             config["metrics"].append({
                 "key": key, "field": field, "label": label, "aliases": (header,),
                 "minimum": minimum, "maximum": maximum, "order": order,
             })
+            if percentage_col is not None and percentage_col < len(row) and is_yes(row[percentage_col]):
+                if config.get("percentageMetric"):
+                    raise ValueError(f"Sólo puede haber un numerador porcentual por actividad: {config['activity']}")
+                config["percentageMetric"] = key
         for config in numeric_config.values():
             keys = [metric["key"] for metric in config["metrics"]]
             if len(keys) != len(set(keys)):
@@ -1919,6 +1933,10 @@ def build_payload(
                 **quantities,
                 "total": sum(quantities.values()),
             }
+            numerator = quantity_config.get("percentageMetric")
+            if numerator:
+                total = public["quantities"]["total"]
+                public["quantities"]["percentage"] = round(quantities[numerator] / total * 100, 1) if total else None
         if settings.get("publishEvidenceLinks") and evidence_url:
             public["evidenceUrl"] = evidence_url
             if len(validated_files) > 1:
@@ -1971,6 +1989,20 @@ def build_payload(
         if state["valid"] or state["notApplicable"]
     ]
     quantity_modules = []
+    def quantity_group(records: list[dict[str, Any]], group_fields: tuple[str, ...], config: dict[str, Any]) -> list[dict[str, Any]]:
+        groups: dict[tuple[str, ...], list[dict[str, Any]]] = defaultdict(list)
+        for item in records:
+            groups[tuple(item[field] for field in group_fields)].append(item)
+        result = []
+        for group, members in sorted(groups.items()):
+            totals = {metric["key"]: sum(item["quantities"][metric["key"]] for item in members)
+                      for metric in config["metrics"]}
+            totals["total"] = sum(totals.values())
+            numerator = config.get("percentageMetric")
+            if numerator:
+                totals["percentage"] = round(totals[numerator] / totals["total"] * 100, 1) if totals["total"] else None
+            result.append({**dict(zip(group_fields, group)), "answeredStores": len(members), "totals": totals})
+        return result
     for config in quantity_configs.values():
         if config["activity"] not in activity_names:
             continue
@@ -1982,11 +2014,17 @@ def build_payload(
             metric["key"]: sum(item["quantities"].get(metric["key"], 0) for item in records)
             for metric in config["metrics"]
         }
+        totals["total"] = sum(totals.values())
+        numerator = config.get("percentageMetric")
+        if numerator:
+            totals["percentage"] = round(totals[numerator] / totals["total"] * 100, 1) if totals["total"] else None
         quantity_modules.append({
             "activity": config["activity"],
             "title": config["title"],
             "minimum": config["minimum"],
             "maximum": config["maximum"],
+            "totalLabel": config.get("totalLabel", "Piezas totales"),
+            **({"percentageMetric": numerator, "percentageLabel": f"% {next(metric['label'] for metric in config['metrics'] if metric['key'] == numerator)}"} if numerator else {}),
             "metrics": [
                 {
                     "key": metric["key"], "label": metric["label"],
@@ -1996,7 +2034,9 @@ def build_payload(
                 for metric in config["metrics"]
             ],
             "answeredStores": len(records),
-            "totals": {**totals, "total": sum(totals.values())},
+            "totals": totals,
+            "byRegion": quantity_group(records, ("region",), config),
+            "byPortfolio": quantity_group(records, ("region", "dm"), config),
         })
     survey_modules = []
     for activity_key, config in SURVEY_ACTIVITY_CONFIG.items():

@@ -150,6 +150,13 @@ select { width: 100%; min-height: 42px; border: 1px solid var(--line); border-ra
 .quantity-bars span { color: var(--muted); font-size: .58rem; font-weight: 750; }.quantity-bars b { color: var(--dark); font-size: .68rem; }
 .quantity-bars i { grid-column: 1/-1; height: 9px; overflow: hidden; border-radius: 99px; background: #dfe9e4; }
 .quantity-bars em { display: block; width: var(--progress); height: 100%; border-radius: inherit; background: linear-gradient(90deg,#006241,#d8a243); }
+.quantity-breakdowns { display: grid; gap: 15px; margin-top: 19px; }
+.quantity-breakdowns[hidden] { display: none; }
+.quantity-breakdown h4 { margin: 0 0 8px; color: var(--dark); font-size: .7rem; }
+.quantity-group-shell { max-height: 240px; }
+.quantity-group-shell table { min-width: 520px; }
+.quantity-group-shell th, .quantity-group-shell td { padding: 9px 8px; font-size: .57rem; }
+.quantity-group-shell td strong { color: var(--green); }
 .survey-layout { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: 14px; align-items: start; }
 .survey-layout .panel { min-width: 0; padding: 18px; }
 .survey-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
