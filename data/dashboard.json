@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "432ac6d43a6d7875",
+  "buildVersion": "b83eb8131bdd9d5b",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-28T18:29:23+00:00",
-  "lastUpdated": "2026-09-28T12:26:24",
-  "lastUpdatedDisplay": "28/09/2026 12:26",
+  "generatedAt": "2026-09-28T18:35:16+00:00",
+  "lastUpdated": "2026-09-28T12:33:47",
+  "lastUpdatedDisplay": "28/09/2026 12:33",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "28/09/26 · 12:26 h",
+    "cutOffDisplay": "28/09/26 · 12:33 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 92,
+        "completed": 94,
         "expected": 998,
-        "pending": 906,
-        "compliance": 9.2,
+        "pending": 904,
+        "compliance": 9.4,
         "status": "Atención"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 238,
+        "completed": 240,
         "expected": 719,
-        "pending": 481,
-        "compliance": 33.1,
+        "pending": 479,
+        "compliance": 33.4,
         "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "b444629bf8854238b164366b1770188513a0261641f6b8816acce8f9fb05c18e",
+    "responsesSha256": "d39cc009b6f49b77ccda8357bcaa8f612ce53cbd6b1b67f32c3aad305f5ad677",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 358,
     "activities": 10,
     "expectedCompletions": 3567,
-    "completedCompletions": 429,
-    "compliance": 12.0,
-    "validResponses": 429,
+    "completedCompletions": 433,
+    "compliance": 12.1,
+    "validResponses": 433,
     "storesComplete": 1,
-    "pendingCompletions": 3138,
+    "pendingCompletions": 3134,
     "notApplicableCompletions": 13
   },
   "quality": {
-    "responsesRead": 571,
+    "responsesRead": 575,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 280,
-      "newFormsRowsIncluded": 187,
+      "newFormsRowsRead": 284,
+      "newFormsRowsIncluded": 191,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 93,
@@ -460,7 +460,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 280
+        "CeCo": 284
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -536,7 +536,7 @@
     },
     "notApplicableResponses": 13,
     "notApplicablePairs": 13,
-    "evidenceLinksPublished": 382,
+    "evidenceLinksPublished": 384,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -705,11 +705,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 127,
+      "completedStores": 128,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 231,
-      "compliance": 35.5,
+      "pendingStores": 230,
+      "compliance": 35.8,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -727,11 +727,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 9,
+      "completedStores": 10,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 349,
-      "compliance": 2.5,
+      "pendingStores": 348,
+      "compliance": 2.8,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -749,11 +749,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 47,
+      "completedStores": 49,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 311,
-      "compliance": 13.1,
+      "pendingStores": 309,
+      "compliance": 13.7,
       "deadlineLabel": "Vence en 7 días",
       "deadlineTone": "amber",
       "daysRemaining": 7,
@@ -850,12 +850,12 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 36,
+      "completed": 38,
       "expected": 138,
       "notApplicable": 2,
-      "pending": 102,
+      "pending": 100,
       "pendingStores": 14,
-      "compliance": 26.1,
+      "compliance": 27.5,
       "status": "Atención",
       "rank": 4
     },
@@ -898,6 +898,25 @@
       "rank": 6
     },
     {
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "shortName": "Yazmin Garcia",
+      "photo": "assets/dm/yazmin-garcia.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 13,
+      "completed": 19,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 111,
+      "pendingStores": 13,
+      "compliance": 14.6,
+      "status": "Atención",
+      "rank": 7
+    },
+    {
       "dm": "Jesus Antonio Elguera Flores",
       "shortName": "Jesus Elguera",
       "photo": "assets/dm/jesus-elguera.webp",
@@ -913,25 +932,6 @@
       "pending": 86,
       "pendingStores": 10,
       "compliance": 14.0,
-      "status": "Atención",
-      "rank": 7
-    },
-    {
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "shortName": "Yazmin Garcia",
-      "photo": "assets/dm/yazmin-garcia.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 13,
-      "completed": 17,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 113,
-      "pendingStores": 13,
-      "compliance": 13.1,
       "status": "Atención",
       "rank": 8
     },
@@ -1518,17 +1518,6 @@
     {
       "ceco": "38398",
       "store": "Mexfund Pedregal",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 0,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 10,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38107",
-      "store": "Pedregal",
       "dm": "Cesar Alfonso Castillo Romero",
       "completed": 0,
       "expected": 10,
@@ -3342,6 +3331,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38107",
+      "store": "Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 1,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 9,
+      "compliance": 10.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38957",
       "store": "Avándaro",
       "dm": "Daniel Flores Maldonado",
@@ -4541,17 +4541,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38507",
-      "store": "Espacio Vista del Valle",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38363",
       "store": "Galerias Atizapan",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4576,17 +4565,6 @@
     {
       "ceco": "38270",
       "store": "Lomas Verdes II",
-      "dm": "Yazmin Haydee Garcia Gonzalez",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "43130",
-      "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 1,
       "expected": 10,
@@ -4750,6 +4728,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38507",
+      "store": "Espacio Vista del Valle",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
       "ceco": "38266",
       "store": "San Mateo",
       "dm": "Yazmin Haydee Garcia Gonzalez",
@@ -4763,6 +4752,17 @@
     {
       "ceco": "38925",
       "store": "Star Medica Lomas Verdes",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "43130",
+      "store": "Town Center Nicolás Romero",
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "completed": 2,
       "expected": 10,
@@ -5058,17 +5058,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "43159",
-      "store": "Hospital Angeles del Pedregal II",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 6,
-      "expected": 9,
-      "notApplicable": 1,
-      "pending": 3,
-      "compliance": 66.7,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38604",
       "store": "Cosmopol",
       "dm": "Enrique Cesar Flores",
@@ -5176,6 +5165,17 @@
       "notApplicable": 0,
       "pending": 3,
       "compliance": 70.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "43159",
+      "store": "Hospital Angeles del Pedregal II",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 7,
+      "expected": 9,
+      "notApplicable": 1,
+      "pending": 2,
+      "compliance": 77.8,
       "status": "Seguimiento"
     },
     {
@@ -7448,11 +7448,11 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 9,
       "notApplicable": 1,
-      "compliance": 66.7,
-      "lastUpdate": "2026-09-28T12:23:56",
+      "compliance": 77.8,
+      "lastUpdate": "2026-09-28T12:31:53",
       "activities": {
         "Max & Min": true,
         "Mandil Verde": true,
@@ -7460,7 +7460,7 @@
         "Community Board": false,
         "Señaletica Back": true,
         "Señaletica Lobby": true,
-        "Jarras Blender | Cold Foam": false,
+        "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
@@ -7664,11 +7664,11 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 10.0,
+      "lastUpdate": "2026-09-28T12:30:03",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -7677,7 +7677,7 @@
         "Señaletica Back": false,
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
-        "Organización Refrigeradores Back": false,
+        "Organización Refrigeradores Back": true,
         "Va X Cuenta": false,
         "FHW": false
       },
@@ -17816,11 +17816,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:39:20",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T12:33:47",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -17830,7 +17830,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -18032,11 +18032,11 @@
       "dm": "Yazmin Haydee Garcia Gonzalez",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-09T14:58:06",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-28T12:31:53",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": true,
@@ -18046,7 +18046,7 @@
         "Señaletica Lobby": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false
       },
       "applicableActivities": {
@@ -18157,11 +18157,11 @@
           "maximum": 5
         }
       ],
-      "answeredStores": 127,
+      "answeredStores": 128,
       "totals": {
-        "blender": 223,
-        "coldFoam": 132,
-        "total": 355
+        "blender": 225,
+        "coldFoam": 133,
+        "total": 358
       },
       "byRegion": [
         {
@@ -18184,11 +18184,11 @@
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 7,
+          "answeredStores": 8,
           "totals": {
-            "blender": 10,
-            "coldFoam": 6,
-            "total": 16
+            "blender": 12,
+            "coldFoam": 7,
+            "total": 19
           }
         }
       ],
@@ -18326,11 +18326,11 @@
         {
           "region": "Centro Sur",
           "dm": "Cesar Alfonso Castillo Romero",
-          "answeredStores": 4,
+          "answeredStores": 5,
           "totals": {
-            "blender": 5,
-            "coldFoam": 4,
-            "total": 9
+            "blender": 7,
+            "coldFoam": 5,
+            "total": 12
           }
         },
         {
@@ -18438,21 +18438,21 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 47,
+      "answeredStores": 49,
       "totals": {
-        "yesDonate": 564,
-        "noDonate": 93,
-        "total": 657,
+        "yesDonate": 582,
+        "noDonate": 96,
+        "total": 678,
         "percentage": 85.8
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 45,
+          "answeredStores": 47,
           "totals": {
-            "yesDonate": 548,
-            "noDonate": 91,
-            "total": 639,
+            "yesDonate": 566,
+            "noDonate": 94,
+            "total": 660,
             "percentage": 85.8
           }
         },
@@ -18526,12 +18526,12 @@
         {
           "region": "Centro Norte",
           "dm": "Yazmin Haydee Garcia Gonzalez",
-          "answeredStores": 4,
+          "answeredStores": 6,
           "totals": {
-            "yesDonate": 40,
-            "noDonate": 4,
-            "total": 44,
-            "percentage": 90.9
+            "yesDonate": 58,
+            "noDonate": 7,
+            "total": 65,
+            "percentage": 89.2
           }
         },
         {
@@ -18561,6 +18561,123 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-b95768033eb4305d",
+      "timestamp": "2026-09-28T12:33:47",
+      "timestampDisplay": "28/09/2026 12:33",
+      "activity": "Va X Cuenta",
+      "ceco": "38507",
+      "store": "Espacio Vista del Valle",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_38507",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38507",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 9,
+        "noDonate": 0,
+        "total": 9,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-5d1d9d4d6b8df05e",
+      "timestamp": "2026-09-28T12:31:53",
+      "timestampDisplay": "28/09/2026 12:31",
+      "activity": "Va X Cuenta",
+      "ceco": "43130",
+      "store": "Town Center Nicolás Romero",
+      "dm": "Yazmin Haydee Garcia Gonzalez",
+      "region": "Centro Norte",
+      "evidenceKey": "Va_X_Cuenta_43130",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_43130",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 9,
+        "noDonate": 3,
+        "total": 12,
+        "percentage": 75.0
+      }
+    },
+    {
+      "id": "respuesta-6b9feff84909f3a0",
+      "timestamp": "2026-09-28T12:31:53",
+      "timestampDisplay": "28/09/2026 12:31",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "43159",
+      "store": "Hospital Angeles del Pedregal II",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_43159",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_43159",
+      "evidenceFileName": "17906202978228533674482905004280_Starbucks Hospital A.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 1,
+        "total": 3
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17906202978228533674482905004280_Starbucks%20Hospital%20A.jpg"
+    },
+    {
+      "id": "respuesta-67d8dcd4a0499144",
+      "timestamp": "2026-09-28T12:30:03",
+      "timestampDisplay": "28/09/2026 12:30",
+      "activity": "Organización Refrigeradores Back",
+      "ceco": "38107",
+      "store": "Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Organizacion_Refrigeradores_Back_38107",
+      "evidenceLinkLabel": "Link_Organizacion_Refrigeradores_Back_38107",
+      "evidenceFileName": "IMG_20260909_071544_Ana Laura Gonzalez M.jpg",
+      "evidenceSourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG_20260909_071544_Ana%20Laura%20Gonzalez%20M.jpg",
+      "evidenceFiles": [
+        {
+          "label": "Antes",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Antes",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Peanuts_Linus%26Snoopy/IMG_20260909_071544_Ana%20Laura%20Gonzalez%20M.jpg",
+          "fileName": "IMG_20260909_071544_Ana Laura Gonzalez M.jpg"
+        },
+        {
+          "label": "Después",
+          "sourceHeader": "Evidencia_Organizacion_Refrigeradores_Back_Despues",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues/IMG_20260928_122845_Ana%20Laura%20Gonzalez%20M.jpg",
+          "fileName": "IMG_20260928_122845_Ana Laura Gonzalez M.jpg"
+        }
+      ]
+    },
     {
       "id": "respuesta-2206718fe62444d7",
       "timestamp": "2026-09-28T12:26:24",
