@@ -27,7 +27,7 @@
       <a href="#resumen" aria-current="page">Resumen</a>
       <a href="#organigrama">RD's Centro's</a>
       <a href="#ranking">Ranking DM</a>
-      <a href="#actividades">Actividades</a>
+      <a id="activities-nav" href="#actividades">Actividades</a>
       <a id="quantity-nav" href="#inventario-jarras" hidden>Jarras</a>
       <a id="survey-nav" href="#detalle-actividad" hidden>Detalle</a>
       <a href="#tiendas">Tiendas</a>
@@ -154,7 +154,10 @@
 
     <section id="tiendas" class="dashboard-section" aria-labelledby="stores-heading">
       <header class="section-title"><div><h2 id="stores-heading">Tiendas</h2><p>Detalle operativo ordenado por avance.</p></div></header>
-      <div class="section-block"><div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div></div>
+      <details id="store-details" class="evidence-disclosure" open>
+        <summary><span>Consultar avance general por tienda</span></summary>
+        <div class="evidence-content"><div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div></div>
+      </details>
     </section>
 
     <section id="evidencias" class="dashboard-section evidence-section" aria-labelledby="evidence-heading">

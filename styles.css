@@ -431,6 +431,10 @@ body > footer.campaign-footer { position: relative; display: grid; width: min(ca
 .ratio-mode .quantity-group-shell tbody tr:nth-child(even) th { background: #f8fbf9; }
 .ratio-mode .quantity-group-shell tbody small { display: block; margin-top: 2px; color: var(--muted); font-size: .55rem; font-weight: 650; }
 .ratio-mode .quantity-group-shell td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+.quantity-section.single-store .quantity-layout { grid-template-columns: minmax(0,1fr); }
+.quantity-section .quantity-step, .quantity-section .quantity-progress { display: none; }
+.quantity-section .quantity-panel-head { margin-bottom: 10px; }
+.quantity-section .quantity-table-shell { max-height: min(58vh, 600px); }
 @media (max-width: 1080px) {
   .filters,.filters:has(#quantity-filter-label[hidden]) { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .export-menu { justify-self: end; }

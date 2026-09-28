@@ -761,7 +761,7 @@ approve("07 · Filtros, confirmación y exportaciones del alcance actual")
 for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
-for cache_control in ("sistema-evidencias-ops-v37", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
+for cache_control in ("sistema-evidencias-ops-v38", "staleWhileRevalidate", 'cache: "no-store"', "skipWaiting", "clients.claim", "CACHE_PREFIX", "CLEAR_ALL_CACHES", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "raul-sierra-hero.webp"):
     if cache_control not in sw:
         fail(f"Actualización PWA incompleta: {cache_control}")
 if "Sistema_Evidencias_OPS_CMS.xlsx" in sw:

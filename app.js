@@ -199,7 +199,17 @@ function renderSummary() {
   ].map(([value, label]) => `<article class="kpi"><strong>${value}</strong><span>${label}</span></article>`).join("");
 }
 
+function hasSelectedDetail() {
+  const survey = activeSurveyModule();
+  return Boolean(activeQuantityModule() || (survey && filteredSurveyResponses(survey).length));
+}
+
 function renderActivities() {
+  // El detalle por tienda ya identifica la actividad seleccionada y su avance.
+  const detailed = hasSelectedDetail();
+  $("#actividades").hidden = detailed;
+  $("#activities-nav").hidden = detailed;
+  if (detailed) return;
   const stores = filteredStores();
   const activities = state.data.activities.filter((item) => !state.filters.activity || item.name === state.filters.activity);
   const rows = activities.map((item) => {
@@ -267,17 +277,21 @@ function renderQuantityModule() {
   if (!module) return;
 
   const ratio = Boolean(module.percentageMetric);
+  const oneDm = Boolean(state.filters.dm || state.filters.store);
+  const showDm = !ratio && !oneDm;
   section.classList.toggle("ratio-mode", ratio);
   const shortLabel = (label) => ratio ? String(label).replace(/\s+dona$/i, "").replace(/\s+reportada$/i, "") : label;
   nav.textContent = module.activity === "Jarras Blender | Cold Foam" ? "Jarras" : module.activity;
   $("#quantity-heading").textContent = module.title;
   $("#quantity-response-table").closest("table").querySelector("thead tr").innerHTML =
-    `<th>Tienda</th>${ratio ? "" : "<th>DM</th>"}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}<th>Evidencia</th>`;
+    `<th>Tienda</th>${showDm ? "<th>DM</th>" : ""}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}<th>Evidencia</th>`;
 
   const eligibleStores = filteredStores().filter((store) => store.applicableActivities?.[module.activity] !== false).length;
   const responses = filteredQuantityResponses(module)
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
   const responseRate = eligibleStores ? responses.length / eligibleStores * 100 : 0;
+  section.classList.toggle("single-store", eligibleStores === 1);
+  $(".quantity-consolidation").hidden = eligibleStores === 1;
   const totals = Object.fromEntries(module.metrics.map((metric) => [
     metric.key,
     responses.reduce((sum, item) => sum + Number(item.quantities?.[metric.key] || 0), 0),
@@ -290,15 +304,15 @@ function renderQuantityModule() {
   $("#quantity-response-bar").style.setProperty("--progress", `${Math.min(responseRate, 100)}%`);
   $("#quantity-scope").textContent = currentScope();
   $("#quantity-response-table").innerHTML = responses.length ? responses.map((item) => `<tr>
-    <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}${ratio ? ` · ${esc(item.dm)}` : ""}</small></td>
-    ${ratio ? "" : `<td>${esc(item.dm)}</td>`}
+    <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}${ratio && !oneDm ? ` · ${esc(item.dm)}` : ""}</small></td>
+    ${showDm ? `<td>${esc(item.dm)}</td>` : ""}
     ${module.metrics.map((metric) => `<td><strong>${number(item.quantities[metric.key])}</strong></td>`).join("")}
     <td><strong>${number(item.quantities.total)}</strong></td>
     ${module.percentageMetric ? `<td><strong>${item.quantities.percentage == null ? "—" : percent(item.quantities.percentage)}</strong></td>` : ""}
     <td>${item.evidenceLinkPublished && item.evidenceUrl
       ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
       : "Validada"}</td>
-  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 4}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
+  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 3 + Number(showDm) + Number(ratio)}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
 
   $("#quantity-totals").classList.toggle("ratio", ratio);
   $("#quantity-totals").innerHTML = [
@@ -306,11 +320,11 @@ function renderQuantityModule() {
     [number(totals.total), shortLabel(module.totalLabel || "Piezas totales")],
     ...(ratio ? [[participation == null ? "—" : percent(participation), shortLabel(module.percentageLabel)]] : []),
   ].map(([value, label], index) => `<article class="quantity-total${index >= module.metrics.length ? " total" : ""}"><strong>${value}</strong><span>${esc(label)}</span></article>`).join("");
-  const maximum = Math.max(...module.metrics.map((metric) => totals[metric.key]), 1);
-  $("#quantity-bars").hidden = ratio;
-  $("#quantity-bars").innerHTML = module.metrics.map((metric) => `<div><span>${esc(metric.label)}</span><b>${number(totals[metric.key])}</b><i><em style="--progress:${totals[metric.key] / maximum * 100}%"></em></i></div>`).join("");
+  // Las barras vuelven a mostrar exactamente los totales de las tarjetas.
+  $("#quantity-bars").hidden = true;
+  $("#quantity-bars").innerHTML = "";
   const breakdowns = $("#quantity-breakdowns");
-  breakdowns.hidden = !ratio;
+  breakdowns.hidden = true;
   if (ratio) {
     const makeTable = (title, field, groups) => `<div class="quantity-breakdown"><h4>${esc(title)}</h4><div class="table-shell quantity-group-shell"><table><thead><tr><th scope="col">${esc(field)}</th><th scope="col">Tiendas</th>${module.metrics.map((metric) => `<th scope="col">${esc(shortLabel(metric.label))}</th>`).join("")}<th scope="col">${esc(shortLabel(module.totalLabel || "Total"))}</th></tr></thead><tbody>${groups.map((group) => {
       const dm = field === "DM" ? state.data.dms?.find((item) => item.dm === group.labels[1]) : null;
@@ -318,8 +332,11 @@ function renderQuantityModule() {
       const sublabel = field === "DM" && !state.filters.region ? `<small>${esc(group.labels[0])}</small>` : "";
       return `<tr><th scope="row">${esc(label)}${sublabel}</th><td>${number(group.stores)}</td>${module.metrics.map((metric) => `<td>${metric.key === module.percentageMetric ? `<strong>${number(group.totals[metric.key])}</strong><small>${group.totals.percentage == null ? "—" : percent(group.totals.percentage)}</small>` : number(group.totals[metric.key])}</td>`).join("")}<td><strong>${number(group.totals.total)}</strong></td></tr>`;
     }).join("") || `<tr><td colspan="${module.metrics.length + 3}">Sin respuestas</td></tr>`}</tbody></table></div></div>`;
-    breakdowns.innerHTML = makeTable("Por región", "Región", quantityRollup(responses, module.metrics, ["region"], module.percentageMetric))
-      + makeTable("Por DM", "DM", quantityRollup(responses, module.metrics, ["region", "dm"], module.percentageMetric));
+    const regions = quantityRollup(responses, module.metrics, ["region"], module.percentageMetric);
+    const dms = quantityRollup(responses, module.metrics, ["region", "dm"], module.percentageMetric);
+    breakdowns.innerHTML = (regions.length > 1 ? makeTable("Por región", "Región", regions) : "")
+      + (dms.length > 1 ? makeTable("Por DM", "DM", dms) : "");
+    breakdowns.hidden = !breakdowns.innerHTML;
   } else breakdowns.innerHTML = "";
 }
 
@@ -502,6 +519,13 @@ function readFilterUrl() {
 }
 
 function renderAll() {
+  // El detalle general sigue disponible bajo demanda cuando la respuesta por tienda es más útil.
+  const detailed = hasSelectedDetail();
+  const stores = $("#store-details");
+  if (stores.dataset.detailMode !== String(detailed)) {
+    stores.open = !detailed;
+    stores.dataset.detailMode = String(detailed);
+  }
   renderSummary(); renderOrganization(); renderActivities(); renderQuantityModule(); renderSurveyModule(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
 }
 
