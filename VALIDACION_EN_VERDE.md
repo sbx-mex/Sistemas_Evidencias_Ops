@@ -1,31 +1,26 @@
-# Actualización estable del Sistema de Evidencias OPS
+# Validación CMS del 29/09/2026
 
-## Instalación
+Proyecto: sbx-mex/Sistemas_Evidencias_Ops.
 
-1. Extrae el ZIP en la raíz de `sbx-mex/Sistemas_Evidencias_Ops`.
-2. Conserva las carpetas y reemplaza los archivos coincidentes.
-3. Ejecuta `python -X utf8 scripts/safe_maintenance.py --force`.
-4. Confirma que el resultado muestre `13/13`, `12/12`, `issues: []` y cero archivos obsoletos.
+- Auditoría de visibilidad CMS: 13/13 controles aprobados.
+- Validación del proyecto: 13/13 controles aprobados.
+- Estabilidad: 12/12 controles aprobados.
+- Auditoría general: `issues: []`.
+- Publicación segura probada con un repositorio local temporal: concurrencia, reconstrucción, rechazo y limpieza aprobados.
+- Integridad y sintaxis Python/JavaScript: aprobadas.
+- Excel exportado: sólo las 6 actividades autorizadas; sin evidencias de actividades omitidas.
+- PDF regional: generado, texto comprobado y páginas inicial/final revisadas.
+- Limpieza: cero obsoletos.
 
-## Corrección incluida
+Resultado del corte disponible: **358 tiendas, 28 DM, 6 actividades,
+303/2,148 cumplimientos, 1,845 pendientes y 14.1% de avance**.
+Última respuesta publicable: 29/09/2026 12:26.
 
-- El catálogo activo se obtiene del CMS en cada ejecución; las pruebas no fijan campañas históricas.
-- Una actividad con `Activo = No` no aparece ni contabiliza, y sus filas anteriores no bloquean la publicación.
-- Si una fila no puede recuperarse de forma inequívoca, se aísla y no modifica avance, evidencias ni fecha de corte.
-- El CMS agrega `responseErrorPolicy = Aislar fila` y `trustedCeCoRecovery = Si`.
-- Se validan versiones descargadas/reexportadas, fechas seriales, columnas reordenadas, filas agregadas o retiradas, rollback, escritura atómica y firmas XLSX/PDF.
-- La base histórica tiene un contrato semántico de 384 filas. Un reempaque XLSX equivalente puede reconciliar su huella; cualquier cambio de fechas, CeCo, actividad, evidencia o número de filas detiene la publicación y restaura la configuración.
-- Los archivos que una carga anterior dejó sueltos en la raíz se eliminan mediante una lista cerrada, sin borrar carpetas ni usar patrones recursivos.
+El CeCo 38489 queda aislado por no existir en el Directorio. No modifica avance
+ni fecha; podrá recuperarse cuando se agregue al Directorio.
 
-## Resultado verificado antes de empaquetar
+El CMS lista 357 tiendas abiertas como apoyo informativo; el Directorio operativo
+vigente determina las 358 tiendas del tablero. No se reemplazó ningún catálogo.
 
-- 357 tiendas abiertas
-- 9 actividades activas
-- 301 cumplimientos válidos
-- 9.4% de avance regional
-- 13/13 controles del proyecto
-- 12/12 controles de estabilidad
-- Auditoría: `issues: []`
-- Limpieza: cero obsoletos
-
-La base histórica conserva 384 filas. Se validaron las correcciones `38599→38590` y `94565→38764` contra sus correos corporativos, sin cambios de fecha, actividad ni evidencia.
+Consulta `INSTRUCCIONES_CARGA_CMS_SEGURA.md` antes de instalar.
+El resultado verde remoto debe confirmarse después de cargar estos archivos.

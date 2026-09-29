@@ -1,0 +1,65 @@
+Fuentes XLSX aprobadas · Forms 593 filas · 358 tiendas · 6 actividades · encabezado Forms fila 1
+ADVERTENCIA NO BLOQUEANTE · CeCo fuera del Directorio aislados: 38489 · no se publican ni afectan avance; se recuperarán al actualizar Directorio
+Corte histórico aprobado · 2026-09-17T11:56:57 · 384 filas base · 209 filas nuevas
+Recuperación CeCo verificada · filas: 158 · correo corporativo y nombre exacto
+Motores auditados · CMS 6 actividades / 28 DM / 357 tiendas abiertas · Directorio 358 tiendas / 4 regiones en Directorio
+Forms: Sistema de Evidencias OPS.xlsx · SHA256 f7bf98d17a48
+Directorio: Directorio.xlsx · SHA256 3823b717b53a
+CMS: Sistema_Evidencias_OPS_CMS.xlsx · SHA256 6d0393f1dabf
+Dashboard generado: 358 tiendas · 6 actividades · 303/2148 cumplimientos
+Última actualización Forms: 29/09/2026 12:26
+Corte histórico aplicado: Corte operativo 17/09/2026 11:56:57 · Lay Out reiniciado · 384 filas base · 209 filas nuevas
+PDF generado: exports/Resumen_Evidencias_OPS.pdf
+Excel generado: exports/Resumen_Evidencias_OPS.xlsx
+Resumen: 28 DM · 358 tiendas · 14.1% regional
+Huella de corte reconciliada · contenido semántico intacto · 384 filas · 000000000000 → 2d628eafd9b4
+Mantenimiento seguro aprobado · CMS completo · rollback · huellas · rendimiento
+Forms dinámico aprobado · orden real · Sí/No implícito · CMS controla visibilidad
+Filtro numérico validado · cero · rangos · pendiente · cambio de actividad
+Corte histórico aprobado · conserva avance · suma cualquier actividad activa · CMS filtra actividades ocultas
+Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros
+Validación aprobada · 13/13 controles
+OK 01 · Archivos requeridos y limpieza de obsoletos
+OK 02 · CMS, conteos, CeCo y evidencias seguras
+OK 02A · Jarras: cumplimiento y piezas consolidadas por separado
+OK 03 · Python sincronizado con la última actualización
+OK 04 · XLSX regional y dinámico con formatos congruentes
+OK 05 · PDF regional Python y descarga directa válidos
+OK 06 · Navegación lineal y sin bloques obsoletos
+OK 06A · Cinco mejoras de navegación, foco y lectura activa
+OK 06B · Actividades en una fila y sin desplazamiento horizontal en móvil
+OK 07 · Filtros, confirmación y exportaciones del alcance actual
+OK 08 · PWA, descarga directa y mensaje final simplificados
+OK 09 · Ranking, fotografía DM e identidad ejecutiva
+OK 10 · Workflow completo: limpiar, generar, validar y publicar
+CMS Excel → Python → un JSON consolidado
+358 tiendas · 6 actividades vigentes · 28 DM + 1 Director Regional
+FHW_38633 → Carretera Toluca Mexico (plaza cedros DT) · vínculo SharePoint validado
+Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes
+Excel: resumen rápido + detalle + actividades
+CMS seguro aprobado · 13/13 controles · 6 activas · 13 omitidas
+{
+  "filesReviewed": 107,
+  "missingReferences": [],
+  "oversizedFiles": [],
+  "duplicateHtmlIds": [],
+  "missingDomTargets": [],
+  "repetitiveBlocks": 0,
+  "rankingSorted": true,
+  "vanessaWhiteBackground": 100.0,
+  "exportVisuals": 2,
+  "directEvidenceLinks": 226,
+  "sourceFingerprints": {
+    "responsesSha256": "f7bf98d17a48",
+    "directorySha256": "3823b717b53a",
+    "cmsSha256": "6d0393f1dabf",
+    "settingsSha256": "316eacd77aaa"
+  },
+  "xlsxFallback": true,
+  "pdfFallback": true,
+  "obsoleteFiles": [],
+  "issues": []
+}
+Limpieza aprobada: no hay archivos obsoletos conocidos
+CeCo aislados sin bloqueo: 38489 · fuera de publicación hasta existir en Directorio
+Actualización segura aprobada · reconstruido · 3 obsoletos eliminados · 28.21s

@@ -1,0 +1,28 @@
+{
+  "repositorio": "sbx-mex/Sistemas_Evidencias_Ops",
+  "revisionAuditada": "b69994ed01fb344b2a60303f2f53e1245bcefe39",
+  "tipo": "correcciones; conservar fuentes Excel existentes",
+  "archivos": {
+    "INSTRUCCIONES_CARGA_CMS_SEGURA.md": "ae1bbf3ead8aad7cce0f7f4ece6bf4991ad12385e112d6361b62a8fc986eac47",
+    "VALIDACION_EN_VERDE.md": "6e75fc8254d365497edc22e8c59b3bfee26a12c5281851b6229dd1cbd5e14b41",
+    "data/dashboard.json": "c1af2f49a34089aea3b9059fc6ca6c98057f94096108c77f7d636525b4ec01a4",
+    "docs/AUDITORIA_CMS_2026-09-29.json": "dfffd56db166f6f367bb5c9903a9b6cac4d234d25968c9e2f271679093e616f6",
+    "docs/AUDITORIA_CMS_2026-09-29.md": "f3e85cb60ff9af6f3de433dfe6565150a599e54c0d0d1c7ecbc73ec3de9160eb",
+    "docs/VALIDACION_PYTHON_2026-09-29.txt": "fe44ff7e9009e79211e50fe2b5b3fbf12778bdeea1f2a31c8932848a1cacbd89",
+    "exports/Resumen_Evidencias_OPS.pdf": "76ec3dd582629dccd786af4527d7d5bfdd1eaf93a38e7e2820cb7067fa4747cc",
+    "exports/Resumen_Evidencias_OPS.xlsx": "46c8ecc2e4dcaf560060215758ff9ae7e55bbafa32a93dc4dbbaa624c196dfb5",
+    "scripts/audit_cms_visibility.py": "c9d7b5e83e2540ee70293a20ad3e2a70f4c60895cda6354d7b0897f0be10e374",
+    "scripts/build_dashboard.py": "918cea9ffaff4f8bd1bfe505efe066ab7691b9ff00304d77b1adda3a4e362aaa",
+    "scripts/safe_maintenance.py": "7cae9bfe04847ab8d95b4346814d3fc4d29e554403d069113a6ac897c5f01651",
+    "tests/validate_dynamic_forms_schema.py": "7f00ae29c75a03e6d5878a6763a9619a37b1067d4d2d9742266eba2bca161a2a",
+    "verificar_paquete_cms.py": "0139ff54c4db8d46f4612dd8c856c6fcacf62c029d31723c3cf715a834693b21"
+  },
+  "fuentesAuditadas": {
+    "cms/Sistema_Evidencias_OPS_CMS.xlsx": "6d0393f1dabfad3946fde6cf4ddf97c54644ad265ee735fa40dfb68acdf83821",
+    "cms/Sistema de Evidencias OPS.xlsx": "f7bf98d17a48d509d04f117629e411169b29c950a362022b5b8345ba97a8fefa",
+    "cms/Directorio.xlsx": "3823b717b53a1f9eca46f3bc71adcb68d1673dbdaf90cb331571edd080cd218f",
+    "config/settings.json": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524",
+    "config/cutover.json": "a1b95310b14ea7e617946aa0bc145a91eb22f693a9879b0ef869263259eed5a0",
+    "cms/Corte_Forms_2026-09-17_115657.xlsx": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82"
+  }
+}

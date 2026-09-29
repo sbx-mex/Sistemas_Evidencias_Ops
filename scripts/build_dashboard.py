@@ -304,26 +304,20 @@ def active_activity_catalog(activities: list[dict[str, Any]]) -> tuple[dict[str,
     return by_text, by_compact
 
 
-def canonical_cms_activity(value: Any, by_text: dict[str, str], by_compact: dict[str, str]) -> str | None:
+def canonical_cms_activity(
+    value: Any, by_text: dict[str, str], by_compact: dict[str, str],
+    excluded_names: list[str] | None = None,
+) -> str | None:
     """Devuelve exclusivamente una actividad activa CMS con coincidencia única.
 
-    Primero exige igualdad normalizada. Un error menor de escritura sólo se
-    acepta con afinidad alta y distancia suficiente frente a la segunda opción.
-    Si hay duda, la fila queda fuera del cálculo en vez de adivinar.
+    Exige igualdad normalizada (acentos, espacios y signos). La similitud de
+    nombres no autoriza actividades externas ni variantes retiradas del CMS.
     """
-    exact = by_text.get(key_text(value)) or by_compact.get(compact_key(value))
-    if exact:
-        return exact
-    catalog = list(dict.fromkeys(by_compact.values()))
-    if not clean_text(value) or not catalog:
+    # Una desactivación explícita gana a cualquier coincidencia aproximada.
+    if compact_key(value) in {compact_key(name) for name in (excluded_names or [])}:
         return None
-    ranked = sorted(
-        ((activity_affinity(value, name), name) for name in catalog),
-        key=lambda item: (-item[0], key_text(item[1])),
-    )
-    best_score, best_name = ranked[0]
-    second_score = ranked[1][0] if len(ranked) > 1 else 0.0
-    return best_name if best_score >= 0.88 and best_score - second_score >= 0.12 else None
+    exact = by_text.get(key_text(value)) or by_compact.get(compact_key(value))
+    return exact
 
 
 def activity_tokens(value: Any) -> set[str]:
@@ -1097,6 +1091,7 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     activity_ws = workbook["Actividades"]
     header_row, cols = find_header(activity_ws, {"orden", "actividad", "descripcion", "fecha inicio", "fecha limite", "activo"})
     activities = []
+    excluded_activity_names = []
     calendar = {"active": 0, "scheduled": 0, "expired": 0, "inactive": 0}
     for row_number, row in enumerate(
         activity_ws.iter_rows(min_row=header_row + 1, values_only=True),
@@ -1112,6 +1107,7 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
         if not active:
             # Filas nuevas, borradores o actividades marcadas No no bloquean el CMS.
             calendar["inactive"] += 1
+            excluded_activity_names.append(name)
             continue
         try:
             start = parse_date(row[cols["fecha inicio"]])
@@ -1158,6 +1154,10 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
     if not activities:
         raise ValueError("El CMS no contiene actividades activas para publicar")
     active_activity_catalog(activities)
+    active_keys = {compact_key(item["name"]) for item in activities}
+    if active_keys.intersection(compact_key(name) for name in excluded_activity_names):
+        raise ValueError("El CMS contiene la misma actividad activa e inactiva; corrige el duplicado")
+    cms_settings["_excludedActivityNames"] = excluded_activity_names
 
     # Una hoja opcional permite incorporar futuras preguntas numéricas sin
     # cambiar Python. La actividad y su visibilidad siguen viniendo del CMS.
@@ -1442,6 +1442,7 @@ def find_response_source(workbook, activity_names: list[str] | None = None) -> t
 def load_responses(
     path: Path, activity_names: list[str] | None = None,
     quantity_configs: dict[str, dict[str, Any]] | None = None,
+    excluded_activity_names: list[str] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Lee exportaciones Forms antiguas, anchas o normalizadas por filas.
 
@@ -1465,10 +1466,15 @@ def load_responses(
     response_field_indices = {
         index for indices in column_groups.values() for index in indices
     }
+    header_catalog = list(dict.fromkeys((activity_names or []) + (excluded_activity_names or [])))
     evidence_group = [
-        item for item in evidence_columns(headers, activity_names)
+        item for item in evidence_columns(headers, header_catalog)
         if item["index"] not in response_field_indices
     ]
+    excluded_keys = {compact_key(name) for name in (excluded_activity_names or [])}
+    for item in evidence_group:
+        if item["activityKey"] in excluded_keys:
+            item["matchType"] = "unverified"
     if not evidence_group:
         raise ValueError("No se encontró ninguna columna de evidencia")
     excluded_indices = response_field_indices | set(confirmation_columns) | {
@@ -1523,7 +1529,8 @@ def load_responses(
             row_has_conflict = True
             row_conflict_fields.append("confirmed")
         evidence_activity = canonical_cms_activity(
-            values["activity"], response_activity_by_text, response_activity_by_compact
+            values["activity"], response_activity_by_text, response_activity_by_compact,
+            excluded_activity_names,
         ) or values["activity"]
         evidence, evidence_source, evidence_issue, evidence_files = resolve_evidence_value(
             row, evidence_group, evidence_activity
@@ -1663,6 +1670,7 @@ def build_payload(
     organization = cms_settings.pop("_organization")
     cms_numeric_config = cms_settings.pop("_quantityConfig", {})
     managed_numeric_keys = cms_settings.pop("_quantityManaged", set())
+    excluded_activity_names = cms_settings.pop("_excludedActivityNames", [])
     quantity_configs = {
         **{key: value for key, value in QUANTITY_ACTIVITY_CONFIG.items() if key not in managed_numeric_keys},
         **cms_numeric_config,
@@ -1683,12 +1691,16 @@ def build_payload(
     stores, directory_sheet, directory_status = load_directory(directory_path, settings)
     active_names = [item["name"] for item in activities]
     configured_by_text, configured_by_compact = active_activity_catalog(activities)
-    current_responses, response_schema = load_responses(responses_path, active_names, quantity_configs)
+    current_responses, response_schema = load_responses(
+        responses_path, active_names, quantity_configs, excluded_activity_names
+    )
     cutover_quality: dict[str, Any] | None = None
     if baseline_path or cutoff:
         if not baseline_path or not cutoff:
             raise ValueError("El corte requiere baseline_path y cutoff")
-        baseline_responses, baseline_schema = load_responses(baseline_path, active_names, quantity_configs)
+        baseline_responses, baseline_schema = load_responses(
+            baseline_path, active_names, quantity_configs, excluded_activity_names
+        )
         historical = [
             {**response, "source": "corte histórico", "sourceOrder": 0}
             for response in baseline_responses
@@ -1696,7 +1708,8 @@ def build_payload(
         ]
         def is_active_cms_response(response: dict[str, Any]) -> bool:
             return bool(canonical_cms_activity(
-                response.get("activity"), configured_by_text, configured_by_compact
+                response.get("activity"), configured_by_text, configured_by_compact,
+                excluded_activity_names,
             ))
 
         inactive_current_responses = [
@@ -1791,7 +1804,9 @@ def build_payload(
             }
         store = stores.get(response["ceco"])
         activity_text = clean_text(response["activity"])
-        activity = canonical_cms_activity(activity_text, configured_by_text, configured_by_compact)
+        activity = canonical_cms_activity(
+            activity_text, configured_by_text, configured_by_compact, excluded_activity_names
+        )
         if not activity_text:
             invalid_rows.append(response["row"])
             continue

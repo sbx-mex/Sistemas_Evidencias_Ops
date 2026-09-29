@@ -124,7 +124,9 @@ def main() -> None:
         cms_activities, _, _, _ = load_cms(
             ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
         )
-        assert active_activities == [item["name"] for item in cms_activities]
+        # El tablero prioriza fechas compromiso; el CMS autoriza el catálogo.
+        assert len(active_activities) == len(cms_activities)
+        assert set(active_activities) == {item["name"] for item in cms_activities}
         handled_rows = (
             set(current_payload["quality"]["hiddenActivityRows"])
             | {
@@ -628,8 +630,8 @@ def main() -> None:
         )
         assert exact_key == "activacionpslsharpie" and exact_type == "exact"
 
-        # Escenario 8c: un error menor en el nombre seleccionado se normaliza sólo
-        # si hay una coincidencia CMS única. Una actividad externa permanece oculta.
+        # Escenario 8c: acentos, espacios y signos no cambian la identidad CMS.
+        # Una actividad externa permanece oculta, aunque su nombre se parezca.
         similar_activity = temp / "similar-activity-name.xlsx"
         start1, finish1 = timestamps(13)
         start2, finish2 = timestamps(14)
@@ -639,7 +641,7 @@ def main() -> None:
             "Evidencia_Actividad_Externa_Forms",
         ]
         save_book(similar_activity, similar_headers, [
-            [13, start1, finish1, "", "Prueba", "38333", "Programacion Horno Merry - Focaccia", f"{allowed}/horno-similar.jpg", ""],
+            [13, start1, finish1, "", "Prueba", "38333", "ProgramacionHornosMerryFocaccia", f"{allowed}/horno-similar.jpg", ""],
             [14, start2, finish2, "", "Prueba", "38339", "Actividad Externa Forms", "", f"{allowed}/externa.jpg"],
         ])
         # El caso cubre normalización de Programación de Hornos; se habilita
@@ -649,9 +651,8 @@ def main() -> None:
         similar_book = load_workbook(similar_cms)
         similar_sheet = similar_book["Actividades"]
         for row_number in range(5, similar_sheet.max_row + 1):
-            if clean_text(similar_sheet.cell(row_number, cms_headers["Actividad"]).value) == "Programacion Hornos Merry - Focaccia":
+            if clean_text(similar_sheet.cell(row_number, cms_headers["Actividad"]).value) in {"Programacion Hornos Merry - Focaccia", "Community Board"}:
                 similar_sheet.cell(row_number, cms_headers["Activo"]).value = "Si"
-                break
         similar_book.save(similar_cms)
         similar_book.close()
         payload = build_payload(
@@ -661,7 +662,7 @@ def main() -> None:
             similar_cms,
         )
         assert payload["summary"]["completedCompletions"] == 1
-        assert payload["quality"]["canonicalizedActivityRows"] == [2]
+        assert payload["quality"]["canonicalizedActivityRows"] == []
         assert payload["quality"]["hiddenActivities"] == ["Actividad Externa Forms"]
         assert payload["quality"]["hiddenActivityRows"] == [3]
         assert payload["submissions"][0]["activity"] == "Programacion Hornos Merry - Focaccia"
@@ -674,6 +675,8 @@ def main() -> None:
         for row_number in range(5, activity_sheet.max_row + 1):
             if activity_sheet.cell(row_number, 2).value and activity_sheet.cell(row_number, 1).value is not None:
                 activity_sheet.cell(row_number, 1).value = 100 - int(activity_sheet.cell(row_number, 1).value)
+            if clean_text(activity_sheet.cell(row_number, cms_headers["Actividad"]).value) == "Mandil Verde":
+                activity_sheet.cell(row_number, cms_headers["Activo"]).value = "Si"
         cms_book.save(reordered_cms)
         payload = build_payload(
             flexible,
@@ -852,7 +855,9 @@ def main() -> None:
         # La regla se prueba en una copia temporal del CMS. Operación puede
         # retirar Rack FHW del catálogo real sin invalidar esta prueba unitaria.
         rack_cms = temp / "cms-rack-active.xlsx"
-        shutil.copy2(ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx", rack_cms)
+        # Esta prueba requiere también Community activo para verificar que
+        # sus respuestas no se mezclen con la pregunta de Rack FHW.
+        shutil.copy2(similar_cms, rack_cms)
         rack_book = load_workbook(rack_cms)
         rack_sheet = rack_book["Actividades"]
         rack_header, rack_cols = find_header(rack_sheet, {
