@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "a161488f07f76e20",
+  "buildVersion": "e6443db0c618214b",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-29T16:43:06+00:00",
-  "lastUpdated": "2026-09-29T10:39:17",
-  "lastUpdatedDisplay": "29/09/2026 10:39",
+  "generatedAt": "2026-09-29T17:25:17+00:00",
+  "lastUpdated": "2026-09-29T11:14:56",
+  "lastUpdatedDisplay": "29/09/2026 11:14",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "29/09/26 · 10:39 h",
+    "cutOffDisplay": "29/09/26 · 11:14 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -60,10 +60,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 99,
+        "completed": 103,
         "expected": 1000,
-        "pending": 901,
-        "compliance": 9.9,
+        "pending": 897,
+        "compliance": 10.3,
         "status": "Atención"
       },
       {
@@ -75,10 +75,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 130,
+        "completed": 131,
         "expected": 994,
-        "pending": 864,
-        "compliance": 13.1,
+        "pending": 863,
+        "compliance": 13.2,
         "status": "Atención"
       },
       {
@@ -100,7 +100,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "d9ba518aeb88c50aa9ae86a7ff9c5d69e7a0a169fd51a22bf203b7620678ac51",
+    "responsesSha256": "4b52a6e5444d08abd1189e49950719f1530bc3bf513929e5d2cbd13b8bc77a78",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 358,
     "activities": 10,
     "expectedCompletions": 3563,
-    "completedCompletions": 502,
-    "compliance": 14.1,
-    "validResponses": 502,
+    "completedCompletions": 507,
+    "compliance": 14.2,
+    "validResponses": 507,
     "storesComplete": 1,
-    "pendingCompletions": 3061,
+    "pendingCompletions": 3056,
     "notApplicableCompletions": 17
   },
   "quality": {
-    "responsesRead": 653,
+    "responsesRead": 658,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 366,
-      "newFormsRowsIncluded": 269,
+      "newFormsRowsRead": 371,
+      "newFormsRowsIncluded": 274,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 97,
@@ -472,7 +472,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 366
+        "CeCo": 371
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -548,7 +548,7 @@
     },
     "notApplicableResponses": 17,
     "notApplicablePairs": 17,
-    "evidenceLinksPublished": 425,
+    "evidenceLinksPublished": 430,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -585,11 +585,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 43,
+      "completedStores": 44,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 315,
-      "compliance": 12.0,
+      "pendingStores": 314,
+      "compliance": 12.3,
       "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
       "daysRemaining": 6,
@@ -783,11 +783,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 14,
+      "completedStores": 18,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 344,
-      "compliance": 3.9,
+      "pendingStores": 340,
+      "compliance": 5.0,
       "deadlineLabel": "Vence en 6 días",
       "deadlineTone": "amber",
       "daysRemaining": 6,
@@ -843,12 +843,12 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 74,
+      "completed": 75,
       "expected": 134,
       "notApplicable": 6,
-      "pending": 60,
+      "pending": 59,
       "pendingStores": 14,
-      "compliance": 55.2,
+      "compliance": 56.0,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -948,6 +948,25 @@
       "rank": 8
     },
     {
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "shortName": "Jose Magos",
+      "photo": "assets/dm/jose-magos.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 15,
+      "completed": 18,
+      "expected": 150,
+      "notApplicable": 0,
+      "pending": 132,
+      "pendingStores": 15,
+      "compliance": 12.0,
+      "status": "Atención",
+      "rank": 9
+    },
+    {
       "dm": "Vanessa Carreño Rios",
       "shortName": "Vanessa Carreño",
       "photo": "assets/dm/vanessa-carreno.webp",
@@ -964,7 +983,7 @@
       "pendingStores": 13,
       "compliance": 11.5,
       "status": "Atención",
-      "rank": 9
+      "rank": 10
     },
     {
       "dm": "Andrea Nava Guzman",
@@ -983,7 +1002,26 @@
       "pendingStores": 8,
       "compliance": 11.2,
       "status": "Atención",
-      "rank": 10
+      "rank": 11
+    },
+    {
+      "dm": "Manuel Alejandro Avila Molina",
+      "shortName": "Manuel Avila",
+      "photo": "assets/dm/manuel-avila.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 13,
+      "completed": 14,
+      "expected": 130,
+      "notApplicable": 0,
+      "pending": 116,
+      "pendingStores": 13,
+      "compliance": 10.8,
+      "status": "Atención",
+      "rank": 12
     },
     {
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -1002,7 +1040,7 @@
       "pendingStores": 12,
       "compliance": 10.0,
       "status": "Atención",
-      "rank": 11
+      "rank": 13
     },
     {
       "dm": "Erika Julieta Contreras Aguilera",
@@ -1021,26 +1059,7 @@
       "pendingStores": 15,
       "compliance": 10.0,
       "status": "Atención",
-      "rank": 12
-    },
-    {
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "shortName": "Jose Magos",
-      "photo": "assets/dm/jose-magos.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 15,
-      "completed": 15,
-      "expected": 150,
-      "notApplicable": 0,
-      "pending": 135,
-      "pendingStores": 15,
-      "compliance": 10.0,
-      "status": "Atención",
-      "rank": 13
+      "rank": 14
     },
     {
       "dm": "Juan Jesus Zuñiga Flores",
@@ -1057,25 +1076,6 @@
       "notApplicable": 0,
       "pending": 99,
       "pendingStores": 11,
-      "compliance": 10.0,
-      "status": "Atención",
-      "rank": 14
-    },
-    {
-      "dm": "Manuel Alejandro Avila Molina",
-      "shortName": "Manuel Avila",
-      "photo": "assets/dm/manuel-avila.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 13,
-      "completed": 13,
-      "expected": 130,
-      "notApplicable": 0,
-      "pending": 117,
-      "pendingStores": 13,
       "compliance": 10.0,
       "status": "Atención",
       "rank": 15
@@ -3739,28 +3739,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38755",
-      "store": "Corporativo Santander",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38512",
-      "store": "Garden Santa Fe",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
       "ceco": "38532",
       "store": "One o One",
       "dm": "Jose De Jesus Magos Arzaluz",
@@ -3829,17 +3807,6 @@
     {
       "ceco": "38166",
       "store": "Superama SantaFe",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38780",
-      "store": "Tec Santa Fe",
       "dm": "Jose De Jesus Magos Arzaluz",
       "completed": 1,
       "expected": 10,
@@ -4071,17 +4038,6 @@
     {
       "ceco": "38461",
       "store": "Fuente de Tritones",
-      "dm": "Manuel Alejandro Avila Molina",
-      "completed": 1,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 9,
-      "compliance": 10.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38121",
-      "store": "Herradura",
       "dm": "Manuel Alejandro Avila Molina",
       "completed": 1,
       "expected": 10,
@@ -4435,6 +4391,50 @@
       "ceco": "38107",
       "store": "Pedregal",
       "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38755",
+      "store": "Corporativo Santander",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38512",
+      "store": "Garden Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38780",
+      "store": "Tec Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 2,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 8,
+      "compliance": 20.0,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38121",
+      "store": "Herradura",
+      "dm": "Manuel Alejandro Avila Molina",
       "completed": 2,
       "expected": 10,
       "notApplicable": 0,
@@ -5026,17 +5026,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38129",
-      "store": "Plaza Santa Teresa",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 7,
-      "expected": 10,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 70.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38124",
       "store": "San Jeronimo",
       "dm": "Cesar Alfonso Castillo Romero",
@@ -5160,6 +5149,17 @@
     {
       "ceco": "38615",
       "store": "Grand San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 8,
+      "expected": 10,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 80.0,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38129",
+      "store": "Plaza Santa Teresa",
       "dm": "Cesar Alfonso Castillo Romero",
       "completed": 8,
       "expected": 10,
@@ -7748,13 +7748,13 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 7,
+      "completed": 8,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 70.0,
-      "lastUpdate": "2026-09-29T10:30:41",
+      "compliance": 80.0,
+      "lastUpdate": "2026-09-29T11:03:05",
       "activities": {
-        "Max & Min": false,
+        "Max & Min": true,
         "Mandil Verde": true,
         "Lay Out": true,
         "Community Board": true,
@@ -11492,11 +11492,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-11T11:09:03",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-29T11:14:56",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -11507,7 +11507,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -11528,11 +11528,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-10T15:54:26",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-29T11:14:51",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -11543,7 +11543,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -11816,11 +11816,11 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-11T10:56:28",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-29T11:13:08",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -11831,7 +11831,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -13544,11 +13544,11 @@
       "dm": "Manuel Alejandro Avila Molina",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 10,
       "notApplicable": 0,
-      "compliance": 10.0,
-      "lastUpdate": "2026-09-10T16:25:59",
+      "compliance": 20.0,
+      "lastUpdate": "2026-09-29T11:07:57",
       "activities": {
         "Max & Min": false,
         "Mandil Verde": false,
@@ -13559,7 +13559,7 @@
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
-        "FHW": false
+        "FHW": true
       },
       "applicableActivities": {
         "Max & Min": true,
@@ -18378,11 +18378,11 @@
           "maximum": 20
         }
       ],
-      "answeredStores": 14,
+      "answeredStores": 18,
       "totals": {
-        "cutlery": 376,
-        "cups3Oz": 65,
-        "total": 441
+        "cutlery": 491,
+        "cups3Oz": 98,
+        "total": 589
       },
       "byRegion": [
         {
@@ -18392,6 +18392,15 @@
             "cutlery": 224,
             "cups3Oz": 38,
             "total": 262
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "answeredStores": 4,
+          "totals": {
+            "cutlery": 115,
+            "cups3Oz": 33,
+            "total": 148
           }
         },
         {
@@ -18433,6 +18442,26 @@
             "cutlery": 48,
             "cups3Oz": 5,
             "total": 53
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Jose De Jesus Magos Arzaluz",
+          "answeredStores": 3,
+          "totals": {
+            "cutlery": 79,
+            "cups3Oz": 23,
+            "total": 102
+          }
+        },
+        {
+          "region": "Centro Poniente",
+          "dm": "Manuel Alejandro Avila Molina",
+          "answeredStores": 1,
+          "totals": {
+            "cutlery": 36,
+            "cups3Oz": 10,
+            "total": 46
           }
         },
         {
@@ -18593,6 +18622,136 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-8bc65d456ed2b3b1",
+      "timestamp": "2026-09-29T11:14:56",
+      "timestampDisplay": "29/09/2026 11:14",
+      "activity": "FHW",
+      "ceco": "38755",
+      "store": "Corporativo Santander",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "FHW_38755",
+      "evidenceLinkLabel": "Link_FHW_38755",
+      "evidenceFileName": "image_Starbucks Corporativ.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 27,
+        "cups3Oz": 7,
+        "total": 34
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/image_Starbucks%20Corporativ.jpg"
+    },
+    {
+      "id": "respuesta-2ab9ff7119c221e7",
+      "timestamp": "2026-09-29T11:14:51",
+      "timestampDisplay": "29/09/2026 11:14",
+      "activity": "FHW",
+      "ceco": "38512",
+      "store": "Garden Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "FHW_38512",
+      "evidenceLinkLabel": "Link_FHW_38512",
+      "evidenceFileName": "IMG_20260929_111431_Perla Franco Brito.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 32,
+        "cups3Oz": 10,
+        "total": 42
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/IMG_20260929_111431_Perla%20Franco%20Brito.jpg"
+    },
+    {
+      "id": "respuesta-684ebca0199dfa30",
+      "timestamp": "2026-09-29T11:13:08",
+      "timestampDisplay": "29/09/2026 11:13",
+      "activity": "FHW",
+      "ceco": "38780",
+      "store": "Tec Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "FHW_38780",
+      "evidenceLinkLabel": "Link_FHW_38780",
+      "evidenceFileName": "17907019515118257165487028246287_Jesus Francisco Vazq.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 20,
+        "cups3Oz": 6,
+        "total": 26
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/17907019515118257165487028246287_Jesus%20Francisco%20Vazq.jpg"
+    },
+    {
+      "id": "respuesta-6ccc32f3f3141d6d",
+      "timestamp": "2026-09-29T11:07:57",
+      "timestampDisplay": "29/09/2026 11:07",
+      "activity": "FHW",
+      "ceco": "38121",
+      "store": "Herradura",
+      "dm": "Manuel Alejandro Avila Molina",
+      "region": "Centro Poniente",
+      "evidenceKey": "FHW_38121",
+      "evidenceLinkLabel": "Link_FHW_38121",
+      "evidenceFileName": "17907016434976330151614007036568_Fernando Axel Velasc.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 36,
+        "cups3Oz": 10,
+        "total": 46
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/17907016434976330151614007036568_Fernando%20Axel%20Velasc.jpg"
+    },
+    {
+      "id": "respuesta-a0beae9e261c9479",
+      "timestamp": "2026-09-29T11:03:05",
+      "timestampDisplay": "29/09/2026 11:03",
+      "activity": "Max & Min",
+      "ceco": "38129",
+      "store": "Plaza Santa Teresa",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Max_Min_38129",
+      "evidenceLinkLabel": "Link_Max_Min_38129",
+      "evidenceFileName": "IMG_6341_Marlene Danaee Herna.jpeg",
+      "evidenceSourceHeader": "Evidencia_Max&Min",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%204/IMG_6341_Marlene%20Danaee%20Herna.jpeg"
+    },
     {
       "id": "respuesta-f6b67c917f02dc31",
       "timestamp": "2026-09-29T10:39:17",
