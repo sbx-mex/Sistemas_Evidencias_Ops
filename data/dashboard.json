@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "d642e750886d8f35",
+  "buildVersion": "5915315dc6919fcf",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-09-29T23:20:52-04:00",
+  "generatedAt": "2026-09-30T04:17:53+00:00",
   "lastUpdated": "2026-09-29T20:58:50",
   "lastUpdatedDisplay": "29/09/2026 20:58",
   "report": {
@@ -852,9 +852,9 @@
       "notApplicableStores": 0,
       "pendingStores": 335,
       "compliance": 6.4,
-      "deadlineLabel": "Vence en 2 días",
+      "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
-      "daysRemaining": 2,
+      "daysRemaining": 1,
       "focusRank": 1
     },
     {
@@ -874,9 +874,9 @@
       "notApplicableStores": 0,
       "pendingStores": 308,
       "compliance": 14.0,
-      "deadlineLabel": "Vence en 6 días",
+      "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
-      "daysRemaining": 6,
+      "daysRemaining": 5,
       "focusRank": 2
     },
     {
@@ -896,9 +896,9 @@
       "notApplicableStores": 0,
       "pendingStores": 221,
       "compliance": 38.3,
-      "deadlineLabel": "Vence en 6 días",
+      "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
-      "daysRemaining": 6,
+      "daysRemaining": 5,
       "focusRank": 3
     },
     {
@@ -918,9 +918,9 @@
       "notApplicableStores": 0,
       "pendingStores": 346,
       "compliance": 3.4,
-      "deadlineLabel": "Vence en 6 días",
+      "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
-      "daysRemaining": 6,
+      "daysRemaining": 5,
       "focusRank": 4
     },
     {
@@ -940,9 +940,9 @@
       "notApplicableStores": 0,
       "pendingStores": 246,
       "compliance": 31.3,
-      "deadlineLabel": "Vence en 6 días",
+      "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
-      "daysRemaining": 6,
+      "daysRemaining": 5,
       "focusRank": 5
     },
     {
@@ -962,9 +962,9 @@
       "notApplicableStores": 0,
       "pendingStores": 264,
       "compliance": 26.3,
-      "deadlineLabel": "Vence en 6 días",
+      "deadlineLabel": "Vence en 5 días",
       "deadlineTone": "amber",
-      "daysRemaining": 6,
+      "daysRemaining": 5,
       "focusRank": 6
     }
   ],
