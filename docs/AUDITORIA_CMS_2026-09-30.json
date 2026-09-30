@@ -1,0 +1,98 @@
+{
+  "estado": "APROBADO",
+  "controles": 13,
+  "verificaciones": [
+    "Catálogo, tiendas, módulos y conteos sólo contienen actividades activas CMS",
+    "Ambos Excel respetan el CMS también sin unión del corte",
+    "Conservar u omitir historia inactiva no cambia avance, evidencia ni fecha",
+    "Activo=No retira historia, módulo y denominador: Lay Out",
+    "Activo=No retira historia, módulo y denominador: Jarras Blender | Cold Foam",
+    "Activo=No retira historia, módulo y denominador: Organización Refrigeradores Back",
+    "Activo=No retira historia, módulo y denominador: Va X Cuenta",
+    "Activo=No retira historia, módulo y denominador: FHW",
+    "Activo=No retira historia, módulo y denominador: Tarta Maricu",
+    "Nombre externo similar y encabezado de actividad No no acreditan cumplimiento",
+    "Actividad duplicada con Si/No contradictorios bloquea la carga",
+    "Excel exportado sólo incluye actividades y evidencias activas",
+    "CMS, Directorio, ambos Forms y configuración conservan sus SHA256"
+  ],
+  "activas": [
+    "Lay Out",
+    "Jarras Blender | Cold Foam",
+    "Organización Refrigeradores Back",
+    "Va X Cuenta",
+    "FHW",
+    "Tarta Maricu"
+  ],
+  "omitidasCMS": [
+    "Rack FHW",
+    "Max & Min",
+    "Mandil Verde",
+    "Community Board",
+    "Señaletica Back",
+    "Señaletica Lobby",
+    "Roll Out",
+    "Programacion Hornos Merry - Focaccia",
+    "Fotografia - SM",
+    "Activacion PSL Sharpie",
+    "Validacion Horario Festivo Sep 26",
+    "Peanuts Charly&Lucy",
+    "Peanuts Linus&Snoopy"
+  ],
+  "fuentes": [
+    {
+      "archivo": "Corte_Forms_2026-09-17_115657.xlsx",
+      "filasLeidas": 384,
+      "filasFueraCMSActivo": 267,
+      "actividadesOmitidas": {
+        "Community Board": 41,
+        "Mandil Verde": 62,
+        "Max & Min": 34,
+        "Rack FHW": 84,
+        "Señaletica Back": 23,
+        "Señaletica Lobby": 23
+      }
+    },
+    {
+      "archivo": "Sistema de Evidencias OPS.xlsx",
+      "filasLeidas": 524,
+      "filasFueraCMSActivo": 184,
+      "actividadesOmitidas": {
+        "Community Board": 16,
+        "Mandil Verde": 18,
+        "Max & Min": 17,
+        "Peanuts Charly&Lucy": 74,
+        "Peanuts Linus&Snoopy": 7,
+        "Rack FHW": 21,
+        "Señaletica Back": 17,
+        "Señaletica Lobby": 14
+      }
+    }
+  ],
+  "sha256Fuentes": {
+    "cms/Sistema_Evidencias_OPS_CMS.xlsx": "6d0393f1dabfad3946fde6cf4ddf97c54644ad265ee735fa40dfb68acdf83821",
+    "cms/Sistema de Evidencias OPS.xlsx": "83fc0c435f6ff37c70fd0dcd9a332795fd74f22a4217b3900236203ab7c6e333",
+    "cms/Directorio.xlsx": "3823b717b53a1f9eca46f3bc71adcb68d1673dbdaf90cb331571edd080cd218f",
+    "config/settings.json": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524",
+    "config/cutover.json": "a1b95310b14ea7e617946aa0bc145a91eb22f693a9879b0ef869263259eed5a0",
+    "cms/Corte_Forms_2026-09-17_115657.xlsx": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82"
+  },
+  "resumen": {
+    "regions": 4,
+    "dms": 28,
+    "stores": 358,
+    "activities": 6,
+    "expectedCompletions": 2148,
+    "completedCompletions": 428,
+    "compliance": 19.9,
+    "validResponses": 428,
+    "storesComplete": 0,
+    "pendingCompletions": 1720,
+    "notApplicableCompletions": 0
+  },
+  "ultimaRespuesta": "29/09/2026 20:58",
+  "cecosAislados": [
+    "38489",
+    "80173"
+  ]
+}

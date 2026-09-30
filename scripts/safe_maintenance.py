@@ -40,6 +40,7 @@ REQUIRED_VALIDATORS = (
     "tests/validate_maintenance.py",
     "tests/validate_project.py",
     "scripts/audit_cms_visibility.py",
+    "scripts/audit_response_types.py",
     "scripts/audit_project.py",
 )
 BASELINE_CONTRACT_VERSION = 1
@@ -428,6 +429,7 @@ def main() -> None:
                 run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_project.py")
                 run(sys.executable, "-X", "utf8", "scripts/audit_cms_visibility.py")
+                run(sys.executable, "-X", "utf8", "scripts/audit_response_types.py")
                 # Las pruebas y exportadores también pueden dejar residuos si un
                 # proceso externo interrumpe una escritura; se limpia antes de auditar.
                 removed += clean_obsolete()

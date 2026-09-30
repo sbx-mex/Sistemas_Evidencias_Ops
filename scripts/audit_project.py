@@ -13,7 +13,7 @@ from PIL import Image
 # La auditoría no debe crear residuos que después ella misma reporte.
 sys.dont_write_bytecode = True
 
-from build_dashboard import STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, load_cms, short_dm_name, validate_xlsx
+from build_dashboard import MULTI_EVIDENCE_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, load_cms, short_dm_name, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -305,12 +305,14 @@ for full_name, expected in (("Luis Manuel Neri Saldaña", "Luis Neri"), ("Nancy 
 published_evidence = [item for item in data.get("submissions", []) if item.get("valid")]
 for item in published_evidence:
     files = item.get("evidenceFiles", [])
+    profile = MULTI_EVIDENCE_CONFIG.get(compact_key(item.get("activity")))
+    expected_stages = [stage["label"] for stage in profile["stages"]] if profile else ["Antes", "Después"]
     if files and (
-        [file.get("label") for file in files] != ["Antes", "Después"]
+        [file.get("label") for file in files] != expected_stages
         or item.get("evidenceUrl") != files[0].get("url")
         or any(file.get("fileName") != unquote(urlsplit(file.get("url", "")).path.rsplit("/", 1)[-1]) for file in files)
     ):
-        issues.append("Una evidencia Antes/Después no conserva sus vínculos originales")
+        issues.append("Una evidencia múltiple no conserva sus etapas y vínculos originales")
 linked_evidence = [item for item in published_evidence if item.get("evidenceUrl")]
 unlinked_evidence = [item for item in published_evidence if not item.get("evidenceUrl")]
 activity_evidence_rules = {

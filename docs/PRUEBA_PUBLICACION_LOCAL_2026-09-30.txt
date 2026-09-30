@@ -1,0 +1,11 @@
+Switched to a new branch 'main'
+To /tmp/tmpyg0p6ipe/remote.git
+ * [new branch]      main -> main
+To /tmp/tmpyg0p6ipe/remote.git
+   02ec023..73e536d  main -> main
+From /tmp/tmpyg0p6ipe/remote
+ * branch            main       -> FETCH_HEAD
+From /tmp/tmpyg0p6ipe/remote
+ * branch            main       -> FETCH_HEAD
+Nueva carga concurrente; reconstruyendo versión más reciente (1/3)
+Publicación segura OK: concurrencia, reconstrucción, rechazo y limpieza

@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import build_payload, load_cutover, find_header
+from scripts.build_dashboard import MULTI_EVIDENCE_CONFIG, build_payload, compact_key, load_cutover, find_header
 
 
 def create_new_forms(path: Path, rows: list[list[object]]) -> None:
@@ -55,7 +55,8 @@ def main() -> None:
         # Rack FHW u otra campaña sin volver obsoleta la prueba del corte.
         activity = next(
             item["name"] for item in baseline["activities"]
-            if any(not store["activities"][item["name"]] for store in baseline["stores"])
+            if compact_key(item["name"]) not in MULTI_EVIDENCE_CONFIG
+            and any(not store["activities"][item["name"]] for store in baseline["stores"])
         )
         candidate = next(store for store in baseline["stores"] if not store["activities"][activity])
         baseline_rows_included = baseline["quality"]["cutover"]["baselineRowsIncluded"]

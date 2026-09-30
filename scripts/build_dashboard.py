@@ -141,6 +141,17 @@ SURVEY_ACTIVITY_CONFIG = {
         ),
     },
 }
+# Cada perfil describe los archivos de una misma respuesta; nunca autoriza
+# actividades. Activo en el CMS sigue siendo la única lista de publicación.
+MULTI_EVIDENCE_CONFIG = {
+    "tartamaricu": {
+        "activity": "Tarta Maricu",
+        "stages": (
+            {"label": "POS", "headers": ("Evidencia_Tarta_Copete_POS",)},
+            {"label": "Showcase", "headers": ("Evidencia_Tarta_MiniCopete_ShowCase",)},
+        ),
+    },
+}
 REQUIRED_RESPONSE_FIELDS = {"activity", "ceco"}
 REQUIRED_XLSX_MEMBERS = {"[Content_Types].xml", "xl/workbook.xml", "xl/_rels/workbook.xml.rels"}
 MOJIBAKE_MARKERS = ("\u00c3", "\u00c2", "\u00e2")
@@ -661,6 +672,12 @@ def closest_activity_key(candidate: Any, activity_names: list[str] | None) -> tu
 def evidence_header_activity(header: Any, activity_names: list[str] | None = None) -> tuple[str | None, str | None]:
     """Obtiene la actividad de Evidencia_<Actividad> o del nombre de actividad."""
     raw = key_text(header)
+    catalog_keys = {compact_key(name) for name in (activity_names or [])}
+    for activity_key, profile in MULTI_EVIDENCE_CONFIG.items():
+        if (not activity_names or activity_key in catalog_keys) and any(
+            matching_columns([header], stage["headers"]) for stage in profile["stages"]
+        ):
+            return activity_key, "exact"
     if raw.startswith("evidencia"):
         if raw in {key_text(item) for item in EVIDENCE_HEADERS} or raw.startswith("evidencia del avance (pregunta"):
             return None, "generic"
@@ -920,6 +937,27 @@ def resolve_evidence_value(
     activity_key = compact_key(activity)
     exact = [item for item in populated if item["activityKey"] == activity_key]
     configured = [item for item in columns if item["activityKey"] == activity_key]
+    profile = MULTI_EVIDENCE_CONFIG.get(activity_key)
+    if profile:
+        # Se consolidan duplicados equivalentes por etapa. Un archivo faltante,
+        # contradictorio o ajeno no completa la respuesta ni se toma por afinidad.
+        files = []
+        claimed_indices = set()
+        for specification in profile["stages"]:
+            stage_columns = [item for item in exact
+                             if matching_columns([item["header"]], specification["headers"])]
+            values = list(dict.fromkeys(item["value"] for item in stage_columns))
+            if not values:
+                return "", "", "incomplete-multi-evidence", []
+            if len(values) > 1:
+                return "", "", "ambiguous-matching-evidence", []
+            chosen = stage_columns[0]
+            claimed_indices.update(item["index"] for item in stage_columns)
+            files.append({"label": specification["label"], "header": chosen["header"], "value": values[0]})
+        if any(item["index"] not in claimed_indices for item in populated):
+            return "", "", "multiple-evidence-columns", []
+        return files[0]["value"], files[0]["header"], None, files
+
     def stage(item: dict[str, Any]) -> str:
         normalized = compact_key(item["header"])
         return "Antes" if normalized.endswith("antes") else ("Después" if normalized.endswith("despues") else "")

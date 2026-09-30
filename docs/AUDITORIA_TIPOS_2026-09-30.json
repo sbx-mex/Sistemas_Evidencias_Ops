@@ -1,0 +1,110 @@
+{
+  "estado": "APROBADO",
+  "controles": 13,
+  "verificaciones": [
+    "Tablero sincronizado con CMS y ambas fuentes Forms",
+    "Una sola respuesta ganadora por tienda/actividad, dentro del CMS",
+    "POS y Showcase publicados conservan ambos vínculos de la misma fila original",
+    "Encabezados nuevos de Tarta reconocidos expresamente",
+    "Jarras, FHW y Va X Cuenta reconcilian por respuesta, región y DM; porcentaje ponderado",
+    "Exportación Excel conserva todas las etapas y vínculos exactamente",
+    "Pareja completa: una actividad y dos archivos, con columnas reordenadas",
+    "Reenvío más reciente reemplaza la pareja completa sin duplicar ni mezclar",
+    "Archivo o encabezado de Showcase faltante deja la respuesta fuera de cumplimiento",
+    "Duplicados idénticos se consolidan; duplicados contradictorios se aíslan",
+    "Archivos extra o actividad incorrecta se aíslan sin reasignar evidencias",
+    "Cada vínculo supera la validación HTTPS y de dominio autorizado",
+    "Fuentes originales conservan sus SHA256"
+  ],
+  "sha256Fuentes": {
+    "cms/Sistema_Evidencias_OPS_CMS.xlsx": "6d0393f1dabfad3946fde6cf4ddf97c54644ad265ee735fa40dfb68acdf83821",
+    "cms/Directorio.xlsx": "3823b717b53a1f9eca46f3bc71adcb68d1673dbdaf90cb331571edd080cd218f",
+    "cms/Sistema de Evidencias OPS.xlsx": "83fc0c435f6ff37c70fd0dcd9a332795fd74f22a4217b3900236203ab7c6e333",
+    "config/settings.json": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524",
+    "config/cutover.json": "a1b95310b14ea7e617946aa0bc145a91eb22f693a9879b0ef869263259eed5a0",
+    "cms/Corte_Forms_2026-09-17_115657.xlsx": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82"
+  },
+  "resumen": {
+    "regions": 4,
+    "dms": 28,
+    "stores": 358,
+    "activities": 6,
+    "expectedCompletions": 2148,
+    "completedCompletions": 428,
+    "compliance": 19.9,
+    "validResponses": 428,
+    "storesComplete": 0,
+    "pendingCompletions": 1720,
+    "notApplicableCompletions": 0
+  },
+  "ultimaRespuesta": "29/09/2026 20:58",
+  "filasFormsActual": 524,
+  "filasBase": 384,
+  "porActividad": [
+    {
+      "actividad": "Lay Out",
+      "filasFormsActual": 62,
+      "tiendasConCumplimiento": 50
+    },
+    {
+      "actividad": "Jarras Blender | Cold Foam",
+      "filasFormsActual": 25,
+      "tiendasConCumplimiento": 137
+    },
+    {
+      "actividad": "Organización Refrigeradores Back",
+      "filasFormsActual": 12,
+      "tiendasConCumplimiento": 12
+    },
+    {
+      "actividad": "Va X Cuenta",
+      "filasFormsActual": 118,
+      "tiendasConCumplimiento": 112
+    },
+    {
+      "actividad": "FHW",
+      "filasFormsActual": 100,
+      "tiendasConCumplimiento": 94
+    },
+    {
+      "actividad": "Tarta Maricu",
+      "filasFormsActual": 23,
+      "tiendasConCumplimiento": 23
+    }
+  ],
+  "totalesNumericos": [
+    {
+      "actividad": "Jarras Blender | Cold Foam",
+      "tiendas": 137,
+      "totales": {
+        "blender": 240,
+        "coldFoam": 140,
+        "total": 380
+      }
+    },
+    {
+      "actividad": "FHW",
+      "tiendas": 94,
+      "totales": {
+        "cutlery": 2453,
+        "cups3Oz": 529,
+        "total": 2982
+      }
+    },
+    {
+      "actividad": "Va X Cuenta",
+      "tiendas": 112,
+      "totales": {
+        "yesDonate": 1286,
+        "noDonate": 203,
+        "total": 1489,
+        "percentage": 86.4
+      }
+    }
+  ],
+  "cecosAislados": [
+    "38489",
+    "80173"
+  ],
+  "respuestasAisladas": []
+}

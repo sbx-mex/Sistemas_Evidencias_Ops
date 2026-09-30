@@ -14,7 +14,7 @@ from openpyxl import Workbook, load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.build_dashboard import boolean_answer, build_payload, clean_text, evidence_header_activity, find_header, load_cms, load_responses, parse_datetime, parse_quantity
+from scripts.build_dashboard import MULTI_EVIDENCE_CONFIG, boolean_answer, build_payload, clean_text, compact_key, evidence_header_activity, find_header, load_cms, load_responses, parse_datetime, parse_quantity
 from scripts.export_excel import build_workbook
 
 
@@ -144,12 +144,13 @@ def main() -> None:
         # fija nombres o fechas que Operación pueda cambiar desde el CMS.
         configured = [
             item for item in current_payload["activities"]
-            if item["requireEvidence"]
+            if item["requireEvidence"] and compact_key(item["name"]) not in MULTI_EVIDENCE_CONFIG
+            and item["name"] not in {module["activity"] for module in current_payload["quantityModules"]}
         ]
         assert len(configured) >= 2
         campaign_sample = configured[:2]
         campaign_names = [item["name"] for item in campaign_sample]
-        assert campaign_names == [item["name"] for item in current_payload["activities"] if item["requireEvidence"]][:2]
+        assert campaign_names == [item["name"] for item in configured][:2]
         assert all(isinstance(item["endDate"], (str, type(None))) for item in campaign_sample)
         # La descripción es contenido editorial del CMS: puede ajustarse sin
         # afectar el cruce Forms, el orden, la evidencia ni la fecha límite.
@@ -269,7 +270,11 @@ def main() -> None:
                                          ROOT / "config/settings.json", disabled_numeric_cms)
         assert all(module["activity"] != new_activity for module in disabled_numeric["quantityModules"])
 
-        simulation_activity = active_activities[0]
+        # El cruce de identidad usa una actividad de evidencia simple;
+        # los perfiles múltiples tienen su propia prueba de contrato completo.
+        simulation_activity = next(name for name in active_activities
+                                   if compact_key(name) not in MULTI_EVIDENCE_CONFIG
+                                   and name not in {module["activity"] for module in current_payload["quantityModules"]})
         all_ceco1 = temp / "all-ceco1.xlsx"
         # La columna genérica permite probar el cruce CeCo/CeCo1 sin acoplar
         # este escenario a una actividad u opción vigente específica de Forms.

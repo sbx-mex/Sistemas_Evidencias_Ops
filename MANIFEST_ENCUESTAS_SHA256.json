@@ -1,0 +1,33 @@
+{
+  "repositorio": "sbx-mex/Sistemas_Evidencias_Ops",
+  "revisionAuditada": "c65cfad5ff89a5b96f71101e09db90cfaea69dd0",
+  "tipo": "correcciones sobre repositorio existente; conservar fuentes actuales",
+  "archivos": {
+    "INSTRUCCIONES_CARGA_ENCUESTAS.md": "34f63774f2274cff44855697886338a7023d4624f232f6108c21af7b00a1ebca",
+    "VALIDACION_EN_VERDE.md": "1f055cc0b460d79bd251cb440e89b630b0e14a6623a3627c734dfe77d35b62cc",
+    "data/dashboard.json": "6bb2828ed84c5e01575b9164e9af4f431e43ed8449e30af2fee27cff6a735822",
+    "docs/AUDITORIA_CMS_2026-09-30.json": "3b405c7c0c77e3e9af5e425328ecfad40b1a654c2b166da0dff113e2312764bc",
+    "docs/AUDITORIA_ENCUESTAS_2026-09-30.md": "42ad32c1e38051dc68baa04a3cdc0f6aec14862b369e6029f42dd2f506095334",
+    "docs/AUDITORIA_TIPOS_2026-09-30.json": "a2ce4d1aadf9b858e3a2b8b90fba7ad8092e5b2c1480e8628e992715193fceba",
+    "docs/PRUEBA_INSTALACION_ZIP_2026-09-30.txt": "561268dfbde7b07a5c6187ec39609ea533d43c41471df9b3ce95f2770c2767c8",
+    "docs/PRUEBA_PUBLICACION_LOCAL_2026-09-30.txt": "ed5dfd367b94b863ff253ff5976713b8115d9fb0896411d3ad020a98b1e41e72",
+    "docs/VALIDACION_PYTHON_2026-09-30.txt": "e514d3acafef6f4a55150c235827d83c7e71e389e0d0045847231eb3726728ae",
+    "exports/Resumen_Evidencias_OPS.pdf": "4c3a5fd659112b06fca0d7f3a7d32db6fed2f9ea7b88add070455a39b36e6831",
+    "exports/Resumen_Evidencias_OPS.xlsx": "832f1785be16dd33ef58d125cc0d41941bc6865f565d665704714283b485ba68",
+    "scripts/audit_project.py": "f7b794a8cfe2e96e04720127049283b6fe37710daf1f7bec2bd65b3987c6b748",
+    "scripts/audit_response_types.py": "f09daa8cc4373012fc1397f01c7ca998357294630a9e73a834dfa2d847a89de5",
+    "scripts/build_dashboard.py": "9b5ebd93347cc1e786c88a66d5945a2c2fbcf27125e1e3e5e0be28efd236deed",
+    "scripts/safe_maintenance.py": "16c8c2ba09cf02455897d75addbb4931a89ec5915478a78ef1803ed93c6a872a",
+    "tests/validate_cutover.py": "294cc05882cde7441be9ce7b9b5415b955fd4276e4c1c1956eac21ec85deda8b",
+    "tests/validate_dynamic_forms_schema.py": "9c4486a55c64417e4f2edfff1bda9ee2d654d8d65af57d25f05fbba2773e24fd",
+    "verificar_paquete_encuestas.py": "55045001544b05b46c53f2333ff9fafa4bd8dab259a5e01e7634e7b069f174c7"
+  },
+  "fuentesAuditadas": {
+    "cms/Sistema_Evidencias_OPS_CMS.xlsx": "6d0393f1dabfad3946fde6cf4ddf97c54644ad265ee735fa40dfb68acdf83821",
+    "cms/Directorio.xlsx": "3823b717b53a1f9eca46f3bc71adcb68d1673dbdaf90cb331571edd080cd218f",
+    "cms/Sistema de Evidencias OPS.xlsx": "83fc0c435f6ff37c70fd0dcd9a332795fd74f22a4217b3900236203ab7c6e333",
+    "config/settings.json": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524",
+    "config/cutover.json": "a1b95310b14ea7e617946aa0bc145a91eb22f693a9879b0ef869263259eed5a0",
+    "cms/Corte_Forms_2026-09-17_115657.xlsx": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82"
+  }
+}
