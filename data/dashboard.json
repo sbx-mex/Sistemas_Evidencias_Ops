@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "b2a297957e8c5e98",
+  "buildVersion": "4cf8b828f7164198",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-01T22:35:06+00:00",
-  "lastUpdated": "2026-10-01T16:24:25",
-  "lastUpdatedDisplay": "01/10/2026 16:24",
+  "generatedAt": "2026-10-01T23:05:15+00:00",
+  "lastUpdated": "2026-10-01T16:51:32",
+  "lastUpdatedDisplay": "01/10/2026 16:51",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "01/10/26 · 16:24 h",
+    "cutOffDisplay": "01/10/26 · 16:51 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -60,10 +60,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 314,
+        "completed": 316,
         "expected": 600,
-        "pending": 286,
-        "compliance": 52.3,
+        "pending": 284,
+        "compliance": 52.7,
         "status": "Seguimiento"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 184,
+        "completed": 187,
         "expected": 438,
-        "pending": 254,
-        "compliance": 42.0,
+        "pending": 251,
+        "compliance": 42.7,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "4121e7fea2e3bd13107a2daa320a1775f848eb4faaee72250c237fcfa1f3eb3b",
+    "responsesSha256": "4b4636a9fed4e52226cb867326a60655f08b1aa7d6b7abaa9aafa8e955a200b3",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 358,
     "activities": 6,
     "expectedCompletions": 2148,
-    "completedCompletions": 593,
-    "compliance": 27.6,
-    "validResponses": 593,
+    "completedCompletions": 598,
+    "compliance": 27.8,
+    "validResponses": 598,
     "storesComplete": 0,
-    "pendingCompletions": 1555,
+    "pendingCompletions": 1550,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 904,
+    "responsesRead": 910,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 704,
-      "newFormsRowsIncluded": 520,
+      "newFormsRowsRead": 710,
+      "newFormsRowsIncluded": 526,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -725,7 +725,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 39,
+    "duplicateValidResponses": 40,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -738,7 +738,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 704
+        "CeCo": 710
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -807,7 +807,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 446,
+    "evidenceLinksPublished": 449,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -932,11 +932,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 147,
+      "completedStores": 149,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 211,
-      "compliance": 41.1,
+      "pendingStores": 209,
+      "compliance": 41.6,
       "deadlineLabel": "Vence en 4 días",
       "deadlineTone": "amber",
       "daysRemaining": 4,
@@ -954,11 +954,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 162,
+      "completedStores": 165,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 196,
-      "compliance": 45.3,
+      "pendingStores": 193,
+      "compliance": 46.1,
       "deadlineLabel": "Vence en 4 días",
       "deadlineTone": "amber",
       "daysRemaining": 4,
@@ -1014,12 +1014,12 @@
         "Centro Poniente"
       ],
       "stores": 15,
-      "completed": 55,
+      "completed": 56,
       "expected": 90,
       "notApplicable": 0,
-      "pending": 35,
+      "pending": 34,
       "pendingStores": 15,
-      "compliance": 61.1,
+      "compliance": 62.2,
       "status": "Seguimiento",
       "rank": 3
     },
@@ -1109,12 +1109,12 @@
         "Centro Poniente"
       ],
       "stores": 15,
-      "completed": 45,
+      "completed": 46,
       "expected": 90,
       "notApplicable": 0,
-      "pending": 45,
+      "pending": 44,
       "pendingStores": 15,
-      "compliance": 50.0,
+      "compliance": 51.1,
       "status": "Seguimiento",
       "rank": 8
     },
@@ -1176,25 +1176,6 @@
       "rank": 11
     },
     {
-      "dm": "Veronica Garcia Ortega",
-      "shortName": "Veronica Garcia",
-      "photo": "assets/dm/veronica-garcia.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 11,
-      "completed": 23,
-      "expected": 66,
-      "notApplicable": 0,
-      "pending": 43,
-      "pendingStores": 11,
-      "compliance": 34.8,
-      "status": "Atención",
-      "rank": 12
-    },
-    {
       "dm": "Nancy Carolina Rodriguez Medina",
       "shortName": "Nancy Rodriguez",
       "photo": "assets/dm/nancy-carolina.webp",
@@ -1204,12 +1185,31 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 27,
+      "completed": 29,
       "expected": 78,
       "notApplicable": 0,
-      "pending": 51,
+      "pending": 49,
       "pendingStores": 13,
-      "compliance": 34.6,
+      "compliance": 37.2,
+      "status": "Atención",
+      "rank": 12
+    },
+    {
+      "dm": "Veronica Garcia Ortega",
+      "shortName": "Veronica Garcia",
+      "photo": "assets/dm/veronica-garcia.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 11,
+      "completed": 24,
+      "expected": 66,
+      "notApplicable": 0,
+      "pending": 42,
+      "pendingStores": 11,
+      "compliance": 36.4,
       "status": "Atención",
       "rank": 13
     },
@@ -3492,28 +3492,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38694",
-      "store": "Villas de la Hacienda",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 1,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 16.7,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38719",
-      "store": "Plaza Fortuna",
-      "dm": "Veronica Garcia Ortega",
-      "completed": 1,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 16.7,
-      "status": "Atención"
-    },
-    {
       "ceco": "38188",
       "store": "Palmas",
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -3778,8 +3756,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38606",
-      "store": "TlalnepantlaCarso",
+      "ceco": "38374",
+      "store": "Valle Dorado",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 2,
       "expected": 6,
@@ -3789,8 +3767,8 @@
       "status": "Atención"
     },
     {
-      "ceco": "38374",
-      "store": "Valle Dorado",
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 2,
       "expected": 6,
@@ -4000,6 +3978,17 @@
     {
       "ceco": "38924",
       "store": "Plaza Aeropuerto",
+      "dm": "Veronica Garcia Ortega",
+      "completed": 2,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 33.3,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38719",
+      "store": "Plaza Fortuna",
       "dm": "Veronica Garcia Ortega",
       "completed": 2,
       "expected": 6,
@@ -4394,17 +4383,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38607",
-      "store": "Carretera Mexico Toluca KM42",
-      "dm": "Erika Julieta Contreras Aguilera",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38225",
       "store": "Centro Comercial Santa Fe 2",
       "dm": "Erika Julieta Contreras Aguilera",
@@ -4440,17 +4418,6 @@
     {
       "ceco": "38798",
       "store": "Corp. Televisa Sta Fe",
-      "dm": "Jose De Jesus Magos Arzaluz",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38532",
-      "store": "One o One",
       "dm": "Jose De Jesus Magos Arzaluz",
       "completed": 3,
       "expected": 6,
@@ -4539,6 +4506,17 @@
     {
       "ceco": "38186",
       "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 3,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 3,
       "expected": 6,
@@ -5054,6 +5032,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38607",
+      "store": "Carretera Mexico Toluca KM42",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38148",
       "store": "Centro Comercial Santa Fe 1",
       "dm": "Erika Julieta Contreras Aguilera",
@@ -5166,6 +5155,17 @@
     {
       "ceco": "38512",
       "store": "Garden Santa Fe",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38532",
+      "store": "One o One",
       "dm": "Jose De Jesus Magos Arzaluz",
       "completed": 4,
       "expected": 6,
@@ -8134,16 +8134,16 @@
       "dm": "Erika Julieta Contreras Aguilera",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-10-01T12:42:06",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-01T16:51:32",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true
       },
@@ -10346,16 +10346,16 @@
       "dm": "Jose De Jesus Magos Arzaluz",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-10-01T16:15:13",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-01T16:33:47",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true
       },
@@ -13174,17 +13174,17 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 33.3,
-      "lastUpdate": "2026-09-28T09:34:21",
+      "compliance": 50.0,
+      "lastUpdate": "2026-10-01T16:44:43",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false,
+        "FHW": true,
         "Tarta Maricu": false
       },
       "applicableActivities": {
@@ -13230,17 +13230,17 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 16.7,
-      "lastUpdate": "2026-09-28T13:31:25",
+      "compliance": 33.3,
+      "lastUpdate": "2026-10-01T16:44:20",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false,
+        "FHW": true,
         "Tarta Maricu": false
       },
       "applicableActivities": {
@@ -14658,17 +14658,17 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 16.7,
-      "lastUpdate": "2026-09-28T18:25:13",
+      "compliance": 33.3,
+      "lastUpdate": "2026-10-01T16:49:55",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false,
+        "FHW": true,
         "Tarta Maricu": false
       },
       "applicableActivities": {
@@ -15716,20 +15716,20 @@
           "maximum": 20
         }
       ],
-      "answeredStores": 162,
+      "answeredStores": 165,
       "totals": {
-        "cutlery": 3938,
-        "cups3Oz": 926,
-        "total": 4864
+        "cutlery": 3960,
+        "cups3Oz": 936,
+        "total": 4896
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 69,
+          "answeredStores": 72,
           "totals": {
-            "cutlery": 1437,
-            "cups3Oz": 355,
-            "total": 1792
+            "cutlery": 1459,
+            "cups3Oz": 365,
+            "total": 1824
           }
         },
         {
@@ -15765,11 +15765,11 @@
         {
           "region": "Centro Norte",
           "dm": "Nancy Carolina Rodriguez Medina",
-          "answeredStores": 10,
+          "answeredStores": 12,
           "totals": {
-            "cutlery": 269,
-            "cups3Oz": 55,
-            "total": 324
+            "cutlery": 274,
+            "cups3Oz": 59,
+            "total": 333
           }
         },
         {
@@ -15785,11 +15785,11 @@
         {
           "region": "Centro Norte",
           "dm": "Veronica Garcia Ortega",
-          "answeredStores": 10,
+          "answeredStores": 11,
           "totals": {
-            "cutlery": 234,
-            "cups3Oz": 73,
-            "total": 307
+            "cutlery": 251,
+            "cups3Oz": 79,
+            "total": 330
           }
         },
         {
@@ -15927,12 +15927,12 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 147,
+      "answeredStores": 149,
       "totals": {
-        "yesDonate": 1680,
-        "noDonate": 269,
-        "total": 1949,
-        "percentage": 86.2
+        "yesDonate": 1713,
+        "noDonate": 270,
+        "total": 1983,
+        "percentage": 86.4
       },
       "byRegion": [
         {
@@ -15947,12 +15947,12 @@
         },
         {
           "region": "Centro Poniente",
-          "answeredStores": 66,
+          "answeredStores": 68,
           "totals": {
-            "yesDonate": 742,
-            "noDonate": 92,
-            "total": 834,
-            "percentage": 89.0
+            "yesDonate": 775,
+            "noDonate": 93,
+            "total": 868,
+            "percentage": 89.3
           }
         },
         {
@@ -16080,23 +16080,23 @@
         {
           "region": "Centro Poniente",
           "dm": "Erika Julieta Contreras Aguilera",
-          "answeredStores": 9,
+          "answeredStores": 10,
           "totals": {
-            "yesDonate": 89,
-            "noDonate": 20,
-            "total": 109,
-            "percentage": 81.7
+            "yesDonate": 110,
+            "noDonate": 21,
+            "total": 131,
+            "percentage": 84.0
           }
         },
         {
           "region": "Centro Poniente",
           "dm": "Jose De Jesus Magos Arzaluz",
-          "answeredStores": 13,
+          "answeredStores": 14,
           "totals": {
-            "yesDonate": 137,
+            "yesDonate": 149,
             "noDonate": 7,
-            "total": 144,
-            "percentage": 95.1
+            "total": 156,
+            "percentage": 95.5
           }
         },
         {
@@ -16148,6 +16148,141 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-7b56f3d2a1af4268",
+      "timestamp": "2026-10-01T16:51:32",
+      "timestampDisplay": "01/10/2026 16:51",
+      "activity": "Va X Cuenta",
+      "ceco": "38607",
+      "store": "Carretera Mexico Toluca KM42",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_38607",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38607",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 21,
+        "noDonate": 1,
+        "total": 22,
+        "percentage": 95.5
+      }
+    },
+    {
+      "id": "respuesta-6ceea64da47f0c14",
+      "timestamp": "2026-10-01T16:49:55",
+      "timestampDisplay": "01/10/2026 16:49",
+      "activity": "FHW",
+      "ceco": "38719",
+      "store": "Plaza Fortuna",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38719",
+      "evidenceLinkLabel": "Link_FHW_38719",
+      "evidenceFileName": "image_Hector Martinez Urib.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 17,
+        "cups3Oz": 6,
+        "total": 23
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/image_Hector%20Martinez%20Urib.jpg"
+    },
+    {
+      "id": "respuesta-7faa1f3bbe30aa4f",
+      "timestamp": "2026-10-01T16:44:43",
+      "timestampDisplay": "01/10/2026 16:44",
+      "activity": "FHW",
+      "ceco": "38606",
+      "store": "TlalnepantlaCarso",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38606",
+      "evidenceLinkLabel": "Link_FHW_38606",
+      "evidenceFileName": "IMG_3103_Starbucks Tlalnepant.jpeg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 0,
+        "cups3Oz": 0,
+        "total": 0
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/IMG_3103_Starbucks%20Tlalnepant.jpeg"
+    },
+    {
+      "id": "respuesta-0fc2008a2b07449e",
+      "timestamp": "2026-10-01T16:44:20",
+      "timestampDisplay": "01/10/2026 16:44",
+      "activity": "FHW",
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38694",
+      "evidenceLinkLabel": "Link_FHW_38694",
+      "evidenceFileName": "IMG_3796_Starbucks Villas de.jpeg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 5,
+        "cups3Oz": 4,
+        "total": 9
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/IMG_3796_Starbucks%20Villas%20de.jpeg"
+    },
+    {
+      "id": "respuesta-e1f241c7c112e58a",
+      "timestamp": "2026-10-01T16:33:47",
+      "timestampDisplay": "01/10/2026 16:33",
+      "activity": "Va X Cuenta",
+      "ceco": "38532",
+      "store": "One o One",
+      "dm": "Jose De Jesus Magos Arzaluz",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_38532",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38532",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 12,
+        "noDonate": 0,
+        "total": 12,
+        "percentage": 100.0
+      }
+    },
     {
       "id": "respuesta-bb1b9a2d79368301",
       "timestamp": "2026-10-01T16:24:25",
