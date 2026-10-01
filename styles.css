@@ -450,3 +450,17 @@ body > footer.campaign-footer { position: relative; display: grid; width: min(ca
   .export-menu > summary { justify-content: center; }
   .ratio-mode .quantity-table-shell table { min-width: 545px; }
 }
+
+/* FHW: lectura ejecutiva con la base del promedio siempre visible. */
+.quantity-mode { display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 12px; border: 1px solid #cfe1d9; border-radius: 999px; background: #eef5f1; }
+.quantity-mode[hidden], .quantity-reading[hidden], .quantity-basis[hidden], .quantity-note[hidden] { display: none; }
+.quantity-mode button { min-height: 38px; padding: 8px 22px; border: 0; border-radius: 999px; color: #42564d; background: transparent; font: inherit; font-size: .78rem; font-weight: 800; cursor: pointer; }
+.quantity-mode button[aria-pressed="true"] { color: #fff; background: #006241; box-shadow: 0 2px 7px #00624126; }
+.quantity-mode button:focus-visible { outline: 3px solid #b17620; outline-offset: 3px; }
+.quantity-reading { margin: 0 0 10px; color: #1e3932; font-size: .8rem; font-weight: 800; }
+.quantity-basis { margin: 12px 0 4px; color: #1e3932; font-size: .7rem; font-weight: 750; line-height: 1.5; }
+.quantity-note { margin: 0; color: #56675f; font-size: .65rem; line-height: 1.5; }
+.fhw-mode .quantity-total strong { font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+.fhw-mode .quantity-total span { font-size: .7rem; }
+.fhw-mode .quantity-table-shell table { min-width: 540px; }
+@media (max-width: 980px) { .fhw-mode .quantity-consolidation { order: -1; } }

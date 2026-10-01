@@ -3,6 +3,7 @@ const state = {
   filters: { region: "", dm: "", store: "", activity: "", quantity: "" },
   evidenceFilters: { region: "", dm: "", store: "", activity: "" },
   showAllEvidence: false,
+  fhwMode: "total",
   exporting: false,
   exportDecision: null,
   exportUrl: "",
@@ -272,6 +273,37 @@ function quantityRollup(responses, metrics, groupFields, percentageMetric) {
   });
 }
 
+function isFhwModule(module = activeQuantityModule()) {
+  return module?.activity === "FHW";
+}
+
+function fhwNumber(value, mode = state.fhwMode) {
+  return value == null ? "—" : Number(value).toLocaleString("es-MX", {
+    minimumFractionDigits: mode === "average" ? 1 : 0,
+    maximumFractionDigits: mode === "average" ? 1 : 0,
+  });
+}
+
+function fhwSummary(module = activeQuantityModule()) {
+  const responses = filteredQuantityResponses(module);
+  const eligible = filteredStores().filter((store) => store.applicableActivities?.[module.activity] !== false).length;
+  const totals = Object.fromEntries(module.metrics.map((metric) => [metric.key,
+    responses.reduce((sum, item) => sum + Number(item.quantities[metric.key] || 0), 0)]));
+  totals.total = module.metrics.reduce((sum, metric) => sum + totals[metric.key], 0);
+  const mode = state.fhwMode === "average" ? "average" : "total";
+  const values = Object.fromEntries(Object.entries(totals).map(([key, value]) => [key,
+    !responses.length ? null : mode === "average" ? value / responses.length : value]));
+  return { module, responses, totals, values, mode, eligible, answered: responses.length,
+    pending: Math.max(0, eligible - responses.length),
+    coverage: eligible ? responses.length / eligible * 100 : null,
+    label: mode === "average" ? "Promedio por tienda" : "Total de piezas",
+    basis: responses.length ? `Base: ${number(responses.length)} tiendas con respuesta · ${number(Math.max(0, eligible - responses.length))} sin respuesta`
+      : "Sin respuestas válidas en este filtro",
+    note: mode === "average" ? "Piezas ÷ tiendas con respuesta. Incluye las respuestas en cero."
+      : "Suma de las respuestas del filtro actual.",
+  };
+}
+
 function renderQuantityModule() {
   const section = $("#inventario-jarras");
   const nav = $("#quantity-nav");
@@ -281,6 +313,15 @@ function renderQuantityModule() {
   if (!module) return;
 
   const ratio = Boolean(module.percentageMetric);
+  const fhw = isFhwModule(module);
+  section.classList.toggle("fhw-mode", fhw);
+  $("#quantity-mode").hidden = !fhw;
+  $("#quantity-reading").hidden = !fhw;
+  $("#quantity-basis").hidden = !fhw;
+  $("#quantity-note").hidden = !fhw;
+  for (const button of $("#quantity-mode").querySelectorAll?.("button") || []) {
+    button.setAttribute("aria-pressed", String(button.dataset.fhwMode === state.fhwMode));
+  }
   const showEvidence = module.requireEvidence !== false;
   const oneDm = Boolean(state.filters.dm || state.filters.store);
   const showDm = !ratio && !oneDm;
@@ -289,14 +330,14 @@ function renderQuantityModule() {
   nav.textContent = module.activity === "Jarras Blender | Cold Foam" ? "Jarras" : module.activity;
   $("#quantity-heading").textContent = module.title;
   $("#quantity-response-table").closest("table").querySelector("thead tr").innerHTML =
-    `<th>Tienda</th>${showDm ? "<th>DM</th>" : ""}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}${showEvidence ? "<th>Evidencia</th>" : ""}`;
+    `<th>Tienda</th>${showDm ? "<th>DM</th>" : ""}${module.metrics.map((metric) => `<th>${esc(shortLabel(metric.label))}</th>`).join("")}${fhw ? "" : `<th>${esc(shortLabel(module.totalLabel || "Piezas totales"))}</th>`}${ratio ? `<th>${esc(shortLabel(module.percentageLabel))}</th>` : ""}${showEvidence ? "<th>Evidencia</th>" : ""}`;
 
   const eligibleStores = filteredStores().filter((store) => store.applicableActivities?.[module.activity] !== false).length;
   const responses = filteredQuantityResponses(module)
     .sort((a, b) => a.store.localeCompare(b.store, "es-MX"));
   const responseRate = eligibleStores ? responses.length / eligibleStores * 100 : 0;
   section.classList.toggle("single-store", eligibleStores === 1);
-  $(".quantity-consolidation").hidden = eligibleStores === 1;
+  $(".quantity-consolidation").hidden = eligibleStores === 1 && !fhw;
   const totals = Object.fromEntries(module.metrics.map((metric) => [
     metric.key,
     responses.reduce((sum, item) => sum + Number(item.quantities?.[metric.key] || 0), 0),
@@ -313,15 +354,24 @@ function renderQuantityModule() {
     <td><strong>${esc(item.store)}</strong><small>CeCo ${esc(item.ceco)}${ratio && !oneDm ? ` · ${esc(item.dm)}` : ""}</small></td>
     ${showDm ? `<td>${esc(item.dm)}</td>` : ""}
     ${module.metrics.map((metric) => `<td><strong>${number(item.quantities[metric.key])}</strong></td>`).join("")}
-    <td><strong>${number(item.quantities.total)}</strong></td>
+    ${fhw ? "" : `<td><strong>${number(item.quantities.total)}</strong></td>`}
     ${module.percentageMetric ? `<td><strong>${item.quantities.percentage == null ? "—" : percent(item.quantities.percentage)}</strong></td>` : ""}
     ${showEvidence ? `<td>${item.evidenceLinkPublished && item.evidenceUrl
       ? `<a class="quantity-evidence" href="${esc(item.evidenceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir</a>`
       : "—"}</td>` : ""}
-  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 2 + Number(showDm) + Number(ratio) + Number(showEvidence)}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
+  </tr>`).join("") : `<tr><td colspan="${module.metrics.length + 2 - Number(fhw) + Number(showDm) + Number(ratio) + Number(showEvidence)}"><div class="empty-state">Sin respuestas válidas en este filtro.</div></td></tr>`;
 
   $("#quantity-totals").classList.toggle("ratio", ratio);
-  const totalCards = ratio ? [
+  const executive = fhw ? fhwSummary(module) : null;
+  if (executive) {
+    $("#quantity-reading").textContent = executive.label;
+    $("#quantity-basis").textContent = executive.basis;
+    $("#quantity-note").textContent = executive.note;
+  }
+  const totalCards = executive ? [
+    ...module.metrics.map((metric) => [fhwNumber(executive.values[metric.key]), metric.label, "", ""]),
+    [fhwNumber(executive.values.total), executive.mode === "average" ? "Piezas por tienda" : "Piezas en el filtro", "", " total"],
+  ] : ratio ? [
     [participation == null ? "—" : percent(participation), shortLabel(module.percentageLabel),
       `${number(totals[module.percentageMetric])} de ${number(totals.total)} · ${shortLabel(module.totalLabel || "Total")}`, " featured"],
     ...module.metrics.map((metric) => [number(totals[metric.key]), shortLabel(metric.label), "", ""]),
@@ -521,11 +571,14 @@ function syncFilterUrl() {
   [["region", state.filters.region], ["dm", state.filters.dm], ["store", state.filters.store], ["activity", state.filters.activity], ["quantity", state.filters.quantity]].forEach(([key, value]) => {
     if (value) url.searchParams.set(key, value); else url.searchParams.delete(key);
   });
+  if (state.fhwMode === "average") url.searchParams.set("fhwView", "average");
+  else url.searchParams.delete("fhwView");
   history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
 function readFilterUrl() {
   const params = new URLSearchParams(location.search);
+  state.fhwMode = params.get("fhwView") === "average" ? "average" : "total";
   state.filters = { region: params.get("region") || "", dm: params.get("dm") || "", store: params.get("store") || "", activity: params.get("activity") || "", quantity: params.get("quantity") || "" };
 }
 
@@ -650,7 +703,8 @@ function exportActivityLabel() {
   const activity = state.filters.activity || "Todas las actividades";
   const module = (state.data.quantityModules || []).find((item) => item.activity === state.filters.activity);
   const choice = quantityChoices(module).find((item) => item.value === state.filters.quantity);
-  return choice ? `${activity} · ${choice.label}` : activity;
+  const label = choice ? `${activity} · ${choice.label}` : activity;
+  return isFhwModule(module) ? `${label} · ${state.fhwMode === "average" ? "Promedio" : "Total"}` : label;
 }
 
 function exportAdvanceLabel() {
@@ -678,7 +732,13 @@ function exportContext(format) {
   const filename = `Sistema_Evidencia_OPS_${type}_${fileSafe(name)}_${fileSafe(activity)}_Corte_${cutDate().replaceAll("/", "-")}.${format}`;
   return {
     item, activity, type, name, filename,
-    summary: [
+    summary: isFhwModule() ? (() => {
+      const summary = fhwSummary();
+      return [["Alcance", `${type} · ${name}`], ["Actividad", activity],
+        ["Lectura", summary.label], ["Base", summary.basis],
+        ...summary.module.metrics.map((metric) => [metric.label, fhwNumber(summary.values[metric.key])]),
+        ["Piezas", fhwNumber(summary.values.total)]];
+    })() : [
       ["Alcance", `${type} · ${name}`],
       ["Actividad", activity],
       ["Tiendas", number(item.stores)],
@@ -724,7 +784,61 @@ function fitText(context, value, maxWidth) {
   return `${clipped}…`;
 }
 
+function renderFhwReportPages() {
+  const summary = fhwSummary();
+  const canvas = document.createElement("canvas");
+  canvas.width = 1600; canvas.height = 1131;
+  const context = canvas.getContext("2d");
+  context.fillStyle = "#f4f7f5"; context.fillRect(0, 0, 1600, 1131);
+  context.fillStyle = "#006241"; context.fillRect(0, 0, 1600, 215);
+  context.fillStyle = "#cce5d9"; context.font = "700 23px Segoe UI, sans-serif";
+  context.fillText("EVIDENCIAS OPS · FHW", 65, 54);
+  context.fillStyle = "#ffffff"; context.font = "800 48px Segoe UI, sans-serif";
+  context.fillText(summary.label, 65, 118);
+  context.font = "600 27px Segoe UI, sans-serif";
+  context.fillText(fitText(context, reportScope(), 1470), 65, 169);
+  context.fillStyle = "#42564d"; context.font = "600 23px Segoe UI, sans-serif";
+  context.fillText(fitText(context, `Cantidad: ${quantityChoices(summary.module).find((choice) => choice.value === state.filters.quantity)?.label || "Todas"} · Corte ${cutStamp()}`, 1470), 65, 261);
+  const cards = [...summary.module.metrics.map((metric) => [metric.label, summary.values[metric.key]]),
+    [summary.mode === "average" ? "Piezas por tienda" : "Piezas en el filtro", summary.values.total]];
+  cards.forEach(([label, value], index) => {
+    const x = 65 + index * 497;
+    context.fillStyle = index === 2 ? "#1e3932" : "#ffffff"; context.fillRect(x, 310, 472, 242);
+    context.fillStyle = index === 2 ? "#ffffff" : "#006241"; context.font = "800 70px Segoe UI, sans-serif";
+    context.fillText(fhwNumber(value, summary.mode), x + 30, 414);
+    context.font = "700 27px Segoe UI, sans-serif"; context.fillText(label, x + 30, 476);
+    context.font = "500 20px Segoe UI, sans-serif";
+    context.fillText(summary.mode === "average" ? "piezas / tienda con respuesta" : "piezas reportadas", x + 30, 516);
+  });
+  const baseCards = [["CON RESPUESTA", number(summary.answered)], ["SIN RESPUESTA", number(summary.pending)],
+    ["COBERTURA DEL FILTRO", summary.coverage == null ? "—" : percent(summary.coverage)]];
+  baseCards.forEach(([label, value], index) => {
+    const x = 65 + index * 497;
+    context.fillStyle = "#e2eee7"; context.fillRect(x, 602, 472, 155);
+    context.fillStyle = "#42564d"; context.font = "700 20px Segoe UI, sans-serif"; context.fillText(label, x + 30, 647);
+    context.fillStyle = "#1e3932"; context.font = "800 45px Segoe UI, sans-serif"; context.fillText(value, x + 30, 713);
+  });
+  context.fillStyle = "#1e3932"; context.font = "700 26px Segoe UI, sans-serif";
+  context.fillText(summary.basis, 65, 835);
+  context.font = "500 24px Segoe UI, sans-serif"; context.fillText(summary.note, 65, 885);
+  context.font = "500 21px Segoe UI, sans-serif";
+  context.fillText("Región, DM, tienda y cantidad corresponden al filtro seleccionado.", 65, 932);
+  context.fillStyle = "#1e3932"; context.fillRect(0, 1015, 1600, 116);
+  context.fillStyle = "#ffffff"; context.font = "700 24px Segoe UI, sans-serif";
+  context.fillText("Starbucks México · Revisión ejecutiva FHW", 65, 1073);
+  return [canvas];
+}
+
+async function downloadReportImage(canvas) {
+  const exportInfo = exportContext("png");
+  const blob = await new Promise((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error("No fue posible crear la imagen.")), "image/png"));
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a"); link.href = url; link.download = exportInfo.filename; document.body.appendChild(link); link.click(); link.remove();
+  finishExport(exportInfo.filename, url);
+}
+
 async function renderPdfPages() {
+  if (isFhwModule()) return renderFhwReportPages();
   const rows = exportRows();
   const meta = reportMeta();
   const current = metrics();
@@ -808,6 +922,10 @@ async function renderPdfPages() {
 async function exportImage() {
   if (!await beginExport("imagen")) return;
   try {
+    if (isFhwModule()) {
+      await downloadReportImage(renderFhwReportPages()[0]);
+      return;
+    }
     const rows = exportRows();
     const meta = reportMeta();
     const current = metrics();
@@ -859,11 +977,7 @@ async function exportImage() {
     const footerY = canvas.height - footerHeight; context.fillStyle = "#1e3932"; context.fillRect(0, footerY, width, footerHeight);
     context.fillStyle = "#ffffff"; context.font = "800 23px Segoe UI, sans-serif"; context.fillText(meta.motto, 72, footerY + 48);
     context.textAlign = "right"; context.fillStyle = "#cce0d7"; context.font = "400 18px Segoe UI, sans-serif"; context.fillText(meta.footerLabel || "Starbucks México · Operaciones", 1525, footerY + 64); context.textAlign = "left";
-    const exportInfo = exportContext("png");
-    const blob = await new Promise((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error("No fue posible crear la imagen.")), "image/png"));
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a"); link.href = url; link.download = exportInfo.filename; document.body.appendChild(link); link.click(); link.remove();
-    finishExport(exportInfo.filename, url);
+    await downloadReportImage(canvas);
   } catch (error) {
     failExport(error);
   }
@@ -971,7 +1085,40 @@ function closeExportModal() {
   $("#export-image").focus();
 }
 
+function buildFhwExcelSpec() {
+  const summary = fhwSummary();
+  const scope = currentScope();
+  const rowValue = (value) => value == null ? "" : {value: summary.mode === "average" ? Math.round(value * 10) / 10 : value, style: 5};
+  const quantityRows = summary.responses.slice().sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
+    .map((item) => [item.ceco, item.store, item.dm,
+      ...summary.module.metrics.map((metric) => Number(item.quantities[metric.key] || 0)),
+      item.evidenceLinkPublished ? item.evidenceUrl : ""]);
+  const columns = 4 + summary.module.metrics.length;
+  return {title: `FHW · ${summary.label} · ${scope}`, sheets: [{
+    name: "Resumen FHW",
+    rows: [[`FHW · ${summary.label}`, "", ""], [`${scope} · Corte ${cutStamp()}`, "", ""],
+      [summary.basis, "", ""], ["Indicador", "Valor", "Lectura"],
+      ...summary.module.metrics.map((metric) => [metric.label, rowValue(summary.values[metric.key]), summary.mode === "average" ? "Piezas por tienda con respuesta" : "Piezas en el filtro"]),
+      [summary.mode === "average" ? "Piezas por tienda" : "Piezas en el filtro", rowValue(summary.values.total), summary.note],
+      ["Tiendas con respuesta", summary.answered, "Base del promedio; incluye ceros"],
+      ["Tiendas en el filtro", summary.eligible, "Tiendas donde aplica FHW"],
+      ["Tiendas sin respuesta", summary.pending, "Se excluyen del promedio"],
+      ["Cobertura", summary.coverage == null ? "" : {value: summary.coverage / 100, style: 3}, "Con respuesta / tiendas en el filtro"]],
+    widths: [30, 20, 65], merges: ["A1:C1", "A2:C2", "A3:C3"], headerRows: [4], freezeRow: 4, tabColor: "FF006241",
+  }, {
+    name: "FHW tiendas",
+    rows: [["Conteo reportado por tienda", ...Array(columns - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(columns - 1).fill("")],
+      ["Conteos originales; el modo Total / Promedio aplica al resumen.", ...Array(columns - 1).fill("")],
+      ["CeCo", "Tienda", "DM", ...summary.module.metrics.map((metric) => metric.label), "Evidencia"], ...quantityRows],
+    widths: [13, 32, 32, ...summary.module.metrics.map(() => 20), 42],
+    merges: [1, 2, 3].map((row) => `A${row}:${spreadsheetColumn(columns)}${row}`), headerRows: [4],
+    countColumns: summary.module.metrics.map((_, index) => index + 4), freezeRow: 4,
+    autoFilter: `A4:${spreadsheetColumn(columns)}${4 + quantityRows.length}`, tabColor: "FF006241",
+  }]};
+}
+
 function buildExcelSpec() {
+  if (isFhwModule()) return buildFhwExcelSpec();
   const item = metrics();
   const rows = exportRows();
   const mode = exportMode();
@@ -1137,6 +1284,13 @@ function initNavigation() {
 }
 
 function bindEvents() {
+  $("#quantity-mode").addEventListener("click", (event) => {
+    const mode = event.target.closest("button[data-fhw-mode]")?.dataset.fhwMode;
+    if (!isFhwModule() || state.exporting || !["total", "average"].includes(mode)) return;
+    state.fhwMode = mode;
+    renderQuantityModule();
+    syncFilterUrl();
+  });
   $("#filter-region").addEventListener("change", (event) => { state.filters.region = event.target.value; state.filters.dm = ""; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-dm").addEventListener("change", (event) => { state.filters.dm = event.target.value; state.filters.store = ""; state.showAllEvidence = false; populateFilters(); renderAll(); });
   $("#filter-store").addEventListener("change", (event) => { state.filters.store = event.target.value; state.showAllEvidence = false; renderAll(); });
