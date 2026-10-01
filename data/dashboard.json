@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "7bfeec467c83e819",
+  "buildVersion": "1aa7da7d2814ed48",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-01T18:45:21+00:00",
-  "lastUpdated": "2026-10-01T12:42:17",
-  "lastUpdatedDisplay": "01/10/2026 12:42",
+  "generatedAt": "2026-10-01T18:57:03+00:00",
+  "lastUpdated": "2026-10-01T12:50:30",
+  "lastUpdatedDisplay": "01/10/2026 12:50",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "01/10/26 · 12:42 h",
+    "cutOffDisplay": "01/10/26 · 12:50 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -60,10 +60,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 303,
+        "completed": 305,
         "expected": 600,
-        "pending": 297,
-        "compliance": 50.5,
+        "pending": 295,
+        "compliance": 50.8,
         "status": "Seguimiento"
       },
       {
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 180,
+        "completed": 181,
         "expected": 438,
-        "pending": 258,
-        "compliance": 41.1,
+        "pending": 257,
+        "compliance": 41.3,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "608f09d38dccca599ad37f763ecf4828ff170c99955980fb9699538e1d913dce",
+    "responsesSha256": "1e3b8becc2c3ead286269f536d71863670f3e87fa0fe84a06e68409ad9497755",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 358,
     "activities": 6,
     "expectedCompletions": 2148,
-    "completedCompletions": 577,
-    "compliance": 26.9,
-    "validResponses": 577,
+    "completedCompletions": 580,
+    "compliance": 27.0,
+    "validResponses": 580,
     "storesComplete": 0,
-    "pendingCompletions": 1571,
+    "pendingCompletions": 1568,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 883,
+    "responsesRead": 885,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 683,
-      "newFormsRowsIncluded": 499,
+      "newFormsRowsRead": 685,
+      "newFormsRowsIncluded": 501,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -723,7 +723,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 35,
+    "duplicateValidResponses": 34,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -736,7 +736,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 683
+        "CeCo": 685
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -805,7 +805,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 434,
+    "evidenceLinksPublished": 436,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -842,11 +842,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 70,
+      "completedStores": 71,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 288,
-      "compliance": 19.6,
+      "pendingStores": 287,
+      "compliance": 19.8,
       "deadlineLabel": "Vence hoy",
       "deadlineTone": "red",
       "daysRemaining": 0,
@@ -930,11 +930,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 143,
+      "completedStores": 144,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 215,
-      "compliance": 39.9,
+      "pendingStores": 214,
+      "compliance": 40.2,
       "deadlineLabel": "Vence en 4 días",
       "deadlineTone": "amber",
       "daysRemaining": 4,
@@ -952,11 +952,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 159,
+      "completedStores": 160,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 199,
-      "compliance": 44.4,
+      "pendingStores": 198,
+      "compliance": 44.7,
       "deadlineLabel": "Vence en 4 días",
       "deadlineTone": "amber",
       "daysRemaining": 4,
@@ -1003,6 +1003,25 @@
       "rank": 2
     },
     {
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "shortName": "Adriana Tanus",
+      "photo": "assets/dm/adriana-tanus.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 12,
+      "completed": 42,
+      "expected": 72,
+      "notApplicable": 0,
+      "pending": 30,
+      "pendingStores": 12,
+      "compliance": 58.3,
+      "status": "Seguimiento",
+      "rank": 3
+    },
+    {
       "dm": "Cesar Alfonso Castillo Romero",
       "shortName": "Cesar Castillo",
       "photo": "assets/dm/cesar-castillo.webp",
@@ -1018,25 +1037,6 @@
       "pending": 37,
       "pendingStores": 14,
       "compliance": 56.0,
-      "status": "Seguimiento",
-      "rank": 3
-    },
-    {
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "shortName": "Adriana Tanus",
-      "photo": "assets/dm/adriana-tanus.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 12,
-      "completed": 40,
-      "expected": 72,
-      "notApplicable": 0,
-      "pending": 32,
-      "pendingStores": 12,
-      "compliance": 55.6,
       "status": "Seguimiento",
       "rank": 4
     },
@@ -1088,12 +1088,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 40,
+      "completed": 41,
       "expected": 78,
       "notApplicable": 0,
-      "pending": 38,
+      "pending": 37,
       "pendingStores": 13,
-      "compliance": 51.3,
+      "compliance": 52.6,
       "status": "Seguimiento",
       "rank": 7
     },
@@ -4051,17 +4051,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38176",
-      "store": "Periferico Satélite DT",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 2,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 33.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38427",
       "store": "Plaza Satelite",
       "dm": "Yazmin Chabela Guadarrama",
@@ -4249,30 +4238,8 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38112",
-      "store": "Insurgentes Parroquia",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38730",
       "store": "Manacar PB",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38954",
-      "store": "Universidad Anahuac Campus Sur",
       "dm": "Adriana Alejandra Tanus Buhler",
       "completed": 3,
       "expected": 6,
@@ -4700,6 +4667,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38176",
+      "store": "Periferico Satélite DT",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 3,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38859",
       "store": "Plaza Satelite II N1",
       "dm": "Yazmin Chabela Guadarrama",
@@ -4755,6 +4733,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38112",
+      "store": "Insurgentes Parroquia",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38227",
       "store": "Lomas Plaza",
       "dm": "Adriana Alejandra Tanus Buhler",
@@ -4779,6 +4768,17 @@
     {
       "ceco": "38106",
       "store": "Prado Norte",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38954",
+      "store": "Universidad Anahuac Campus Sur",
       "dm": "Adriana Alejandra Tanus Buhler",
       "completed": 4,
       "expected": 6,
@@ -5556,18 +5556,18 @@
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-30T16:32:50",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-01T12:50:30",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
         "FHW": true,
-        "Tarta Maricu": false
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -5752,16 +5752,16 @@
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-10-01T12:42:17",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-01T12:43:42",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true
       },
@@ -14908,17 +14908,17 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 33.3,
-      "lastUpdate": "2026-09-28T12:40:46",
+      "compliance": 50.0,
+      "lastUpdate": "2026-09-29T10:13:51",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
-        "FHW": false,
+        "FHW": true,
         "Tarta Maricu": false
       },
       "applicableActivities": {
@@ -15714,20 +15714,20 @@
           "maximum": 20
         }
       ],
-      "answeredStores": 159,
+      "answeredStores": 160,
       "totals": {
-        "cutlery": 3889,
+        "cutlery": 3901,
         "cups3Oz": 915,
-        "total": 4804
+        "total": 4816
       },
       "byRegion": [
         {
           "region": "Centro Norte",
-          "answeredStores": 67,
+          "answeredStores": 68,
           "totals": {
-            "cutlery": 1418,
+            "cutlery": 1430,
             "cups3Oz": 348,
-            "total": 1766
+            "total": 1778
           }
         },
         {
@@ -15793,11 +15793,11 @@
         {
           "region": "Centro Norte",
           "dm": "Yazmin Chabela Guadarrama",
-          "answeredStores": 12,
+          "answeredStores": 13,
           "totals": {
-            "cutlery": 326,
+            "cutlery": 338,
             "cups3Oz": 62,
-            "total": 388
+            "total": 400
           }
         },
         {
@@ -15925,12 +15925,12 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 143,
+      "answeredStores": 144,
       "totals": {
-        "yesDonate": 1633,
+        "yesDonate": 1641,
         "noDonate": 266,
-        "total": 1899,
-        "percentage": 86.0
+        "total": 1907,
+        "percentage": 86.1
       },
       "byRegion": [
         {
@@ -15945,12 +15945,12 @@
         },
         {
           "region": "Centro Poniente",
-          "answeredStores": 62,
+          "answeredStores": 63,
           "totals": {
-            "yesDonate": 695,
+            "yesDonate": 703,
             "noDonate": 89,
-            "total": 784,
-            "percentage": 88.6
+            "total": 792,
+            "percentage": 88.8
           }
         },
         {
@@ -16034,12 +16034,12 @@
         {
           "region": "Centro Poniente",
           "dm": "Adriana Alejandra Tanus Buhler",
-          "answeredStores": 8,
+          "answeredStores": 9,
           "totals": {
-            "yesDonate": 102,
+            "yesDonate": 110,
             "noDonate": 5,
-            "total": 107,
-            "percentage": 95.3
+            "total": 115,
+            "percentage": 95.7
           }
         },
         {
@@ -16146,6 +16146,69 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-c7d24d643a6b8d92",
+      "timestamp": "2026-10-01T12:50:30",
+      "timestampDisplay": "01/10/2026 12:50",
+      "activity": "Tarta Maricu",
+      "ceco": "38112",
+      "store": "Insurgentes Parroquia",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "region": "Centro Poniente",
+      "evidenceKey": "Tarta_Maricu_38112",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38112",
+      "evidenceFileName": "image_Andrea Adame Rodrigu.jpg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Andrea%20Adame%20Rodrigu.jpg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Andrea%20Adame%20Rodrigu.jpg",
+          "fileName": "image_Andrea Adame Rodrigu.jpg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/image_Andrea%20Adame%20Rodrigu.jpg",
+          "fileName": "image_Andrea Adame Rodrigu.jpg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-8e5e9230de08211d",
+      "timestamp": "2026-10-01T12:43:42",
+      "timestampDisplay": "01/10/2026 12:43",
+      "activity": "Va X Cuenta",
+      "ceco": "38954",
+      "store": "Universidad Anahuac Campus Sur",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_38954",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38954",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 8,
+        "noDonate": 0,
+        "total": 8,
+        "percentage": 100.0
+      }
+    },
     {
       "id": "respuesta-9124a3beccd1016e",
       "timestamp": "2026-10-01T12:42:17",
@@ -24884,6 +24947,33 @@
         "total": 33
       },
       "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/IMG_6321_Marlene%20Danaee%20Herna.jpeg"
+    },
+    {
+      "id": "respuesta-e17105f6e74b521c",
+      "timestamp": "2026-09-29T10:13:51",
+      "timestampDisplay": "29/09/2026 10:13",
+      "activity": "FHW",
+      "ceco": "38176",
+      "store": "Periferico Satélite DT",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "FHW_38176",
+      "evidenceLinkLabel": "Link_FHW_38176",
+      "evidenceFileName": "Collage_20260929_101306_Starbucks DT Perifer.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 12,
+        "cups3Oz": 0,
+        "total": 12
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/Collage_20260929_101306_Starbucks%20DT%20Perifer.jpg"
     },
     {
       "id": "respuesta-4df661dbac0539c9",
