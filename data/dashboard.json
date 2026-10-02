@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "6f0946d094182b09",
+  "buildVersion": "e73ba91734894161",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-02T21:48:15+00:00",
-  "lastUpdated": "2026-10-02T15:31:11",
-  "lastUpdatedDisplay": "02/10/2026 15:31",
+  "generatedAt": "2026-10-02T23:19:40+00:00",
+  "lastUpdated": "2026-10-02T17:15:44",
+  "lastUpdatedDisplay": "02/10/2026 17:15",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "02/10/26 · 15:31 h",
+    "cutOffDisplay": "02/10/26 · 17:15 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -64,10 +64,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 337,
+        "completed": 340,
         "expected": 600,
-        "pending": 263,
-        "compliance": 56.2,
+        "pending": 260,
+        "compliance": 56.7,
         "status": "Seguimiento"
       },
       {
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 101,
+        "completed": 104,
         "expected": 600,
-        "pending": 499,
-        "compliance": 16.8,
+        "pending": 496,
+        "compliance": 17.3,
         "status": "Atención"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "a62b5bfe438ea854c3ee913c8390df23aff05478ba2400a8d0ae44f727d6dee4",
+    "responsesSha256": "603eea290a6f3c516cf75b3e5791a483dc5bbf94dea8707c02286ce83e8d450e",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 6,
     "expectedCompletions": 2700,
-    "completedCompletions": 630,
-    "compliance": 23.3,
-    "validResponses": 630,
+    "completedCompletions": 636,
+    "compliance": 23.6,
+    "validResponses": 636,
     "storesComplete": 1,
-    "pendingCompletions": 2070,
+    "pendingCompletions": 2064,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 947,
+    "responsesRead": 953,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 747,
-      "newFormsRowsIncluded": 563,
+      "newFormsRowsRead": 753,
+      "newFormsRowsIncluded": 569,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -876,7 +876,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 747
+        "CeCo": 753
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -945,7 +945,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 474,
+    "evidenceLinksPublished": 478,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -982,11 +982,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 59,
+      "completedStores": 60,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 391,
-      "compliance": 13.1,
+      "pendingStores": 390,
+      "compliance": 13.3,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1004,11 +1004,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 140,
+      "completedStores": 141,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 310,
-      "compliance": 31.1,
+      "pendingStores": 309,
+      "compliance": 31.3,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1048,11 +1048,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 156,
+      "completedStores": 158,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 294,
-      "compliance": 34.7,
+      "pendingStores": 292,
+      "compliance": 35.1,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1070,11 +1070,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 170,
+      "completedStores": 171,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 280,
-      "compliance": 37.8,
+      "pendingStores": 279,
+      "compliance": 38.0,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1092,11 +1092,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 93,
+      "completedStores": 94,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 357,
-      "compliance": 20.7,
+      "pendingStores": 356,
+      "compliance": 20.9,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -1181,6 +1181,25 @@
       "rank": 4
     },
     {
+      "dm": "Erika Julieta Contreras Aguilera",
+      "shortName": "Erika Contreras",
+      "photo": "assets/dm/erika-contreras.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 15,
+      "completed": 52,
+      "expected": 90,
+      "notApplicable": 0,
+      "pending": 38,
+      "pendingStores": 15,
+      "compliance": 57.8,
+      "status": "Seguimiento",
+      "rank": 5
+    },
+    {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
       "photo": "assets/dm/yazmin-chabela.webp",
@@ -1196,25 +1215,6 @@
       "pending": 35,
       "pendingStores": 12,
       "compliance": 55.1,
-      "status": "Seguimiento",
-      "rank": 5
-    },
-    {
-      "dm": "Erika Julieta Contreras Aguilera",
-      "shortName": "Erika Contreras",
-      "photo": "assets/dm/erika-contreras.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 15,
-      "completed": 49,
-      "expected": 90,
-      "notApplicable": 0,
-      "pending": 41,
-      "pendingStores": 15,
-      "compliance": 54.4,
       "status": "Seguimiento",
       "rank": 6
     },
@@ -1399,12 +1399,12 @@
         "Centro Sur"
       ],
       "stores": 12,
-      "completed": 14,
+      "completed": 17,
       "expected": 72,
       "notApplicable": 0,
-      "pending": 58,
+      "pending": 55,
       "pendingStores": 12,
-      "compliance": 19.4,
+      "compliance": 23.6,
       "status": "Atención",
       "rank": 16
     },
@@ -1958,17 +1958,6 @@
     {
       "ceco": "38645",
       "store": "Plaza Central",
-      "dm": "Ariana Janet Gutierrez Martinez",
-      "completed": 0,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38289",
-      "store": "Tezontle l",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 0,
       "expected": 6,
@@ -4321,17 +4310,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38361",
-      "store": "Castorena",
-      "dm": "Erika Julieta Contreras Aguilera",
-      "completed": 1,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 16.7,
-      "status": "Atención"
-    },
-    {
       "ceco": "38749",
       "store": "Patio Santa Fe 2",
       "dm": "Erika Julieta Contreras Aguilera",
@@ -5443,6 +5421,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38289",
+      "store": "Tezontle l",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 3,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38124",
       "store": "San Jeronimo",
       "dm": "Cesar Alfonso Castillo Romero",
@@ -6270,6 +6259,17 @@
     {
       "ceco": "38607",
       "store": "Carretera Mexico Toluca KM42",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38361",
+      "store": "Castorena",
       "dm": "Erika Julieta Contreras Aguilera",
       "completed": 4,
       "expected": 6,
@@ -8249,16 +8249,16 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 3,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 50.0,
+      "lastUpdate": "2026-10-02T17:15:44",
       "activities": {
-        "Lay Out": false,
-        "Jarras Blender | Cold Foam": false,
+        "Lay Out": true,
+        "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": false,
         "Tarta Maricu": false
       },
@@ -10545,18 +10545,18 @@
       "dm": "Erika Julieta Contreras Aguilera",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 16.7,
-      "lastUpdate": "2026-09-11T13:18:14",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-02T16:21:36",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
-        "FHW": false,
-        "Tarta Maricu": false
+        "Va X Cuenta": true,
+        "FHW": true,
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -19354,11 +19354,11 @@
           "maximum": 5
         }
       ],
-      "answeredStores": 140,
+      "answeredStores": 141,
       "totals": {
-        "blender": 247,
+        "blender": 249,
         "coldFoam": 142,
-        "total": 389
+        "total": 391
       },
       "byRegion": [
         {
@@ -19381,11 +19381,11 @@
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 18,
+          "answeredStores": 19,
           "totals": {
-            "blender": 30,
+            "blender": 32,
             "coldFoam": 15,
-            "total": 45
+            "total": 47
           }
         }
       ],
@@ -19523,11 +19523,11 @@
         {
           "region": "Centro Sur",
           "dm": "Ariana Janet Gutierrez Martinez",
-          "answeredStores": 2,
+          "answeredStores": 3,
           "totals": {
-            "blender": 3,
+            "blender": 5,
             "coldFoam": 1,
-            "total": 4
+            "total": 6
           }
         },
         {
@@ -19583,11 +19583,11 @@
           "maximum": 20
         }
       ],
-      "answeredStores": 170,
+      "answeredStores": 171,
       "totals": {
-        "cutlery": 4062,
-        "cups3Oz": 960,
-        "total": 5022
+        "cutlery": 4071,
+        "cups3Oz": 966,
+        "total": 5037
       },
       "byRegion": [
         {
@@ -19601,11 +19601,11 @@
         },
         {
           "region": "Centro Poniente",
-          "answeredStores": 88,
+          "answeredStores": 89,
           "totals": {
-            "cutlery": 2378,
-            "cups3Oz": 553,
-            "total": 2931
+            "cutlery": 2387,
+            "cups3Oz": 559,
+            "total": 2946
           }
         },
         {
@@ -19722,11 +19722,11 @@
         {
           "region": "Centro Poniente",
           "dm": "Erika Julieta Contreras Aguilera",
-          "answeredStores": 13,
+          "answeredStores": 14,
           "totals": {
-            "cutlery": 339,
-            "cups3Oz": 101,
-            "total": 440
+            "cutlery": 348,
+            "cups3Oz": 107,
+            "total": 455
           }
         },
         {
@@ -19794,12 +19794,12 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 156,
+      "answeredStores": 158,
       "totals": {
-        "yesDonate": 1825,
-        "noDonate": 287,
-        "total": 2112,
-        "percentage": 86.4
+        "yesDonate": 1841,
+        "noDonate": 295,
+        "total": 2136,
+        "percentage": 86.2
       },
       "byRegion": [
         {
@@ -19814,22 +19814,22 @@
         },
         {
           "region": "Centro Poniente",
-          "answeredStores": 74,
+          "answeredStores": 75,
           "totals": {
-            "yesDonate": 875,
-            "noDonate": 110,
-            "total": 985,
-            "percentage": 88.8
+            "yesDonate": 886,
+            "noDonate": 111,
+            "total": 997,
+            "percentage": 88.9
           }
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 9,
+          "answeredStores": 10,
           "totals": {
-            "yesDonate": 102,
-            "noDonate": 5,
-            "total": 107,
-            "percentage": 95.3
+            "yesDonate": 107,
+            "noDonate": 12,
+            "total": 119,
+            "percentage": 89.9
           }
         }
       ],
@@ -19947,12 +19947,12 @@
         {
           "region": "Centro Poniente",
           "dm": "Erika Julieta Contreras Aguilera",
-          "answeredStores": 10,
+          "answeredStores": 11,
           "totals": {
-            "yesDonate": 110,
-            "noDonate": 21,
-            "total": 131,
-            "percentage": 84.0
+            "yesDonate": 121,
+            "noDonate": 22,
+            "total": 143,
+            "percentage": 84.6
           }
         },
         {
@@ -19991,12 +19991,12 @@
         {
           "region": "Centro Sur",
           "dm": "Ariana Janet Gutierrez Martinez",
-          "answeredStores": 1,
+          "answeredStores": 2,
           "totals": {
-            "yesDonate": 5,
-            "noDonate": 2,
-            "total": 7,
-            "percentage": 71.4
+            "yesDonate": 10,
+            "noDonate": 9,
+            "total": 19,
+            "percentage": 52.6
           }
         },
         {
@@ -20015,6 +20015,172 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-a06cf2edecda2f8d",
+      "timestamp": "2026-10-02T17:15:44",
+      "timestampDisplay": "02/10/2026 17:15",
+      "activity": "Va X Cuenta",
+      "ceco": "38289",
+      "store": "Tezontle l",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Va_X_Cuenta_38289",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38289",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 5,
+        "noDonate": 7,
+        "total": 12,
+        "percentage": 41.7
+      }
+    },
+    {
+      "id": "respuesta-57a78fb874d87800",
+      "timestamp": "2026-10-02T17:12:35",
+      "timestampDisplay": "02/10/2026 17:12",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38289",
+      "store": "Tezontle l",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38289",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38289",
+      "evidenceFileName": "17909827139053057637979810608048_Starbucks Tezontle.jpg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 2,
+        "coldFoam": 0,
+        "total": 2
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/17909827139053057637979810608048_Starbucks%20Tezontle.jpg"
+    },
+    {
+      "id": "respuesta-3f1ae206d9adb4b9",
+      "timestamp": "2026-10-02T17:08:21",
+      "timestampDisplay": "02/10/2026 17:08",
+      "activity": "Lay Out",
+      "ceco": "38289",
+      "store": "Tezontle l",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38289",
+      "evidenceLinkLabel": "Link_Lay_Out_38289",
+      "evidenceFileName": "LayOut_Distrital_Ariana_Janet_Gutierrez_Tezon_Starbucks Tezontle.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/LayOut_Distrital_Ariana_Janet_Gutierrez_Tezon_Starbucks%20Tezontle.jpg"
+    },
+    {
+      "id": "respuesta-5df812ccd611819a",
+      "timestamp": "2026-10-02T16:21:36",
+      "timestampDisplay": "02/10/2026 16:21",
+      "activity": "Va X Cuenta",
+      "ceco": "38361",
+      "store": "Castorena",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_38361",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38361",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 11,
+        "noDonate": 1,
+        "total": 12,
+        "percentage": 91.7
+      }
+    },
+    {
+      "id": "respuesta-2c7b8a1f724417ab",
+      "timestamp": "2026-10-02T16:20:40",
+      "timestampDisplay": "02/10/2026 16:20",
+      "activity": "Tarta Maricu",
+      "ceco": "38361",
+      "store": "Castorena",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "region": "Centro Poniente",
+      "evidenceKey": "Tarta_Maricu_38361",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38361",
+      "evidenceFileName": "image_Luis Felipe Lemus Ro.jpg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Luis%20Felipe%20Lemus%20Ro.jpg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Luis%20Felipe%20Lemus%20Ro.jpg",
+          "fileName": "image_Luis Felipe Lemus Ro.jpg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/image_Luis%20Felipe%20Lemus%20Ro.jpg",
+          "fileName": "image_Luis Felipe Lemus Ro.jpg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-0ef7a8709e7d66ea",
+      "timestamp": "2026-10-02T15:59:56",
+      "timestampDisplay": "02/10/2026 15:59",
+      "activity": "FHW",
+      "ceco": "38361",
+      "store": "Castorena",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "region": "Centro Poniente",
+      "evidenceKey": "FHW_38361",
+      "evidenceLinkLabel": "Link_FHW_38361",
+      "evidenceFileName": "image_Luis Felipe Lemus Ro.jpg",
+      "evidenceSourceHeader": "Evidencia_FHW",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "cutlery": 9,
+        "cups3Oz": 6,
+        "total": 15
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes/image_Luis%20Felipe%20Lemus%20Ro.jpg"
+    },
     {
       "id": "respuesta-15ebf3bee60d0913",
       "timestamp": "2026-10-02T15:31:11",
