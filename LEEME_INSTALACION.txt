@@ -1,0 +1,58 @@
+SISTEMA DE EVIDENCIAS OPS — MEJORA DE ACERCA DE
+Fecha: 02/10/2026
+Repositorio: sbx-mex/Sistemas_Evidencias_Ops
+Base: main, commit 6d321b4bdc848e7e094accfd55ed6b4e698e73dc.
+
+INSTALACIÓN
+1. Extrae el ZIP y reemplaza los cinco archivos respetando sus rutas.
+2. Sube todos los reemplazos en un mismo commit al repositorio.
+3. Espera que termine correctamente “Actualizar Sistema de Evidencias OPS”.
+   El workflow existente valida CMS, cruces y respuestas, reconstruye el JSON
+   y las exportaciones, publica y elimina sólo obsoletos de su lista controlada.
+4. Abre el sitio y entra a Acerca de. Confirma la nueva guía y la fecha de corte.
+   La caché de la aplicación pasa a v49 para renovar la interfaz.
+
+CONTENIDO: CINCO ARCHIVOS NECESARIOS
+index.html: guía de captura y estructura visual de Acerca de.
+app.js: diagnóstico dinámico, errores de consulta y actualización desde la guía.
+styles.css: diseño verde, jerarquía, tarjetas de autores y ajustes para móvil.
+service-worker.js: versión de caché v49.
+tests/validate_load_contract.js: pruebas del diagnóstico y los estados de carga.
+
+MEJORAS
+- “Carga validada · revisar filas” se muestra dentro de Acerca de, junto con
+  cantidades, motivos y acciones para revisar CeCo, respuestas aisladas y
+  cantidades pendientes. Las filas se cuentan sin duplicados por origen.
+- Carga segura en verde cuando no hay hallazgos; ámbar para pendientes o copia
+  local; mensaje de error al fallar la consulta, conservando la última carga válida.
+- “Actualizar datos” tiene una explicación breve y un botón en Acerca de.
+  Consulta el tablero publicado; no envía Forms ni incorpora respuestas nuevas
+  por sí solo. Evita consultas simultáneas y muestra la fecha de corte disponible.
+- La tienda empieza por llenar correctamente Forms: CeCo de cinco dígitos,
+  actividad correcta, cantidades y evidencias; confirmar envío y revisar el corte.
+  La guía orienta al usuario y el proceso Python valida las respuestas importadas.
+  Este paquete no modifica la configuración externa de Microsoft Forms.
+- Diseño orientado a Excelencia Operativa; conserva “Con cariño, para acompañar
+  tu operación.”, las fotografías y los nombres Enrique Cesar y Jorge Alcantar.
+
+VERIFICACIÓN
+El mantenimiento seguro completo pasó: controles de CMS, tipos de respuesta,
+cruces, carga y recuperación, integridad de recursos y auditoría del proyecto.
+También pasó el resumen FHW (384 escenarios) y la sintaxis de JavaScript.
+No se completó una inspección visual en navegador: el acceso a la vista local
+estuvo bloqueado. Verifica el aspecto en móvil y escritorio tras la publicación.
+
+En la fuente revisada: 450 tiendas, 6 actividades; 5 CeCo fuera del catálogo:
+38104, 38489, 38608, 39722 y 80173. No se reasignan automáticamente.
+El diagnóstico se recalcula con cada carga; estos valores pueden cambiar.
+
+Se omiten CMS, fotografías, JSON y exportaciones para mantener el paquete mínimo.
+El workflow requerido ya está integrado en la base indicada, junto con las
+correcciones Python de carga y limpieza. Este ZIP complementa esa actualización.
+
+SHA256 DE LOS ARCHIVOS
+00502c722bf06b48d99883ce0629c1098e45a7f989897f31526d9cdaed8b26df  index.html
+e5d9f34d06e937fe583ac610430d3e5002d116142164560daef8c619dbfd75e4  app.js
+be51845f690fd64792a3b536b1ca8e55899587407a9bb9aec984e438c490198c  styles.css
+8524ddaa498a6852988d8bfee0435638f8fb2ab2a3b5a6863e83b0b30379b74c  service-worker.js
+70f54282e89e17edc29a9bda3332ee3f6d5fb1a41953d6aab5a7c73dd6ac604a  tests/validate_load_contract.js

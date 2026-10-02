@@ -1,6 +1,6 @@
 importScripts("./data-contract.js");
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v48";
+const CACHE_NAME = "sistema-evidencias-ops-v49";
 const CORE = [
   "./",
   "./index.html",

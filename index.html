@@ -57,7 +57,6 @@
           <span><small id="director-role">Director Starbucks México</small><strong id="director-name">Raúl Sinohe Sierra Santamaria</strong></span>
         </article>
         <div class="cut-chip"><span>Fecha de corte</span><strong id="last-updated">—</strong></div>
-      <span id="connection-status" class="connection" role="status" aria-live="polite" data-state="loading"><i aria-hidden="true"></i>Consultando…</span>
       </div>
     </section>
 
@@ -208,41 +207,54 @@
   <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title" aria-describedby="about-intro">
     <div class="about-top">
       <button id="about-close" class="about-close" type="button" aria-label="Cerrar guía de captura" autofocus>×</button>
-      <span class="about-kicker">Acerca de</span>
+      <span class="about-kicker">Acerca de · Excelencia Operativa</span>
       <h2 id="about-title">Conoce Evidencias OPS</h2>
-      <p id="about-intro">Un espacio para acompañar a tu tienda y dar seguimiento a cada actividad.</p>
+      <p id="about-intro">Una captura correcta en Forms es el primer paso para dar seguimiento confiable a tu tienda.</p>
     </div>
     <div class="about-body">
+      <p class="about-purpose"><strong>Primero tu tienda, después el tablero.</strong> Registra con cuidado, confirma tu envío y revisa el avance publicado.</p>
       <div class="capture-guide">
         <details class="ceco-rule" open>
-          <summary><span class="guide-number" aria-hidden="true">1</span><strong>CeCo: exactamente 5 dígitos</strong></summary>
+          <summary><span class="guide-number" aria-hidden="true">1</span><strong>Primero, completa Forms correctamente</strong></summary>
           <div class="guide-detail">
+            <p class="guide-key"><strong>CeCo: exactamente 5 dígitos</strong></p>
             <div class="ceco-example" role="img" aria-label="Ejemplo de CeCo: 38117"><span aria-hidden="true">3</span><span aria-hidden="true">8</span><span aria-hidden="true">1</span><span aria-hidden="true">1</span><span aria-hidden="true">7</span></div>
             <small class="ceco-example-label">Ejemplo · usa el CeCo de tu tienda</small>
-            <p>Confirma el CeCo de tu tienda. Un código incorrecto puede afectar la visibilidad de tu reporte.</p>
+            <p>Usa el CeCo real de tu tienda, sin letras ni dígitos adicionales. Selecciona la actividad que estás registrando y confirma que corresponde a tu tienda.</p>
           </div>
         </details>
         <details>
-          <summary><span class="guide-number" aria-hidden="true">2</span><strong>Revisa la actividad vigente</strong></summary>
-          <div class="guide-detail"><p>Las actividades se actualizan. Lee con atención las imágenes y descripciones de Forms antes de responder.</p></div>
+          <summary><span class="guide-number" aria-hidden="true">2</span><strong>Valida antes de enviar</strong></summary>
+          <div class="guide-detail"><ul class="about-checklist"><li>Lee las imágenes y descripciones de la actividad vigente.</li><li>Registra las cantidades en el rango solicitado; escribe 0 sólo cuando corresponda.</li><li>Adjunta todas las evidencias solicitadas, claras y de tu tienda.</li></ul><p>Una actividad por envío. Revisa las respuestas y espera la confirmación de Forms.</p></div>
         </details>
         <details>
-          <summary><span class="guide-number" aria-hidden="true">3</span><strong>Carga lo que se solicita</strong></summary>
-          <div class="guide-detail"><p>Una actividad por envío. Registra las cantidades y evidencias solicitadas para tu tienda.</p></div>
+          <summary><span class="guide-number" aria-hidden="true">3</span><strong>Comprueba tu avance</strong></summary>
+          <div class="guide-detail"><p>Después de la siguiente carga, filtra tu tienda y actividad. Confirma la fecha de corte y revisa el avance y las evidencias publicadas.</p><p>Si tu envío aún no aparece, revisa su llenado y el resumen de carga de esta guía.</p></div>
         </details>
       </div>
-      <aside class="correction-note"><strong>¿Corregir o actualizar?</strong><p>Realiza nuevamente la encuesta con el mismo CeCo y actividad. En la siguiente carga se toma la respuesta más reciente.</p></aside>
+      <aside class="correction-note"><strong>¿Corregir o actualizar?</strong><p>Realiza nuevamente la encuesta con el CeCo correcto y la misma actividad. Tu nuevo envío se evalúa en la siguiente carga; debe pasar las validaciones para contar en el avance.</p></aside>
       <div class="about-actions">
         <a class="about-forms" href="https://forms.cloud.microsoft/e/5aXteVaGKm" target="_blank" rel="noopener noreferrer">Realizar Forms <span aria-hidden="true">↗</span></a>
         <a id="about-evidence-link" class="about-review" href="#evidencias">Ver evidencias</a>
       </div>
       <p class="forms-context">Puedes usar cualquier correo corporativo. Forms es externo; el tablero utiliza sus respuestas.</p>
+      <section id="about-load-panel" class="about-load-panel" aria-labelledby="about-load-heading" data-state="loading">
+        <header class="about-panel-heading"><div><span class="about-section-label">Seguimiento confiable</span><h3 id="about-load-heading">Resumen de la carga</h3></div><span id="connection-status" class="connection" role="status" aria-live="polite" data-state="loading"><i aria-hidden="true"></i>Consultando…</span></header>
+        <p id="about-load-summary" class="about-load-summary" role="status" aria-live="polite">Estamos consultando la información publicada.</p>
+        <p class="about-load-cut">Fecha de corte de la carga disponible: <strong id="about-load-date">Sin datos</strong></p>
+        <details id="about-load-details" class="about-load-details" hidden><summary>Ver qué revisar y cómo corregirlo</summary><ul id="about-load-findings" class="about-load-findings"></ul></details>
+      </section>
+      <section class="about-refresh-panel" aria-labelledby="about-refresh-heading">
+        <div><span class="about-section-label">Después de capturar</span><h3 id="about-refresh-heading">Actualizar datos</h3><p>Consulta la última versión publicada del tablero. No envía Forms ni incorpora nuevas respuestas por sí solo.</p><small>Si acabas de responder, espera la siguiente carga y confirma la fecha de corte.</small></div>
+        <button id="about-refresh-button" class="about-refresh-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5M4 18v-5h5M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></svg><span id="about-refresh-label">Actualizar datos</span></button>
+      </section>
       <a class="about-document" href="./assets/about/Sistema_de_Evidencias_OPS.pdf" download="Sistema de Evidencias OPS.pdf" data-project-document><span class="document-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H5v18h14V8l-5-5ZM14 3v5h5M12 11v6m-3-3 3 3 3-3"/></svg></span><span><strong>Descargar guía del proyecto</strong><small>Sistema de Evidencias OPS · PDF</small></span><span aria-hidden="true">↓</span></a>
       <section class="about-team" aria-label="Equipo del proyecto">
+        <span class="about-section-label">Excelencia Operativa · Tienda a tienda</span>
         <p class="about-team-message">Con cariño, para acompañar tu operación.</p>
         <div class="about-people">
-          <article class="about-person"><img src="./assets/about/enrique-cesar.jpeg" alt="" width="1079" height="1397" loading="lazy" decoding="async"><strong>Enrique Cesar</strong></article>
-          <article class="about-person"><img src="./assets/about/jorge-alcantar.png" alt="" width="1154" height="1363" loading="lazy" decoding="async"><strong>Jorge Alcantar</strong></article>
+          <article class="about-person"><img src="./assets/about/enrique-cesar.jpeg" alt="Enrique Cesar" width="1079" height="1397" loading="lazy" decoding="async"><div><strong>Enrique Cesar</strong><small>Diseño del proyecto</small></div></article>
+          <article class="about-person"><img src="./assets/about/jorge-alcantar.png" alt="Jorge Alcantar" width="1154" height="1363" loading="lazy" decoding="async"><div><strong>Jorge Alcantar</strong><small>Diseño del proyecto</small></div></article>
         </div>
       </section>
     </div>

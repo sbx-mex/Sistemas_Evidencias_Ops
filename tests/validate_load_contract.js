@@ -75,6 +75,43 @@ async function main() {
   assert.equal(await vm.runInContext('loadData()', context), true);
   assert.equal(element('#connection-status').dataset.state, 'review');
   assert.equal(element('#offline-banner').hidden, false);
+  // El diagnóstico de Acerca de usa las mismas incidencias de Python y
+  // distingue filas de motivos; nunca duplica una fila con varias razones.
+  const reviewData = copy();
+  reviewData.quality.unknownCeCos = ['38104', '38104', '38489'];
+  reviewData.quality.quarantinedResponses = [
+    {source:'Forms nuevo',row:2,reasons:['ceco','finished']},
+    {source:'Forms nuevo',row:2,reasons:['ceco','finished']},
+    {source:'corte histórico',row:2,reasons:['unsafe-evidence-link','incomplete-multi-evidence']},
+  ];
+  reviewData.quality.quantityResponseIssues = [{row:3},{row:3},{row:4}];
+  context.reviewData = reviewData;
+  const review = vm.runInContext('aboutLoadReview(reviewData)', context);
+  assert.equal(review.unknown.length, 2);
+  assert.equal(review.isolated, 2);
+  assert.equal(review.quantity, 2);
+  assert.equal(review.findings.find(item => item.title.startsWith('Evidencia')).count, 1);
+  vm.runInContext('state.data = reviewData; state.cachedData = false; state.loadStatus = "ready"; updateConnection()', context);
+  assert(element('#about-load-summary').textContent.includes('2 CeCo fuera del catálogo'));
+  assert.equal(element('#about-load-details').hidden, false);
+  assert(element('#about-load-findings').innerHTML.includes('38104, 38489'));
+  const clean = copy();
+  clean.quality.unknownCeCos = []; clean.quality.quarantinedResponses = []; clean.quality.quantityResponseIssues = [];
+  context.clean = clean;
+  vm.runInContext('state.data = clean; updateConnection()', context);
+  assert.equal(element('#connection-status').dataset.state, 'ready');
+  assert.equal(element('#about-load-details').hidden, true);
+  assert.equal(element('#about-refresh-button').disabled, false);
+  vm.runInContext('state.loadStatus = "loading"; updateConnection()', context);
+  assert.equal(element('#about-refresh-button').disabled, true);
+  assert.equal(element('#about-refresh-label').textContent, 'Consultando…');
+  context.fetch = async () => { throw Object.assign(new Error('Timeout'), {name:'AbortError'}); };
+  assert.equal(await vm.runInContext('loadData()', context), false);
+  assert(element('#about-load-summary').textContent.includes('tardó demasiado'));
+  assert(element('#about-load-summary').textContent.includes('última carga válida'));
+  assert.equal(element('#about-refresh-button').disabled, false);
+  assert.equal(element('#about-load-date').textContent, data.lastUpdatedDisplay);
+  console.log('Acerca de aprobado: diagnóstico sin duplicados, motivos y correcciones, cantidades, corte, carga verde/ámbar/error, bloqueo de doble actualización y recuperación');
   console.log('Carga segura aprobada: cruces/totales/controles, JSON parcial, HTTP 503, sin red, cuota de caché, copia local ámbar y recuperación sin perder la última carga');
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

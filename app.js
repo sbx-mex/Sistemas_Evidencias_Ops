@@ -11,6 +11,7 @@ const state = {
   installPrompt: null,
   loadStatus: "loading",
   cachedData: false,
+  loadError: null,
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -1304,6 +1305,7 @@ function openAboutDialog(event) {
   if (dialog.open || state.exporting || !$("#export-modal").hidden) return;
   aboutOpener = event.currentTarget;
   aboutPreviousOverflow = document.body.style.overflow;
+  renderAboutLoadSummary();
   dialog.showModal();
   dialog.scrollTop = 0;
   document.body.style.overflow = "hidden";
@@ -1427,6 +1429,7 @@ function bindEvents() {
   });
   $("#scope-reset").addEventListener("click", () => { clearDashboardFilters(); $("#filter-region").focus(); });
   $("#refresh-button").addEventListener("click", refreshApplicationData);
+  $("#about-refresh-button").addEventListener("click", refreshApplicationData);
   $("#back-to-top").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   window.addEventListener("scroll", () => { $("#back-to-top").hidden = window.scrollY < 520; }, { passive: true });
   window.addEventListener("online", updateConnection); window.addEventListener("offline", updateConnection);
@@ -1435,19 +1438,92 @@ function bindEvents() {
   initNavigation();
 }
 
+function aboutLoadReview(data = state.data) {
+  const quality = data?.quality || {};
+  const unknown = [...new Set(quality.unknownCeCos || [])].sort();
+  const isolated = [...new Map((quality.quarantinedResponses || []).map((item) =>
+    [`${item.source || "Forms"}|${item.row}`, item])).values()];
+  const quantity = [...new Set((quality.quantityResponseIssues || []).map((item) => item.row))];
+  const groups = new Map();
+  const reasons = {
+    ceco: ["CeCo contradictorio o inválido", "Confirma los 5 dígitos de tu tienda y vuelve a enviar Forms con el código correcto."],
+    finished: ["Fecha de registro inválida", "El responsable de la carga debe revisar la fecha de finalización en el archivo de respuestas."],
+    activity: ["Actividad contradictoria", "Selecciona una sola actividad vigente y vuelve a enviar Forms."],
+    applicability: ["Respuestas Sí/No contradictorias", "Revisa lo que aplica a tu tienda y completa nuevamente esa actividad."],
+    survey: ["Respuestas de encuesta contradictorias", "Revisa las respuestas de la actividad y vuelve a enviar Forms."],
+  };
+  for (const item of isolated) {
+    const seen = new Set();
+    for (const reason of item.reasons || ["other"]) {
+      const key = /evidence/.test(reason) ? "evidence" : reasons[reason] ? reason : "other";
+      if (seen.has(key)) continue;
+      seen.add(key); groups.set(key, (groups.get(key) || 0) + 1);
+    }
+  }
+  reasons.evidence = ["Evidencia incompleta, ambigua o no permitida", "Adjunta todos los archivos solicitados en la actividad correcta. Si persiste, pide al responsable de la carga revisar los vínculos." ];
+  reasons.other = ["Datos de captura contradictorios", "Revisa el envío con el responsable de la carga antes de volver a registrarlo." ];
+  const findings = [];
+  if (unknown.length) findings.push({title: "CeCo fuera del catálogo", count: unknown.length,
+    detail: `Códigos: ${unknown.join(", ")}. Confirma el CeCo en Forms; si es correcto y la tienda está abierta, solicita revisar el catálogo de tiendas.`});
+  for (const [key, count] of groups) findings.push({title: reasons[key][0], count, detail: reasons[key][1]});
+  if (quantity.length) findings.push({title: "Cantidades pendientes o fuera de rango", count: quantity.length,
+    detail: "Completa todas las cantidades con números dentro del rango indicado en Forms. No dejes campos solicitados vacíos."});
+  return {unknown, isolated: isolated.length, quantity: quantity.length, findings,
+    hasIssues: Boolean(unknown.length || isolated.length || quantity.length)};
+}
+
+function renderAboutLoadSummary() {
+  const review = aboutLoadReview();
+  const cached = state.cachedData || !navigator.onLine;
+  const tone = state.loadStatus === "loading" ? "loading" : state.loadStatus === "error" ? "error"
+    : cached || review.hasIssues ? "review" : "ready";
+  $("#about-load-panel").dataset.state = tone;
+  $("#about-load-date").textContent = state.data?.lastUpdatedDisplay || "Sin datos";
+  let summary;
+  if (state.loadStatus === "loading") summary = "Estamos consultando la información publicada. La fecha de corte indica hasta cuándo hay respuestas integradas.";
+  else if (state.loadStatus === "error") {
+    const messages = {
+      timeout: "La consulta tardó demasiado. Revisa tu conexión y vuelve a actualizar.",
+      network: "No fue posible conectar con el tablero. Revisa tu conexión y vuelve a actualizar.",
+      http: "El tablero no estuvo disponible durante la consulta. Intenta actualizar más tarde.",
+      validation: "La nueva información no pasó la validación. El responsable de la carga debe revisar el archivo publicado.",
+      display: "No fue posible mostrar la nueva información. Intenta actualizar otra vez.",
+    };
+    summary = (messages[state.loadError?.type] || messages.validation)
+      + (state.data ? " Conservamos la última carga válida." : " Aún no hay una carga disponible en esta sesión.");
+  } else {
+    summary = cached ? "Se muestra una copia local; no se pudo confirmar una carga nueva. " : "El tablero pasó la validación de carga. ";
+    const counts = [review.unknown.length ? `${number(review.unknown.length)} CeCo fuera del catálogo` : "",
+      review.isolated ? `${number(review.isolated)} respuestas aisladas` : "",
+      review.quantity ? `${number(review.quantity)} respuestas con cantidades pendientes` : ""].filter(Boolean);
+    summary += review.hasIssues ? `Por revisar: ${counts.join(" · ")}. Abre el detalle para saber cómo corregirlo.`
+      : "No hay hallazgos pendientes en este resumen. Para revisar tu envío, confirma la fecha de corte y filtra tu tienda.";
+  }
+  $("#about-load-summary").textContent = summary;
+  const details = $("#about-load-details");
+  details.hidden = !review.findings.length;
+  if (!review.findings.length) details.open = false;
+  $("#about-load-findings").innerHTML = review.findings.map((item) =>
+    `<li><div><strong>${esc(item.title)}</strong><span class="about-finding-count">${number(item.count)}</span></div><p>${esc(item.detail)}</p></li>`).join("");
+  const updating = state.loadStatus === "loading";
+  $("#about-refresh-button").disabled = updating;
+  $("#about-refresh-button").setAttribute("aria-busy", String(updating));
+  $("#about-refresh-label").textContent = updating ? "Consultando…" : "Actualizar datos";
+  return review;
+}
+
 function updateConnection() {
   const cached = state.cachedData || !navigator.onLine;
   $("#offline-banner").hidden = !cached;
   const element = $("#connection-status");
-  const quality = state.data?.quality;
-  const reviews = (quality?.unknownCeCos?.length || 0) + (quality?.quarantinedResponses?.length || 0);
-  const tone = state.loadStatus === "error" ? "error" : cached || reviews ? "review"
+  const review = renderAboutLoadSummary();
+  const tone = state.loadStatus === "loading" ? "loading" : state.loadStatus === "error" ? "error" : cached || review.hasIssues ? "review"
     : state.loadStatus === "ready" ? "ready" : "loading";
   element.dataset.state = tone;
   const label = state.loadStatus === "error" ? "Carga pendiente" : state.loadStatus === "loading" ? "Consultando…"
-    : cached ? "Copia local" : reviews ? "Carga validada · revisar filas" : "Carga segura";
+    : cached ? "Copia local" : review.hasIssues ? "Carga validada · revisar filas" : "Carga segura";
   element.innerHTML = `<i aria-hidden="true"></i>${esc(label)}`;
-  element.title = reviews ? `${reviews} hallazgos aislados; consulta la auditoría de carga.` : "Consulta la fecha de corte para conocer la vigencia.";
+  element.title = review.hasIssues ? "Consulta qué revisar y cómo corregirlo en el resumen de carga." : "Consulta la fecha de corte para conocer la vigencia.";
 }
 
 const BUILD_STORAGE_KEY = "sistema-evidencias-build-version";
@@ -1477,6 +1553,8 @@ function setDataControls(enabled) {
 async function loadData(announce = false) {
   $("#refresh-button").disabled = true;
   const previous = state.data;
+  const previousCached = state.cachedData;
+  let stage = "network";
   if (!previous) setDataControls(false);
   state.loadStatus = "loading"; updateConnection();
   const controller = new AbortController();
@@ -1486,10 +1564,13 @@ async function loadData(announce = false) {
       cache: "no-store", headers: { "Cache-Control": "no-cache" },
       signal: controller.signal,
     });
-    if (!response.ok) throw new Error(`No fue posible cargar los datos (${response.status}).`);
+    if (!response.ok) throw Object.assign(new Error(`No fue posible cargar los datos (${response.status}).`), {opsType: "http"});
+    stage = "validation";
     const latestData = validateDashboard(await response.json());
     if (await enforceBuildVersion(latestData)) return;
     state.data = latestData;
+    state.loadError = null;
+    stage = "display";
     state.cachedData = response.headers.get("X-OPS-Data-Source") === "cache";
     readFilterUrl();
     $("#last-updated").textContent = cutStamp();
@@ -1505,6 +1586,8 @@ async function loadData(announce = false) {
     return true;
   } catch (error) {
     state.data = previous;
+    state.cachedData = previousCached;
+    state.loadError = {type: error.name === "AbortError" ? "timeout" : error.opsType || stage};
     state.loadStatus = "error"; setDataControls(Boolean(previous)); updateConnection();
     $("#error-banner").textContent = previous
       ? "No pudimos validar información nueva. Conservamos la última carga válida. Intenta actualizar otra vez."
