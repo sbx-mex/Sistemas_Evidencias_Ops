@@ -35,7 +35,7 @@
     </nav>
     <div class="header-actions">
       <span id="connection-status" class="connection"><i></i>Actualizado</span>
-      <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Cómo capturar · Acerca de y guía de evidencias"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>Cómo capturar</button>
+      <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Acerca de · Guía para Gerentes de Tienda"><span class="about-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></span>Acerca de</button>
       <button id="install-button" class="button quiet" type="button" hidden>Instalar</button>
       <button id="refresh-button" class="icon-button" type="button" aria-label="Actualizar información">
         <svg viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></svg>
@@ -207,8 +207,8 @@
     <div class="about-top">
       <button id="about-close" class="about-close" type="button" aria-label="Cerrar guía de captura" autofocus>×</button>
       <span class="about-kicker">Acerca de</span>
-      <h2 id="about-title">Antes de enviar</h2>
-      <p id="about-intro">Toca cada punto para revisar tu captura.</p>
+      <h2 id="about-title">Guía para Gerentes de Tienda</h2>
+      <p id="about-intro">Lee con atención las imágenes y descripciones vigentes de Forms.</p>
     </div>
     <div class="about-body">
       <div class="capture-guide">
@@ -221,23 +221,25 @@
           </div>
         </details>
         <details>
-          <summary><span class="guide-number" aria-hidden="true">2</span><strong>Actividad y cantidades correctas</strong></summary>
-          <div class="guide-detail"><p>Revisa tus respuestas. «No aplica» sólo cuando corresponda.</p></div>
+          <summary><span class="guide-number" aria-hidden="true">2</span><strong>Revisa la actividad vigente</strong></summary>
+          <div class="guide-detail"><p>Hay altas y bajas de actividades. Lee sus imágenes y descripciones actuales en Forms. Realiza una actividad por envío.</p></div>
         </details>
         <details>
-          <summary><span class="guide-number" aria-hidden="true">3</span><strong>Evidencia clara y de tu tienda</strong></summary>
-          <div class="guide-detail"><p>Adjunta lo solicitado; debe verse completo y legible.</p></div>
+          <summary><span class="guide-number" aria-hidden="true">3</span><strong>Carga lo que se solicita</strong></summary>
+          <div class="guide-detail"><p>Confirma cantidades y archivos legibles de tu tienda. Si pide «Antes» y «Después», carga cada uno donde corresponde.</p></div>
         </details>
       </div>
       <aside class="correction-note"><strong>¿Necesitas corregir?</strong><p>Reenvía Forms con el mismo CeCo y actividad. Al actualizarse el tablero, se toma la respuesta más reciente.</p></aside>
       <div class="about-actions">
-        <a class="about-forms" href="https://forms.cloud.microsoft/e/5aXteVaGKm" target="_blank" rel="noopener noreferrer">Abrir Forms <span aria-hidden="true">↗</span></a>
+        <a class="about-forms" href="https://forms.cloud.microsoft/e/5aXteVaGKm" target="_blank" rel="noopener noreferrer">Abrir Forms externo <span aria-hidden="true">↗</span></a>
         <a id="about-evidence-link" class="about-review" href="#evidencias">Ver evidencias</a>
       </div>
+      <p class="forms-context">Forms es externo. Este tablero utiliza sus respuestas.</p>
       <section class="about-team" aria-label="Equipo del proyecto">
+        <p class="about-team-message">Con cariño, para acompañar tu operación.</p>
         <div class="about-people">
-          <article class="about-person"><img src="./assets/about/enrique-cesar.jpeg" alt="" width="1079" height="1397" loading="lazy" decoding="async"><strong>Enrique Cesar Flores</strong></article>
-          <article class="about-person"><img src="./assets/about/jorge-alcantar.png" alt="" width="1154" height="1363" loading="lazy" decoding="async"><strong>Jorge Alcantar Aguiar</strong></article>
+          <article class="about-person"><img src="./assets/about/enrique-cesar.jpeg" alt="" width="1079" height="1397" loading="lazy" decoding="async"><strong>Enrique Cesar</strong></article>
+          <article class="about-person"><img src="./assets/about/jorge-alcantar.png" alt="" width="1154" height="1363" loading="lazy" decoding="async"><strong>Jorge Alcantar</strong></article>
         </div>
       </section>
     </div>
@@ -247,7 +249,7 @@
     <div class="footer-content">
       <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><strong>Juntémonos más</strong></div>
       <nav class="footer-links" aria-label="Guía y contacto">
-        <button type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Cómo capturar · Acerca de y guía de evidencias">Cómo capturar</button>
+        <button class="about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Acerca de · Guía para Gerentes de Tienda"><span class="about-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></span>Acerca de</button>
         <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Comentarios y sugerencias por WhatsApp">Sugerencias ↗</a>
       </nav>
     </div>

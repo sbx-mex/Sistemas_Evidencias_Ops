@@ -452,13 +452,17 @@ tbody tr:nth-child(even) { background: #fff8ec; }
 @media (max-width: 980px) { .fhw-mode .quantity-consolidation { order: -1; } }
 
 /* Guía breve: tres pasos desplegables, accesos claros y pie sin texto repetido. */
-.about-trigger { display: inline-flex; flex-shrink: 0; align-items: center; gap: 6px; white-space: nowrap; }
+.about-trigger { display: inline-flex; flex-shrink: 0; align-items: center; gap: 8px; white-space: nowrap; }
+.button.quiet.about-trigger, .footer-links .about-trigger { min-height: 44px; border: 1px solid #c7ac72; border-radius: 12px; background: #f5ecd8; color: #574222; padding: 6px 12px; font-size: .74rem; font-weight: 800; box-shadow: 0 2px 7px rgba(91,68,32,.05); }
+.button.quiet.about-trigger:hover, .footer-links .about-trigger:hover { border-color: #a4864c; background: #eedeBC; color: #433219; }
+.about-symbol { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: #e5d1a6; color: #574222; }
+.about-trigger:focus-visible { outline: 3px solid #bc954d; outline-offset: 3px; }
 .about-trigger svg { width: 17px; height: 17px; }
 .about-dialog { width: min(660px, calc(100% - 32px)); max-height: calc(100dvh - 40px); overflow: auto; overscroll-behavior: contain; border: 0; border-radius: 24px; background: #fffdf8; color: #1e3932; padding: 0; box-shadow: 0 28px 100px rgba(10,37,27,.35); }
 .about-dialog::backdrop { background: rgba(16,40,31,.65); backdrop-filter: blur(5px); }
 .about-top { position: relative; background: #006241; color: white; padding: 26px 30px 22px; }
 .about-kicker { color: #d9eae1; font-size: .68rem; font-weight: 750; letter-spacing: .05em; }
-.about-top h2 { margin: 10px 0 6px; font-size: clamp(1.7rem, 4vw, 2rem); line-height: 1.1; letter-spacing: -.03em; }
+.about-top h2 { max-width: 490px; margin: 10px 0 8px; padding-right: 15px; font-size: clamp(1.4rem, 4vw, 1.8rem); line-height: 1.1; letter-spacing: -.03em; }
 .about-top p { margin: 0; color: #e8f2ed; font-size: .82rem; line-height: 1.5; }
 .about-close { position: absolute; top: 14px; right: 16px; display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid #88b7a5; border-radius: 50%; background: #006241; color: white; font-size: 1.6rem; cursor: pointer; }
 .about-close:hover { background: #1e3932; }
@@ -491,7 +495,9 @@ tbody tr:nth-child(even) { background: #fff8ec; }
 .about-people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .about-person { display: flex; min-width: 0; align-items: center; gap: 10px; }
 .about-person img { flex: 0 0 54px; width: 54px; height: 66px; border-radius: 9px; background: white; object-fit: cover; object-position: center 22%; }
-.about-person strong { font-size: .73rem; line-height: 1.35; }
+.about-person strong { font-size: .78rem; line-height: 1.35; }
+.forms-context { margin: 9px 0 0; color: #58675d; font-size: .67rem; line-height: 1.4; }
+.about-team-message { margin: 0 0 12px; color: #675332; font-size: .81rem; font-weight: 650; line-height: 1.4; }
 body > footer.campaign-footer.executive-footer { display: block; width: min(calc(100% - (var(--page-gutter) * 2)), var(--content-width)); margin: 0 auto 26px; border: 1px solid #315a4a; border-radius: 20px; background: #1e3932; color: white; padding: 20px 26px; }
 .executive-footer .footer-content { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .executive-footer .footer-brand strong { color: #f0e5cf; font-size: 1.1rem; }
@@ -500,7 +506,8 @@ body > footer.campaign-footer.executive-footer { display: block; width: min(calc
 .footer-links a, .footer-links button { display: inline-flex; min-height: 44px; align-items: center; border: 1px solid #729b87; border-radius: 999px; background: transparent; color: white; padding: 8px 14px; font-size: .74rem; font-weight: 750; text-decoration: none; cursor: pointer; }
 .footer-links a:hover, .footer-links button:hover { background: #315d49; }
 @media (max-width: 720px) {
-  .about-trigger { min-height: 44px; padding-inline: 9px; font-size: .65rem; }
+  .button.quiet.about-trigger { padding-inline: 8px; font-size: .65rem; gap: 6px; }
+  .about-symbol { width: 25px; height: 25px; }
   .about-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 20px); border-radius: 18px; }
   .about-top { padding: 24px 20px 20px; }
   .about-body { padding: 18px 20px 20px; }
