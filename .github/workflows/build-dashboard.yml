@@ -9,6 +9,8 @@ on:
       - '.github/workflows/build-dashboard.yml'
       - 'cms/*.xlsx'
       - 'assets/dm/**'
+      - 'assets/director/**'
+      - 'assets/about/**'
       - 'assets/icons/**'
       - 'assets/ui/**'
       - 'assets/campaign/**'
@@ -30,7 +32,7 @@ permissions:
 
 concurrency:
   group: evidencias-ops-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   PYTHONUTF8: '1'
