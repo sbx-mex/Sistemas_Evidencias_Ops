@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "9043854b43b323be",
+  "buildVersion": "b705c053aa20193a",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-02T03:39:33+00:00",
-  "lastUpdated": "2026-10-01T20:32:06",
-  "lastUpdatedDisplay": "01/10/2026 20:32",
+  "generatedAt": "2026-10-02T05:18:19+00:00",
+  "lastUpdated": "2026-10-01T22:55:15",
+  "lastUpdatedDisplay": "01/10/2026 22:55",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "01/10/26 · 20:32 h",
+    "cutOffDisplay": "01/10/26 · 22:55 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -32,6 +32,7 @@
       "name": "Raúl Sinohe Sierra Santamaria",
       "role": "Director Starbucks México",
       "photo": "assets/director/raul-sierra.webp",
+      "photoStatus": "Disponible",
       "order": 1,
       "heroPhoto": "assets/director/raul-sierra-hero.webp"
     },
@@ -42,6 +43,7 @@
         "name": "Oliver Roberto Perez Briones",
         "role": "Director Regional",
         "photo": "assets/director/oliver-perez.webp",
+        "photoStatus": "Disponible",
         "order": 2,
         "filterValue": "Centro Centro",
         "stores": 85,
@@ -57,6 +59,7 @@
         "name": "Jorge Farrera Pinal",
         "role": "Director Regional",
         "photo": "assets/director/jorge-farrera.webp",
+        "photoStatus": "Disponible",
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
@@ -72,13 +75,14 @@
         "name": "Cielo Aide Morera Urrego",
         "role": "Director Regional",
         "photo": "assets/director/cielo-morera.webp",
+        "photoStatus": "Disponible",
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 98,
+        "completed": 99,
         "expected": 600,
-        "pending": 502,
-        "compliance": 16.3,
+        "pending": 501,
+        "compliance": 16.5,
         "status": "Atención"
       },
       {
@@ -87,6 +91,7 @@
         "name": "Jorge Antonio Alcantar Aguiar",
         "role": "Director Regional",
         "photo": "assets/director/jorge-alcantar.webp",
+        "photoStatus": "Disponible",
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
@@ -95,12 +100,28 @@
         "pending": 248,
         "compliance": 43.4,
         "status": "Seguimiento"
+      },
+      {
+        "level": 2,
+        "region": "Bajío",
+        "name": "Maria Guadalupe Jonguitud Lara",
+        "role": "Director Regional",
+        "photo": "assets/director/maria-jonjitud.webp",
+        "photoStatus": "Disponible",
+        "order": 6,
+        "filterValue": "Bajío",
+        "stores": 0,
+        "completed": 0,
+        "expected": 0,
+        "pending": 0,
+        "compliance": 0,
+        "status": "Atención"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "39e11bd0bc1eb6ef680e84c9b22fae86dfee1a79d6cd4d80736365e23f7f6c24",
+    "responsesSha256": "600fe9b36a3f05db79326e4a272f3c5f7afacbefa9cdf6b1bc68aca64c293169",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -121,7 +142,7 @@
       "excludedStatusCounts": {}
     },
     "cms": "Sistema_Evidencias_OPS_CMS.xlsx",
-    "cmsSha256": "6d0393f1dabfad3946fde6cf4ddf97c54644ad265ee735fa40dfb68acdf83821",
+    "cmsSha256": "8694b103bba7664fef14999731984a704c5a4349ee8b8b909b79d62ab4a9468a",
     "settingsSha256": "316eacd77aaaae8e0f0b4c29179fbebdc5d964749e26ac1ae93e866eda5e6524"
   },
   "summary": {
@@ -130,23 +151,23 @@
     "stores": 358,
     "activities": 6,
     "expectedCompletions": 2148,
-    "completedCompletions": 612,
+    "completedCompletions": 613,
     "compliance": 28.5,
-    "validResponses": 612,
+    "validResponses": 613,
     "storesComplete": 0,
-    "pendingCompletions": 1536,
+    "pendingCompletions": 1535,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 927,
+    "responsesRead": 928,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 727,
-      "newFormsRowsIncluded": 543,
+      "newFormsRowsRead": 728,
+      "newFormsRowsIncluded": 544,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -738,7 +759,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 727
+        "CeCo": 728
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -932,11 +953,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 151,
+      "completedStores": 152,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 207,
-      "compliance": 42.2,
+      "pendingStores": 206,
+      "compliance": 42.5,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1033,12 +1054,12 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 47,
+      "completed": 48,
       "expected": 84,
       "notApplicable": 0,
-      "pending": 37,
+      "pending": 36,
       "pendingStores": 14,
-      "compliance": 56.0,
+      "compliance": 57.1,
       "status": "Seguimiento",
       "rank": 4
     },
@@ -4856,17 +4877,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38580",
-      "store": "Pasaje San Jeronimo",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 4,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 2,
-      "compliance": 66.7,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38129",
       "store": "Plaza Santa Teresa",
       "dm": "Cesar Alfonso Castillo Romero",
@@ -5386,6 +5396,17 @@
     {
       "ceco": "38615",
       "store": "Grand San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "completed": 5,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 1,
+      "compliance": 83.3,
+      "status": "En meta"
+    },
+    {
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
       "dm": "Cesar Alfonso Castillo Romero",
       "completed": 5,
       "expected": 6,
@@ -7266,16 +7287,16 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 66.7,
-      "lastUpdate": "2026-09-28T13:54:01",
+      "compliance": 83.3,
+      "lastUpdate": "2026-10-01T22:55:15",
       "activities": {
         "Lay Out": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": true,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": false
       },
@@ -15927,12 +15948,12 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 151,
+      "answeredStores": 152,
       "totals": {
-        "yesDonate": 1751,
+        "yesDonate": 1763,
         "noDonate": 273,
-        "total": 2024,
-        "percentage": 86.5
+        "total": 2036,
+        "percentage": 86.6
       },
       "byRegion": [
         {
@@ -15957,12 +15978,12 @@
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 8,
+          "answeredStores": 9,
           "totals": {
-            "yesDonate": 90,
+            "yesDonate": 102,
             "noDonate": 5,
-            "total": 95,
-            "percentage": 94.7
+            "total": 107,
+            "percentage": 95.3
           }
         }
       ],
@@ -16135,12 +16156,12 @@
         {
           "region": "Centro Sur",
           "dm": "Cesar Alfonso Castillo Romero",
-          "answeredStores": 7,
+          "answeredStores": 8,
           "totals": {
-            "yesDonate": 85,
+            "yesDonate": 97,
             "noDonate": 3,
-            "total": 88,
-            "percentage": 96.6
+            "total": 100,
+            "percentage": 97.0
           }
         }
       ]
@@ -16148,6 +16169,33 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-d4c841f4bba1c971",
+      "timestamp": "2026-10-01T22:55:15",
+      "timestampDisplay": "01/10/2026 22:55",
+      "activity": "Va X Cuenta",
+      "ceco": "38580",
+      "store": "Pasaje San Jeronimo",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Va_X_Cuenta_38580",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38580",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 12,
+        "noDonate": 0,
+        "total": 12,
+        "percentage": 100.0
+      }
+    },
     {
       "id": "respuesta-ac4c80bb27c84a4b",
       "timestamp": "2026-10-01T20:32:06",
