@@ -137,7 +137,8 @@ if data.get("project") != "Sistema de Evidencias OPS" or data.get("region") != "
     fail("Identidad del proyecto incorrecta")
 if not re.fullmatch(r"[0-9a-f]{16}", data.get("buildVersion", "")):
     fail("La versión Python para invalidar caché es incorrecta")
-if data.get("sources", {}).get("directorySheet") != "Directorio":
+expected_catalog_sheet = "Tiendas Abiertas" if key_text(load_settings(ROOT / "config/settings.json").get("storeCatalogSource")) == "cms" else "Directorio"
+if data.get("sources", {}).get("directorySheet") != expected_catalog_sheet:
     fail("No se utilizó la hoja configurada del directorio")
 if data.get("sources", {}).get("cms") != "Sistema_Evidencias_OPS_CMS.xlsx":
     fail("Python no está leyendo el Excel CMS")
@@ -668,7 +669,7 @@ if nav_order != sorted(nav_order) or section_order != sorted(section_order):
 if "Última hora del dato actualizado" in html or re.search(r'<details[^>]+id="evidence-details"[^>]+open', html):
     fail("Fecha de corte o panel de soporte no respetan el diseño solicitado")
 organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]
-if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "person.compliance" not in organization_renderer or "data-region-focus" not in organization_renderer or "aria-pressed" not in organization_renderer or "avance regional" in organization_renderer:
+if "nationalDirector" in organization_renderer or "<img" not in organization_renderer or "person.role" in organization_renderer or "director-progress" not in organization_renderer or "completionFor(store, selectedActivities())" not in organization_renderer or "data-region-focus" not in organization_renderer or "aria-pressed" not in organization_renderer or "avance regional" in organization_renderer:
     fail("La vista regional debe filtrar por fotografía, mostrar sólo el porcentaje y exponer su estado accesible")
 filter_source = js[js.index("function populateFilters"):js.index("function populateEvidenceFilters")]
 evidence_filter_source = js[js.index("function populateEvidenceFilters"):js.index("function fileSafe")]
@@ -694,7 +695,7 @@ for navigation_control in ("renderFilterToolbar", "filterDisplayValue", "data-re
 for design_control in (".filter-toolbar", ".filter-chip", ".filters label.has-value", 'main[aria-busy="true"]', ".organization-copy em"):
     if design_control not in css:
         fail(f"Mejora visual incompleta: {design_control}")
-if 'aria-busy="true"' not in html or "Ver tiendas" not in html or "Restablecer" not in html or "${number(person.stores)} tiendas" not in organization_renderer:
+if 'aria-busy="true"' not in html or "Ver tiendas" not in html or "Restablecer" not in html or "${number(regionalStores.length)} tiendas" not in organization_renderer:
     fail("La interfaz no comunica carga, alcance regional o accesos rápidos")
 approve("06A · Cinco mejoras de navegación, foco y lectura activa")
 for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".about-dialog", ".executive-footer", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
@@ -848,7 +849,7 @@ print("Validación aprobada · 13/13 controles")
 for check in passed:
     print(f"OK {check}")
 print("CMS Excel → Python → un JSON consolidado")
-print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM + 1 Director Regional")
+print(f"{summary['stores']} tiendas · {summary['activities']} actividades vigentes · {summary['dms']} DM · {len(organization['regionalDirectors'])} directores regionales")
 if published:
     sample_submission = published[0]
     print(f"{sample_submission['evidenceKey']} → {sample_submission['store']} · vínculo SharePoint validado")

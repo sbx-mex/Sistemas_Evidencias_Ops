@@ -2,6 +2,7 @@
   "projectName": "Sistema de Evidencias OPS",
   "region": "Todas",
   "directorySheet": "Directorio",
+  "storeCatalogSource": "CMS",
   "onlyOpenStores": true,
   "includedStoreStatuses": "Abierta",
   "requireEvidence": true,

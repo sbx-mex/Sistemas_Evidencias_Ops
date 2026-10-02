@@ -111,7 +111,8 @@ def main() -> None:
         "Motores auditados · "
         f"CMS {cms_audit['activities']} actividades / {cms_audit['managers']} DM / "
         f"{cms_audit['openStores']} tiendas abiertas · "
-        f"Directorio {directory_audit['stores']} tiendas / {directory_audit['regions']} regiones en {directory_audit['sheet']}"
+        f"Catálogo vigente {directory_audit['stores']} tiendas / {directory_audit['regions']} regiones en {directory_audit['sheet']} · "
+        f"Directorio de respaldo {directory_audit['referenceStores']} tiendas"
     )
     print(
         "Fotografías opcionales · "

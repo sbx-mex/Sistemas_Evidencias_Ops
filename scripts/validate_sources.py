@@ -17,7 +17,7 @@ try:
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
-        directory_sheet,
+        directory_sheet, load_directory,
         manager_photo, normalize_ceco, normalize_dm, parse_date, short_dm_name,
         validate_webp_asset, validate_xlsx,
     )
@@ -26,7 +26,7 @@ except ImportError:  # Ejecución directa: python scripts/validate_sources.py
         DEFAULT_CMS, DEFAULT_DIRECTORY, DEFAULT_RESPONSES, DEFAULT_SETTINGS,
         STABILITY_CONTROLS, build_payload, clean_text, file_sha256, find_directory_header,
         find_header, included_store_statuses, is_all_regions, is_no, is_yes, key_text, load_cms, load_settings,
-        directory_sheet,
+        directory_sheet, load_directory,
         manager_photo, normalize_ceco, normalize_dm, parse_date, short_dm_name,
         validate_webp_asset, validate_xlsx,
     )
@@ -315,9 +315,13 @@ def validate_directory_engine(path: Path, cms_path: Path, settings_path: Path) -
         for row in ws.iter_rows(min_row=header_row + 1, values_only=True)
         if normalize_ceco(row[cols["cc"]])
     }
+    published, catalog_sheet, catalog_status = load_directory(path, settings, cms_path)
     return {
-        "stores": len(active_cecos), "sheet": sheet_name, "hiddenSheets": hidden_sheets,
-        "regions": len(regions), "missingDm": len(missing_dm), "excludedStores": excluded_stores,
+        "stores": len(published), "sheet": catalog_sheet, "hiddenSheets": hidden_sheets,
+        "regions": len({store["region"] for store in published.values()}),
+        "missingDm": sum(store["dm"] == "DM pendiente" for store in published.values()),
+        "excludedStores": catalog_status["excludedStores"],
+        "referenceStores": len(active_cecos), "referenceSheet": sheet_name,
     }
 
 

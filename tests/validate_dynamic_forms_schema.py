@@ -750,7 +750,7 @@ def main() -> None:
         community = activity_map["Community Board"]
         assert horno["completedStores"] == 8 and horno["notApplicableStores"] == 2
         assert community["completedStores"] == 1 and community["notApplicableStores"] == 1
-        enrique = next(item for item in payload["dms"] if item["dm"] == "Enrique Cesar Flores")
+        enrique = next(item for item in payload["dms"] if compact_key(item["dm"]) == compact_key("Enrique Cesar Flores"))
         conditional_activities, _, _, _ = load_cms(similar_cms)
         expected_enrique = len(enrique_cecos) * len(conditional_activities) - 2
         assert enrique["completed"] == 8 and enrique["expected"] == expected_enrique

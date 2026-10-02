@@ -583,3 +583,19 @@ body > footer.campaign-footer.executive-footer { border: 1px solid #dbcfb5; bord
 .document-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 thead { background: #174c3b; color: #fff; }
 .activity-focus-table thead, .quantity-response-table thead, .survey-response-table thead { background: #174c3b; }
+
+/* Vista ejecutiva: el catálogo crece sin alargar la consulta inicial. */
+.organization-grid { grid-template-columns: repeat(auto-fit, minmax(min(245px, 100%), 1fr)); }
+.organization-card { border-color: #dce3d9; background: #fffefa; box-shadow: 0 3px 12px rgba(30,57,50,.035); }
+.organization-card:hover, .organization-card:focus-visible { border-color: #86aa96; background: #f0f6ef; }
+.main-score { background: linear-gradient(125deg, #f0f6ed, #fffdf8); border-color: #d6dfcd; }
+.kpi { border-color: #dfe4d9; background: #fffefa; }
+.kpi::after { display: none; }
+.dm-toggle { display: block; margin: 18px auto 0; min-height: 44px; border-color: #b8ccbc; color: #006241; background: #eef5ed; }
+.organization-copy strong { overflow-wrap: anywhere; }
+@media (max-width: 620px) { .organization-grid { grid-template-columns: 1fr; } .organization-card { padding: 14px 16px; } }
+.organization-card { grid-template-columns: 64px minmax(0, 1fr); gap: 8px 12px; }
+.organization-card img, .organization-card .organization-avatar { grid-column: 1; grid-row: 1 / span 2; width: 64px; height: 82px; }
+.organization-copy { grid-column: 2; grid-row: 1; }
+.director-progress { grid-column: 2; grid-row: 2; justify-items: start; }
+.region-progress { grid-column: 1 / -1; grid-row: 3; }

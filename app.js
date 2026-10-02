@@ -3,6 +3,7 @@ const state = {
   filters: { region: "", dm: "", store: "", activity: "", quantity: "" },
   evidenceFilters: { region: "", dm: "", store: "", activity: "" },
   showAllEvidence: false,
+  showAllDms: false,
   fhwMode: "total",
   exporting: false,
   exportDecision: null,
@@ -17,6 +18,7 @@ const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
 const number = (value) => Number(value || 0).toLocaleString("es-MX");
 const percent = (value) => `${Number(value || 0).toLocaleString("es-MX", { maximumFractionDigits: 1 })}%`;
 const initials = (value) => String(value || "DM").split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
+const identityKey = (value) => String(value || "").normalize("NFD").replace(/\p{Diacritic}/gu, "").trim().replace(/\s+/g, " ").toLocaleLowerCase("es-MX");
 const engineLoads = new Map();
 
 function loadScriptOnce(source, globalName) {
@@ -168,15 +170,21 @@ function exportProfile() {
 
 function renderOrganization() {
   const organization = state.data.organization || {};
-  const regionals = organization.regionalDirectors || [];
+  const scopeStores = filteredStores();
+  const visibleRegions = new Set(scopeStores.map((store) => store.region));
+  const regionals = (organization.regionalDirectors || []).filter((person) => visibleRegions.has(person.region));
   $("#organization-grid").innerHTML = regionals.length ? regionals.map((person) => {
-    const compliance = Number(person.compliance || 0);
+    const regionalStores = scopeStores.filter((store) => store.region === person.region);
+    const progress = regionalStores.map((store) => completionFor(store, selectedActivities()));
+    const expected = progress.reduce((total, item) => total + item.expected, 0);
+    const completed = progress.reduce((total, item) => total + item.completed, 0);
+    const compliance = expected ? completed / expected * 100 : 0;
     const portrait = person.photo
       ? `<img src="./${esc(person.photo)}" alt="Fotografía de ${esc(person.name)}" width="72" height="88" loading="lazy">`
       : `<span class="organization-avatar" aria-label="Fotografía pendiente">${esc(initials(person.name))}</span>`;
     const filterValue = person.filterValue || person.region;
     const selected = state.filters.region === filterValue;
-    return `<button class="organization-card${selected ? " selected" : ""}" type="button" data-region-focus="${esc(filterValue)}" aria-pressed="${selected}" aria-label="${selected ? "Quitar filtro" : "Filtrar"} de ${esc(person.region)}; ${number(person.stores)} tiendas">${portrait}<span class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong><em>${number(person.stores)} tiendas</em></span><span class="director-progress"><strong>${percent(compliance)}</strong></span><span class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)}"><i style="--progress:${Math.min(compliance, 100)}%"></i></span></button>`;
+    return `<button class="organization-card${selected ? " selected" : ""}" type="button" data-region-focus="${esc(filterValue)}" aria-pressed="${selected}" aria-label="${selected ? "Quitar filtro" : "Filtrar"} de ${esc(person.region)}; ${number(regionalStores.length)} tiendas">${portrait}<span class="organization-copy"><small>${esc(person.region)}</small><strong>${esc(person.name)}</strong><em>${number(regionalStores.length)} tiendas</em></span><span class="director-progress"><strong>${percent(compliance)}</strong></span><span class="region-progress" aria-label="${esc(person.region)}: ${percent(compliance)}"><i style="--progress:${Math.min(compliance, 100)}%"></i></span></button>`;
   }).join("") : '<div class="empty-state">Sin responsables activos en el CMS.</div>';
 }
 
@@ -187,11 +195,8 @@ function renderSummary() {
   $("#score-ring").dataset.tone = signal.tone;
   $("#score-ring").style.setProperty("--score", `${Math.min(item.compliance, 100) * 3.6}deg`);
   $("#score-title").textContent = currentScope();
-  $("#score-message").textContent = !item.expected
-    ? "Sin actividades disponibles para el alcance seleccionado."
-    : item.pending
-      ? `${number(item.completed)} de ${number(item.expected)} registros completos · ${number(item.pending)} pendientes.`
-      : `${number(item.completed)} de ${number(item.expected)} registros completos.`;
+  $("#score-message").textContent = "";
+  $("#score-message").hidden = true;
   const cards = [
     [item.stores, item.stores === 1 ? "Tienda" : "Tiendas"],
     [item.activities, item.activities === 1 ? "Actividad" : "Actividades"],
@@ -531,8 +536,11 @@ function exportRows() {
 
 function renderTeam() {
   const rows = dmRanking();
-
-  $("#dm-team").innerHTML = rows.map((dm, index) => {
+  const visible = state.showAllDms ? rows : rows.slice(0, 9);
+  $("#dm-toggle").hidden = rows.length <= 9;
+  $("#dm-toggle").textContent = state.showAllDms ? "Ver menos" : `Ver los ${number(rows.length)} DM`;
+  $("#dm-toggle").setAttribute("aria-expanded", String(state.showAllDms));
+  $("#dm-team").innerHTML = visible.map((dm, index) => {
     const signal = semaphore(dm.value);
     const rank = index < 3 ? ["🥇", "🥈", "🥉"][index] : `#${index + 1}`;
     return `<button type="button" class="dm-card ${signal.tone} ${state.filters.dm === dm.dm ? "selected" : ""}" data-dm-focus="${esc(dm.dm)}" aria-pressed="${state.filters.dm === dm.dm}" aria-label="${state.filters.dm === dm.dm ? "Quitar filtro" : "Filtrar"} de ${esc(dm.shortName)}; ${dm.dmStores.length} tiendas">
@@ -550,6 +558,7 @@ function renderStores() {
   const activities = selectedActivities();
   const rows = filteredStores().map((store) => ({ ...store, ...completionFor(store, activities) }))
     .sort((a, b) => b.compliance - a.compliance || b.completed - a.completed || a.store.localeCompare(b.store, "es-MX"));
+  $("#store-count").textContent = `${number(rows.length)} ${rows.length === 1 ? "tienda" : "tiendas"}`;
   $("#store-table").innerHTML = rows.length ? rows.map((store, index) => {
     const signal = semaphore(store.compliance);
     return `<tr>
@@ -581,9 +590,10 @@ function renderAll() {
   // El detalle general sigue disponible bajo demanda cuando la respuesta por tienda es más útil.
   const detailed = hasSelectedDetail();
   const stores = $("#store-details");
-  if (stores.dataset.detailMode !== String(detailed)) {
-    stores.open = !detailed;
-    stores.dataset.detailMode = String(detailed);
+  const scopeMode = detailed ? "detail" : state.filters.dm || state.filters.store ? "store" : "overview";
+  if (stores.dataset.detailMode !== scopeMode) {
+    stores.open = scopeMode === "store" || location.hash === "#tiendas";
+    stores.dataset.detailMode = scopeMode;
   }
   renderSummary(); renderOrganization(); renderActivities(); renderQuantityModule(); renderSurveyModule(); renderEvidence(); renderTeam(); renderStores(); renderFilterToolbar(); syncFilterUrl();
 }
@@ -613,6 +623,7 @@ function renderFilterToolbar() {
 function clearDashboardFilters() {
   state.filters = { region: "", dm: "", store: "", activity: "", quantity: "" };
   state.showAllEvidence = false;
+  state.showAllDms = false;
   populateFilters();
   renderAll();
 }
@@ -627,12 +638,12 @@ function focusDynamicCard(attribute, value) {
 function populateFilters() {
   const regions = state.data.regions || [...new Set(state.data.stores.map((store) => store.region))];
   $("#filter-region").innerHTML = '<option value="">Todos</option>' + regions.map((region) => `<option value="${esc(region)}">${esc(region)}</option>`).join("");
-  if (!regions.includes(state.filters.region)) state.filters.region = "";
+  state.filters.region = regions.find((region) => identityKey(region) === identityKey(state.filters.region)) || "";
   $("#filter-region").value = state.filters.region;
   const regionalStores = state.data.stores.filter((store) => !state.filters.region || store.region === state.filters.region);
   const dms = [...new Set(regionalStores.map((store) => store.dm))].sort((a, b) => a.localeCompare(b, "es-MX"));
   $("#filter-dm").innerHTML = '<option value="">Todos</option>' + dms.map((dm) => `<option value="${esc(dm)}">${esc(dm)}</option>`).join("");
-  if (!dms.includes(state.filters.dm)) state.filters.dm = "";
+  state.filters.dm = dms.find((dm) => identityKey(dm) === identityKey(state.filters.dm)) || "";
   $("#filter-dm").value = state.filters.dm;
   const stores = regionalStores.filter((store) => !state.filters.dm || store.dm === state.filters.dm);
   $("#filter-store").innerHTML = '<option value="">Todos</option>' + stores.map((store) => `<option value="${esc(store.ceco)}">${esc(store.ceco)} · ${esc(store.store)}</option>`).join("");
@@ -1263,6 +1274,7 @@ function initNavigation() {
     const id = link.getAttribute("href").slice(1);
     setCurrent(id);
     if (id === "evidencias") $("#evidence-details").open = true;
+    if (id === "tiendas") $("#store-details").open = true;
   }));
   if (!("IntersectionObserver" in window)) return;
   const observer = new IntersectionObserver((entries) => {
@@ -1291,6 +1303,12 @@ function closeAboutDialog() {
 }
 
 function bindEvents() {
+  $("#dm-toggle").addEventListener("click", () => {
+    state.showAllDms = !state.showAllDms;
+    renderTeam();
+    $("#dm-toggle").focus({ preventScroll: true });
+  });
+  document.querySelector(".filter-results-link").addEventListener("click", () => { $("#store-details").open = true; });
   document.querySelectorAll("[data-open-about]").forEach((button) => button.addEventListener("click", openAboutDialog));
   $("#about-close").addEventListener("click", closeAboutDialog);
   $("#about-dialog").addEventListener("keydown", (event) => {

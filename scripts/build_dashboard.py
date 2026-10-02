@@ -171,7 +171,7 @@ STABILITY_CONTROLS = (
     "atomicPublication",
 )
 KNOWN_SETTING_KEYS = (
-    "projectName", "region", "directorySheet", "onlyOpenStores", "includedStoreStatuses",
+    "projectName", "region", "directorySheet", "storeCatalogSource", "onlyOpenStores", "includedStoreStatuses",
     "requireEvidence", "publishEvidenceLinks", "publishPersonalData",
     "evidenceAllowedHosts", "regionalDirectorName", "regionalDirectorPhoto",
     "ignoredResponseIds", "responseErrorPolicy", "trustedCeCoRecovery",
@@ -1420,10 +1420,14 @@ def directory_sheet(workbook, requested: Any) -> tuple[Any, int, list[Any]]:
     return ws, header_row, headers
 
 
-def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str, dict[str, Any]]:
+def _load_store_catalog(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict[str, str]], str, dict[str, Any]]:
     validate_xlsx(path, "el directorio")
     workbook = load_workbook(path, read_only=True, data_only=True)
-    ws, header_row, headers = directory_sheet(workbook, settings.get("directorySheet"))
+    if settings.get("_strictCatalog"):
+        ws = workbook[settings["directorySheet"]]
+        header_row, headers = find_directory_header(ws)
+    else:
+        ws, header_row, headers = directory_sheet(workbook, settings.get("directorySheet"))
     required = ("cc", "cc nombre", "region", "dm")
     positions: dict[str, list[int]] = defaultdict(list)
     for index, value in enumerate(headers):
@@ -1449,6 +1453,8 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
     for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
         ceco = normalize_ceco(row[normalized["cc"]])
         if not ceco:
+            if settings.get("_strictCatalog") and clean_text(row[normalized["cc"]]):
+                raise ValueError("CeCo inválido en Tiendas Abiertas del CMS: " + clean_text(row[normalized["cc"]]))
             continue
         region = clean_text(row[normalized["region"]])
         status = clean_text(row[status_index]) if status_index is not None else "Sin estatus en fuente"
@@ -1460,6 +1466,8 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
             continue
         if ceco in stores:
             raise ValueError(f"CeCo duplicado en el directorio operativo: {ceco}")
+        if settings.get("_strictCatalog") and (not clean_text(row[normalized["cc nombre"]]) or not region or normalize_dm(row[normalized["dm"]]) == "DM pendiente"):
+            raise ValueError(f"Tienda CMS incompleta: {ceco}; revisa nombre, región y DM")
         stores[ceco] = {
             "ceco": ceco,
             "store": clean_text(row[normalized["cc nombre"]]) or f"Tienda {ceco}",
@@ -1478,6 +1486,40 @@ def load_directory(path: Path, settings: dict[str, Any]) -> tuple[dict[str, dict
         "sourceStatusCounts": dict(sorted(status_counts.items(), key=lambda item: key_text(item[0]))),
         "excludedStatusCounts": dict(sorted(excluded_status_counts.items(), key=lambda item: key_text(item[0]))),
     }
+
+
+def load_directory(path: Path, settings: dict[str, Any], cms_path: Path = DEFAULT_CMS) -> tuple[dict[str, dict[str, str]], str, dict[str, Any]]:
+    """Valida el Directorio de respaldo y publica el catálogo elegido explícitamente.
+
+    CMS usa sólo Tiendas Abiertas. No suma dos catálogos ni inventa tiendas por
+    el Organigrama; altas, bajas y asignaciones vienen de una única fuente.
+    """
+    source = key_text(settings.get("storeCatalogSource", "Directorio"))
+    if source not in {"cms", "directorio"}:
+        raise ValueError("storeCatalogSource sólo acepta CMS o Directorio")
+    reference, reference_sheet, reference_status = _load_store_catalog(path, settings)
+    if source == "directorio":
+        return reference, reference_sheet, reference_status
+    validate_xlsx(cms_path, "el catálogo de tiendas CMS")
+    workbook = load_workbook(cms_path, read_only=True, data_only=True)
+    try:
+        if "Tiendas Abiertas" not in workbook.sheetnames:
+            raise ValueError("El CMS no contiene la hoja Tiendas Abiertas")
+    finally:
+        workbook.close()
+    stores, sheet, status = _load_store_catalog(cms_path, {**settings, "directorySheet": "Tiendas Abiertas", "_strictCatalog": True})
+    status.update({
+        "catalogSource": "CMS",
+        "catalogFile": cms_path.name,
+        "catalogSheet": sheet,
+        "referenceFile": path.name,
+        "referenceSheet": reference_sheet,
+        "referenceStores": len(reference),
+        "newCeCos": sorted(set(stores) - set(reference)),
+        "retiredCeCos": sorted(set(reference) - set(stores)),
+        "reassignedCeCos": sorted(ceco for ceco in set(stores) & set(reference) if stores[ceco] != reference[ceco]),
+    })
+    return stores, sheet, status
 
 
 def find_response_source(workbook, activity_names: list[str] | None = None) -> tuple[Any, int, list[Any]]:
@@ -1757,7 +1799,7 @@ def build_payload(
         regional_director_photo = validate_webp_asset(
             regional_director_photo, "Director Regional", allow_missing=True
         )
-    stores, directory_sheet, directory_status = load_directory(directory_path, settings)
+    stores, directory_sheet, directory_status = load_directory(directory_path, settings, cms_path)
     active_names = [item["name"] for item in activities]
     configured_by_text, configured_by_compact = active_activity_catalog(activities)
     current_responses, response_schema = load_responses(

@@ -86,7 +86,7 @@
       <div class="summary" aria-live="polite">
         <article class="main-score">
           <div class="score-ring" id="score-ring"><strong id="score-value">0%</strong><span>cumplimiento</span></div>
-          <div><p class="eyebrow">Vista actual</p><h3 id="score-title">Centro Norte</h3><p id="score-message">Calculando seguimiento…</p></div>
+          <div><p class="eyebrow">Vista actual</p><h3 id="score-title">Todas las regiones</h3><p id="score-message" hidden></p></div>
         </article>
         <div id="kpi-grid" class="kpi-grid"></div>
       </div>
@@ -99,7 +99,7 @@
 
     <section id="ranking" class="dashboard-section" aria-labelledby="ranking-heading">
       <header class="section-title"><div><h2 id="ranking-heading">Ranking DM</h2></div></header>
-      <div class="section-block"><div id="dm-team" class="dm-team"></div></div>
+      <div class="section-block"><div id="dm-team" class="dm-team"></div><button id="dm-toggle" class="button quiet dm-toggle" type="button" aria-expanded="false" aria-controls="dm-team" hidden>Ver todos los DM</button></div>
     </section>
 
     <section id="actividades" class="dashboard-section" aria-labelledby="activities-heading">
@@ -161,9 +161,9 @@
     </section>
 
     <section id="tiendas" class="dashboard-section" aria-labelledby="stores-heading">
-      <header class="section-title"><div><h2 id="stores-heading">Tiendas</h2><p>Detalle operativo ordenado por avance.</p></div></header>
-      <details id="store-details" class="evidence-disclosure" open>
-        <summary><span>Consultar avance general por tienda</span></summary>
+      <header class="section-title"><div><h2 id="stores-heading">Tiendas</h2></div></header>
+      <details id="store-details" class="evidence-disclosure">
+        <summary><span>Consultar avance general por tienda</span><small id="store-count">—</small></summary>
         <div class="evidence-content"><div class="table-shell"><table><thead><tr><th>Ranking</th><th>CeCo</th><th>Tienda</th><th>Realizadas</th><th>Avance</th><th>Estado</th></tr></thead><tbody id="store-table"></tbody></table></div></div>
       </details>
     </section>
