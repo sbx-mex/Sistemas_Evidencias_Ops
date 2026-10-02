@@ -9,6 +9,9 @@ from contextlib import contextmanager
 import hashlib
 import json
 import os
+import re
+from html.parser import HTMLParser
+from urllib.parse import unquote, urlsplit
 from pathlib import Path
 import shutil
 import subprocess
@@ -61,6 +64,51 @@ def validate_required_validators() -> None:
     missing = [relative for relative in REQUIRED_VALIDATORS if not (ROOT / relative).is_file()]
     if missing:
         raise RuntimeError("Faltan validadores requeridos: " + ", ".join(missing))
+
+
+def validate_public_assets(root: Path | None = None) -> dict[str, str]:
+    """Valida recursos locales antes de escribir datos y conserva sus huellas."""
+    root = (root or ROOT).resolve()
+    references: list[tuple[str, bool]] = []
+
+    class ResourceParser(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            attributes = dict(attrs)
+            key = "src" if tag in {"img", "script"} else "href" if tag == "link" else None
+            if key and key in attributes:
+                references.append((attributes[key] or "", False))
+
+    try:
+        html = (root / "index.html").read_text(encoding="utf-8")
+        worker = (root / "service-worker.js").read_text(encoding="utf-8")
+        match = re.search(r"const CORE\s*=\s*(\[.*?\]);", worker, re.S)
+        core = json.loads(match.group(1)) if match else None
+        if not isinstance(core, list) or not core or any(not isinstance(item, str) for item in core):
+            raise ValueError("CORE debe declarar una lista de rutas")
+        references.extend((item, True) for item in core)
+        ResourceParser().feed(html)
+    except (OSError, ValueError) as error:
+        raise RuntimeError("No se pudo validar la interfaz y los recursos de la PWA") from error
+
+    fingerprints = {}
+    for value, is_core in references:
+        url = urlsplit(value)
+        if url.scheme or url.netloc:
+            if is_core:
+                raise RuntimeError("La PWA contiene un recurso externo: " + value)
+            continue
+        local = unquote(url.path)
+        if not local or local.startswith("/") or ".." in Path(local).parts:
+            raise RuntimeError("Ruta de recurso inválida: " + value)
+        if is_core and local in {".", "./"}:
+            local = "index.html"
+        resource = (root / local).resolve()
+        if not resource.is_relative_to(root):
+            raise RuntimeError("El recurso sale del proyecto: " + value)
+        if not resource.is_file() or resource.stat().st_size == 0:
+            raise RuntimeError("Falta un recurso o está vacío: " + value)
+        fingerprints[resource.relative_to(root).as_posix()] = file_sha256(resource)
+    return fingerprints
 
 
 @contextmanager
@@ -401,6 +449,7 @@ def main() -> None:
 
     validate_required_validators()
     with exclusive_lock():
+        public_before = validate_public_assets()
         files = cms_sources()
         before = validate_all_xlsx(files)
         with configuration_backup(restore_on_success=args.check_only):
@@ -408,6 +457,8 @@ def main() -> None:
             run(sys.executable, "-X", "utf8", "scripts/validate_sources_resilient.py")
             current = outputs_current(before)
             if args.check_only:
+                if public_before != validate_public_assets():
+                    raise RuntimeError("Los recursos cambiaron durante la comprobación")
                 state = "resultados vigentes" if current else "resultados pendientes de reconstrucción"
                 suffix = " · huella reconciliable" if reconciliation.get("changed") else ""
                 print(f"Preflight aprobado · {len(files)} XLSX · {state}{suffix} · sin cambios")
@@ -435,6 +486,8 @@ def main() -> None:
                 removed += clean_obsolete()
                 run(sys.executable, "-X", "utf8", "scripts/audit_project.py")
                 run(sys.executable, "scripts/clean_obsolete.py", "--check")
+                if public_before != validate_public_assets():
+                    raise RuntimeError("Los recursos cambiaron durante la actualización; se restauraron los resultados")
                 if before != validate_all_xlsx(cms_sources()) or not outputs_current(before):
                     raise RuntimeError("Las fuentes o el motor cambiaron durante la validación; se restauraron los resultados")
 
