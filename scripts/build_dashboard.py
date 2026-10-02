@@ -391,7 +391,7 @@ def output_version(source_hashes: dict[str, str]) -> str:
     for relative in (
         "scripts/build_dashboard.py", "scripts/export_excel.py", "scripts/export_pdf.py",
         "scripts/io_utils.py", "requirements.txt", "app.js", "styles.css",
-        "service-worker.js", "pdf-export.js", "xlsx-export.js", "index.html",
+        "service-worker.js", "data-contract.js", "pdf-export.js", "xlsx-export.js", "index.html",
     ):
         inputs[relative] = file_sha256(ROOT / relative)
     for asset in sorted((ROOT / "assets").rglob("*")):
@@ -601,7 +601,7 @@ def parse_datetime(value: Any) -> datetime | None:
         serial = float(text)
         if math.isfinite(serial) and 1 <= serial < 2_958_466:
             return datetime(1899, 12, 30) + timedelta(days=serial)
-    for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%S.%f", "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
         try:
             return datetime.strptime(text, fmt)
         except ValueError:
@@ -1433,7 +1433,7 @@ def _load_store_catalog(path: Path, settings: dict[str, Any]) -> tuple[dict[str,
     for index, value in enumerate(headers):
         if clean_text(value):
             positions[key_text(value)].append(index)
-    duplicated_headers = sorted(field for field in required if len(positions.get(field, [])) > 1)
+    duplicated_headers = sorted(field for field in (*required, "estatus") if len(positions.get(field, [])) > 1)
     if duplicated_headers:
         raise ValueError("Directorio con encabezados duplicados: " + ", ".join(duplicated_headers))
     normalized = {key: indices[0] for key, indices in positions.items()}
@@ -1663,6 +1663,12 @@ def load_responses(
                 row_has_conflict = True
                 row_conflict_fields.append("survey")
         finished = parse_datetime(values["finished"])
+        # Vacío es compatible con Forms reiniciado. Texto inválido no es vacío:
+        # de otro modo recibiría prioridad máxima y sustituiría una evidencia real.
+        if values["finished"] and finished is None:
+            conflicts.append({"row": row_number, "field": "finished"})
+            row_has_conflict = True
+            row_conflict_fields.append("finished")
         # Registrar una actividad en Forms equivale a confirmarla. La respuesta de
         # confirmación puede permanecer en exportaciones históricas, pero nunca
         # cambia aplicabilidad ni cumplimiento. La evidencia sigue siendo obligatoria
@@ -1935,8 +1941,14 @@ def build_payload(
         if response.get("applicabilityConflict"):
             quarantine_reasons.append("applicability")
         if quarantine_reasons:
+            if settings.get("responseErrorPolicy") == "Bloquear archivo":
+                raise ValueError(
+                    f"Bloquear archivo: fila {response['row']} de {response.get('source', 'Forms')} "
+                    + ", ".join(dict.fromkeys(quarantine_reasons))
+                )
             quarantined_responses.append({
                 "row": response["row"],
+                "source": response.get("source", "Forms"),
                 "reasons": list(dict.fromkeys(quarantine_reasons)),
             })
             invalid_rows.append(response["row"])
@@ -1950,9 +1962,12 @@ def build_payload(
         evidence_url = validated_files[0]["url"] if validated_files else None
         evidence_available = bool(validated_files) and all(item["url"] for item in validated_files)
         if validated_files and not evidence_available:
+            if settings.get("responseErrorPolicy") == "Bloquear archivo":
+                raise ValueError(f"Bloquear archivo: fila {response['row']} · unsafe-evidence-link")
             unsafe_evidence_rows.append(response["row"])
             quarantined_responses.append({
                 "row": response["row"],
+                "source": response.get("source", "Forms"),
                 "reasons": ["unsafe-evidence-link"],
             })
             invalid_rows.append(response["row"])
@@ -2256,16 +2271,9 @@ def build_payload(
             "compliance": round(completed / applicable * 100, 1) if applicable else 0,
             **deadline_focus(item.get("endDate"), pending),
         })
-    # Las campañas Peanuts se muestran como una secuencia de eventos,
-    # independientemente de que existan otras actividades con una fecha límite intermedia.
-    # El selector conserva primero Charly&Lucy y después Linus&Snoopy.
-    def activity_display_sort_key(item: dict) -> tuple:
-        is_peanuts = key_text(item.get("name", "")).startswith("peanuts ")
-        if is_peanuts:
-            return (0, item.get("endDate") or "9999-12-31", item["order"], key_text(item["name"]))
-        return (1, item["pendingStores"] == 0, item.get("endDate") or "9999-12-31", item["order"], key_text(item["name"]))
-
-    activity_stats.sort(key=activity_display_sort_key)
+    # El orden del CMS controla tabla, selector y exportación. Las fechas y
+    # pendientes se muestran como señales, sin reordenar campañas en código.
+    activity_stats.sort(key=lambda item: (item["order"], key_text(item["name"])))
     for focus_rank, item in enumerate(activity_stats, 1):
         item["focusRank"] = focus_rank
 

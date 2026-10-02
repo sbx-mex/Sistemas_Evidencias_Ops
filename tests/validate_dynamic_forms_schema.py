@@ -359,7 +359,7 @@ def main() -> None:
         assert isolated_payload["summary"]["validResponses"] == 0
         assert isolated_payload["submissions"] == []
         assert isolated_payload["quality"]["quarantinedResponses"] == [
-            {"row": 2, "reasons": ["ceco"]}
+            {"row": 2, "source": "Forms", "reasons": ["ceco"]}
         ]
         assert isolated_payload["quality"]["stabilityScore"] == "12/12"
 
@@ -397,8 +397,8 @@ def main() -> None:
             [(item["ceco"], item["activity"], item.get("evidenceUrl")) for item in payload["submissions"]],
         ) for payload in versions]
         assert snapshots[0] == snapshots[1] == snapshots[2]
-        assert versions[1]["quality"]["quarantinedResponses"] == [{"row": 3, "reasons": ["ceco"]}]
-        assert versions[2]["quality"]["quarantinedResponses"] == [{"row": 2, "reasons": ["ceco"]}]
+        assert versions[1]["quality"]["quarantinedResponses"] == [{"row": 3, "source": "Forms", "reasons": ["ceco"]}]
+        assert versions[2]["quality"]["quarantinedResponses"] == [{"row": 2, "source": "Forms", "reasons": ["ceco"]}]
 
         # Una sola señal o un nombre distinto nunca autoriza la corrección.
         untrusted = temp / "ceco-untrusted.xlsx"
@@ -691,14 +691,8 @@ def main() -> None:
         )
         assert payload["summary"]["completedCompletions"] == 2
         assert [item["focusRank"] for item in payload["activities"]] == list(range(1, len(payload["activities"]) + 1))
-        pending = [item for item in payload["activities"] if item["pendingStores"] and item["endDate"]]
-        peanut_pending = [item for item in pending if clean_text(item["name"]).lower().startswith("peanuts ")]
-        other_pending = [item for item in pending if item not in peanut_pending]
-        # La secuencia Peanuts ocupa un bloque continuo por fecha; las demás
-        # actividades conservan su orden operativo por fecha límite.
-        assert pending[:len(peanut_pending)] == peanut_pending
-        assert [item["endDate"] for item in peanut_pending] == sorted(item["endDate"] for item in peanut_pending)
-        assert [item["endDate"] for item in other_pending] == sorted(item["endDate"] for item in other_pending)
+        # El CMS controla el orden, incluso con campañas, fechas o pendientes distintos.
+        assert [item["order"] for item in payload["activities"]] == sorted(item["order"] for item in payload["activities"])
         stores = {store["ceco"]: store for store in payload["stores"]}
         assert stores["38333"]["activities"]["Programacion Hornos Merry - Focaccia"] is True
         assert stores["38115"]["activities"]["Mandil Verde"] is True

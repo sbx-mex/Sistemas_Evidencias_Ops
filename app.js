@@ -9,6 +9,8 @@ const state = {
   exportDecision: null,
   exportUrl: "",
   installPrompt: null,
+  loadStatus: "loading",
+  cachedData: false,
 };
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -229,9 +231,7 @@ function renderActivities() {
     const value = expected ? completed / expected * 100 : 0;
     const complete = expected > 0 && completed === expected;
     return { item, completed, expected, value, complete };
-  }).sort((a, b) => Number(a.complete) - Number(b.complete)
-    || (a.item.endDate || "9999-12-31").localeCompare(b.item.endDate || "9999-12-31")
-    || (a.item.focusRank || a.item.order) - (b.item.focusRank || b.item.order));
+  }).sort((a, b) => (a.item.focusRank || a.item.order) - (b.item.focusRank || b.item.order));
   $("#activity-progress").innerHTML = rows.length ? rows.map((row, index) => {
     const { item, completed, expected, value, complete } = row;
     const tone = complete ? "green" : (item.deadlineTone || "neutral");
@@ -1267,7 +1267,9 @@ function initNavigation() {
     const selected = link.getAttribute("href") === `#${id}`;
     link.setAttribute("aria-current", selected ? "page" : "false");
     if (selected && navigation.scrollWidth > navigation.clientWidth) {
-      link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      // Mover sólo el menú: scrollIntoView también movía la página al encabezado.
+      navigation.scrollTo({ left: link.offsetLeft - navigation.offsetLeft
+        - (navigation.clientWidth - link.offsetWidth) / 2, behavior: "smooth" });
     }
   });
   links.forEach((link) => link.addEventListener("click", () => {
@@ -1276,6 +1278,16 @@ function initNavigation() {
     if (id === "evidencias") $("#evidence-details").open = true;
     if (id === "tiendas") $("#store-details").open = true;
   }));
+  const openLinkedSection = () => {
+    if (location.hash === "#evidencias") $("#evidence-details").open = true;
+    if (location.hash === "#tiendas") $("#store-details").open = true;
+  };
+  openLinkedSection();
+  window.addEventListener("hashchange", openLinkedSection);
+  window.addEventListener("popstate", () => {
+    if (!state.data) return;
+    readFilterUrl(); populateFilters(); populateEvidenceFilters(); renderAll(); openLinkedSection();
+  });
   if (!("IntersectionObserver" in window)) return;
   const observer = new IntersectionObserver((entries) => {
     const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -1424,8 +1436,18 @@ function bindEvents() {
 }
 
 function updateConnection() {
-  const offline = !navigator.onLine; $("#offline-banner").hidden = !offline;
-  $("#connection-status").innerHTML = `<i></i>${offline ? "Sin conexión" : "Actualizado"}`;
+  const cached = state.cachedData || !navigator.onLine;
+  $("#offline-banner").hidden = !cached;
+  const element = $("#connection-status");
+  const quality = state.data?.quality;
+  const reviews = (quality?.unknownCeCos?.length || 0) + (quality?.quarantinedResponses?.length || 0);
+  const tone = state.loadStatus === "error" ? "error" : cached || reviews ? "review"
+    : state.loadStatus === "ready" ? "ready" : "loading";
+  element.dataset.state = tone;
+  const label = state.loadStatus === "error" ? "Carga pendiente" : state.loadStatus === "loading" ? "Consultando…"
+    : cached ? "Copia local" : reviews ? "Carga validada · revisar filas" : "Carga segura";
+  element.innerHTML = `<i aria-hidden="true"></i>${esc(label)}`;
+  element.title = reviews ? `${reviews} hallazgos aislados; consulta la auditoría de carga.` : "Consulta la fecha de corte para conocer la vigencia.";
 }
 
 const BUILD_STORAGE_KEY = "sistema-evidencias-build-version";
@@ -1433,38 +1455,42 @@ const BUILD_STORAGE_KEY = "sistema-evidencias-build-version";
 async function enforceBuildVersion(data) {
   const version = String(data?.buildVersion || "");
   if (!version) throw new Error("La publicación no incluye versión de actualización.");
-  let previous = "";
   try {
-    previous = localStorage.getItem(BUILD_STORAGE_KEY) || "";
     localStorage.setItem(BUILD_STORAGE_KEY, version);
   } catch (_error) {
     return false;
   }
-  if (!previous || previous === version || sessionStorage.getItem(BUILD_STORAGE_KEY) === version) return false;
-  sessionStorage.setItem(BUILD_STORAGE_KEY, version);
-  if ("caches" in window) {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter((key) => key.startsWith("sistema-evidencias-ops-")).map((key) => caches.delete(key)));
-  }
-  const registration = await navigator.serviceWorker?.getRegistration?.();
-  registration?.active?.postMessage({ type: "CLEAR_ALL_CACHES" });
-  await registration?.update();
-  const url = new URL(window.location.href);
-  url.searchParams.set("build", version);
-  window.location.replace(url.toString());
-  return true;
+  // La versión de datos cambia también a diario. Se aplica en memoria sin
+  // recargar ni borrar la última copia válida; el SW renueva el código aparte.
+  return false;
+}
+
+function validateDashboard(data) {
+  return window.OPSDashboard.validate(data);
+}
+
+function setDataControls(enabled) {
+  document.querySelectorAll(".filters select, #clear-filters, .export-actions button, .evidence-filters select")
+    .forEach((element) => { element.disabled = !enabled; });
 }
 
 async function loadData(announce = false) {
   $("#refresh-button").disabled = true;
+  const previous = state.data;
+  if (!previous) setDataControls(false);
+  state.loadStatus = "loading"; updateConnection();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
   try {
     const response = await fetch("./data/dashboard.json", {
       cache: "no-store", headers: { "Cache-Control": "no-cache" },
+      signal: controller.signal,
     });
     if (!response.ok) throw new Error(`No fue posible cargar los datos (${response.status}).`);
-    const latestData = await response.json();
+    const latestData = validateDashboard(await response.json());
     if (await enforceBuildVersion(latestData)) return;
     state.data = latestData;
+    state.cachedData = response.headers.get("X-OPS-Data-Source") === "cache";
     readFilterUrl();
     $("#last-updated").textContent = cutStamp();
     const director = state.data.organization?.nationalDirector || state.data.report?.regionalDirector;
@@ -1475,12 +1501,17 @@ async function loadData(announce = false) {
       $("#director-photo").alt = director.photo ? `${director.name}, ${director.role}` : "Evidencias OPS · Fotografía pendiente";
     }
     populateFilters(); populateEvidenceFilters(); renderAll(); $("#main").setAttribute("aria-busy", "false"); $("#error-banner").hidden = true;
-    if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
+    state.loadStatus = "ready"; setDataControls(true); updateConnection();
     return true;
   } catch (error) {
-    $("#error-banner").textContent = "No pudimos consultar información nueva. Intenta actualizar otra vez."; $("#error-banner").hidden = false;
+    state.data = previous;
+    state.loadStatus = "error"; setDataControls(Boolean(previous)); updateConnection();
+    $("#error-banner").textContent = previous
+      ? "No pudimos validar información nueva. Conservamos la última carga válida. Intenta actualizar otra vez."
+      : "Carga pendiente: no pudimos validar los datos. Selecciona Actualizar datos para reintentar.";
+    $("#error-banner").hidden = false;
     return false;
-  } finally { $("#main").setAttribute("aria-busy", "false"); $("#refresh-button").disabled = false; }
+  } finally { clearTimeout(timer); $("#main").setAttribute("aria-busy", "false"); $("#refresh-button").disabled = false; }
 }
 
 async function refreshApplicationData() {

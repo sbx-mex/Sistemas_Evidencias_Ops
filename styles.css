@@ -27,6 +27,14 @@ svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width:
 .header-actions { display: flex; justify-content: flex-end; align-items: center; gap: 9px; }
 .connection { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: .7rem; font-weight: 700; }
 .connection i { width: 7px; height: 7px; border-radius: 50%; background: #1b966a; }
+.connection { border-radius: 999px; padding: 7px 10px; background: #edf2ef; }
+.connection[data-state="ready"] { color: #006241; background: #e5f3eb; }
+.connection[data-state="review"] { color: #805300; background: #fff3d6; }
+.connection[data-state="review"] i { background: #ad7200; }
+.connection[data-state="error"] { color: #a12323; background: #fff0ef; }
+.connection[data-state="error"] i { background: #a12323; }
+.connection[data-state="loading"] i { background: #68766e; }
+:disabled { cursor: wait; opacity: .65; }
 .icon-button { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--dark); cursor: pointer; }
 .button { min-height: 42px; border: 1px solid transparent; border-radius: 12px; padding: 0 15px; color: var(--dark); font-size: .74rem; font-weight: 800; cursor: pointer; }
 .button.quiet { border-color: var(--line); background: white; }
@@ -599,3 +607,13 @@ thead { background: #174c3b; color: #fff; }
 .organization-copy { grid-column: 2; grid-row: 1; }
 .director-progress { grid-column: 2; grid-row: 2; justify-items: start; }
 .region-progress { grid-column: 1 / -1; grid-row: 3; }
+
+/* Estado de carga visible también en móvil, independiente del avance operativo. */
+.hero-status .connection { display: flex; width: fit-content; max-width: 100%; }
+.connection[data-state="ready"] i { background: #006241; box-shadow: none; }
+.connection[data-state="review"] i, .connection[data-state="error"] i,
+.connection[data-state="loading"] i { box-shadow: none; }
+@media (max-width: 430px) {
+  #refresh-button { display: inline-flex; width: 36px; min-height: 36px; padding: 7px; }
+  #refresh-label { display: none; }
+}

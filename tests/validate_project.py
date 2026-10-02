@@ -757,7 +757,7 @@ for required_style in ("height: auto", "aspect-ratio: 3 / 2", "object-fit: conta
 if "object-fit: cover" in export_image_rule.group(1) or "height: 100%" in export_image_rule.group(1):
     fail("La imagen de exportación conserva reglas que provocan recorte")
 approve("07 · Filtros, confirmación y exportaciones del alcance actual")
-for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "sessionStorage", "window.location.replace", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
+for cache_behavior in ("enforceBuildVersion", "BUILD_STORAGE_KEY", "localStorage", "validateDashboard", "X-OPS-Data-Source", "AbortController", 'headers: { "Cache-Control": "no-cache" }', "loadScriptOnce", "loadExportEngine"):
     if cache_behavior not in js:
         fail(f"Actualización automática sin caché incompleta: {cache_behavior}")
 if not re.search(r'const CACHE_NAME = "sistema-evidencias-ops-v\d+";', sw):
