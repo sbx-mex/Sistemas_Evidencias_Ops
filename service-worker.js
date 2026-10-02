@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v41";
+const CACHE_NAME = "sistema-evidencias-ops-v42";
 const CORE = [
   "./",
   "./index.html",
@@ -12,7 +12,9 @@ const CORE = [
   "./assets/campaign/snoopy-fall.webp",
   "./assets/campaign/linus-fall.webp",
   "./assets/director/raul-sierra-hero.webp",
-  "./assets/director/jorge-alcantar.webp"
+  "./assets/director/jorge-alcantar.webp",
+  "./assets/about/enrique-cesar.jpeg",
+  "./assets/about/jorge-alcantar.png"
 ];
 
 async function precacheLatest() {

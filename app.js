@@ -317,12 +317,10 @@ function renderQuantityModule() {
   section.classList.toggle("fhw-mode", fhw);
   $("#quantity-mode").hidden = !fhw;
   $("#quantity-reading").hidden = !fhw;
-  $("#quantity-basis").hidden = !fhw;
-  $("#quantity-note").hidden = !fhw;
   for (const button of $("#quantity-mode").querySelectorAll?.("button") || []) {
     button.setAttribute("aria-pressed", String(button.dataset.fhwMode === state.fhwMode));
   }
-  const showEvidence = module.requireEvidence !== false;
+  const showEvidence = !fhw && module.requireEvidence !== false;
   const oneDm = Boolean(state.filters.dm || state.filters.store);
   const showDm = !ratio && !oneDm;
   section.classList.toggle("ratio-mode", ratio);
@@ -365,12 +363,9 @@ function renderQuantityModule() {
   const executive = fhw ? fhwSummary(module) : null;
   if (executive) {
     $("#quantity-reading").textContent = executive.label;
-    $("#quantity-basis").textContent = executive.basis;
-    $("#quantity-note").textContent = executive.note;
   }
   const totalCards = executive ? [
     ...module.metrics.map((metric) => [fhwNumber(executive.values[metric.key]), metric.label, "", ""]),
-    [fhwNumber(executive.values.total), executive.mode === "average" ? "Piezas por tienda" : "Piezas en el filtro", "", " total"],
   ] : ratio ? [
     [participation == null ? "—" : percent(participation), shortLabel(module.percentageLabel),
       `${number(totals[module.percentageMetric])} de ${number(totals.total)} · ${shortLabel(module.totalLabel || "Total")}`, " featured"],
@@ -735,9 +730,8 @@ function exportContext(format) {
     summary: isFhwModule() ? (() => {
       const summary = fhwSummary();
       return [["Alcance", `${type} · ${name}`], ["Actividad", activity],
-        ["Lectura", summary.label], ["Base", summary.basis],
-        ...summary.module.metrics.map((metric) => [metric.label, fhwNumber(summary.values[metric.key])]),
-        ["Piezas", fhwNumber(summary.values.total)]];
+        ["Lectura", summary.label],
+        ...summary.module.metrics.map((metric) => [metric.label, fhwNumber(summary.values[metric.key])])];
     })() : [
       ["Alcance", `${type} · ${name}`],
       ["Actividad", activity],
@@ -799,12 +793,11 @@ function renderFhwReportPages() {
   context.fillText(fitText(context, reportScope(), 1470), 65, 169);
   context.fillStyle = "#42564d"; context.font = "600 23px Segoe UI, sans-serif";
   context.fillText(fitText(context, `Cantidad: ${quantityChoices(summary.module).find((choice) => choice.value === state.filters.quantity)?.label || "Todas"} · Corte ${cutStamp()}`, 1470), 65, 261);
-  const cards = [...summary.module.metrics.map((metric) => [metric.label, summary.values[metric.key]]),
-    [summary.mode === "average" ? "Piezas por tienda" : "Piezas en el filtro", summary.values.total]];
+  const cards = summary.module.metrics.map((metric) => [metric.label, summary.values[metric.key]]);
   cards.forEach(([label, value], index) => {
-    const x = 65 + index * 497;
-    context.fillStyle = index === 2 ? "#1e3932" : "#ffffff"; context.fillRect(x, 310, 472, 242);
-    context.fillStyle = index === 2 ? "#ffffff" : "#006241"; context.font = "800 70px Segoe UI, sans-serif";
+    const x = 65 + index * 750;
+    context.fillStyle = "#ffffff"; context.fillRect(x, 310, 720, 242);
+    context.fillStyle = "#006241"; context.font = "800 70px Segoe UI, sans-serif";
     context.fillText(fhwNumber(value, summary.mode), x + 30, 414);
     context.font = "700 27px Segoe UI, sans-serif"; context.fillText(label, x + 30, 476);
     context.font = "500 20px Segoe UI, sans-serif";
@@ -819,8 +812,6 @@ function renderFhwReportPages() {
     context.fillStyle = "#1e3932"; context.font = "800 45px Segoe UI, sans-serif"; context.fillText(value, x + 30, 713);
   });
   context.fillStyle = "#1e3932"; context.font = "700 26px Segoe UI, sans-serif";
-  context.fillText(summary.basis, 65, 835);
-  context.font = "500 24px Segoe UI, sans-serif"; context.fillText(summary.note, 65, 885);
   context.font = "500 21px Segoe UI, sans-serif";
   context.fillText("Región, DM, tienda y cantidad corresponden al filtro seleccionado.", 65, 932);
   context.fillStyle = "#1e3932"; context.fillRect(0, 1015, 1600, 116);
@@ -1091,15 +1082,13 @@ function buildFhwExcelSpec() {
   const rowValue = (value) => value == null ? "" : {value: summary.mode === "average" ? Math.round(value * 10) / 10 : value, style: 5};
   const quantityRows = summary.responses.slice().sort((a, b) => a.store.localeCompare(b.store, "es-MX"))
     .map((item) => [item.ceco, item.store, item.dm,
-      ...summary.module.metrics.map((metric) => Number(item.quantities[metric.key] || 0)),
-      item.evidenceLinkPublished ? item.evidenceUrl : ""]);
-  const columns = 4 + summary.module.metrics.length;
+      ...summary.module.metrics.map((metric) => Number(item.quantities[metric.key] || 0))]);
+  const columns = 3 + summary.module.metrics.length;
   return {title: `FHW · ${summary.label} · ${scope}`, sheets: [{
     name: "Resumen FHW",
     rows: [[`FHW · ${summary.label}`, "", ""], [`${scope} · Corte ${cutStamp()}`, "", ""],
-      [summary.basis, "", ""], ["Indicador", "Valor", "Lectura"],
+      ["Cantidades correspondientes al filtro seleccionado", "", ""], ["Indicador", "Valor", "Lectura"],
       ...summary.module.metrics.map((metric) => [metric.label, rowValue(summary.values[metric.key]), summary.mode === "average" ? "Piezas por tienda con respuesta" : "Piezas en el filtro"]),
-      [summary.mode === "average" ? "Piezas por tienda" : "Piezas en el filtro", rowValue(summary.values.total), summary.note],
       ["Tiendas con respuesta", summary.answered, "Base del promedio; incluye ceros"],
       ["Tiendas en el filtro", summary.eligible, "Tiendas donde aplica FHW"],
       ["Tiendas sin respuesta", summary.pending, "Se excluyen del promedio"],
@@ -1109,8 +1098,8 @@ function buildFhwExcelSpec() {
     name: "FHW tiendas",
     rows: [["Conteo reportado por tienda", ...Array(columns - 1).fill("")], [`${scope} · Corte ${cutStamp()}`, ...Array(columns - 1).fill("")],
       ["Conteos originales; el modo Total / Promedio aplica al resumen.", ...Array(columns - 1).fill("")],
-      ["CeCo", "Tienda", "DM", ...summary.module.metrics.map((metric) => metric.label), "Evidencia"], ...quantityRows],
-    widths: [13, 32, 32, ...summary.module.metrics.map(() => 20), 42],
+      ["CeCo", "Tienda", "DM", ...summary.module.metrics.map((metric) => metric.label)], ...quantityRows],
+    widths: [13, 32, 32, ...summary.module.metrics.map(() => 20)],
     merges: [1, 2, 3].map((row) => `A${row}:${spreadsheetColumn(columns)}${row}`), headerRows: [4],
     countColumns: summary.module.metrics.map((_, index) => index + 4), freezeRow: 4,
     autoFilter: `A4:${spreadsheetColumn(columns)}${4 + quantityRows.length}`, tabColor: "FF006241",
@@ -1283,7 +1272,40 @@ function initNavigation() {
   sections.forEach((section) => observer.observe(section));
 }
 
+let aboutOpener = null;
+let aboutPreviousOverflow = "";
+
+function openAboutDialog(event) {
+  const dialog = $("#about-dialog");
+  if (dialog.open || state.exporting || !$("#export-modal").hidden) return;
+  aboutOpener = event.currentTarget;
+  aboutPreviousOverflow = document.body.style.overflow;
+  dialog.showModal();
+  dialog.scrollTop = 0;
+  document.body.style.overflow = "hidden";
+}
+
+function closeAboutDialog() {
+  const dialog = $("#about-dialog");
+  if (dialog.open) dialog.close();
+}
+
 function bindEvents() {
+  document.querySelectorAll("[data-open-about]").forEach((button) => button.addEventListener("click", openAboutDialog));
+  $("#about-close").addEventListener("click", closeAboutDialog);
+  $("#about-dialog").addEventListener("close", () => {
+    document.body.style.overflow = aboutPreviousOverflow;
+    aboutOpener?.focus({ preventScroll: true });
+    aboutOpener = null;
+  });
+  $("#about-dialog").addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeAboutDialog();
+  });
+  $("#about-evidence-link").addEventListener("click", () => {
+    aboutOpener = $("#evidence-details > summary");
+    $("#evidence-details").open = true;
+    closeAboutDialog();
+  });
   $("#quantity-mode").addEventListener("click", (event) => {
     const mode = event.target.closest("button[data-fhw-mode]")?.dataset.fhwMode;
     if (!isFhwModule() || state.exporting || !["total", "average"].includes(mode)) return;
@@ -1328,6 +1350,7 @@ function bindEvents() {
   $("#export-modal-close").addEventListener("click", closeExportModal);
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
+    if ($("#about-dialog").open) { event.preventDefault(); closeAboutDialog(); return; }
     if ($("#export-menu").open) { $("#export-menu").open = false; $("#export-menu > summary").focus(); return; }
     if (!$("#export-modal").hidden && !state.exporting) closeExportModal();
     else if (Object.values(state.filters).some(Boolean)) { clearDashboardFilters(); $("#filter-region").focus(); }

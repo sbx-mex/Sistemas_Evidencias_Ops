@@ -68,7 +68,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Diseñado por Jorge Alcántar", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "about-dialog", "about-title", "CeCo: exactamente 5 dígitos", "https://forms.cloud.microsoft/e/5aXteVaGKm", "assets/about/enrique-cesar.jpeg", "assets/about/jorge-alcantar.png", "executive-footer", "lucy-fall.webp", "snoopy-fall.webp", "Peanuts × Starbucks"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -76,7 +76,7 @@ for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-ta
         issues.append(f"Actividades no está adaptada a móvil: {required}")
 if re.search(r"\.activity-focus-table\s*\{[^}]*min-width:\s*(?:8\d\d|9\d\d|\d{4,})px", css):
     issues.append("Actividades conserva un ancho mínimo que provoca desplazamiento horizontal")
-for required in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".footer-peanuts", "thead { background: #2d2630"):
+for required in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".about-dialog", ".executive-footer", "thead { background: #2d2630"):
     if required not in css:
         issues.append(f"El tema Fall 26 no llega a todo el sistema: {required}")
 for required in ("renderFilterToolbar", "filterDisplayValue", "data-remove-filter", "focusDynamicCard", 'event.key !== "Escape"', 'aria-pressed="${state.filters.dm === dm.dm}"'):
@@ -117,7 +117,9 @@ for required in ("semaphore", "renderEvidence", "renderSurveyModule", "renderSur
 for required in ("Valida tu archivo", "Carpeta Descargas", "URL.revokeObjectURL(state.exportUrl)"):
     if required not in js:
         issues.append(f"Falta confirmación segura de descarga: {required}")
-for obsolete in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Excel", "event.target === event.currentTarget"):
+if re.search(r'\$\("#export-modal"\)\.addEventListener\("click"', js):
+    issues.append("La confirmación de exportación no debe cerrarse al tocar el fondo")
+for obsolete in ("export-modal-open", "Abrir PDF", "Ver imagen", "Descargar Excel"):
     if obsolete in html + js + texts["styles.css"]:
         issues.append(f"La confirmación conserva una acción obsoleta: {obsolete}")
 if "tiendas · ${dm.completed} realizadas" in js:

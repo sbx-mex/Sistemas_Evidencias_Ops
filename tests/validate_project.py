@@ -666,7 +666,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "footer-peanuts", "lucy-fall.webp", "snoopy-fall.webp", "linus-fall.webp", "Peanuts × Starbucks"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Diseñado por Jorge Alcántar &amp; Enrique César", "Comentarios y sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "about-dialog", "about-title", "CeCo: exactamente 5 dígitos", "https://forms.cloud.microsoft/e/5aXteVaGKm", "assets/about/enrique-cesar.jpeg", "assets/about/jorge-alcantar.png", "executive-footer", "lucy-fall.webp", "snoopy-fall.webp", "Peanuts × Starbucks"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -705,7 +705,7 @@ for design_control in (".filter-toolbar", ".filter-chip", ".filters label.has-va
 if 'aria-busy="true"' not in html or "Ver tiendas" not in html or "Restablecer" not in html or "${number(person.stores)} tiendas" not in organization_renderer:
     fail("La interfaz no comunica carga, alcance regional o accesos rápidos")
 approve("06A · Cinco mejoras de navegación, foco y lectura activa")
-for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".footer-peanuts", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
+for theme_token in ("--fall-orange", "--fall-gold", ".section-character", "body > footer.campaign-footer", ".about-dialog", ".executive-footer", ".panel, .section-block, .kpi", "thead { background: #2d2630"):
     if theme_token not in css:
         fail(f"El lenguaje visual Fall 26 no se aplicó fuera del hero: {theme_token}")
 stability_controls = data.get("quality", {}).get("stabilityControls", {})
@@ -744,7 +744,8 @@ excel_export_source = js[js.index("function buildExcelSpec"):js.index("async fun
 for required_excel_context in ("const activityLabel = exportActivityLabel()", "exportAdvanceLabel()", "${scope} · ${activityLabel}"):
     if required_excel_context not in excel_export_source:
         fail(f"Excel perdió el filtro dinámico: {required_excel_context}")
-if "event.target === event.currentTarget" in js or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
+export_events = js[js.index("function bindEvents"):js.index("async function loadData")]
+if re.search(r'\$\("#export-modal"\)\.addEventListener\("click"', export_events) or "URL.revokeObjectURL(state.exportUrl)" not in js or "link.download = exportInfo.filename" not in js:
     fail("La descarga automática, el cierre explícito o la liberación de memoria están incompletos")
 export_card_rule = re.search(r"\.export-card\s*\{([^}]+)\}", css)
 export_image_rule = re.search(r"\.export-card\s*>\s*img\s*\{([^}]+)\}", css)
