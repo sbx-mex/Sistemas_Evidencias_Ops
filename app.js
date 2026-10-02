@@ -1458,19 +1458,40 @@ async function loadData(announce = false) {
     }
     populateFilters(); populateEvidenceFilters(); renderAll(); $("#main").setAttribute("aria-busy", "false"); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";
+    return true;
   } catch (error) {
-    $("#error-banner").textContent = `${error.message} Ejecuta python scripts/build_dashboard.py.`; $("#error-banner").hidden = false;
+    $("#error-banner").textContent = "No pudimos consultar información nueva. Intenta actualizar otra vez."; $("#error-banner").hidden = false;
+    return false;
   } finally { $("#main").setAttribute("aria-busy", "false"); $("#refresh-button").disabled = false; }
 }
 
 async function refreshApplicationData() {
-  if ("serviceWorker" in navigator && location.protocol !== "file:") {
-    const registration = await navigator.serviceWorker.getRegistration();
-    await registration?.update();
-    registration?.waiting?.postMessage({ type: "SKIP_WAITING" });
-    registration?.active?.postMessage({ type: "CLEAR_OLD_CACHES" });
+  const button = $("#refresh-button");
+  if (button.disabled) return;
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+  $("#refresh-label").textContent = "Consultando…";
+  $("#refresh-status").textContent = "Consultando la información publicada más reciente.";
+  try {
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      try {
+        const registration = await navigator.serviceWorker.getRegistration();
+        await registration?.update();
+        registration?.waiting?.postMessage({ type: "SKIP_WAITING" });
+        registration?.active?.postMessage({ type: "CLEAR_OLD_CACHES" });
+      } catch {
+        // La consulta de datos continúa aunque la PWA no pueda renovarse.
+      }
+    }
+    const loaded = await loadData(true);
+    $("#refresh-status").textContent = !loaded ? "No fue posible consultar información nueva."
+      : !navigator.onLine ? "Sin conexión. Se conserva la última información disponible."
+      : "Información consultada. Revisa la fecha de corte.";
+  } finally {
+    button.disabled = false;
+    button.setAttribute("aria-busy", "false");
+    $("#refresh-label").textContent = "Actualizar datos";
   }
-  await loadData(true);
 }
 
 async function registerLatestServiceWorker() {

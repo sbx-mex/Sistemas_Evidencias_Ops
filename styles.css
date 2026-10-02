@@ -523,3 +523,52 @@ body > footer.campaign-footer.executive-footer { display: block; width: min(calc
   .about-actions { gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Remaster: calidez, jerarquía serena y acciones con propósito. */
+body { background: linear-gradient(180deg, #fbf8f1, #f4efe5); background-size: auto; }
+.app-header { border-bottom: 1px solid #ddd8c9; background: rgba(255,253,248,.97); box-shadow: 0 6px 22px rgba(30,57,50,.06); }
+.main-nav { background: #f0eee5; border-color: #dddacb; }
+.main-nav a:hover, .main-nav a:focus-visible, .main-nav a[aria-current="page"] { color: #006241; box-shadow: 0 2px 6px rgba(30,57,50,.1); }
+.hero { border: 1px solid #d7d3bf; background: linear-gradient(120deg, #fffdf8 0%, #f4efdf 70%, #e7efe5 100%); background-size: auto; box-shadow: 0 12px 30px rgba(68,70,42,.08); }
+.hero::before { border: 0; }
+.hero::after { border-color: rgba(0,98,65,.07); }
+.hero h1 { text-transform: none; font-size: clamp(1.7rem, 3.5vw, 2.9rem); letter-spacing: -.035em; }
+.campaign-mark { border-color: #dfcfaa; background: #f4ead0; color: #655236; }
+.hero-status { background: #1e3932; box-shadow: none; }
+.hero-director { border-color: #779984; background: rgba(255,255,255,.06); }
+.hero-director img { border-color: #c8d7c5; box-shadow: none; }
+.hero-director small, .cut-chip > span { color: #eadcc0; }
+.filters { border-color: #ddd4c3; box-shadow: 0 6px 20px rgba(55,57,38,.06); }
+.filters label.has-value select { border-color: #6e9c86; box-shadow: inset 3px 0 #006241; }
+.filters label.has-value span { color: #006241; }
+.section-title { border-left-color: #a98b53; }
+.section-title h2 { color: #1e3932; }
+.section-title h2::after { background: #cab276; }
+.main-score { border-color: #ddd2b9; background: linear-gradient(120deg, #f6f0e1, #fffdf8); box-shadow: 0 4px 15px rgba(55,57,38,.04); }
+.score-ring { background: radial-gradient(circle, #fffdf8 59%, transparent 61%), conic-gradient(#006241 var(--score), #e7dfcd 0); }
+.kpi { box-shadow: 0 3px 12px rgba(30,57,50,.025); }
+.kpi::after { border-color: rgba(188,163,107,.14); }
+.organization-card, .dm-card { background: linear-gradient(140deg, #fffdf9, #f5efe4); box-shadow: 0 4px 14px rgba(30,57,50,.04); }
+.organization-card.selected, .dm-card.selected { border-color: #6e9c86; background: #edf4ed; }
+.organization-card.selected { box-shadow: inset 4px 0 #006241; }
+.tag, .status.amber { background: #f4ead2; color: #705523; }
+.refresh-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; border: 1px solid #b4cdbd; border-radius: 12px; background: #e9f2eb; color: #12563b; padding: 8px 13px; font: inherit; font-size: .74rem; font-weight: 800; white-space: nowrap; cursor: pointer; }
+.refresh-button:hover { border-color: #6d9a7e; background: #dcebe0; }
+.refresh-button svg { width: 19px; height: 19px; }
+.refresh-button:disabled { cursor: progress; opacity: .72; }
+.refresh-button[aria-busy="true"] svg { animation: refresh-turn 1.2s linear infinite; }
+@keyframes refresh-turn { to { transform: rotate(360deg); } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+body > footer.campaign-footer.executive-footer { border: 1px solid #dbcfb5; border-top: 3px solid #cbb781; background: #fff; color: #1e3932; padding: 24px 28px; box-shadow: 0 8px 28px rgba(91,74,34,.06); }
+.executive-footer .footer-brand { display: grid; justify-items: start; gap: 9px; }
+.executive-footer .footer-brand .footer-wordmark { width: min(340px, 100%); height: auto; border-radius: 0; background: white; padding: 0; }
+.executive-footer .footer-brand p { margin: 0; color: #6c624c; font-size: .78rem; line-height: 1.45; }
+.footer-links .feedback-link { border-color: #bdcfc0; background: #ecf3eb; color: #1e593d; }
+.footer-links .feedback-link:hover { border-color: #6d9a7e; background: #dcebe0; }
+@media (max-width: 720px) {
+  .hero { background: linear-gradient(150deg, #fffdf8, #f0eddf); }
+  .refresh-button { padding-inline: 9px; font-size: .65rem; gap: 6px; }
+  body > footer.campaign-footer.executive-footer { padding: 22px; }
+  .executive-footer .footer-brand .footer-wordmark { width: min(280px, 100%); }
+}
+@media (prefers-reduced-motion: reduce) { .refresh-button[aria-busy="true"] svg { animation: none; } }

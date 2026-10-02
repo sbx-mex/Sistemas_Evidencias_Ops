@@ -34,14 +34,16 @@
       <a href="#evidencias">Evidencias</a>
     </nav>
     <div class="header-actions">
-      <span id="connection-status" class="connection"><i></i>Actualizado</span>
+      <span id="connection-status" class="connection" hidden aria-hidden="true"><i></i>Actualizado</span>
       <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Acerca de · Guía para Gerentes de Tienda"><span class="about-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></span>Acerca de</button>
       <button id="install-button" class="button quiet" type="button" hidden>Instalar</button>
-      <button id="refresh-button" class="icon-button" type="button" aria-label="Actualizar información">
-        <svg viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></svg>
+      <button id="refresh-button" class="refresh-button" type="button" aria-label="Actualizar datos del tablero" title="Consultar la información publicada más reciente" aria-busy="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5M4 18v-5h5M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></svg><span id="refresh-label">Actualizar datos</span>
       </button>
     </div>
   </header>
+
+  <span id="refresh-status" class="sr-only" role="status" aria-live="polite"></span>
 
   <main id="main" tabindex="-1" aria-busy="true">
     <section class="hero">
@@ -247,7 +249,7 @@
 
   <footer class="campaign-footer executive-footer">
     <div class="footer-content">
-      <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><strong>Juntémonos más</strong></div>
+      <div class="footer-brand"><img class="footer-wordmark" src="./assets/ui/juntemonos-mas.jpeg" alt="Juntémonos más" width="1536" height="259" loading="lazy" decoding="async"><p>Gracias por hacerlo posible, tienda a tienda.</p></div>
       <nav class="footer-links" aria-label="Guía y contacto">
         <button class="about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Acerca de · Guía para Gerentes de Tienda"><span class="about-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></span>Acerca de</button>
         <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Comentarios y sugerencias por WhatsApp">Sugerencias ↗</a>
