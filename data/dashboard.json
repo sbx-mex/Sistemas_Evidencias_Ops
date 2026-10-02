@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "38f32f8a6e99f214",
+  "buildVersion": "39f2822bdb2d64a9",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-02T06:07:07+00:00",
-  "lastUpdated": "2026-10-01T22:55:15",
-  "lastUpdatedDisplay": "01/10/2026 22:55",
+  "generatedAt": "2026-10-02T16:27:49+00:00",
+  "lastUpdated": "2026-10-02T10:21:02",
+  "lastUpdatedDisplay": "02/10/2026 10:21",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "01/10/26 · 22:55 h",
+    "cutOffDisplay": "02/10/26 · 10:21 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -64,10 +64,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 324,
+        "completed": 330,
         "expected": 600,
-        "pending": 276,
-        "compliance": 54.0,
+        "pending": 270,
+        "compliance": 55.0,
         "status": "Seguimiento"
       },
       {
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 99,
+        "completed": 100,
         "expected": 600,
-        "pending": 501,
-        "compliance": 16.5,
+        "pending": 500,
+        "compliance": 16.7,
         "status": "Atención"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "600fe9b36a3f05db79326e4a272f3c5f7afacbefa9cdf6b1bc68aca64c293169",
+    "responsesSha256": "0d41dc4b970735857ab7798503d8a1506c81f5c760c60f1d9e769180114584f1",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 6,
     "expectedCompletions": 2700,
-    "completedCompletions": 613,
-    "compliance": 22.7,
-    "validResponses": 613,
+    "completedCompletions": 620,
+    "compliance": 23.0,
+    "validResponses": 620,
     "storesComplete": 0,
-    "pendingCompletions": 2087,
+    "pendingCompletions": 2080,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 928,
+    "responsesRead": 935,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 728,
-      "newFormsRowsIncluded": 544,
+      "newFormsRowsRead": 735,
+      "newFormsRowsIncluded": 551,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -874,7 +874,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 728
+        "CeCo": 735
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -943,7 +943,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 461,
+    "evidenceLinksPublished": 465,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -980,11 +980,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 85,
+      "completedStores": 88,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 365,
-      "compliance": 18.9,
+      "pendingStores": 362,
+      "compliance": 19.6,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -1002,11 +1002,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 57,
+      "completedStores": 58,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 393,
-      "compliance": 12.7,
+      "pendingStores": 392,
+      "compliance": 12.9,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1068,11 +1068,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 152,
+      "completedStores": 155,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 298,
-      "compliance": 33.8,
+      "pendingStores": 295,
+      "compliance": 34.4,
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
@@ -1198,6 +1198,44 @@
       "rank": 5
     },
     {
+      "dm": "Areli Anahi Lazcano Lezama",
+      "shortName": "Areli Lazcano",
+      "photo": "assets/dm/areli-lazcano.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 13,
+      "completed": 42,
+      "expected": 78,
+      "notApplicable": 0,
+      "pending": 36,
+      "pendingStores": 13,
+      "compliance": 53.8,
+      "status": "Seguimiento",
+      "rank": 6
+    },
+    {
+      "dm": "Daniel Flores Maldonado",
+      "shortName": "Daniel Flores",
+      "photo": "assets/dm/daniel-flores.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
+      ],
+      "stores": 13,
+      "completed": 42,
+      "expected": 78,
+      "notApplicable": 0,
+      "pending": 36,
+      "pendingStores": 13,
+      "compliance": 53.8,
+      "status": "Seguimiento",
+      "rank": 7
+    },
+    {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
       "photo": "assets/dm/yazmin-chabela.webp",
@@ -1214,26 +1252,7 @@
       "pendingStores": 13,
       "compliance": 53.8,
       "status": "Seguimiento",
-      "rank": 6
-    },
-    {
-      "dm": "Areli Anahi Lazcano Lezama",
-      "shortName": "Areli Lazcano",
-      "photo": "assets/dm/areli-lazcano.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 13,
-      "completed": 41,
-      "expected": 78,
-      "notApplicable": 0,
-      "pending": 37,
-      "pendingStores": 13,
-      "compliance": 52.6,
-      "status": "Seguimiento",
-      "rank": 7
+      "rank": 8
     },
     {
       "dm": "Erika Julieta Contreras Aguilera",
@@ -1245,14 +1264,14 @@
         "Centro Poniente"
       ],
       "stores": 15,
-      "completed": 47,
+      "completed": 48,
       "expected": 90,
       "notApplicable": 0,
-      "pending": 43,
+      "pending": 42,
       "pendingStores": 15,
-      "compliance": 52.2,
+      "compliance": 53.3,
       "status": "Seguimiento",
-      "rank": 8
+      "rank": 9
     },
     {
       "dm": "Manuel Alejandro Avila Molina",
@@ -1270,25 +1289,6 @@
       "pending": 39,
       "pendingStores": 13,
       "compliance": 50.0,
-      "status": "Seguimiento",
-      "rank": 9
-    },
-    {
-      "dm": "Daniel Flores Maldonado",
-      "shortName": "Daniel Flores",
-      "photo": "assets/dm/daniel-flores.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 13,
-      "completed": 38,
-      "expected": 78,
-      "notApplicable": 0,
-      "pending": 40,
-      "pendingStores": 13,
-      "compliance": 48.7,
       "status": "Seguimiento",
       "rank": 10
     },
@@ -1397,12 +1397,12 @@
         "Centro Sur"
       ],
       "stores": 12,
-      "completed": 13,
+      "completed": 14,
       "expected": 72,
       "notApplicable": 0,
-      "pending": 59,
+      "pending": 58,
       "pendingStores": 12,
-      "compliance": 18.1,
+      "compliance": 19.4,
       "status": "Atención",
       "rank": 16
     },
@@ -1967,17 +1967,6 @@
     {
       "ceco": "38289",
       "store": "Tezontle l",
-      "dm": "Ariana Janet Gutierrez Martinez",
-      "completed": 0,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38477",
-      "store": "Zentralia churubusco",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 0,
       "expected": 6,
@@ -4286,6 +4275,17 @@
       "status": "Atención"
     },
     {
+      "ceco": "38477",
+      "store": "Zentralia churubusco",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 1,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 5,
+      "compliance": 16.7,
+      "status": "Atención"
+    },
+    {
       "ceco": "38169",
       "store": "Altavista",
       "dm": "Cesar Alfonso Castillo Romero",
@@ -4321,17 +4321,6 @@
     {
       "ceco": "38361",
       "store": "Castorena",
-      "dm": "Erika Julieta Contreras Aguilera",
-      "completed": 1,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 5,
-      "compliance": 16.7,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38747",
-      "store": "Centro Comercial Santa Fe 3",
       "dm": "Erika Julieta Contreras Aguilera",
       "completed": 1,
       "expected": 6,
@@ -4814,28 +4803,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38957",
-      "store": "Avándaro",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 2,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 33.3,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38547",
-      "store": "Carr Toluca Mexico KM48",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 2,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 33.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38841",
       "store": "Townsquare Metepec",
       "dm": "Daniel Flores Maldonado",
@@ -4849,6 +4816,17 @@
     {
       "ceco": "38633",
       "store": "Carretera Toluca Mexico (plaza cedros DT)",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "completed": 2,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 33.3,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38747",
+      "store": "Centro Comercial Santa Fe 3",
       "dm": "Erika Julieta Contreras Aguilera",
       "completed": 2,
       "expected": 6,
@@ -5474,17 +5452,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38466",
-      "store": "Paseo Interlomas I",
-      "dm": "Areli Anahi Lazcano Lezama",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38553",
       "store": "Paseo Interlomas II",
       "dm": "Areli Anahi Lazcano Lezama",
@@ -5551,6 +5518,28 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38957",
+      "store": "Avándaro",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 3,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38547",
+      "store": "Carr Toluca Mexico KM48",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 3,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38138",
       "store": "Galerias metepec 1",
       "dm": "Daniel Flores Maldonado",
@@ -5562,30 +5551,8 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "43068",
-      "store": "Galerias Metepec II",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "43059",
       "store": "La Providencia DT",
-      "dm": "Daniel Flores Maldonado",
-      "completed": 3,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 50.0,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38987",
-      "store": "Punta Zero Calimaya DT",
       "dm": "Daniel Flores Maldonado",
       "completed": 3,
       "expected": 6,
@@ -6090,6 +6057,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38466",
+      "store": "Paseo Interlomas I",
+      "dm": "Areli Anahi Lazcano Lezama",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38799",
       "store": "Paseo Interlomas III",
       "dm": "Areli Anahi Lazcano Lezama",
@@ -6167,6 +6145,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "43068",
+      "store": "Galerias Metepec II",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38441",
       "store": "Metepec Plaza del Parque",
       "dm": "Daniel Flores Maldonado",
@@ -6202,6 +6191,17 @@
     {
       "ceco": "38141",
       "store": "Plaza Mayor Metepec",
+      "dm": "Daniel Flores Maldonado",
+      "completed": 4,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 66.7,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38987",
+      "store": "Punta Zero Calimaya DT",
       "dm": "Daniel Flores Maldonado",
       "completed": 4,
       "expected": 6,
@@ -7922,18 +7922,18 @@
       "dm": "Areli Anahi Lazcano Lezama",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-30T10:19:28",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-02T09:32:18",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
         "FHW": true,
-        "Tarta Maricu": false
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -8342,13 +8342,13 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 16.7,
+      "lastUpdate": "2026-10-02T09:08:40",
       "activities": {
-        "Lay Out": false,
+        "Lay Out": true,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
@@ -9154,18 +9154,18 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 33.3,
-      "lastUpdate": "2026-09-29T16:01:19",
+      "compliance": 50.0,
+      "lastUpdate": "2026-10-02T08:35:32",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
         "FHW": true,
-        "Tarta Maricu": false
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -9182,16 +9182,16 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 33.3,
-      "lastUpdate": "2026-09-29T16:49:04",
+      "compliance": 50.0,
+      "lastUpdate": "2026-10-02T10:21:02",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": false
       },
@@ -9238,16 +9238,16 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-09-30T17:03:04",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-02T08:47:40",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true
       },
@@ -9406,16 +9406,16 @@
       "dm": "Daniel Flores Maldonado",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 50.0,
-      "lastUpdate": "2026-10-01T15:57:59",
+      "compliance": 66.7,
+      "lastUpdate": "2026-10-02T09:16:24",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
-        "Va X Cuenta": false,
+        "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true
       },
@@ -10638,18 +10638,18 @@
       "dm": "Erika Julieta Contreras Aguilera",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 1,
+      "completed": 2,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 16.7,
-      "lastUpdate": "2026-09-11T12:16:05",
+      "compliance": 33.3,
+      "lastUpdate": "2026-10-02T10:20:41",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
         "FHW": false,
-        "Tarta Maricu": false
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -19803,12 +19803,12 @@
           "maximum": 1000
         }
       ],
-      "answeredStores": 152,
+      "answeredStores": 155,
       "totals": {
-        "yesDonate": 1763,
-        "noDonate": 273,
-        "total": 2036,
-        "percentage": 86.6
+        "yesDonate": 1812,
+        "noDonate": 284,
+        "total": 2096,
+        "percentage": 86.5
       },
       "byRegion": [
         {
@@ -19823,12 +19823,12 @@
         },
         {
           "region": "Centro Poniente",
-          "answeredStores": 70,
+          "answeredStores": 73,
           "totals": {
-            "yesDonate": 813,
-            "noDonate": 96,
-            "total": 909,
-            "percentage": 89.4
+            "yesDonate": 862,
+            "noDonate": 107,
+            "total": 969,
+            "percentage": 89.0
           }
         },
         {
@@ -19945,12 +19945,12 @@
         {
           "region": "Centro Poniente",
           "dm": "Daniel Flores Maldonado",
-          "answeredStores": 7,
+          "answeredStores": 10,
           "totals": {
-            "yesDonate": 97,
-            "noDonate": 19,
-            "total": 116,
-            "percentage": 83.6
+            "yesDonate": 146,
+            "noDonate": 30,
+            "total": 176,
+            "percentage": 83.0
           }
         },
         {
@@ -20024,6 +20024,217 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-40810965252dd516",
+      "timestamp": "2026-10-02T10:21:02",
+      "timestampDisplay": "02/10/2026 10:21",
+      "activity": "Va X Cuenta",
+      "ceco": "38547",
+      "store": "Carr Toluca Mexico KM48",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_38547",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38547",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 21,
+        "noDonate": 7,
+        "total": 28,
+        "percentage": 75.0
+      }
+    },
+    {
+      "id": "respuesta-dee5fe480c078fbd",
+      "timestamp": "2026-10-02T10:20:41",
+      "timestampDisplay": "02/10/2026 10:20",
+      "activity": "Tarta Maricu",
+      "ceco": "38747",
+      "store": "Centro Comercial Santa Fe 3",
+      "dm": "Erika Julieta Contreras Aguilera",
+      "region": "Centro Poniente",
+      "evidenceKey": "Tarta_Maricu_38747",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38747",
+      "evidenceFileName": "image_Melisa Moran Viveros.jpg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Melisa%20Moran%20Viveros.jpg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Melisa%20Moran%20Viveros.jpg",
+          "fileName": "image_Melisa Moran Viveros.jpg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/image_Melisa%20Moran%20Viveros.jpg",
+          "fileName": "image_Melisa Moran Viveros.jpg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-3b850780b156c775",
+      "timestamp": "2026-10-02T09:32:18",
+      "timestampDisplay": "02/10/2026 09:32",
+      "activity": "Tarta Maricu",
+      "ceco": "38466",
+      "store": "Paseo Interlomas I",
+      "dm": "Areli Anahi Lazcano Lezama",
+      "region": "Centro Poniente",
+      "evidenceKey": "Tarta_Maricu_38466",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38466",
+      "evidenceFileName": "IMG_5147_Monserrat Soriano Es.jpeg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/IMG_5147_Monserrat%20Soriano%20Es.jpeg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/IMG_5147_Monserrat%20Soriano%20Es.jpeg",
+          "fileName": "IMG_5147_Monserrat Soriano Es.jpeg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/image_Monserrat%20Soriano%20Es.jpg",
+          "fileName": "image_Monserrat Soriano Es.jpg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-944d6a439c20afd4",
+      "timestamp": "2026-10-02T09:16:24",
+      "timestampDisplay": "02/10/2026 09:16",
+      "activity": "Va X Cuenta",
+      "ceco": "38987",
+      "store": "Punta Zero Calimaya DT",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_38987",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_38987",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 16,
+        "noDonate": 0,
+        "total": 16,
+        "percentage": 100.0
+      }
+    },
+    {
+      "id": "respuesta-853058656fd843a6",
+      "timestamp": "2026-10-02T09:08:40",
+      "timestampDisplay": "02/10/2026 09:08",
+      "activity": "Lay Out",
+      "ceco": "38477",
+      "store": "Zentralia churubusco",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38477",
+      "evidenceLinkLabel": "Link_Lay_Out_38477",
+      "evidenceFileName": "IMG_2847_Starbucks Zentralia.jpeg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/IMG_2847_Starbucks%20Zentralia.jpeg"
+    },
+    {
+      "id": "respuesta-7c3f9933444995f5",
+      "timestamp": "2026-10-02T08:47:40",
+      "timestampDisplay": "02/10/2026 08:47",
+      "activity": "Va X Cuenta",
+      "ceco": "43068",
+      "store": "Galerias Metepec II",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Va_X_Cuenta_43068",
+      "evidenceLinkLabel": "Link_Va_X_Cuenta_43068",
+      "evidenceFileName": "Sin archivo",
+      "evidenceSourceHeader": "",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": false,
+      "evidenceLinkPublished": false,
+      "valid": true,
+      "quantities": {
+        "yesDonate": 12,
+        "noDonate": 4,
+        "total": 16,
+        "percentage": 75.0
+      }
+    },
+    {
+      "id": "respuesta-ccba17e4447ab62e",
+      "timestamp": "2026-10-02T08:35:32",
+      "timestampDisplay": "02/10/2026 08:35",
+      "activity": "Tarta Maricu",
+      "ceco": "38957",
+      "store": "Avándaro",
+      "dm": "Daniel Flores Maldonado",
+      "region": "Centro Poniente",
+      "evidenceKey": "Tarta_Maricu_38957",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38957",
+      "evidenceFileName": "17909517006682038611177915777913_Maricruz Castillo Ma.jpg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/17909517006682038611177915777913_Maricruz%20Castillo%20Ma.jpg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/17909517006682038611177915777913_Maricruz%20Castillo%20Ma.jpg",
+          "fileName": "17909517006682038611177915777913_Maricruz Castillo Ma.jpg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/17909517195697142095486978157356_Maricruz%20Castillo%20Ma.jpg",
+          "fileName": "17909517195697142095486978157356_Maricruz Castillo Ma.jpg"
+        }
+      ]
+    },
     {
       "id": "respuesta-d4c841f4bba1c971",
       "timestamp": "2026-10-01T22:55:15",
