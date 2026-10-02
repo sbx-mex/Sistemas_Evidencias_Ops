@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "22033455d7e4984e",
+  "buildVersion": "2d0aafe8b86172a1",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,7 +9,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-01T23:47:54+00:00",
+  "generatedAt": "2026-10-02T00:16:05+00:00",
   "lastUpdated": "2026-10-01T17:42:22",
   "lastUpdatedDisplay": "01/10/2026 17:42",
   "report": {
@@ -828,7 +828,7 @@
   "calendar": {
     "active": 6,
     "scheduled": 0,
-    "expired": 0,
+    "expired": 1,
     "inactive": 13
   },
   "activities": [
@@ -839,7 +839,7 @@
       "startDate": "2026-09-29",
       "endDate": "2026-10-01",
       "commitmentDateDisplay": "01/10/26",
-      "dateStatus": "Vigente",
+      "dateStatus": "Vencida",
       "requireEvidence": true,
       "priority": "Alta",
       "autoDetected": false,
@@ -849,9 +849,9 @@
       "notApplicableStores": 0,
       "pendingStores": 277,
       "compliance": 22.6,
-      "deadlineLabel": "Vence hoy",
+      "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": 0,
+      "daysRemaining": -1,
       "focusRank": 1
     },
     {
@@ -871,9 +871,9 @@
       "notApplicableStores": 0,
       "pendingStores": 303,
       "compliance": 15.4,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 2
     },
     {
@@ -893,9 +893,9 @@
       "notApplicableStores": 0,
       "pendingStores": 218,
       "compliance": 39.1,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 3
     },
     {
@@ -915,9 +915,9 @@
       "notApplicableStores": 0,
       "pendingStores": 346,
       "compliance": 3.4,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 4
     },
     {
@@ -937,9 +937,9 @@
       "notApplicableStores": 0,
       "pendingStores": 208,
       "compliance": 41.9,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 5
     },
     {
@@ -959,9 +959,9 @@
       "notApplicableStores": 0,
       "pendingStores": 193,
       "compliance": 46.1,
-      "deadlineLabel": "Vence en 4 días",
+      "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
-      "daysRemaining": 4,
+      "daysRemaining": 3,
       "focusRank": 6
     }
   ],
