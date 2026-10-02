@@ -35,7 +35,7 @@
     </nav>
     <div class="header-actions">
       <span id="connection-status" class="connection"><i></i>Actualizado</span>
-      <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog">Acerca de</button>
+      <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Cómo capturar · Acerca de y guía de evidencias"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>Cómo capturar</button>
       <button id="install-button" class="button quiet" type="button" hidden>Instalar</button>
       <button id="refresh-button" class="icon-button" type="button" aria-label="Actualizar información">
         <svg viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></svg>
@@ -205,42 +205,52 @@
 
   <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title" aria-describedby="about-intro">
     <div class="about-top">
-      <button id="about-close" class="about-close" type="button" aria-label="Cerrar Acerca de" autofocus>×</button>
-      <span class="about-kicker">Starbucks México · Operaciones</span>
-      <h2 id="about-title">Cada detalle cuenta.</h2>
-      <p id="about-intro">Una captura correcta nos ayuda a acompañar a cada tienda.</p>
+      <button id="about-close" class="about-close" type="button" aria-label="Cerrar guía de captura" autofocus>×</button>
+      <span class="about-kicker">Acerca de</span>
+      <h2 id="about-title">Antes de enviar</h2>
+      <p id="about-intro">Toca cada punto para revisar tu captura.</p>
     </div>
     <div class="about-body">
-      <h3>Antes de enviar tu Forms</h3>
-      <ol class="capture-guide">
-        <li class="ceco-rule"><span class="guide-number" aria-hidden="true">01</span><div><strong>CeCo: exactamente 5 dígitos</strong><p>Escribe el centro de costo de tu tienda, sin espacios ni letras. Confirma que corresponde a la tienda que reportas para evitar asignar la evidencia a otro CeCo.</p></div></li>
-        <li><span class="guide-number" aria-hidden="true">02</span><div><strong>Elige la actividad y valida tus datos</strong><p>Revisa la actividad, las cantidades y las respuestas antes de enviar. Marca «No aplica» sólo cuando corresponda.</p></div></li>
-        <li><span class="guide-number" aria-hidden="true">03</span><div><strong>Comparte una evidencia clara</strong><p>Adjunta lo solicitado y comprueba que se vea completo, legible y corresponda a tu tienda y actividad.</p></div></li>
-      </ol>
-      <aside class="correction-note"><strong>¿Necesitas corregir una evidencia?</strong><p>Envía una nueva encuesta con el mismo CeCo y la misma actividad. El proyecto tomará la respuesta más reciente cuando se incorporen las nuevas respuestas de Forms. Consulta el resultado en <a id="about-evidence-link" href="#evidencias">Evidencias</a>.</p></aside>
-      <a class="about-forms" href="https://forms.cloud.microsoft/e/5aXteVaGKm" target="_blank" rel="noopener noreferrer">Abrir Forms · registrar o corregir <span aria-hidden="true">↗</span></a>
-      <section class="about-team" aria-labelledby="about-team-title">
-        <div class="about-team-intro"><h3 id="about-team-title">Cerca de la operación</h3><p>Juntos hacemos más fácil el seguimiento de cada tienda.</p></div>
+      <div class="capture-guide">
+        <details class="ceco-rule" open>
+          <summary><span class="guide-number" aria-hidden="true">1</span><strong>CeCo: exactamente 5 dígitos</strong></summary>
+          <div class="guide-detail">
+            <div class="ceco-example" role="img" aria-label="Ejemplo de CeCo: 38117"><span aria-hidden="true">3</span><span aria-hidden="true">8</span><span aria-hidden="true">1</span><span aria-hidden="true">1</span><span aria-hidden="true">7</span></div>
+            <small class="ceco-example-label">Ejemplo · usa el CeCo de tu tienda</small>
+            <p>Confirma tu tienda. Sólo números, sin espacios ni letras.</p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="guide-number" aria-hidden="true">2</span><strong>Actividad y cantidades correctas</strong></summary>
+          <div class="guide-detail"><p>Revisa tus respuestas. «No aplica» sólo cuando corresponda.</p></div>
+        </details>
+        <details>
+          <summary><span class="guide-number" aria-hidden="true">3</span><strong>Evidencia clara y de tu tienda</strong></summary>
+          <div class="guide-detail"><p>Adjunta lo solicitado; debe verse completo y legible.</p></div>
+        </details>
+      </div>
+      <aside class="correction-note"><strong>¿Necesitas corregir?</strong><p>Reenvía Forms con el mismo CeCo y actividad. Al actualizarse el tablero, se toma la respuesta más reciente.</p></aside>
+      <div class="about-actions">
+        <a class="about-forms" href="https://forms.cloud.microsoft/e/5aXteVaGKm" target="_blank" rel="noopener noreferrer">Abrir Forms <span aria-hidden="true">↗</span></a>
+        <a id="about-evidence-link" class="about-review" href="#evidencias">Ver evidencias</a>
+      </div>
+      <section class="about-team" aria-label="Equipo del proyecto">
         <div class="about-people">
-          <article class="about-person"><img src="./assets/about/enrique-cesar.jpeg" alt="Enrique Cesar Flores" width="1079" height="1397" loading="lazy" decoding="async"><div><strong>Enrique Cesar Flores</strong><span>Diseño y seguimiento operativo</span></div></article>
-          <article class="about-person"><img src="./assets/about/jorge-alcantar.png" alt="Jorge Alcantar Aguiar" width="1154" height="1363" loading="lazy" decoding="async"><div><strong>Jorge Alcantar Aguiar</strong><span>Diseño y acompañamiento operativo</span></div></article>
+          <article class="about-person"><img src="./assets/about/enrique-cesar.jpeg" alt="" width="1079" height="1397" loading="lazy" decoding="async"><strong>Enrique Cesar Flores</strong></article>
+          <article class="about-person"><img src="./assets/about/jorge-alcantar.png" alt="" width="1154" height="1363" loading="lazy" decoding="async"><strong>Jorge Alcantar Aguiar</strong></article>
         </div>
       </section>
-      <a class="about-feedback" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer">Comentarios y sugerencias <span aria-hidden="true">↗</span></a>
     </div>
   </dialog>
 
   <footer class="campaign-footer executive-footer">
     <div class="footer-content">
-      <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><span><strong>Sistema de Evidencias OPS</strong><small>Starbucks México · Operaciones</small></span></div>
-      <p class="footer-message">Cada detalle cuenta.<span>Gracias por cuidar la información de tu tienda.</span></p>
-      <nav class="footer-links" aria-label="Ayuda y contacto">
-        <button type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog">Acerca de</button>
-        <a href="https://forms.cloud.microsoft/e/5aXteVaGKm" target="_blank" rel="noopener noreferrer">Abrir Forms ↗</a>
-        <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer">Comentarios y sugerencias ↗</a>
+      <div class="footer-brand"><img src="./assets/icons/icon-64.webp" alt="" width="42" height="42"><strong>Juntémonos más</strong></div>
+      <nav class="footer-links" aria-label="Guía y contacto">
+        <button type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Cómo capturar · Acerca de y guía de evidencias">Cómo capturar</button>
+        <a class="feedback-link" href="https://wa.me/message/ENKDSAHYHIGAN1" target="_blank" rel="noopener noreferrer" aria-label="Comentarios y sugerencias por WhatsApp">Sugerencias ↗</a>
       </nav>
     </div>
-    <div class="footer-credit"><small>Diseñado por Jorge Alcántar &amp; Enrique César</small><span>Hecho cerca de la operación.</span></div>
   </footer>
 
   <button id="back-to-top" class="back-to-top" type="button" aria-label="Volver al inicio" hidden>↑ Arriba</button>

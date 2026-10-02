@@ -1293,6 +1293,20 @@ function closeAboutDialog() {
 function bindEvents() {
   document.querySelectorAll("[data-open-about]").forEach((button) => button.addEventListener("click", openAboutDialog));
   $("#about-close").addEventListener("click", closeAboutDialog);
+  $("#about-dialog").addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const dialog = event.currentTarget;
+    const controls = [...dialog.querySelectorAll("button:not([disabled]), a[href], summary")]
+      .filter((control) => control.getClientRects().length);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first) return;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
+    }
+  });
   $("#about-dialog").addEventListener("close", () => {
     document.body.style.overflow = aboutPreviousOverflow;
     aboutOpener?.focus({ preventScroll: true });
