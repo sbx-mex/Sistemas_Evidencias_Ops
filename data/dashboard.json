@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "23decf51306b20fa",
+  "buildVersion": "9043854b43b323be",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -9,15 +9,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-02T02:14:59+00:00",
-  "lastUpdated": "2026-10-01T20:02:16",
-  "lastUpdatedDisplay": "01/10/2026 20:02",
+  "generatedAt": "2026-10-02T03:39:33+00:00",
+  "lastUpdated": "2026-10-01T20:32:06",
+  "lastUpdatedDisplay": "01/10/2026 20:32",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "01/10/26 · 20:02 h",
+    "cutOffDisplay": "01/10/26 · 20:32 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -90,17 +90,17 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 189,
+        "completed": 190,
         "expected": 438,
-        "pending": 249,
-        "compliance": 43.2,
+        "pending": 248,
+        "compliance": 43.4,
         "status": "Seguimiento"
       }
     ]
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "9cfde61c94d4b103087d11ff0902f8833edb4ff8bf5eb06ea7d62be6a544bfbd",
+    "responsesSha256": "39e11bd0bc1eb6ef680e84c9b22fae86dfee1a79d6cd4d80736365e23f7f6c24",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -130,23 +130,23 @@
     "stores": 358,
     "activities": 6,
     "expectedCompletions": 2148,
-    "completedCompletions": 611,
-    "compliance": 28.4,
-    "validResponses": 611,
+    "completedCompletions": 612,
+    "compliance": 28.5,
+    "validResponses": 612,
     "storesComplete": 0,
-    "pendingCompletions": 1537,
+    "pendingCompletions": 1536,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 925,
+    "responsesRead": 927,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 725,
-      "newFormsRowsIncluded": 541,
+      "newFormsRowsRead": 727,
+      "newFormsRowsIncluded": 543,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -725,7 +725,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 42,
+    "duplicateValidResponses": 43,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -738,7 +738,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 725
+        "CeCo": 727
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -807,7 +807,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 460,
+    "evidenceLinksPublished": 461,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -844,11 +844,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 84,
+      "completedStores": 85,
       "applicableStores": 358,
       "notApplicableStores": 0,
-      "pendingStores": 274,
-      "compliance": 23.5,
+      "pendingStores": 273,
+      "compliance": 23.7,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -1,
@@ -1185,12 +1185,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 30,
+      "completed": 31,
       "expected": 78,
       "notApplicable": 0,
-      "pending": 48,
+      "pending": 47,
       "pendingStores": 13,
-      "compliance": 38.5,
+      "compliance": 39.7,
       "status": "Atención",
       "rank": 12
     },
@@ -3657,17 +3657,6 @@
       "status": "Atención"
     },
     {
-      "ceco": "38661",
-      "store": "Jinetes",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 2,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 33.3,
-      "status": "Atención"
-    },
-    {
       "ceco": "38674",
       "store": "Mundo E",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4440,6 +4429,17 @@
     {
       "ceco": "38186",
       "store": "Arboledas",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 3,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 50.0,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38661",
+      "store": "Jinetes",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 3,
       "expected": 6,
@@ -9538,7 +9538,7 @@
       "expected": 6,
       "notApplicable": 0,
       "compliance": 16.7,
-      "lastUpdate": "2026-10-01T20:02:16",
+      "lastUpdate": "2026-10-01T20:31:02",
       "activities": {
         "Lay Out": true,
         "Jarras Blender | Cold Foam": false,
@@ -12978,18 +12978,18 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 2,
+      "completed": 3,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 33.3,
-      "lastUpdate": "2026-09-29T10:12:46",
+      "compliance": 50.0,
+      "lastUpdate": "2026-10-01T20:32:06",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
         "FHW": true,
-        "Tarta Maricu": false
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -16149,9 +16149,45 @@
   "surveyModules": [],
   "submissions": [
     {
-      "id": "respuesta-c1a5baf10ee362d9",
-      "timestamp": "2026-10-01T20:02:16",
-      "timestampDisplay": "01/10/2026 20:02",
+      "id": "respuesta-ac4c80bb27c84a4b",
+      "timestamp": "2026-10-01T20:32:06",
+      "timestampDisplay": "01/10/2026 20:32",
+      "activity": "Tarta Maricu",
+      "ceco": "38661",
+      "store": "Jinetes",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Tarta_Maricu_38661",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38661",
+      "evidenceFileName": "9804604c-4327-4054-a99e-3142fa8da44e_Starbucks Jinetes.jpeg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/9804604c-4327-4054-a99e-3142fa8da44e_Starbucks%20Jinetes.jpeg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/9804604c-4327-4054-a99e-3142fa8da44e_Starbucks%20Jinetes.jpeg",
+          "fileName": "9804604c-4327-4054-a99e-3142fa8da44e_Starbucks Jinetes.jpeg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/f17b9c3b-f64b-4c94-873c-18076527c8f4_Starbucks%20Jinetes.jpeg",
+          "fileName": "f17b9c3b-f64b-4c94-873c-18076527c8f4_Starbucks Jinetes.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-3fe8296e81bc75d2",
+      "timestamp": "2026-10-01T20:31:02",
+      "timestampDisplay": "01/10/2026 20:31",
       "activity": "Lay Out",
       "ceco": "38663",
       "store": "Copilco 20",
@@ -16159,7 +16195,7 @@
       "region": "Centro Sur",
       "evidenceKey": "Lay_Out_38663",
       "evidenceLinkLabel": "Link_Lay_Out_38663",
-      "evidenceFileName": "IMG_2523_Starbucks Copilco 20.jpeg",
+      "evidenceFileName": "LayOut_Distrital_Jaqueline_Cortes_Ayala_Copil_Starbucks Copilco 20.jpg",
       "evidenceSourceHeader": "Evidencia_Lay_Out",
       "confirmed": true,
       "answer": "Sí",
@@ -16168,7 +16204,7 @@
       "evidenceAvailable": true,
       "evidenceLinkPublished": true,
       "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/IMG_2523_Starbucks%20Copilco%2020.jpeg"
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/LayOut_Distrital_Jaqueline_Cortes_Ayala_Copil_Starbucks%20Copilco%2020.jpg"
     },
     {
       "id": "respuesta-05af1437f911023d",
