@@ -40,20 +40,26 @@ TRANSIENT_FILE_NAMES = {".DS_Store", "Thumbs.db"}
 TRANSIENT_SUFFIXES = {".pyc", ".pyo"}
 
 
+def is_transient_file(path: Path, root: Path = ROOT) -> bool:
+    """La misma regla rige detección local y eliminaciones publicables por Git."""
+    if ".git" in path.relative_to(root).parts:
+        return False
+    return (
+        path.name in TRANSIENT_FILE_NAMES
+        or path.suffix.casefold() in TRANSIENT_SUFFIXES
+        or path.name.endswith(".inspect.ndjson")
+        or (path.parent in {root / "data", root / "exports"} and path.name.endswith(".tmp"))
+        or (path.parent == root / "cms" and path.name.startswith("~$") and path.suffix.casefold() == ".xlsx")
+    )
+
+
 def transient_files(root: Path = ROOT) -> list[str]:
     """Detecta sólo residuos técnicos conocidos y nunca recorre el contenido de .git."""
     found = []
-    generated_directories = {root / "data", root / "exports"}
     for path in root.rglob("*"):
         if ".git" in path.parts or not (path.is_file() or path.is_symlink()):
             continue
-        if (
-            path.name in TRANSIENT_FILE_NAMES
-            or path.suffix.casefold() in TRANSIENT_SUFFIXES
-            or path.name.endswith(".inspect.ndjson")
-            or (path.parent in generated_directories and path.name.endswith(".tmp"))
-            or (path.parent == root / "cms" and path.name.startswith("~$") and path.suffix.casefold() == ".xlsx")
-        ):
+        if is_transient_file(path, root):
             found.append(path.relative_to(root).as_posix())
     return sorted(found)
 

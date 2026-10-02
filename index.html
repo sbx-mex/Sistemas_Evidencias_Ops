@@ -34,7 +34,6 @@
       <a href="#evidencias">Evidencias</a>
     </nav>
     <div class="header-actions">
-      <span id="connection-status" class="connection" hidden aria-hidden="true"><i></i>Actualizado</span>
       <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Acerca de · Guía para Gerentes de Tienda"><span class="about-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></span>Acerca de</button>
       <button id="install-button" class="button quiet" type="button" hidden>Instalar</button>
       <button id="refresh-button" class="refresh-button" type="button" aria-label="Actualizar datos del tablero" title="Consultar la información publicada más reciente" aria-busy="false">
@@ -58,6 +57,7 @@
           <span><small id="director-role">Director Starbucks México</small><strong id="director-name">Raúl Sinohe Sierra Santamaria</strong></span>
         </article>
         <div class="cut-chip"><span>Fecha de corte</span><strong id="last-updated">—</strong></div>
+      <span id="connection-status" class="connection" role="status" aria-live="polite" data-state="loading"><i aria-hidden="true"></i>Consultando…</span>
       </div>
     </section>
 
@@ -85,7 +85,7 @@
       <header class="section-title"><div><h2 id="summary-heading">Resumen</h2></div><img class="section-character character-lucy" src="./assets/campaign/lucy-fall.webp" alt="" width="112" height="150" aria-hidden="true" loading="lazy" decoding="async"></header>
       <div class="summary" aria-live="polite">
         <article class="main-score">
-          <div class="score-ring" id="score-ring"><strong id="score-value">0%</strong><span>cumplimiento</span></div>
+          <div class="score-ring" id="score-ring"><strong id="score-value">—</strong><span>cumplimiento</span></div>
           <div><p class="eyebrow">Vista actual</p><h3 id="score-title">Todas las regiones</h3><p id="score-message" hidden></p></div>
         </article>
         <div id="kpi-grid" class="kpi-grid"></div>
@@ -260,6 +260,7 @@
 
   <button id="back-to-top" class="back-to-top" type="button" aria-label="Volver al inicio" hidden>↑ Arriba</button>
 
+  <script src="./data-contract.js" defer></script>
   <script src="./app.js" defer></script>
 </body>
 </html>

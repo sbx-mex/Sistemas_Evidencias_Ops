@@ -44,6 +44,8 @@ REQUIRED_VALIDATORS = (
     "tests/validate_cutover.py",
     "tests/validate_maintenance.py",
     "tests/validate_project.py",
+    "tests/validate_cross_scenarios.py",
+    "tests/validate_load_contract.js",
     "scripts/audit_cms_visibility.py",
     "scripts/audit_response_types.py",
     "scripts/audit_project.py",
@@ -490,6 +492,8 @@ def main() -> None:
                 run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_project.py")
+                run(sys.executable, "-X", "utf8", "tests/validate_cross_scenarios.py")
+                run("node", "tests/validate_load_contract.js")
                 run(sys.executable, "-X", "utf8", "scripts/audit_cms_visibility.py")
                 run(sys.executable, "-X", "utf8", "scripts/audit_response_types.py")
                 # Las pruebas y exportadores también pueden dejar residuos si un

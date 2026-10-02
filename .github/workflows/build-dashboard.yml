@@ -20,6 +20,7 @@ on:
       - 'index.html'
       - 'styles.css'
       - 'app.js'
+      - 'data-contract.js'
       - 'pdf-export.js'
       - 'xlsx-export.js'
       - 'service-worker.js'
@@ -68,6 +69,7 @@ jobs:
           set -euo pipefail
           python -X utf8 -m compileall -q scripts tests
           node --check app.js
+          node --check data-contract.js
           node --check pdf-export.js
           node --check xlsx-export.js
           node --check service-worker.js
@@ -76,7 +78,7 @@ jobs:
           git diff --check
           python -X utf8 scripts/clean_obsolete.py --check
 
-      - name: Publicar datos y limpieza obsoleta
+      - name: Publicar carga segura y eliminar obsoletos validados
         if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         shell: bash
         run: |
@@ -98,7 +100,18 @@ jobs:
           echo "- Resultado: $BUILD_RESULT" >> "$GITHUB_STEP_SUMMARY"
           echo "- Fuente: Excel Forms + Directorio + CMS" >> "$GITHUB_STEP_SUMMARY"
           if [ "$BUILD_RESULT" = "success" ]; then
-            echo "- Validaciones aprobadas: fuentes, conteos, jarras, evidencias y exportaciones." >> "$GITHUB_STEP_SUMMARY"
+            echo "- 🟢 Carga segura: CMS, cruces, fechas, conteos, caché y exportaciones aprobados." >> "$GITHUB_STEP_SUMMARY"
+            echo "- Limpieza: sólo lista controlada; eliminaciones de raíz, scripts y tests incluidas en el commit." >> "$GITHUB_STEP_SUMMARY"
+            python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path('data/dashboard.json').read_text(encoding='utf-8'))
+          q, s = data['quality'], data['summary']
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as report:
+              report.write(f"- Validado en esta ejecución: {s['stores']} tiendas · {s['activities']} actividades · {s['completedCompletions']}/{s['expectedCompletions']} cumplimientos.\n")
+              report.write(f"- Fecha de corte: {data['lastUpdatedDisplay']}.\n")
+              report.write(f"- Filas aisladas: {len(q.get('quarantinedResponses', []))}; CeCo fuera del catálogo: {', '.join(q.get('unknownCeCos', [])) or 'ninguno'}.\n")
+          PY
           else
             echo "- Actualización detenida. Revisar el primer paso con error antes de volver a ejecutar." >> "$GITHUB_STEP_SUMMARY"
           fi

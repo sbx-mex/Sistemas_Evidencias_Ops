@@ -24,6 +24,9 @@ with tempfile.TemporaryDirectory() as temp:
         (local / directory).mkdir()
         (local / directory / "fixture.txt").write_text("initial")
     (local / "source.txt").write_text("CMS 1")
+    (local / "build_dashboard.py").write_text("obsoleto de carga aplanada")
+    (local / "scripts").mkdir()
+    (local / "scripts" / "residuo.inspect.ndjson").write_text("residuo")
     git(local, "add", "."); git(local, "commit", "-m", "base"); git(local, "push", "origin", "main")
     subprocess.run(["git", "clone", "-b", "main", str(remote), str(editor)], check=True, capture_output=True)
     git(editor, "config", "user.name", "Editor"); git(editor, "config", "user.email", "editor@example.invalid")
@@ -32,6 +35,10 @@ with tempfile.TemporaryDirectory() as temp:
         content = (work / "source.txt").read_text()
         calls.append(content)
         (work / "data" / "fixture.txt").write_text(content)
+        (work / "build_dashboard.py").unlink(missing_ok=True)
+        (work / "scripts" / "residuo.inspect.ndjson").unlink(missing_ok=True)
+        # Una modificación ajena al build queda fuera del commit.
+        (work / "source.txt").write_text("edición incidental")
         if len(calls) == 1:
             (editor / "source.txt").write_text("CMS 2")
             git(editor, "add", "."); git(editor, "commit", "-m", "nueva carga"); git(editor, "push", "origin", "main")
@@ -39,6 +46,10 @@ with tempfile.TemporaryDirectory() as temp:
     assert calls == ["CMS 1", "CMS 2"]
     git(local, "fetch", "origin", "main")
     assert git(local, "show", "FETCH_HEAD:data/fixture.txt") == "CMS 2"
+    published_paths = git(local, "ls-tree", "-r", "--name-only", "FETCH_HEAD").splitlines()
+    assert "build_dashboard.py" not in published_paths
+    assert "scripts/residuo.inspect.ndjson" not in published_paths
+    assert git(local, "show", "FETCH_HEAD:source.txt") == "CMS 2"
     before = git(local, "rev-parse", "FETCH_HEAD")
     def fail(work):
         (work / "data" / "fixture.txt").write_text("invalido")
@@ -52,4 +63,4 @@ with tempfile.TemporaryDirectory() as temp:
     git(local, "fetch", "origin", "main")
     assert git(local, "rev-parse", "FETCH_HEAD") == before
     assert len(git(local, "worktree", "list", "--porcelain").split("worktree ")) == 2
-print("Publicación segura OK: concurrencia, reconstrucción, rechazo y limpieza")
+print("Publicación segura OK: concurrencia, reconstrucción, rechazo, obsoletos de raíz y scripts publicados; cambios ajenos excluidos")

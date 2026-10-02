@@ -1,10 +1,14 @@
+importScripts("./data-contract.js");
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v47";
+const CACHE_NAME = "sistema-evidencias-ops-v48";
 const CORE = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./data-contract.js",
+  "./pdf-export.js",
+  "./xlsx-export.js",
   "./manifest.webmanifest",
   "./assets/icons/icon-64.png",
   "./assets/icons/icon-64.webp",
@@ -61,16 +65,31 @@ self.addEventListener("message", (event) => {
   }
 });
 
-async function networkFirst(request, cacheKey = request) {
+async function networkFirst(request, cacheKey = request, dashboard = false) {
   const cache = await caches.open(CACHE_NAME);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
   try {
-    const response = await fetch(request, { cache: "no-store" });
-    if (response.ok) await cache.put(cacheKey, response.clone());
+    const response = await fetch(request, { cache: "no-store", signal: controller.signal });
+    if (!response.ok) throw new Error(`Carga HTTP ${response.status}`);
+    if (dashboard) {
+      const data = await response.clone().json();
+      self.OPSDashboard.validate(data);
+    }
+    // La cuota de caché no debe hacer fallar una descarga válida.
+    try { await cache.put(cacheKey, response.clone()); } catch (_error) {}
     return response;
   } catch (error) {
     const cached = await cache.match(cacheKey, { ignoreSearch: true });
-    if (cached) return cached;
+    if (cached) {
+      if (!dashboard) return cached;
+      const headers = new Headers(cached.headers);
+      headers.set("X-OPS-Data-Source", "cache");
+      return new Response(cached.body, { status: cached.status, headers });
+    }
     throw error;
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -92,14 +111,18 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.endsWith("/data/dashboard.json")) {
-    event.respondWith(networkFirst(event.request, new Request(new URL("./data/dashboard.json", self.location.href))));
+    event.respondWith(networkFirst(event.request, new Request(new URL("./data/dashboard.json", self.location.href)), true));
     return;
   }
   if (event.request.mode === "navigate") {
     event.respondWith(networkFirst(event.request, new Request(new URL("./index.html", self.location.href))));
     return;
   }
-  if (["script", "style", "image", "font"].includes(event.request.destination)
+  if (["script", "style"].includes(event.request.destination)) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+  if (["image", "font"].includes(event.request.destination)
     || url.pathname.includes("/exports/")) {
     event.respondWith(staleWhileRevalidate(event.request));
   }

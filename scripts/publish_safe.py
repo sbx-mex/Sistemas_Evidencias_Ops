@@ -9,6 +9,24 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def stage_validated_changes(work):
+    """Publica resultados y sólo eliminaciones incluidas en la limpieza autorizada."""
+    git("add", "--", "data", "exports", "config", "assets", cwd=work)
+    # git add de carpetas no incluye obsoletos de raíz, scripts/ ni tests/.
+    # No usar git add -A: una edición incidental no debe entrar en publicación.
+    try:
+        from .clean_obsolete import OBSOLETE_FILES, is_transient_file
+    except ImportError:
+        from clean_obsolete import OBSOLETE_FILES, is_transient_file
+    tracked = git("ls-files", "-z", cwd=work).stdout.split("\0")
+    known = set(OBSOLETE_FILES)
+    for relative in tracked:
+        if not relative or (work / relative).exists():
+            continue
+        if relative in known or is_transient_file(work / relative, work):
+            git("add", "-u", "--", relative, cwd=work)
+
+
 def git(*args, cwd=ROOT, check=True):
     return subprocess.run(["git", *args], cwd=cwd, check=check, text=True, capture_output=True)
 
@@ -19,7 +37,7 @@ def publish(root=ROOT, attempts=3, validate=None):
         subprocess.run([sys.executable, "-X", "utf8", "scripts/safe_maintenance.py", "--force"], cwd=work, env=env, check=True)
         subprocess.run([sys.executable, "-X", "utf8", "tests/validate_publish_safe.py"], cwd=work, env=env, check=True)
         subprocess.run([sys.executable, "-m", "compileall", "-q", "scripts", "tests"], cwd=work, env=env, check=True)
-        for filename in ("app.js", "pdf-export.js", "xlsx-export.js", "service-worker.js"):
+        for filename in ("app.js", "data-contract.js", "pdf-export.js", "xlsx-export.js", "service-worker.js"):
             subprocess.run(["node", "--check", filename], cwd=work, check=True)
         git("diff", "--check", cwd=work)
 
@@ -31,7 +49,7 @@ def publish(root=ROOT, attempts=3, validate=None):
             git("worktree", "add", "--detach", str(work), "FETCH_HEAD", cwd=root)
             try:
                 validate(work)
-                git("add", "--", "data", "exports", "config", "assets", cwd=work)
+                stage_validated_changes(work)
                 if git("diff", "--cached", "--quiet", cwd=work, check=False).returncode == 0:
                     return
                 git("-c", "user.name=github-actions[bot]", "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com", "commit", "-m", "data: actualizar evidencias OPS", cwd=work)
