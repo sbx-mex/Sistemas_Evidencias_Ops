@@ -26,6 +26,18 @@ on:
       - 'service-worker.js'
       - 'manifest.webmanifest'
       - 'requirements.txt'
+      # Detectar también copias obsoletas subidas por error a la raíz.
+      # safe_maintenance elimina únicamente rutas de su lista controlada.
+      - 'MANIFEST_CORRECCION_CMS_2026-09-22.txt'
+      - 'Resumen_Evidencias_OPS.xlsx'
+      - 'build_dashboard.py'
+      - 'dashboard.json'
+      - 'safe_maintenance.py'
+      - 'validate_cutover.py'
+      - 'validate_dynamic_forms_schema.py'
+      - 'validate_project.py'
+      - 'validate_safe_maintenance.py'
+      - 'validate_sources_resilient.py'
 
 permissions:
   contents: write
