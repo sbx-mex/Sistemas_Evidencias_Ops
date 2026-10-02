@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "39f2822bdb2d64a9",
+  "buildVersion": "4cd12998399e5c6a",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,7 +10,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-02T16:27:49+00:00",
+  "generatedAt": "2026-10-02T16:43:33+00:00",
   "lastUpdated": "2026-10-02T10:21:02",
   "lastUpdatedDisplay": "02/10/2026 10:21",
   "report": {
@@ -969,28 +969,6 @@
   },
   "activities": [
     {
-      "name": "Tarta Maricu",
-      "description": "Valida colocacion de Copetes POS | ShowCase",
-      "order": 12,
-      "startDate": "2026-09-29",
-      "endDate": "2026-10-01",
-      "commitmentDateDisplay": "01/10/26",
-      "dateStatus": "Vencida",
-      "requireEvidence": true,
-      "priority": "Alta",
-      "autoDetected": false,
-      "conditionalApplicability": false,
-      "completedStores": 88,
-      "applicableStores": 450,
-      "notApplicableStores": 0,
-      "pendingStores": 362,
-      "compliance": 19.6,
-      "deadlineLabel": "Vencida",
-      "deadlineTone": "red",
-      "daysRemaining": -1,
-      "focusRank": 1
-    },
-    {
       "name": "Lay Out",
       "description": "Valida con DM cada Lay Out",
       "order": 4,
@@ -1010,7 +988,7 @@
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
-      "focusRank": 2
+      "focusRank": 1
     },
     {
       "name": "Jarras Blender | Cold Foam",
@@ -1032,7 +1010,7 @@
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
-      "focusRank": 3
+      "focusRank": 2
     },
     {
       "name": "Organización Refrigeradores Back",
@@ -1054,7 +1032,7 @@
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
-      "focusRank": 4
+      "focusRank": 3
     },
     {
       "name": "Va X Cuenta",
@@ -1076,7 +1054,7 @@
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
-      "focusRank": 5
+      "focusRank": 4
     },
     {
       "name": "FHW",
@@ -1098,6 +1076,28 @@
       "deadlineLabel": "Vence en 3 días",
       "deadlineTone": "amber",
       "daysRemaining": 3,
+      "focusRank": 5
+    },
+    {
+      "name": "Tarta Maricu",
+      "description": "Valida colocacion de Copetes POS | ShowCase",
+      "order": 12,
+      "startDate": "2026-09-29",
+      "endDate": "2026-10-01",
+      "commitmentDateDisplay": "01/10/26",
+      "dateStatus": "Vencida",
+      "requireEvidence": true,
+      "priority": "Alta",
+      "autoDetected": false,
+      "conditionalApplicability": false,
+      "completedStores": 88,
+      "applicableStores": 450,
+      "notApplicableStores": 0,
+      "pendingStores": 362,
+      "compliance": 19.6,
+      "deadlineLabel": "Vencida",
+      "deadlineTone": "red",
+      "daysRemaining": -1,
       "focusRank": 6
     }
   ],
