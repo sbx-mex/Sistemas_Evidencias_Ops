@@ -17,7 +17,46 @@ import build_dashboard as engine
 import safe_maintenance as safe
 
 
+def validate_resource_guards() -> None:
+    """Una carga parcial, vacía o fuera de ruta debe rechazarse sin escribir."""
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        (root / "assets").mkdir()
+        (root / "index.html").write_text('<img src="./assets/logo.jpeg"><link href="./styles.css">')
+        (root / "styles.css").write_text("body { color: green; }")
+        (root / "service-worker.js").write_text('const CORE = ["./", "./styles.css"];')
+        logo = root / "assets/logo.jpeg"
+        logo.write_bytes(b"imagen de prueba")
+        before = safe.validate_public_assets(root)
+        assert "assets/logo.jpeg" in before and "styles.css" in before
+        logo.write_bytes(b"imagen cambiada")
+        assert before != safe.validate_public_assets(root)
+        for payload in (None, b""):
+            if payload is None:
+                logo.unlink()
+            else:
+                logo.write_bytes(payload)
+            try:
+                safe.validate_public_assets(root)
+            except RuntimeError:
+                pass
+            else:
+                raise AssertionError("Se aceptó una imagen ausente o vacía")
+        logo.write_bytes(b"imagen de prueba")
+        for route in ("../fuera.jpeg", "./%2e%2e/fuera.jpeg", "/assets/logo.jpeg", "https://example.com/logo.jpeg"):
+            (root / "service-worker.js").write_text('const CORE = [' + json.dumps(route) + '];')
+            try:
+                safe.validate_public_assets(root)
+            except RuntimeError:
+                pass
+            else:
+                raise AssertionError("Se aceptó una ruta inválida en CORE: " + route)
+        assert not (root / "data").exists(), "El preflight no debe escribir resultados"
+
+
 def main() -> None:
+    validate_resource_guards()
+    assert safe.validate_public_assets()
     files = safe.cms_sources()
     assert {path.name for path in files} >= {
         "Sistema de Evidencias OPS.xlsx",
@@ -149,7 +188,7 @@ def main() -> None:
 
     data = json.loads((ROOT / "data" / "dashboard.json").read_text(encoding="utf-8"))
     assert data["quality"]["stabilityScore"] == "12/12"
-    print("Mantenimiento seguro aprobado · CMS completo · rollback · huellas · rendimiento")
+    print("Mantenimiento seguro aprobado · CMS completo · rollback · huellas · recursos completos · rendimiento")
 
 
 if __name__ == "__main__":
