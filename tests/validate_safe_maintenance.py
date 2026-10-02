@@ -43,6 +43,18 @@ def validate_resource_guards() -> None:
             else:
                 raise AssertionError("Se aceptó una imagen ausente o vacía")
         logo.write_bytes(b"imagen de prueba")
+        (root / "guide.pdf").write_bytes(b"%PDF-1.7\ncontenido fixture\n%%EOF\n")
+        original_html = (root / "index.html").read_text()
+        (root / "index.html").write_text(original_html + '<a href="./guide.pdf" download>PDF</a>')
+        assert "guide.pdf" in safe.validate_public_assets(root)
+        (root / "guide.pdf").write_bytes(b"%PDF-1.7\nincompleto")
+        try:
+            safe.validate_public_assets(root)
+        except RuntimeError as error:
+            assert "PDF" in str(error)
+        else:
+            raise AssertionError("Se aceptó un PDF incompleto")
+        (root / "index.html").write_text(original_html)
         for route in ("../fuera.jpeg", "./%2e%2e/fuera.jpeg", "/assets/logo.jpeg", "https://example.com/logo.jpeg"):
             (root / "service-worker.js").write_text('const CORE = [' + json.dumps(route) + '];')
             try:

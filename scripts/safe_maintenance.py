@@ -38,6 +38,7 @@ LOCK = ROOT / ".safe-maintenance.lock"
 REQUIRED_VALIDATORS = (
     "tests/validate_safe_maintenance.py",
     "tests/validate_dynamic_forms_schema.py",
+    "tests/validate_cms_growth.py",
     "tests/validate_numeric_filter.js",
     "tests/validate_cutover.py",
     "tests/validate_maintenance.py",
@@ -75,6 +76,9 @@ def validate_public_assets(root: Path | None = None) -> dict[str, str]:
         def handle_starttag(self, tag, attrs):
             attributes = dict(attrs)
             key = "src" if tag in {"img", "script"} else "href" if tag == "link" else None
+            if tag == "a" and ("download" in attributes or "data-project-document" in attributes):
+                references.append((attributes.get("href") or "", True))
+                return
             if key and key in attributes:
                 references.append((attributes[key] or "", False))
 
@@ -107,6 +111,10 @@ def validate_public_assets(root: Path | None = None) -> dict[str, str]:
             raise RuntimeError("El recurso sale del proyecto: " + value)
         if not resource.is_file() or resource.stat().st_size == 0:
             raise RuntimeError("Falta un recurso o está vacío: " + value)
+        if resource.suffix.casefold() == ".pdf":
+            content = resource.read_bytes()
+            if not content.startswith(b"%PDF-") or not content.rstrip().endswith(b"%%EOF"):
+                raise RuntimeError("El PDF del proyecto está incompleto o no es válido: " + value)
         fingerprints[resource.relative_to(root).as_posix()] = file_sha256(resource)
     return fingerprints
 
@@ -475,6 +483,7 @@ def main() -> None:
                     raise RuntimeError("Una fuente CMS cambió durante la actualización; se restauraron los resultados")
                 run(sys.executable, "-X", "utf8", "tests/validate_safe_maintenance.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_dynamic_forms_schema.py")
+                run(sys.executable, "-X", "utf8", "tests/validate_cms_growth.py")
                 run("node", "tests/validate_numeric_filter.js")
                 run(sys.executable, "-X", "utf8", "tests/validate_cutover.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_maintenance.py")

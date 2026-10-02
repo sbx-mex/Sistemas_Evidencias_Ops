@@ -13,7 +13,7 @@ from PIL import Image
 # La auditoría no debe crear residuos que después ella misma reporte.
 sys.dont_write_bytecode = True
 
-from build_dashboard import MULTI_EVIDENCE_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, load_cms, short_dm_name, validate_xlsx
+from build_dashboard import MULTI_EVIDENCE_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, clean_text, compact_key, file_sha256, key_text, load_cms, short_dm_name, validate_xlsx
 from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,7 +68,7 @@ for forbidden in ("Gerente de Distrito</small>",):
     if forbidden in js:
         issues.append(f"Texto redundante aún generado: {forbidden}")
 
-for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Juntémonos más", "Acerca de", "Guía para Gerentes de Tienda", "Forms es externo. Este tablero utiliza sus respuestas.", "Sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "about-dialog", "about-title", "CeCo: exactamente 5 dígitos", "https://forms.cloud.microsoft/e/5aXteVaGKm", "assets/about/enrique-cesar.jpeg", "assets/about/jorge-alcantar.png", "executive-footer", "lucy-fall.webp", "snoopy-fall.webp", "Peanuts × Starbucks"):
+for required in ("Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Actividad seleccionada", "Impacto operativo", "Tiendas que modificaron horario", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "survey-response-table", "survey-impact-table", "evidence-grid", "Link del archivo", "evidence-details", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "Fecha de corte", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "export-modal", "export-image", "export-pdf", "export-excel", "Damos_Seguimiento.webp", "activity-focus-table", "Juntémonos más", "Acerca de", "Conoce Evidencias OPS", "Puedes usar cualquier correo corporativo.", "assets/about/Sistema_de_Evidencias_OPS.pdf", "Descargar guía del proyecto", "Sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "about-dialog", "about-title", "CeCo: exactamente 5 dígitos", "https://forms.cloud.microsoft/e/5aXteVaGKm", "assets/about/enrique-cesar.jpeg", "assets/about/jorge-alcantar.png", "executive-footer", "lucy-fall.webp", "snoopy-fall.webp", "Peanuts × Starbucks"):
     if required not in html:
         issues.append(f"Falta elemento ejecutivo: {required}")
 for required in (".activity-table-shell { overflow-x: clip", ".activity-focus-table { width: 100%; min-width: 0; table-layout: fixed", ".activity-focus-table { display: table", ".activity-focus-table .activity-focus-row { display: table-row", ".activity-focus-table .activity-focus-row td { display: table-cell"):
@@ -294,8 +294,16 @@ director = report_meta.get("regionalDirector", {})
 if report_meta.get("motto") != "CADA DETALLE CUENTA" or report_meta.get("footerLabel") != "Starbucks México · Operaciones" or director.get("role") != "Director Regional":
     issues.append("Metadatos Python de exportación incompletos")
 organization = data.get("organization", {})
-if organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santamaria" or organization.get("nationalDirector", {}).get("heroPhoto") != "assets/director/raul-sierra-hero.webp" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"filterValue", "stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") or item.get("filterValue") != item.get("region") for item in organization.get("regionalDirectors", [])):
-    issues.append("Organigrama CMS incompleto")
+source_organization = cms_settings["_organization"]
+identity_fields = ("level", "region", "name", "role", "photo", "photoStatus", "order")
+def org_identity(person):
+    return tuple(person.get(field) for field in identity_fields)
+if org_identity(organization.get("nationalDirector", {})) != org_identity(source_organization["nationalDirector"]) or [org_identity(person) for person in organization.get("regionalDirectors", [])] != [org_identity(person) for person in source_organization["regionalDirectors"]]:
+    issues.append("Organigrama publicado distinto del CMS vigente")
+for person in organization.get("regionalDirectors", []):
+    regional_stores = [store for store in data["stores"] if key_text(store["region"]) == key_text(person["region"])]
+    if person.get("filterValue") != person["region"] or person.get("stores") != len(regional_stores) or any(person.get(field) != sum(store[field] for store in regional_stores) for field in ("completed", "expected")) or person.get("pending") != sum(store["expected"] - store["completed"] for store in regional_stores):
+        issues.append("Conteos regionales incongruentes con las tiendas publicadas")
 if any(text in html for text in ("Organigrama vigente controlado desde el CMS.", "Comparativo regional de mayor a menor avance.", "Vista personalizada", "Filtra, revisa y exporta en un solo flujo", "Lectura rápida del avance seleccionado.")):
     issues.append("La interfaz conserva textos redundantes solicitados para ocultar")
 organization_renderer = js[js.index("function renderOrganization"):js.index("function renderSummary")]

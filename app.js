@@ -163,7 +163,7 @@ function exportProfile() {
     const regional = (organization.regionalDirectors || []).find((item) => item.region === state.filters.region);
     if (regional) return { ...regional, photo: regional.photo || "assets/icons/icon-192.webp" };
   }
-  return director;
+  return { ...director, photo: director.photo || "assets/icons/icon-192.webp" };
 }
 
 function renderOrganization() {
@@ -1453,8 +1453,8 @@ async function loadData(announce = false) {
     if (director) {
       $("#director-name").textContent = director.name;
       $("#director-role").textContent = director.role;
-      $("#director-photo").src = `./${director.heroPhoto || director.photo}`;
-      $("#director-photo").alt = `${director.name}, ${director.role}`;
+      $("#director-photo").src = `./${director.heroPhoto || director.photo || "assets/icons/ops-logo.webp"}`;
+      $("#director-photo").alt = director.photo ? `${director.name}, ${director.role}` : "Evidencias OPS · Fotografía pendiente";
     }
     populateFilters(); populateEvidenceFilters(); renderAll(); $("#main").setAttribute("aria-busy", "false"); $("#error-banner").hidden = true;
     if (announce) $("#connection-status").innerHTML = "<i></i>Datos renovados";

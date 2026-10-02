@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.build_dashboard import (
     BLOCKING_EVIDENCE_ISSUES, QUANTITY_ACTIVITY_CONFIG, STABILITY_CONTROLS, SURVEY_ACTIVITY_CONFIG, active_activity_catalog,
-    canonical_cms_activity, clean_text, compact_key, evidence_key, file_sha256, load_cms,
+    canonical_cms_activity, clean_text, compact_key, evidence_key, file_sha256, key_text, load_cms,
     load_cutover, load_directory, load_responses, load_settings, normalize_allowed_hosts,
     parse_quantity, photo_slug, recover_response_ceco, safe_evidence_url,
     setting_list, short_dm_name, validate_webp_asset,
@@ -163,7 +163,7 @@ if not configured_cutover or not configured_cutover.get("baselineSha256"):
 if configured_cutover["baselineSha256"] != file_sha256(configured_cutover["baseline"]):
     fail("La huella declarada del corte no coincide con el respaldo")
 
-cms_activities, _, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
+cms_activities, source_managers, cms_settings, _ = load_cms(ROOT / "cms/Sistema_Evidencias_OPS_CMS.xlsx")
 settings = load_settings(ROOT / "config/settings.json", cms_settings)
 source_stores, _, source_directory_status = load_directory(ROOT / "cms/Directorio.xlsx", settings)
 published_directory = {
@@ -196,18 +196,10 @@ if any(store.get("status") != "Abierta" for store in data.get("stores", [])):
 available_photos = [item for item in data.get("dms", []) if item.get("photoStatus") == "Disponible"]
 for item in available_photos:
     validate_webp_asset(item.get("photo", ""), item.get("dm", "DM"))
-poniente_names = {
-    "Adriana Alejandra Tanus Buhler", "Andrea Nava Guzman", "Areli Anahi Lazcano Lezama",
-    "Daniel Flores Maldonado", "Erika Julieta Contreras Aguilera", "Jose De Jesus Magos Arzaluz",
-    "Juan Jesus Zuñiga Flores", "Manuel Alejandro Avila Molina",
-}
-poniente = [item for item in data.get("dms", []) if item.get("dm") in poniente_names]
-if len(poniente) != 8 or any(item.get("photoStatus") != "Disponible" for item in poniente):
-    fail("Las ocho fotografías de Centro Poniente no quedaron vinculadas")
-if any(item.get("photo") != f"assets/dm/{photo_slug(item.get('shortName'))}.webp" for item in poniente):
-    fail("Las rutas de fotografía de Centro Poniente no siguen el nombre canónico")
-if not any(item.get("photoStatus") == "Pendiente" for item in data.get("dms", [])):
-    fail("Los DM nuevos no quedaron marcados con foto pendiente")
+for item in data.get("dms", []):
+    source_profile = source_managers.get(key_text(item["dm"]), {})
+    if item.get("photo", "") != source_profile.get("photo", "") or item.get("photoStatus") != ("Disponible" if item.get("photo") else "Pendiente"):
+        fail("La fotografía DM no coincide con el CMS o su estado real")
 unknown_cecos = {str(value).strip() for value in data.get("quality", {}).get("unknownCeCos", []) if str(value).strip()}
 if (
     any(not re.fullmatch(r"[0-9]{5}", value) for value in unknown_cecos)
@@ -666,7 +658,7 @@ if not regional_pdf.startswith(b"%PDF-") or len(regional_pdf) < 20_000:
     fail("El PDF regional Python no fue generado correctamente")
 approve("05 · PDF regional Python y descarga directa válidos")
 
-for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Juntémonos más", "Acerca de", "Guía para Gerentes de Tienda", "Forms es externo. Este tablero utiliza sus respuestas.", "Sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "about-dialog", "about-title", "CeCo: exactamente 5 dígitos", "https://forms.cloud.microsoft/e/5aXteVaGKm", "assets/about/enrique-cesar.jpeg", "assets/about/jorge-alcantar.png", "executive-footer", "lucy-fall.webp", "snoopy-fall.webp", "Peanuts × Starbucks"]:
+for text in ["Sistema de Evidencia OPS", "Dashboard de Avance de Actividades", "Resumen", "RD's Centro's", "Directores Regionales · Centro's", "Toca una foto para filtrar", "Ranking DM", "Actividades", "Tiendas", "Evidencias", "Jarras", "Respuesta por tienda", "Consolidado de respuestas", "quantity-response-table", "quantity-totals", "quantity-breakdowns", "Actividad", "Tienda", "Link del archivo", "filter-region", "evidence-details", "evidence-filter-region", "evidence-filter-dm", "evidence-filter-activity", "evidence-filter-store", "export-image", "export-pdf", "export-excel", "export-modal", "Damos_Seguimiento.webp", "activity-focus-table", "evidence-grid", "dm-team", "store-table", "Director Starbucks México", "Raúl Sinohe Sierra Santamaria", "raul-sierra-hero.webp", "Juntémonos más", "Acerca de", "Conoce Evidencias OPS", "Puedes usar cualquier correo corporativo.", "assets/about/Sistema_de_Evidencias_OPS.pdf", "Descargar guía del proyecto", "Sugerencias", "https://wa.me/message/ENKDSAHYHIGAN1", "header-brand", "campaign-footer", "filter-toolbar", "selected-filter-list", "scope-reset", "section-character", "about-dialog", "about-title", "CeCo: exactamente 5 dígitos", "https://forms.cloud.microsoft/e/5aXteVaGKm", "assets/about/enrique-cesar.jpeg", "assets/about/jorge-alcantar.png", "executive-footer", "lucy-fall.webp", "snoopy-fall.webp", "Peanuts × Starbucks"]:
     if text not in html:
         fail(f"Interfaz simplificada incompleta: {text}")
 nav_order = [html.index(f'href="#{item}"') for item in ("resumen", "ranking", "actividades", "tiendas", "evidencias")]
@@ -808,7 +800,19 @@ if [item.get("rank") for item in data.get("dms", [])] != list(range(1, len(data.
     fail("Ranking DM inválido")
 director = data.get("report", {}).get("regionalDirector", {})
 organization = data.get("organization", {})
-if data.get("report", {}).get("motto") != "CADA DETALLE CUENTA" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != "Jorge Alcantar" or director.get("role") != "Director Regional" or organization.get("nationalDirector", {}).get("name") != "Raúl Sinohe Sierra Santamaria" or organization.get("nationalDirector", {}).get("heroPhoto") != "assets/director/raul-sierra-hero.webp" or len(organization.get("regionalDirectors", [])) != 4 or any(not {"filterValue", "stores", "completed", "expected", "pending", "compliance", "status", "photo"}.issubset(item) or not item.get("photo") or item.get("filterValue") != item.get("region") for item in organization.get("regionalDirectors", [])) or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
+source_organization = cms_settings["_organization"]
+identity_fields = ("level", "region", "name", "role", "photo", "photoStatus", "order")
+def org_identity(person):
+    return tuple(person.get(field) for field in identity_fields)
+if org_identity(organization.get("nationalDirector", {})) != org_identity(source_organization["nationalDirector"]):
+    fail("El director nacional no coincide con el CMS")
+if [org_identity(person) for person in organization.get("regionalDirectors", [])] != [org_identity(person) for person in source_organization["regionalDirectors"]]:
+    fail("Los directores regionales no coinciden con el CMS vigente")
+for person in organization["regionalDirectors"]:
+    regional_stores = [store for store in data["stores"] if key_text(store["region"]) == key_text(person["region"])]
+    if person.get("filterValue") != person["region"] or person.get("stores") != len(regional_stores) or any(person.get(field) != sum(store[field] for store in regional_stores) for field in ("completed", "expected")) or person.get("pending") != sum(store["expected"] - store["completed"] for store in regional_stores):
+        fail("Conteos regionales incongruentes con las tiendas publicadas")
+if data.get("report", {}).get("motto") != "CADA DETALLE CUENTA" or data.get("report", {}).get("footerLabel") != "Starbucks México · Operaciones" or director.get("name") != settings.get("regionalDirectorName", "Jorge Alcantar") or director.get("role") != "Director Regional" or any(not {"commitmentDateDisplay", "deadlineLabel", "deadlineTone", "focusRank"}.issubset(item) for item in data.get("activities", [])):
     fail("Exportación o fechas compromiso no fueron preparadas por Python")
 expected_short_names = {
     "Luis Manuel Neri Saldaña": "Luis Neri",
@@ -818,7 +822,7 @@ expected_short_names = {
 if any(short_dm_name(full_name) != short_name for full_name, short_name in expected_short_names.items()):
     fail("Python no calcula primer nombre + primer apellido")
 published_short_names = {item.get("dm"): item.get("shortName") for item in data.get("dms", [])}
-if any(published_short_names.get(full_name) != short_name for full_name, short_name in expected_short_names.items()):
+if any(published_short_names.get(full_name) != short_name for full_name, short_name in expected_short_names.items() if full_name in published_short_names):
     fail("El CMS no publica correctamente los nombres cortos DM")
 focus = data.get("activities", [])
 if [item.get("focusRank") for item in focus] != list(range(1, len(focus) + 1)):

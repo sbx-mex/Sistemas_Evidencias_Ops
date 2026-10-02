@@ -370,6 +370,8 @@ def test_manager_photo_guards(temp: Path) -> None:
         invalid_photo.write_text("esto no es una imagen", encoding="utf-8")
         relative = invalid_photo.relative_to(ROOT).as_posix()
         expect_error(lambda: validate_webp_asset(relative, "prueba"), "no es un WebP válido")
+        invalid_photo.write_bytes(b"RIFF" + b"\x20\x00\x00\x00" + b"WEBP" + b"imagen corrupta")
+        expect_error(lambda: validate_webp_asset(relative, "prueba"), "no es un WebP válido")
         expect_error(lambda: validate_webp_asset("../fuera.webp", "prueba"), "sale del proyecto")
         expect_error(lambda: validate_webp_asset("assets/dm/adriana-tanus.jpg", "prueba"), "Ruta WebP inválida")
         expect_error(lambda: validate_webp_asset("assets/dm/no-existe.webp", "prueba"), "No existe")

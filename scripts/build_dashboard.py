@@ -28,6 +28,7 @@ from typing import Any
 from urllib.parse import unquote, urlsplit
 
 from openpyxl import load_workbook
+from PIL import Image
 
 try:
     from .io_utils import atomic_write_text
@@ -259,13 +260,23 @@ def _valid_webp_signature(path: str, modified_ns: int, size: int) -> bool:
         return False
     with Path(path).open("rb") as source:
         signature = source.read(12)
-    return signature[:4] == b"RIFF" and signature[8:] == b"WEBP"
+    if signature[:4] != b"RIFF" or signature[8:] != b"WEBP":
+        return False
+    try:
+        with Image.open(path) as image:
+            if image.format != "WEBP":
+                return False
+            image.load()
+        return True
+    except (OSError, ValueError):
+        return False
 
 
-def validate_webp_asset(relative_path: str, label: str = "fotografía") -> str:
+def validate_webp_asset(relative_path: str, label: str = "fotografía", *, allow_missing: bool = False) -> str:
     """Valida ruta local y firma WebP con caché sensible a cambios del archivo."""
     photo = clean_text(relative_path).replace("\\", "/")
-    if not photo or Path(photo).is_absolute() or Path(photo).suffix.casefold() != ".webp":
+    url = urlsplit(photo)
+    if not photo or url.scheme or url.netloc or url.query or url.fragment or unquote(photo) != photo or Path(photo).is_absolute() or Path(photo).suffix.casefold() != ".webp":
         raise ValueError(f"Ruta WebP inválida para {label}: {photo or '(vacía)'}")
     resolved = (ROOT / photo).resolve()
     try:
@@ -273,6 +284,8 @@ def validate_webp_asset(relative_path: str, label: str = "fotografía") -> str:
     except ValueError as error:
         raise ValueError(f"La fotografía sale del proyecto para {label}: {photo}") from error
     if not resolved.is_file():
+        if allow_missing and not resolved.exists():
+            return ""
         raise ValueError(f"No existe la fotografía para {label}: {photo}")
     metadata = resolved.stat()
     if not _valid_webp_signature(str(resolved), metadata.st_mtime_ns, metadata.st_size):
@@ -284,7 +297,9 @@ def manager_photo(dm: str, short_name: str, configured_photo: Any) -> tuple[str,
     """Usa la ruta CMS o detecta el WebP canónico por nombre corto."""
     photo = clean_text(configured_photo)
     if photo:
-        return validate_webp_asset(photo, dm), "CMS"
+        available = validate_webp_asset(photo, dm, allow_missing=True)
+        if available:
+            return available, "CMS"
     slug = photo_slug(short_name)
     candidate = f"assets/dm/{slug}.webp" if slug else ""
     if candidate and (ROOT / candidate).is_file():
@@ -380,7 +395,7 @@ def output_version(source_hashes: dict[str, str]) -> str:
     ):
         inputs[relative] = file_sha256(ROOT / relative)
     for asset in sorted((ROOT / "assets").rglob("*")):
-        if asset.is_file() and asset.suffix.casefold() in {".webp", ".png", ".jpg", ".jpeg"}:
+        if asset.is_file() and asset.suffix.casefold() in {".webp", ".png", ".jpg", ".jpeg", ".pdf"}:
             inputs[asset.relative_to(ROOT).as_posix()] = file_sha256(asset)
     return hashlib.sha256(json.dumps(inputs, sort_keys=True).encode("utf-8")).hexdigest()[:16]
 
@@ -1297,31 +1312,46 @@ def load_cms(path: Path) -> tuple[list[dict[str, Any]], dict[str, dict[str, str]
             continue
         photo = clean_text(row[org_cols["foto webp"]])
         if photo:
-            photo = validate_webp_asset(photo, f"organigrama {name}")
+            photo = validate_webp_asset(photo, f"organigrama {name}", allow_missing=True)
         try:
-            level = int(float(row[org_cols["nivel"]]))
+            numeric_level = float(row[org_cols["nivel"]])
+            level = int(numeric_level)
         except (TypeError, ValueError):
-            level = 2
+            raise ValueError(f"Nivel inválido en Organigrama: {name}")
+        if level not in {1, 2} or level != numeric_level:
+            raise ValueError(f"Nivel inválido en Organigrama: {name}")
+        region = clean_text(row[org_cols["region"]])
+        if level == 2 and not region:
+            raise ValueError(f"Director Regional sin región: {name}")
         try:
             order = int(float(row[org_cols["orden"]]))
         except (TypeError, ValueError):
             order = row_number
         organization_rows.append({
             "level": level,
-            "region": clean_text(row[org_cols["region"]]),
+            "region": region,
             "name": name,
             "role": clean_text(row[org_cols["rol"]]),
             "photo": photo,
+            "photoStatus": "Disponible" if photo else "Pendiente",
             "order": order,
         })
     organization_rows.sort(key=lambda item: (item["level"], item["order"], key_text(item["name"])))
-    national = next((item for item in organization_rows if item["level"] == 1), None)
-    if not national:
-        raise ValueError("El CMS debe incluir un Director Starbucks México activo en Organigrama")
+    nationals = [item for item in organization_rows if item["level"] == 1]
+    regional = [item for item in organization_rows if item["level"] == 2]
+    if len(nationals) != 1:
+        raise ValueError("Organigrama requiere exactamente un Director Starbucks México activo")
+    if not regional:
+        raise ValueError("Organigrama requiere al menos un Director Regional activo")
+    for field in ("name", "region"):
+        values = [key_text(item[field]) for item in regional]
+        if len(values) != len(set(values)):
+            raise ValueError(f"Directores Regionales duplicados por {field}")
+    national = nationals[0]
     organization = {
         "scopeLabel": "Región | Centro's",
         "nationalDirector": national,
-        "regionalDirectors": [item for item in organization_rows if item["level"] == 2],
+        "regionalDirectors": regional,
     }
     cms_settings["_organization"] = organization
     return sorted(activities, key=lambda item: (item["order"], key_text(item["name"]))), managers, cms_settings, calendar
@@ -1713,10 +1743,11 @@ def build_payload(
         **{key: value for key, value in QUANTITY_ACTIVITY_CONFIG.items() if key not in managed_numeric_keys},
         **cms_numeric_config,
     }
-    national_photo = Path(organization["nationalDirector"].get("photo", ""))
-    hero_photo = national_photo.with_name(f"{national_photo.stem}-hero.webp").as_posix()
-    if hero_photo and (ROOT / hero_photo).is_file():
-        organization["nationalDirector"]["heroPhoto"] = hero_photo
+    if organization["nationalDirector"].get("photo"):
+        national_photo = Path(organization["nationalDirector"]["photo"])
+        hero_photo = national_photo.with_name(f"{national_photo.stem}-hero.webp").as_posix()
+        if (ROOT / hero_photo).is_file():
+            organization["nationalDirector"]["heroPhoto"] = validate_webp_asset(hero_photo, "Director Starbucks México")
     settings = load_settings(settings_path, cms_settings)
     allowed_hosts = normalize_allowed_hosts(
         settings.get("evidenceAllowedHosts", "grupovips-my.sharepoint.com")
@@ -1724,7 +1755,7 @@ def build_payload(
     regional_director_photo = clean_text(settings.get("regionalDirectorPhoto", "assets/director/jorge-alcantar.webp"))
     if regional_director_photo:
         regional_director_photo = validate_webp_asset(
-            regional_director_photo, "Director Regional"
+            regional_director_photo, "Director Regional", allow_missing=True
         )
     stores, directory_sheet, directory_status = load_directory(directory_path, settings)
     active_names = [item["name"] for item in activities]

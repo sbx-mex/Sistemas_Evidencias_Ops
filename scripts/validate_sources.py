@@ -185,15 +185,14 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
         except (TypeError, ValueError):
             raise ValueError(f"Nivel inválido en Organigrama: {name}")
         photo = clean_text(row[org_cols["foto webp"]])
-        if photo and not (ROOT / photo).is_file():
-            raise ValueError(f"Foto de Organigrama inexistente: {photo}")
+        if photo:
+            photo = validate_webp_asset(photo, f"organigrama {name}", allow_missing=True)
         organization.append((level, name, photo))
     if sum(level == 1 for level, _, _ in organization) != 1:
         raise ValueError("Organigrama requiere exactamente un Director Starbucks México activo")
-    if sum(level == 2 for level, _, _ in organization) != 4:
-        raise ValueError("Organigrama requiere cuatro Directores Regionales activos")
-    if any(not photo for level, _, photo in organization if level == 2):
-        raise ValueError("Los cuatro Directores Regionales requieren una fotografía WebP")
+    # La carga real valida regiones y nombres únicos; no hay un cupo fijo de RD.
+    _, _, loaded_settings, _ = load_cms(path)
+    regional_directors = loaded_settings["_organization"]["regionalDirectors"]
 
     stores_ws = workbook["Tiendas Abiertas"]
     stores_header, stores_cols = find_header(stores_ws, {"cc", "cc nombre", "region", "estatus", "dm"})
@@ -257,8 +256,11 @@ def validate_cms_engine(path: Path) -> dict[str, int]:
         "activities": activity_rows,
         "managers": len(managers),
         "managerPhotos": manager_photos,
+        "pendingManagerPhotos": len(managers) - manager_photos,
         "autoDetectedManagerPhotos": auto_detected_manager_photos,
         "organization": len(organization),
+        "regionalDirectors": len(regional_directors),
+        "pendingOrganizationPhotos": sum(not photo for _, _, photo in organization),
         "openStores": cms_open_stores,
         "settings": len(config_keys),
         "drafts": drafts,

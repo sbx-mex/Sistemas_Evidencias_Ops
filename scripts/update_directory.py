@@ -215,7 +215,7 @@ def sync_cms(cms_path: Path, stores: list[dict[str, str]]) -> tuple[int, int]:
         org_ws.merge_cells("A1:G1")
         org_ws.merge_cells("A2:G2")
         org_ws["A1"] = "CMS · Organigrama Región | Centro's"
-        org_ws["A2"] = "Edita nombre, fotografía, estado y orden. La web muestra sólo los cuatro RD activos; el rol no se repite en la tarjeta."
+        org_ws["A2"] = "Edita nombre, fotografía, estado y orden. La web muestra los RD activos, sin un límite fijo; el rol no se repite en la tarjeta."
         org_ws.append([])
         org_ws.append(["Nivel", "Región", "Nombre", "Rol", "Foto WebP", "Activo", "Orden"])
         for item in ORGANIZATION:

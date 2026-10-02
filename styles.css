@@ -572,3 +572,14 @@ body > footer.campaign-footer.executive-footer { border: 1px solid #dbcfb5; bord
   .executive-footer .footer-brand .footer-wordmark { width: min(280px, 100%); }
 }
 @media (prefers-reduced-motion: reduce) { .refresh-button[aria-busy="true"] svg { animation: none; } }
+
+/* Conoce el proyecto: acciones claras, verdes y sin texto repetido. */
+.about-document { display: flex; align-items: center; gap: 14px; min-height: 68px; padding: 14px 16px; margin: 16px 0 0; border: 1px solid #d2dfd7; border-radius: 14px; color: #124e3b; background: #f1f6f2; text-decoration: none; }
+.about-document:hover { background: #e5efe8; border-color: #709881; }
+.about-document > span:nth-child(2) { flex: 1; min-width: 0; }
+.about-document strong, .about-document small { display: block; }
+.about-document small { margin-top: 4px; font-size: .78rem; color: #53685c; }
+.document-icon { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 10px; background: white; }
+.document-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+thead { background: #174c3b; color: #fff; }
+.activity-focus-table thead, .quantity-response-table thead, .survey-response-table thead { background: #174c3b; }

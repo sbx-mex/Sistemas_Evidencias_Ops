@@ -113,6 +113,12 @@ def main() -> None:
         f"{cms_audit['openStores']} tiendas abiertas · "
         f"Directorio {directory_audit['stores']} tiendas / {directory_audit['regions']} regiones en {directory_audit['sheet']}"
     )
+    print(
+        "Fotografías opcionales · "
+        f"{cms_audit['pendingManagerPhotos']} DM pendientes · "
+        f"{cms_audit['pendingOrganizationPhotos']} responsables pendientes · "
+        "se muestran iniciales o logo; los archivos corruptos y rutas inseguras se rechazan"
+    )
     for label, path in (("Forms", args.responses), ("Directorio", args.directory), ("CMS", args.cms)):
         print(f"{label}: {path.name} · SHA256 {file_sha256(path)[:12]}")
 
