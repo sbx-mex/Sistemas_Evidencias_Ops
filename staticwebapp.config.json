@@ -1,0 +1,51 @@
+{
+  "routes": [
+    {
+      "route": "/.auth/login/aad",
+      "statusCode": 404
+    },
+    {
+      "route": "/.auth/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/cms*",
+      "statusCode": 404
+    },
+    {
+      "route": "/scripts*",
+      "statusCode": 404
+    },
+    {
+      "route": "/tests*",
+      "statusCode": 404
+    },
+    {
+      "route": "/tools*",
+      "statusCode": 404
+    },
+    {
+      "route": "/.github*",
+      "statusCode": 404
+    },
+    {
+      "route": "/*",
+      "allowedRoles": [
+        "evidencias_ops"
+      ]
+    }
+  ],
+  "responseOverrides": {
+    "401": {
+      "statusCode": 302,
+      "redirect": "/.auth/login/github"
+    }
+  },
+  "globalHeaders": {
+    "Cache-Control": "no-store",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "same-origin"
+  }
+}
