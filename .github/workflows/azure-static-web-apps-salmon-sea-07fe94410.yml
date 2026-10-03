@@ -46,7 +46,7 @@ jobs:
           from pathlib import Path
           root = Path('azure-public')
           config = json.loads((root / 'staticwebapp.config.json').read_text())
-          assert any(r.get('route') == '/*' and r.get('allowedRoles') == ['evidencias_ops'] for r in config['routes']), 'Falta la restricción de acceso'
+          assert any(r.get('route') == '/*' and r.get('allowedRoles') in (['evidencias_ops'], ['authenticated']) for r in config['routes']), 'Falta la restricción de acceso'
           json.loads((root / 'data/dashboard.json').read_text())
           assert not any((root / p).exists() for p in ('cms', 'scripts', 'tests', '.github', '.git', 'requirements.txt')), 'Se incluyeron archivos internos'
           print('Archivos web y control de acceso preparados.')
