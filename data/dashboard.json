@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "5ff6edada7ae18c5",
+  "buildVersion": "fa6f682e6097db19",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-04T04:14:01+00:00",
-  "lastUpdated": "2026-10-03T18:43:04",
-  "lastUpdatedDisplay": "03/10/2026 18:43",
+  "generatedAt": "2026-10-04T17:13:04+00:00",
+  "lastUpdated": "2026-10-04T00:42:27",
+  "lastUpdatedDisplay": "04/10/2026 00:42",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "03/10/26 · 18:43 h",
+    "cutOffDisplay": "04/10/26 · 00:42 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 121,
+        "completed": 123,
         "expected": 600,
-        "pending": 479,
-        "compliance": 20.2,
+        "pending": 477,
+        "compliance": 20.5,
         "status": "Atención"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "24df754e888eed4c13d5c6e9af76df6281fa86b70b5f6dfc825fa94f007b7cb0",
+    "responsesSha256": "a5a3ead6251c376dee03eb827cb5066ebc62883c08aff9be10d5203f14682777",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 6,
     "expectedCompletions": 2700,
-    "completedCompletions": 659,
-    "compliance": 24.4,
-    "validResponses": 659,
+    "completedCompletions": 661,
+    "compliance": 24.5,
+    "validResponses": 661,
     "storesComplete": 2,
-    "pendingCompletions": 2041,
+    "pendingCompletions": 2039,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 982,
+    "responsesRead": 984,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 782,
-      "newFormsRowsIncluded": 598,
+      "newFormsRowsRead": 784,
+      "newFormsRowsIncluded": 600,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -878,7 +878,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 782
+        "CeCo": 784
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -947,7 +947,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 496,
+    "evidenceLinksPublished": 498,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -984,11 +984,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 61,
+      "completedStores": 62,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 389,
-      "compliance": 13.6,
+      "pendingStores": 388,
+      "compliance": 13.8,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -1006,11 +1006,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 144,
+      "completedStores": 145,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 306,
-      "compliance": 32.0,
+      "pendingStores": 305,
+      "compliance": 32.2,
       "deadlineLabel": "Vence en 1 días",
       "deadlineTone": "amber",
       "daysRemaining": 1,
@@ -1325,12 +1325,12 @@
         "Centro Sur"
       ],
       "stores": 12,
-      "completed": 33,
+      "completed": 35,
       "expected": 72,
       "notApplicable": 0,
-      "pending": 39,
+      "pending": 37,
       "pendingStores": 11,
-      "compliance": 45.8,
+      "compliance": 48.6,
       "status": "Seguimiento",
       "rank": 12
     },
@@ -1939,17 +1939,6 @@
       "ceco": "38126",
       "store": "Interlomas",
       "dm": "Areli Anahi Lazcano Lezama",
-      "completed": 0,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 6,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38645",
-      "store": "Plaza Central",
-      "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 0,
       "expected": 6,
       "notApplicable": 0,
@@ -4699,6 +4688,17 @@
     {
       "ceco": "38419",
       "store": "Balbuena",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "completed": 2,
+      "expected": 6,
+      "notApplicable": 0,
+      "pending": 4,
+      "compliance": 33.3,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38645",
+      "store": "Plaza Central",
       "dm": "Ariana Janet Gutierrez Martinez",
       "completed": 2,
       "expected": 6,
@@ -8100,14 +8100,14 @@
       "dm": "Ariana Janet Gutierrez Martinez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 2,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 33.3,
+      "lastUpdate": "2026-10-04T00:42:27",
       "activities": {
-        "Lay Out": false,
-        "Jarras Blender | Cold Foam": false,
+        "Lay Out": true,
+        "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
         "FHW": false,
@@ -19345,11 +19345,11 @@
           "maximum": 5
         }
       ],
-      "answeredStores": 144,
+      "answeredStores": 145,
       "totals": {
-        "blender": 254,
+        "blender": 255,
         "coldFoam": 143,
-        "total": 397
+        "total": 398
       },
       "byRegion": [
         {
@@ -19372,11 +19372,11 @@
         },
         {
           "region": "Centro Sur",
-          "answeredStores": 22,
+          "answeredStores": 23,
           "totals": {
-            "blender": 37,
+            "blender": 38,
             "coldFoam": 16,
-            "total": 53
+            "total": 54
           }
         }
       ],
@@ -19514,11 +19514,11 @@
         {
           "region": "Centro Sur",
           "dm": "Ariana Janet Gutierrez Martinez",
-          "answeredStores": 6,
+          "answeredStores": 7,
           "totals": {
-            "blender": 10,
+            "blender": 11,
             "coldFoam": 2,
-            "total": 12
+            "total": 13
           }
         },
         {
@@ -20016,6 +20016,55 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-45866db3b204c4ba",
+      "timestamp": "2026-10-04T00:42:27",
+      "timestampDisplay": "04/10/2026 00:42",
+      "activity": "Jarras Blender | Cold Foam",
+      "ceco": "38645",
+      "store": "Plaza Central",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Jarras_Blender_Cold_Foam_38645",
+      "evidenceLinkLabel": "Link_Jarras_Blender_Cold_Foam_38645",
+      "evidenceFileName": "IMG_3113_Abraham Josue Matamo.jpeg",
+      "evidenceSourceHeader": "Evidencia_Jarras_Blender_&_Cold_Foam",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "quantities": {
+        "blender": 1,
+        "coldFoam": 0,
+        "total": 1
+      },
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Se%C3%B1aletica_Lobby%201/IMG_3113_Abraham%20Josue%20Matamo.jpeg"
+    },
+    {
+      "id": "respuesta-f28877f9c16a40c3",
+      "timestamp": "2026-10-04T00:30:27",
+      "timestampDisplay": "04/10/2026 00:30",
+      "activity": "Lay Out",
+      "ceco": "38645",
+      "store": "Plaza Central",
+      "dm": "Ariana Janet Gutierrez Martinez",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38645",
+      "evidenceLinkLabel": "Link_Lay_Out_38645",
+      "evidenceFileName": "LayOut_Distrital_Ariana_Janet_Gutierrez_Plaza_Abraham Josue Matamo.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/LayOut_Distrital_Ariana_Janet_Gutierrez_Plaza_Abraham%20Josue%20Matamo.jpg"
+    },
     {
       "id": "respuesta-40b205c3e8072281",
       "timestamp": "2026-10-03T18:43:04",
