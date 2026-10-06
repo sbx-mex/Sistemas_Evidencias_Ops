@@ -1,0 +1,202 @@
+{
+  "repository": "sbx-mex/Sistemas_Evidencias_Ops",
+  "baseCommit": "c345ee5e5e908f5ea2122f1c99ee1c501111e3a3",
+  "branch": "main",
+  "auditDate": "2026-10-06",
+  "lastUpdated": "2026-10-06T14:01:21",
+  "buildVersion": "6cac02a018a4a05c",
+  "summary": {
+    "regions": 5,
+    "dms": 36,
+    "stores": 450,
+    "activities": 6,
+    "expectedCompletions": 2700,
+    "completedCompletions": 668,
+    "compliance": 24.7,
+    "validResponses": 668,
+    "storesComplete": 4,
+    "pendingCompletions": 2032,
+    "notApplicableCompletions": 0
+  },
+  "localValidation": "passed",
+  "azureLiveDeployment": "blocked-token-or-resource",
+  "sources": [
+    {
+      "path": "cms/Sistema de Evidencias OPS.xlsx",
+      "sha256": "c76bec44817055b5d056140b470d20bcb99446e43cac21bbdd1f803b9edb94e4",
+      "unchanged": true
+    },
+    {
+      "path": "cms/Directorio.xlsx",
+      "sha256": "3823b717b53a1f9eca46f3bc71adcb68d1673dbdaf90cb331571edd080cd218f",
+      "unchanged": true
+    },
+    {
+      "path": "cms/Sistema_Evidencias_OPS_CMS.xlsx",
+      "sha256": "8694b103bba7664fef14999731984a704c5a4349ee8b8b909b79d62ab4a9468a",
+      "unchanged": true
+    },
+    {
+      "path": "cms/Corte_Forms_2026-09-17_115657.xlsx",
+      "sha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
+      "unchanged": true
+    },
+    {
+      "path": "config/settings.json",
+      "sha256": "bac73cd116f3ccaf5aaf47f755eb17512c9a2b147c0fd957797fd8fd644f68c4",
+      "unchanged": true
+    },
+    {
+      "path": "config/cutover.json",
+      "sha256": "a1b95310b14ea7e617946aa0bc145a91eb22f693a9879b0ef869263259eed5a0",
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/azure-static-web-apps-salmon-sea-07fe94410.yml",
+      "sha256": "474f4764b33058e09e255fcbb055fb625134037410b61c5a4f9a5e6a07913b4e",
+      "bytes": 3114,
+      "action": "replace",
+      "baseSha256": "3fb69c64e8ef79e0d28ec138c00f84f4e4e045bfe646eecdfb24db89b2764a59"
+    },
+    {
+      "path": ".github/workflows/build-dashboard.yml",
+      "sha256": "f7f4c4a279f23bfeb7ddfb7ba588ba90c42f6a7189df044f6f3d3732e85f6430",
+      "bytes": 4818,
+      "action": "replace",
+      "baseSha256": "22afc3cc5fee4f63541592798e943c71fa7bca9c124ac7853a0e5d88e61368ac"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "595fd84c1ae423d4c9c9f00059cc3c0f39db54107d2ba1c72b3f5beebc5a83e6",
+      "bytes": 96,
+      "action": "replace",
+      "baseSha256": "5ef2dddb05dc7576820cf7ecaf8743a091e34377b606334ef3549fb546544ddb"
+    },
+    {
+      "path": "LEEME_AUDITORIA_2026-10-06.txt",
+      "sha256": "8a2da45c046f56fdd7e17512b3db6380e4e69a10a59e02cc7c0bc6453f61f719",
+      "bytes": 1692,
+      "action": "create"
+    },
+    {
+      "path": "README.md",
+      "sha256": "3ff62e2a6502680f7c21d32a042fb351ba6ab67a40724c1d2826cc6c1a4573bb",
+      "bytes": 12773,
+      "action": "replace",
+      "baseSha256": "10ebe76136767ee37ba1bef416a57485c542c025e11da82a4060cf0354d6f7b4"
+    },
+    {
+      "path": "data/dashboard.json",
+      "sha256": "9fecdfa00280db996a5975d34de47bd7446bdb0382b7802687dc877c45639512",
+      "bytes": 1282592,
+      "action": "replace",
+      "baseSha256": "c8e1c031a4f1f55b11e20f6a772234a804353e5f9df72a172b23ee8c1871ee97"
+    },
+    {
+      "path": "data-contract.js",
+      "sha256": "0e838191ca695ea26304f3489ab8bb5e7f5dc8ce4a6ef720955c7bd92297bb28",
+      "bytes": 10400,
+      "action": "replace",
+      "baseSha256": "738ff7079e9ef1a3771e5a5056b5a2af1b2f161c867c0e87768d7ba8ba58405e"
+    },
+    {
+      "path": "docs/AUDITORIA_Y_CORRECCION_2026-10-06.md",
+      "sha256": "d77acae05fccc6c139f6c8033133bbd0ced8a2c5504d9ed4518543509733eeb1",
+      "bytes": 10271,
+      "action": "create"
+    },
+    {
+      "path": "docs/AUDITORIA_Y_CORRECCION_2026-10-06.pdf",
+      "sha256": "422428703fdffcd6233be6b642afcfee7ce86c2e76e0f4f25a4c8b72608bd6c7",
+      "bytes": 7554,
+      "action": "create"
+    },
+    {
+      "path": "docs/CECO_PENDIENTES_2026-10-06.csv",
+      "sha256": "33f5405d3d42aed284dcc97d496c12112b22a13550054de581b5d23451e08515",
+      "bytes": 1390,
+      "action": "create"
+    },
+    {
+      "path": "docs/VALIDACION_AUDITORIA_2026-10-06.txt",
+      "sha256": "e996786385c9b4e33149d7f3556dbcceb5b9c4dd6fb1f92cb7b82489c457d7c8",
+      "bytes": 6809,
+      "action": "create"
+    },
+    {
+      "path": "exports/Resumen_Evidencias_OPS.pdf",
+      "sha256": "482db5cef5a4c32f1f17b2c962472e9189a8ed97d8177bc8262e438da748368c",
+      "bytes": 374356,
+      "action": "replace",
+      "baseSha256": "656cf31ad62af0e6ea5d00175e7d7c56cf836132f026d46d76c3e76f99de0193"
+    },
+    {
+      "path": "exports/Resumen_Evidencias_OPS.xlsx",
+      "sha256": "8ba952f0b3d43040210e6811bc7dc6a73404037234bd8a768bd3372e2a46ebd6",
+      "bytes": 116415,
+      "action": "replace",
+      "baseSha256": "a14c03774461642cd1f4e2089e01775889e331a2d3f59669bbe0bd3e41950ab9"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "6e2400d74747ffe27cdb89abac0f2114ee57ff2fb63546ff46f05db9c3d69a53",
+      "bytes": 88,
+      "action": "replace",
+      "baseSha256": "34d0cb7f2e8a03bdcf45f8a46555e3a71b7fb3e8759093a22429ea93149510b1"
+    },
+    {
+      "path": "scripts/build_dashboard.py",
+      "sha256": "7b7dd72cbdd6b23a0943a5678aeb2745e86add958576d29d3c5305a2452a8d33",
+      "bytes": 119695,
+      "action": "replace",
+      "baseSha256": "3c95739e8651f73741fe408fd23395c80de69aee5757c9712a30b736e097f407"
+    },
+    {
+      "path": "scripts/prepare_azure_public.py",
+      "sha256": "a32096a8782dfe9e812399db5cae903e2ac7aa29a34e22ca5d148a54f3fbbfdd",
+      "bytes": 3700,
+      "action": "create"
+    },
+    {
+      "path": "scripts/safe_maintenance.py",
+      "sha256": "22ef352117c24e26e43a7899d19a6fe8d7b77b9cdff9140427a10a0201e09d0f",
+      "bytes": 23280,
+      "action": "replace",
+      "baseSha256": "b8eb453dd744cea998bcd80b2d827e96eb2af79a78fba6a0904d489703e4ed07"
+    },
+    {
+      "path": "service-worker.js",
+      "sha256": "c48e2462b3195e0780f84d6b2e26572734090eaef36263c953a6ca37ae764c5f",
+      "bytes": 5054,
+      "action": "replace",
+      "baseSha256": "ddddf534d90d268f5ced476e7fef086077fe94f6ff90b4a86e8230f1a2dbe948"
+    },
+    {
+      "path": "tests/validate_azure_package.py",
+      "sha256": "9038832e782042f3c8f559098f3098df988f14ff257d3424d93d8d1ef04d9626",
+      "bytes": 1904,
+      "action": "create"
+    },
+    {
+      "path": "tests/validate_load_contract.js",
+      "sha256": "ea6f0ee9b44c979128c10da44fb15c46ddee7fce271852f729bef001eb8dbfa2",
+      "bytes": 8564,
+      "action": "replace",
+      "baseSha256": "70f54282e89e17edc29a9bda3332ee3f6d5fb1a41953d6aab5a7c73dd6ac604a"
+    },
+    {
+      "path": "tests/validate_operational_timezone.py",
+      "sha256": "c59f7e9c1d477b467a8d61ef23df0ed1258d035a4d6cf745eccaeddc21ef67a0",
+      "bytes": 1597,
+      "action": "create"
+    },
+    {
+      "path": "tests/validate_service_worker.js",
+      "sha256": "49e322dd563cc2b12762acb699706038f59e133aef6d44c40f61ef1181ecc048",
+      "bytes": 2492,
+      "action": "create"
+    }
+  ]
+}

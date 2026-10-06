@@ -23,9 +23,14 @@ from typing import Iterator
 # El mantenimiento debe ser limpio también fuera de GitHub Actions.
 sys.dont_write_bytecode = True
 
-from build_dashboard import file_sha256, load_responses, output_version, parse_datetime, validate_xlsx
-from io_utils import atomic_write_text
-from clean_obsolete import existing_obsolete_files
+try:
+    from .build_dashboard import file_sha256, load_responses, output_version, parse_datetime, validate_xlsx
+    from .io_utils import atomic_write_text
+    from .clean_obsolete import existing_obsolete_files
+except ImportError:  # Ejecución directa desde scripts/.
+    from build_dashboard import file_sha256, load_responses, output_version, parse_datetime, validate_xlsx
+    from io_utils import atomic_write_text
+    from clean_obsolete import existing_obsolete_files
 
 ROOT = Path(__file__).resolve().parents[1]
 CMS = ROOT / "cms"
@@ -36,6 +41,9 @@ GENERATED = (
 )
 LOCK = ROOT / ".safe-maintenance.lock"
 REQUIRED_VALIDATORS = (
+    "tests/validate_operational_timezone.py",
+    "tests/validate_service_worker.js",
+    "tests/validate_azure_package.py",
     "tests/validate_safe_maintenance.py",
     "tests/validate_dynamic_forms_schema.py",
     "tests/validate_cms_growth.py",
@@ -494,6 +502,9 @@ def main() -> None:
                 run(sys.executable, "-X", "utf8", "tests/validate_project.py")
                 run(sys.executable, "-X", "utf8", "tests/validate_cross_scenarios.py")
                 run("node", "tests/validate_load_contract.js")
+                run(sys.executable, "-X", "utf8", "tests/validate_operational_timezone.py")
+                run("node", "tests/validate_service_worker.js")
+                run(sys.executable, "-X", "utf8", "tests/validate_azure_package.py")
                 run(sys.executable, "-X", "utf8", "scripts/audit_cms_visibility.py")
                 run(sys.executable, "-X", "utf8", "scripts/audit_response_types.py")
                 # Las pruebas y exportadores también pueden dejar residuos si un

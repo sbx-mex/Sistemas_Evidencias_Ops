@@ -1,6 +1,6 @@
 importScripts("./data-contract.js");
 const CACHE_PREFIX = "sistema-evidencias-ops-";
-const CACHE_NAME = "sistema-evidencias-ops-v50";
+const CACHE_NAME = "sistema-evidencias-ops-v51";
 const CORE = [
   "./",
   "./index.html",
@@ -26,7 +26,7 @@ async function precacheLatest() {
   await Promise.all(CORE.map(async (path) => {
     const request = new Request(path, { cache: "reload" });
     const response = await fetch(request);
-    if (!response.ok) throw new Error(`No se pudo preparar ${path}: ${response.status}`);
+    if (!response.ok || response.redirected) throw new Error(`No se pudo preparar ${path}: ${response.status}`);
     await cache.put(path, response);
   }));
 }
@@ -71,6 +71,8 @@ async function networkFirst(request, cacheKey = request, dashboard = false) {
   const timer = setTimeout(() => controller.abort(), 10000);
   try {
     const response = await fetch(request, { cache: "no-store", signal: controller.signal });
+    // Una denegación explícita del servidor no autoriza servir datos guardados.
+    if ([401, 403].includes(response.status) || response.redirected) return response;
     if (!response.ok) throw new Error(`Carga HTTP ${response.status}`);
     if (dashboard) {
       const data = await response.clone().json();
@@ -83,6 +85,9 @@ async function networkFirst(request, cacheKey = request, dashboard = false) {
     const cached = await cache.match(cacheKey, { ignoreSearch: true });
     if (cached) {
       if (!dashboard) return cached;
+      // Una copia de otra versión o incompleta tampoco puede usarse sin red.
+      try { self.OPSDashboard.validate(await cached.clone().json()); }
+      catch (_error) { await cache.delete(cacheKey); throw error; }
       const headers = new Headers(cached.headers);
       headers.set("X-OPS-Data-Source", "cache");
       return new Response(cached.body, { status: cached.status, headers });
@@ -93,22 +98,27 @@ async function networkFirst(request, cacheKey = request, dashboard = false) {
   }
 }
 
-async function staleWhileRevalidate(request) {
+async function staleWhileRevalidate(request, event) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(request, { ignoreSearch: true });
   const fresh = fetch(request)
     .then(async (response) => {
-      if (response.ok) await cache.put(request, response.clone());
+      if (response.ok && !response.redirected) {
+        try { await cache.put(request, response.clone()); } catch (_error) {}
+      }
       return response;
     })
-    .catch(() => null);
-  return cached || fresh || Response.error();
+    .catch(() => Response.error());
+  // Conserva viva la renovación cuando se devuelve una imagen ya guardada.
+  if (event) event.waitUntil(fresh.then(() => undefined));
+  return cached || await fresh;
 }
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith("/.auth/")) return;
 
   if (url.pathname.endsWith("/data/dashboard.json")) {
     event.respondWith(networkFirst(event.request, new Request(new URL("./data/dashboard.json", self.location.href)), true));
@@ -124,6 +134,6 @@ self.addEventListener("fetch", (event) => {
   }
   if (["image", "font"].includes(event.request.destination)
     || url.pathname.includes("/exports/")) {
-    event.respondWith(staleWhileRevalidate(event.request));
+    event.respondWith(staleWhileRevalidate(event.request, event));
   }
 });

@@ -5,10 +5,11 @@ PWA ejecutiva de Centro Norte para medir el cumplimiento de actividades registra
 ## Modelo operativo
 
 ```text
-Sistema de Evidencias OPS.xlsx
+Sistema de Evidencias OPS.xlsx + base histórica de corte
              +
-Directorio.xlsx
-Sistema_Evidencias_OPS_CMS.xlsx + assets/dm/ + assets/director/
+Sistema_Evidencias_OPS_CMS.xlsx (catálogo maestro de tiendas y actividades)
+             +
+Directorio.xlsx (respaldo) + assets/dm/ + assets/director/
              ↓
 scripts/build_dashboard.py
              ↓
@@ -49,20 +50,17 @@ El arte acompaña la lectura; no sustituye indicadores, estados ni evidencia ope
 
 ```bash
 pip install -r requirements.txt
-python scripts/build_dashboard.py
-python scripts/export_excel.py
-python scripts/export_pdf.py
-python tests/validate_dynamic_forms_schema.py
-python tests/validate_project.py
-python scripts/audit_project.py
+python scripts/safe_maintenance.py --force
 ```
 
 ## CMS maestro
 
+Con `storeCatalogSource = CMS`, altas, bajas y reasignaciones se administran en `Tiendas Abiertas` del CMS. El Directorio es un respaldo de contraste y no revive tiendas retiradas del catálogo maestro. `update_directory.py` sólo se usa cuando se desea importar deliberadamente un directorio oficial nuevo al CMS.
+
 Edita `cms/Sistema_Evidencias_OPS_CMS.xlsx`:
 
 - `Organigrama`: controla Director Starbucks México y los cuatro Directores Regionales. Los cuatro RD activos requieren fotografía WebP.
-- `Tiendas Abiertas`: vista automática; únicamente `Estatus = Abierta` alimenta el portal.
+- `Tiendas Abiertas`: catálogo maestro editable; únicamente `Estatus = Abierta` alimenta el portal.
 - `Gerentes`: conserva el nombre completo como llave y usa `primer nombre + primer apellido` en `Nombre corto`.
 - `Directorio.xlsx > Instrucciones`: documenta CC, Región, Estatus y DM sin modificar la hoja operativa.
 
@@ -134,6 +132,8 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 
 ## Fuente inicial validada
 
+Las cifras de esta sección son históricas. El corte auditado del 06/10/2026 contiene 450 tiendas, 36 DM, 5 regiones y 6 actividades; 668/2700 cumplimientos (24.7%). La fecha y los conteos vigentes se consultan en el dashboard después de cada mantenimiento.
+
 - 357 tiendas `Abierta` de cuatro regiones, agrupadas automáticamente en 28 DM; 22 fotografías nuevas quedan identificadas como pendientes. Las 15 tiendas con `Cierre Temporal` o `Cierre Definitivo` permanecen en el Directorio, pero no entran en conteos ni avance.
 - El CMS controla el alcance con `onlyOpenStores = Si` e `includedStoreStatuses = Abierta`.
 - La pestaña CMS `Tiendas Abiertas` se regenera con CC, tienda, región, estatus y DM para revisar visualmente las 357 tiendas publicadas.
@@ -144,3 +144,11 @@ La PWA funciona en subruta, instala caché offline y actualiza `data/dashboard.j
 - Última actualización: `21/09/2026 12:14`.
 - CeCo `38115` cruzado como `Zona Azul` y asignado a `Yazmin Haydee Garcia Gonzalez`.
 - 7 respuestas válidas, 8 columnas dinámicas de evidencia y 0 CeCo sin cruce.
+
+## Despliegue Azure validado
+
+Azure se ejecuta después de `Actualizar Sistema de Evidencias OPS` y vuelve a validar la revisión descargada antes de empaquetarla. Esto evita que un despliegue por `push` se adelante a los resultados del CMS. La ejecución manual también reconstruye y valida. `scripts/prepare_azure_public.py --output azure-public` crea una carpeta nueva con los recursos web, el JSON y las exportaciones; rechaza paquetes incompletos y conserva la restricción `evidencias_ops`.
+
+El secreto `AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_SEA_07FE94410` debe contener el token de la Static Web App correcta. Un token rechazado o un recurso inexistente requiere ajustar Azure/GitHub; no se corrige reemplazando archivos de la aplicación. Procedimiento oficial: https://learn.microsoft.com/en-us/azure/static-web-apps/deployment-token-management.
+
+Los vencimientos, la versión diaria y la fecha de generación usan `America/Mexico_City`, independientemente de la zona horaria del runner. En Windows, `requirements.txt` instala la base de zonas horarias necesaria. El navegador valida porcentajes, catálogo DM, cantidades y desgloses antes de aceptar una nueva carga; la copia offline debe superar el mismo contrato.

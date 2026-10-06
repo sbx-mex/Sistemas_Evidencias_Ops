@@ -16,6 +16,23 @@ for (const change of [
   d => { delete d.quality.stabilityControls.rowQuarantine; },
   d => { d.stores[0].expected += 1; },
   d => { d.submissions.splice(0, 1); },
+  d => { d.dms = []; },
+  d => { d.dms[0].completed += 1; },
+  d => { d.dms[0].rank = 2; },
+  d => { d.dms[0].regions = []; },
+  d => { d.summary.compliance = 99.9; },
+  d => { d.summary.validResponses += 1; },
+  d => { d.summary.storesComplete += 1; },
+  d => { d.summary.regions += 1; },
+  d => { d.regions = []; },
+  d => { d.stores[0].compliance = 99.9; },
+  d => { d.activities[0].completedStores += 1; },
+  d => { d.activities[0].compliance = 99.9; },
+  d => { const r = d.submissions.find(item => item.quantities); const m = d.quantityModules.find(item => item.activity === r.activity); r.quantities[m.metrics[0].key] = -1; },
+  d => { d.submissions.find(item => item.quantities).quantities.total += 1; },
+  d => { d.quantityModules[0].totals.total += 1; },
+  d => { d.quantityModules[0].byRegion = []; },
+  d => { d.quantityModules[0].byPortfolio[0].totals.total += 1; },
 ]) {
   const broken = copy(); change(broken); assert.throws(() => OPSDashboard.validate(broken));
 }
@@ -30,6 +47,7 @@ async function main() {
     caches: { open: async () => ({
       put: async (key, response) => { if (quotaError) throw new Error('Quota'); cache.set(key.url, response.clone()); },
       match: async key => cache.get(key.url)?.clone(),
+      delete: async key => cache.delete(key.url),
     }) },
     fetch: async () => { if (network instanceof Error) throw network; return network.clone(); },
   };
@@ -47,6 +65,14 @@ async function main() {
     assert.deepEqual(await response.json(), data);
   }
   cache.clear(); network = new Response('{parcial'); await assert.rejects(load);
+  cache.set(request.url, new Response(JSON.stringify(broken)));
+  network = new Error('Sin red'); await assert.rejects(load);
+  assert.equal(cache.size, 0, 'Una copia corrupta debe descartarse');
+  cache.set(request.url, new Response(JSON.stringify(data)));
+  for (const status of [401, 403]) {
+    network = new Response('Acceso denegado', {status});
+    assert.equal((await load()).status, status, 'Un acceso denegado no debe sustituirse por caché');
+  }
   quotaError = true; network = new Response(JSON.stringify(data)); assert.deepEqual(await (await load()).json(), data);
 
   // La app conserva la carga válida y nunca marca verde un JSON roto.

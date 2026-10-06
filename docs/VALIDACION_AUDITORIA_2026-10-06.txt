@@ -1,0 +1,116 @@
+ANTES: ACEPTADO INCORRECTAMENTE: Ranking DM vacío
+ANTES: ACEPTADO INCORRECTAMENTE: Avance general incorrecto
+ANTES: ACEPTADO INCORRECTAMENTE: Totales de actividad incorrectos
+ANTES: ACEPTADO INCORRECTAMENTE: Cantidad negativa
+
+DESPUÉS DE CORREGIR:
+COMANDO: python scripts/safe_maintenance.py --force
+Fuentes XLSX aprobadas · Forms 1009 filas · 450 tiendas · 6 actividades · encabezado Forms fila 1
+ADVERTENCIA NO BLOQUEANTE · CeCo fuera del Directorio aislados: 38104, 38278, 38489, 38608, 38666, 39722, 43079, 80173 · no se publican ni afectan avance; se recuperarán al actualizar Directorio
+Corte histórico aprobado · 2026-09-17T11:56:57 · 384 filas base · 625 filas nuevas
+Recuperación CeCo verificada · filas: 731, 732 · correo corporativo y nombre exacto
+Motores auditados · CMS 6 actividades / 36 DM / 450 tiendas abiertas · Catálogo vigente 450 tiendas / 5 regiones en Tiendas Abiertas · Directorio de respaldo 358 tiendas
+Fotografías opcionales · 6 DM pendientes · 0 responsables pendientes · se muestran iniciales o logo; los archivos corruptos y rutas inseguras se rechazan
+Forms: Sistema de Evidencias OPS.xlsx · SHA256 c76bec448170
+Directorio: Directorio.xlsx · SHA256 3823b717b53a
+CMS: Sistema_Evidencias_OPS_CMS.xlsx · SHA256 8694b103bba7
+Dashboard generado: 450 tiendas · 6 actividades · 668/2700 cumplimientos
+Última actualización Forms: 06/10/2026 14:01
+Corte histórico aplicado: Corte operativo 17/09/2026 11:56:57 · Lay Out reiniciado · 384 filas base · 625 filas nuevas
+PDF generado: exports/Resumen_Evidencias_OPS.pdf
+Excel generado: exports/Resumen_Evidencias_OPS.xlsx
+Resumen: 36 DM · 450 tiendas · 24.7% regional
+Huella de corte reconciliada · contenido semántico intacto · 384 filas · 000000000000 → 2d628eafd9b4
+Mantenimiento seguro aprobado · CMS completo · rollback · huellas · recursos completos · rendimiento
+Forms dinámico aprobado · orden real · Sí/No implícito · CMS controla visibilidad
+Crecimiento CMS aprobado · +240 tiendas · +60 DM · +10 RD · +2 actividades · fotos pendientes · última encuesta por CeCo/actividad · CeCo desconocido aislado · duplicados bloqueados
+Catálogo vigente aprobado · CMS 450 tiendas · respaldo 358 · altas / bajas / reasignaciones · CeCo y duplicados bloqueados · fuentes sin cambios
+Filtro numérico validado · cero · rangos · pendiente · cambio de actividad
+Corte histórico aprobado · conserva avance · suma cualquier actividad activa · CMS filtra actividades ocultas
+Mantenimiento aprobado · CMS flexible · escritura atómica · borradores seguros
+Validación aprobada · 13/13 controles
+OK 01 · Archivos requeridos y limpieza de obsoletos
+OK 02 · CMS, conteos, CeCo y evidencias seguras
+OK 02A · Jarras: cumplimiento y piezas consolidadas por separado
+OK 03 · Python sincronizado con la última actualización
+OK 04 · XLSX regional y dinámico con formatos congruentes
+OK 05 · PDF regional Python y descarga directa válidos
+OK 06 · Navegación lineal y sin bloques obsoletos
+OK 06A · Cinco mejoras de navegación, foco y lectura activa
+OK 06B · Actividades en una fila y sin desplazamiento horizontal en móvil
+OK 07 · Filtros, confirmación y exportaciones del alcance actual
+OK 08 · PWA, descarga directa y mensaje final simplificados
+OK 09 · Ranking, fotografía DM e identidad ejecutiva
+OK 10 · Workflow completo: limpiar, generar, validar y publicar
+CMS Excel → Python → un JSON consolidado
+450 tiendas · 6 actividades vigentes · 36 DM · 5 directores regionales
+Organizacion_Refrigeradores_Back_38718 → Paseo Ventura · vínculo SharePoint validado
+Imagen/PDF: Todos los DM → ranking DM · Un DM → tiendas descendentes
+Excel: resumen rápido + detalle + actividades
+Cruces aprobados: CeCo/CeCo1 equivalentes y contradictorios, fecha inválida con corte, CMS orden/visibilidad, bloqueo estricto y Estatus duplicado
+Acerca de aprobado: diagnóstico sin duplicados, motivos y correcciones, cantidades, corte, carga verde/ámbar/error, bloqueo de doble actualización y recuperación
+Carga segura aprobada: cruces/totales/controles, JSON parcial, HTTP 503, sin red, cuota de caché, copia local ámbar y recuperación sin perder la última carga
+Calendario México aprobado · medianoche UTC no adelanta vencimientos · versión y fecha operativa congruentes
+PWA aprobada · sin red · cuota agotada · renovación de imagen con waitUntil · autenticación sin interceptar
+Paquete Azure aprobado · archivos completos · datos idénticos · acceso conservado · internos excluidos · escritura segura
+CMS seguro aprobado · 13/13 controles · 6 activas · 13 omitidas
+Tipos de respuesta aprobados · 13/13 controles · 809 respuestas Forms · 62 respuestas Tarta leídas · 60 tiendas Tarta válidas
+{
+  "filesReviewed": 150,
+  "missingReferences": [],
+  "oversizedFiles": [],
+  "duplicateHtmlIds": [],
+  "missingDomTargets": [],
+  "repetitiveBlocks": 0,
+  "rankingSorted": true,
+  "vanessaWhiteBackground": 100.0,
+  "exportVisuals": 2,
+  "directEvidenceLinks": 497,
+  "sourceFingerprints": {
+    "responsesSha256": "c76bec448170",
+    "directorySha256": "3823b717b53a",
+    "cmsSha256": "8694b103bba7",
+    "settingsSha256": "bac73cd116f3"
+  },
+  "xlsxFallback": true,
+  "pdfFallback": true,
+  "obsoleteFiles": [],
+  "issues": []
+}
+Limpieza aprobada: no hay archivos obsoletos conocidos
+CeCo aislados sin bloqueo: 38104, 38278, 38489, 38608, 38666, 39722, 43079, 80173 · fuera de publicación hasta existir en Directorio
+Actualización segura aprobada · reconstruido · 0 obsoletos eliminados · 82.63s
+RESULTADO: 0
+COMANDO: python tests/validate_publish_safe.py
+Switched to a new branch 'main'
+To /tmp/tmplimno5cm/remote.git
+ * [new branch]      main -> main
+To /tmp/tmplimno5cm/remote.git
+   bf8bc6a..661b574  main -> main
+From /tmp/tmplimno5cm/remote
+ * branch            main       -> FETCH_HEAD
+From /tmp/tmplimno5cm/remote
+ * branch            main       -> FETCH_HEAD
+Nueva carga concurrente; reconstruyendo versión más reciente (1/3)
+Publicación segura OK: concurrencia, reconstrucción, rechazo, obsoletos de raíz y scripts publicados; cambios ajenos excluidos
+RESULTADO: 0
+COMANDO: node tests/validate_fhw_summary.js
+FHW ejecutivo aprobado · 440 escenarios · filtros · ceros · pendientes · promedio · Excel · canvas · otros módulos
+RESULTADO: 0
+COMANDO: python -m compileall -q scripts tests
+RESULTADO: 0
+COMANDO: node --check app.js
+RESULTADO: 0
+COMANDO: node --check data-contract.js
+RESULTADO: 0
+COMANDO: node --check pdf-export.js
+RESULTADO: 0
+COMANDO: node --check xlsx-export.js
+RESULTADO: 0
+COMANDO: node --check service-worker.js
+RESULTADO: 0
+COMANDO: git diff --check
+RESULTADO: 0
+COMANDO: python scripts/clean_obsolete.py --check
+Limpieza aprobada: no hay archivos obsoletos conocidos
+RESULTADO: 0

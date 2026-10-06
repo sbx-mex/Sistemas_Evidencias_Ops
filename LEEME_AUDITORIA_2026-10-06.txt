@@ -1,0 +1,29 @@
+SISTEMA DE EVIDENCIAS OPS — AUDITORÍA Y CORRECCIÓN 06/10/2026
+
+RESULTADO: correcciones verificadas localmente.
+BASE: main / c345ee5e5e908f5ea2122f1c99ee1c501111e3a3
+CORTE: 06/10/2026 14:01 / 450 tiendas / 6 actividades / 36 DM / 668 de 2700 (24.7%).
+
+1. Descomprime y carga los archivos conservando sus carpetas en la raíz del repositorio.
+   Incluye .github/workflows, scripts, tests, data, exports, docs y los archivos de raíz.
+   El ZIP contiene los archivos nuevos o a reemplazar; conserva el resto del proyecto.
+   Verifica las huellas de las fuentes de MANIFEST_AUDITORIA_2026-10-06.json si hubo nuevas cargas.
+
+2. Corrige el bloqueo externo de Azure.
+   Azure > Static Web Apps > recurso correcto > Overview > Manage deployment token.
+   GitHub > Settings > Secrets and variables > Actions.
+   Actualiza AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_SEA_07FE94410 con el token de ese recurso.
+
+3. Actions > Actualizar Sistema de Evidencias OPS > Run workflow > main.
+   Espera el resultado correcto; Azure se ejecutará después y revalidará antes de desplegar.
+   Confirma el resultado de Azure y la fecha de corte en el tablero.
+
+REVISIÓN OPERATIVA: 8 CeCo ausentes del CMS, con Id Forms y fila en docs/CECO_PENDIENTES_2026-10-06.csv.
+No se adivinaron tiendas ni se alteraron Excel de cms/. El CMS sigue siendo maestro.
+
+INFORME: docs/AUDITORIA_Y_CORRECCION_2026-10-06.pdf y .md.
+PRUEBAS: docs/VALIDACION_AUDITORIA_2026-10-06.txt.
+INTEGRIDAD: MANIFEST_AUDITORIA_2026-10-06.json.
+
+Para volver atrás, restaura las versiones anteriores de estos mismos archivos desde el commit base;
+los archivos nuevos están identificados en el manifiesto. Conserva las fuentes de trabajo actuales.

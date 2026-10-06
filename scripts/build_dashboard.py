@@ -26,6 +26,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
+from zoneinfo import ZoneInfo
 
 from openpyxl import load_workbook
 from PIL import Image
@@ -42,6 +43,12 @@ DEFAULT_CMS = ROOT / "cms" / "Sistema_Evidencias_OPS_CMS.xlsx"
 DEFAULT_SETTINGS = ROOT / "config" / "settings.json"
 DEFAULT_CUTOVER = ROOT / "config" / "cutover.json"
 DEFAULT_OUTPUT = ROOT / "data" / "dashboard.json"
+OPERATIONS_TIMEZONE = ZoneInfo("America/Mexico_City")
+
+
+def operational_now() -> datetime:
+    """Fechas y vencimientos comparten el calendario de la operación en México."""
+    return datetime.now(OPERATIONS_TIMEZONE)
 
 RESPONSE_FIELDS = {
     "id": ("Id",),
@@ -387,7 +394,7 @@ def source_fingerprints(paths: dict[str, Path]) -> dict[str, str]:
 def output_version(source_hashes: dict[str, str]) -> str:
     """Invalida resultados al cambiar fuentes, motor, recursos o fecha operativa."""
     inputs = dict(source_hashes)
-    inputs["calendarDate"] = datetime.now().date().isoformat()
+    inputs["calendarDate"] = operational_now().date().isoformat()
     for relative in (
         "scripts/build_dashboard.py", "scripts/export_excel.py", "scripts/export_pdf.py",
         "scripts/io_utils.py", "requirements.txt", "app.js", "styles.css",
@@ -1068,7 +1075,7 @@ def parse_date(value: Any):
 
 
 def date_status(start, end) -> str:
-    today = datetime.now().date()
+    today = operational_now().date()
     if start and today < start:
         return "Programada"
     if end and today > end:
@@ -1372,7 +1379,7 @@ def deadline_focus(end_date: str | None, pending: int) -> dict[str, Any]:
     if not end_date:
         return {"deadlineLabel": "Sin fecha", "deadlineTone": "neutral", "daysRemaining": None}
     end = datetime.fromisoformat(end_date).date()
-    days = (end - datetime.now().date()).days
+    days = (end - operational_now().date()).days
     if days < 0:
         return {"deadlineLabel": "Vencida", "deadlineTone": "red", "daysRemaining": days}
     if days == 0:
@@ -2420,7 +2427,7 @@ def build_payload(
         "project": settings.get("projectName", "Sistema de Evidencias OPS"),
         "region": region_label,
         "regions": regions,
-        "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "generatedAt": operational_now().isoformat(timespec="seconds"),
         "lastUpdated": iso_or_none(latest_update),
         "lastUpdatedDisplay": latest_update.strftime("%d/%m/%Y %H:%M") if latest_update else "Sin respuestas",
         "report": {
