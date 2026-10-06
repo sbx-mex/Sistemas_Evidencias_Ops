@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/build-dashboard.yml'
+      - '.github/workflows/azure-static-web-apps-salmon-sea-07fe94410.yml'
+      - 'staticwebapp.config.json'
       - 'cms/*.xlsx'
       - 'assets/dm/**'
       - 'assets/director/**'
