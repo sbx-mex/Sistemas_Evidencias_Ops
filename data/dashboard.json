@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "70871f4b495dd854",
+  "buildVersion": "96de2bec2047954d",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-06T14:41:27-06:00",
-  "lastUpdated": "2026-10-06T14:12:25",
-  "lastUpdatedDisplay": "06/10/2026 14:12",
+  "generatedAt": "2026-10-06T14:43:53-06:00",
+  "lastUpdated": "2026-10-06T14:38:53",
+  "lastUpdatedDisplay": "06/10/2026 14:38",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "06/10/26 · 14:12 h",
+    "cutOffDisplay": "06/10/26 · 14:38 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 173,
+        "completed": 174,
         "expected": 600,
-        "pending": 427,
-        "compliance": 28.8,
+        "pending": 426,
+        "compliance": 29.0,
         "status": "Atención"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "c48b4a9eab2ba84526e646b1946cf34e5003423be570b7f72bb3e777bfd84db4",
+    "responsesSha256": "b9a138054c86ebb318d92e9554a1b9a6c53426d6b0af9cfb2dfd99f4f8d220c1",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 6,
     "expectedCompletions": 2700,
-    "completedCompletions": 672,
+    "completedCompletions": 673,
     "compliance": 24.9,
-    "validResponses": 672,
-    "storesComplete": 4,
-    "pendingCompletions": 2028,
+    "validResponses": 673,
+    "storesComplete": 5,
+    "pendingCompletions": 2027,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1010,
+    "responsesRead": 1011,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 810,
-      "newFormsRowsIncluded": 626,
+      "newFormsRowsRead": 811,
+      "newFormsRowsIncluded": 627,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -861,7 +861,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 810
+        "CeCo": 811
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -930,7 +930,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 501,
+    "evidenceLinksPublished": 502,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -1077,11 +1077,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 61,
+      "completedStores": 62,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 389,
-      "compliance": 13.6,
+      "pendingStores": 388,
+      "compliance": 13.8,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -5,
@@ -1175,12 +1175,12 @@
         "Centro Sur"
       ],
       "stores": 13,
-      "completed": 43,
+      "completed": 44,
       "expected": 78,
       "notApplicable": 0,
-      "pending": 35,
-      "pendingStores": 11,
-      "compliance": 55.1,
+      "pending": 34,
+      "pendingStores": 10,
+      "compliance": 56.4,
       "status": "Seguimiento",
       "rank": 5
     },
@@ -6630,17 +6630,6 @@
       "ceco": "38129",
       "store": "Plaza Santa Teresa",
       "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 5,
-      "expected": 6,
-      "notApplicable": 0,
-      "pending": 1,
-      "compliance": 83.3,
-      "status": "En meta"
-    },
-    {
-      "ceco": "38718",
-      "store": "Paseo Ventura",
-      "dm": "Monica Selene Morales Ibarra",
       "completed": 5,
       "expected": 6,
       "notApplicable": 0,
@@ -16545,18 +16534,18 @@
       "dm": "Monica Selene Morales Ibarra",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 5,
+      "completed": 6,
       "expected": 6,
       "notApplicable": 0,
-      "compliance": 83.3,
-      "lastUpdate": "2026-10-06T14:01:21",
+      "compliance": 100.0,
+      "lastUpdate": "2026-10-06T14:38:53",
       "activities": {
         "Lay Out": true,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": true,
         "Va X Cuenta": true,
         "FHW": true,
-        "Tarta Maricu": false
+        "Tarta Maricu": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -20029,6 +20018,42 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-af93d6d4ed8bf68a",
+      "timestamp": "2026-10-06T14:38:53",
+      "timestampDisplay": "06/10/2026 14:38",
+      "activity": "Tarta Maricu",
+      "ceco": "38718",
+      "store": "Paseo Ventura",
+      "dm": "Monica Selene Morales Ibarra",
+      "region": "Centro Sur",
+      "evidenceKey": "Tarta_Maricu_38718",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38718",
+      "evidenceFileName": "17913188686078751671653588914196_Guadalupe Camacho Co.jpg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/17913188686078751671653588914196_Guadalupe%20Camacho%20Co.jpg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/17913188686078751671653588914196_Guadalupe%20Camacho%20Co.jpg",
+          "fileName": "17913188686078751671653588914196_Guadalupe Camacho Co.jpg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/17913190541662317022667050174421_Guadalupe%20Camacho%20Co.jpg",
+          "fileName": "17913190541662317022667050174421_Guadalupe Camacho Co.jpg"
+        }
+      ]
+    },
     {
       "id": "respuesta-8ea8112f0a61c797",
       "timestamp": "2026-10-06T14:12:25",
