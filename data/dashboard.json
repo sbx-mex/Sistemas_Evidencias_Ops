@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "58d3dd5462d22cfd",
+  "buildVersion": "b0dee6a4a834005a",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-08T20:32:02-06:00",
-  "lastUpdated": "2026-10-08T20:18:33",
-  "lastUpdatedDisplay": "08/10/2026 20:18",
+  "generatedAt": "2026-10-08T20:38:19-06:00",
+  "lastUpdated": "2026-10-08T20:31:37",
+  "lastUpdatedDisplay": "08/10/2026 20:31",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "08/10/26 · 20:18 h",
+    "cutOffDisplay": "08/10/26 · 20:31 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -96,10 +96,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 255,
+        "completed": 256,
         "expected": 511,
-        "pending": 256,
-        "compliance": 49.9,
+        "pending": 255,
+        "compliance": 50.1,
         "status": "Seguimiento"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "52afe1bf0dfeb73ae60a4d9be206093f1035590405f7c2200785d6692ccd6f05",
+    "responsesSha256": "c282153a1a7ae12d8e5e6b82b558b6b5a5e6b4afcb76f219e212a6e5be12ab0f",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 7,
     "expectedCompletions": 3150,
-    "completedCompletions": 852,
-    "compliance": 27.0,
-    "validResponses": 852,
+    "completedCompletions": 853,
+    "compliance": 27.1,
+    "validResponses": 853,
     "storesComplete": 3,
-    "pendingCompletions": 2298,
+    "pendingCompletions": 2297,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1213,
+    "responsesRead": 1214,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 1013,
-      "newFormsRowsIncluded": 829,
+      "newFormsRowsRead": 1014,
+      "newFormsRowsIncluded": 830,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -874,7 +874,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 1013
+        "CeCo": 1014
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -951,7 +951,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 665,
+    "evidenceLinksPublished": 666,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -1098,11 +1098,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 127,
+      "completedStores": 128,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 323,
-      "compliance": 28.2,
+      "pendingStores": 322,
+      "compliance": 28.4,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -7,
@@ -1199,12 +1199,12 @@
         "Centro Norte"
       ],
       "stores": 10,
-      "completed": 44,
+      "completed": 45,
       "expected": 70,
       "notApplicable": 0,
-      "pending": 26,
+      "pending": 25,
       "pendingStores": 10,
-      "compliance": 62.9,
+      "compliance": 64.3,
       "status": "Seguimiento",
       "rank": 4
     },
@@ -4789,17 +4789,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38333",
-      "store": "Izcalli Mega",
-      "dm": "Enrique César Flores",
-      "completed": 3,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38633",
       "store": "Carretera Toluca Mexico (plaza cedros DT)",
       "dm": "Erika Julieta Contreras Aguilera",
@@ -5693,6 +5682,17 @@
     {
       "ceco": "38894",
       "store": "Galerias Perinorte",
+      "dm": "Enrique César Flores",
+      "completed": 4,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 57.1,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38333",
+      "store": "Izcalli Mega",
       "dm": "Enrique César Flores",
       "completed": 4,
       "expected": 7,
@@ -10553,18 +10553,18 @@
       "dm": "Enrique César Flores",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 42.9,
-      "lastUpdate": "2026-09-28T13:53:01",
+      "compliance": 57.1,
+      "lastUpdate": "2026-10-08T20:31:37",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": true,
         "FHW": true,
-        "Tarta Maricu": false,
+        "Tarta Maricu": true,
         "Cata Cafe Oct": false
       },
       "applicableActivities": {
@@ -20983,6 +20983,42 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-eed5ae193160df36",
+      "timestamp": "2026-10-08T20:31:37",
+      "timestampDisplay": "08/10/2026 20:31",
+      "activity": "Tarta Maricu",
+      "ceco": "38333",
+      "store": "Izcalli Mega",
+      "dm": "Enrique César Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Tarta_Maricu_38333",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38333",
+      "evidenceFileName": "1DBE4CB5-D774-4641-AD25-7D59D0BDF44A_Starbucks Mega Izcal.png",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/1DBE4CB5-D774-4641-AD25-7D59D0BDF44A_Starbucks%20Mega%20Izcal.png",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/1DBE4CB5-D774-4641-AD25-7D59D0BDF44A_Starbucks%20Mega%20Izcal.png",
+          "fileName": "1DBE4CB5-D774-4641-AD25-7D59D0BDF44A_Starbucks Mega Izcal.png"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/image_Starbucks%20Mega%20Izcal.jpg",
+          "fileName": "image_Starbucks Mega Izcal.jpg"
+        }
+      ]
+    },
     {
       "id": "respuesta-31a88115d5e98be6",
       "timestamp": "2026-10-08T20:18:33",
