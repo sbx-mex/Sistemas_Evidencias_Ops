@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "98e4ddbb1965572c",
+  "buildVersion": "bec837e75a94e2fb",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-10T00:05:20-06:00",
-  "lastUpdated": "2026-10-09T21:59:42",
-  "lastUpdatedDisplay": "09/10/2026 21:59",
+  "generatedAt": "2026-10-10T08:55:05-06:00",
+  "lastUpdated": "2026-10-10T07:44:36",
+  "lastUpdatedDisplay": "10/10/2026 07:44",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "09/10/26 · 21:59 h",
+    "cutOffDisplay": "10/10/26 · 07:44 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "eef4ff5ecbbe96c3feb03b61c589a7902acbe85a083b941ffddea9535908e784",
+    "responsesSha256": "85837c65de0bc8f55d2bfa147e94ce6802b5eb53c5082955bdbbca6641947f4c",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -274,15 +274,15 @@
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1427,
+    "responsesRead": 1428,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 1227,
-      "newFormsRowsIncluded": 1043,
+      "newFormsRowsRead": 1228,
+      "newFormsRowsIncluded": 1044,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -920,7 +920,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 153,
+    "duplicateValidResponses": 154,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -933,7 +933,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 1227
+        "CeCo": 1228
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -10439,7 +10439,7 @@
       "expected": 7,
       "notApplicable": 0,
       "compliance": 71.4,
-      "lastUpdate": "2026-10-09T13:02:51",
+      "lastUpdate": "2026-10-10T07:44:36",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
@@ -21016,6 +21016,28 @@
   "surveyModules": [],
   "submissions": [
     {
+      "id": "respuesta-9e4dc26d50cab657",
+      "timestamp": "2026-10-10T07:44:36",
+      "timestampDisplay": "10/10/2026 07:44",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38401",
+      "store": "Coacalco",
+      "dm": "Enrique César Flores",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38401",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38401",
+      "evidenceFileName": "image_Starbucks CC Coalcal.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/image_Starbucks%20CC%20Coalcal.jpg"
+    },
+    {
       "id": "respuesta-7d756fce92ed9b9f",
       "timestamp": "2026-10-09T21:59:42",
       "timestampDisplay": "09/10/2026 21:59",
@@ -22621,28 +22643,6 @@
           "fileName": "17915733314538758311117610932927_Starbucks Paseo Inte.jpg"
         }
       ]
-    },
-    {
-      "id": "respuesta-0cf916b6de2ac644",
-      "timestamp": "2026-10-09T13:02:51",
-      "timestampDisplay": "09/10/2026 13:02",
-      "activity": "Cata Cafe Oct",
-      "ceco": "38401",
-      "store": "Coacalco",
-      "dm": "Enrique César Flores",
-      "region": "Centro Norte",
-      "evidenceKey": "Cata_Cafe_Oct_38401",
-      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38401",
-      "evidenceFileName": "IMG_7074_Starbucks CC Coalcal.jpeg",
-      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/IMG_7074_Starbucks%20CC%20Coalcal.jpeg"
     },
     {
       "id": "respuesta-9a858fb21729e3b9",
