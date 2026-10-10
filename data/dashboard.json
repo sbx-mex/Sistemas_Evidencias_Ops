@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "e022644aed97c761",
+  "buildVersion": "98e4ddbb1965572c",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-09T20:56:37-06:00",
-  "lastUpdated": "2026-10-09T20:36:45",
-  "lastUpdatedDisplay": "09/10/2026 20:36",
+  "generatedAt": "2026-10-10T00:05:20-06:00",
+  "lastUpdated": "2026-10-09T21:59:42",
+  "lastUpdatedDisplay": "09/10/2026 21:59",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "09/10/26 · 20:36 h",
+    "cutOffDisplay": "09/10/26 · 21:59 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 245,
+        "completed": 246,
         "expected": 700,
-        "pending": 455,
-        "compliance": 35.0,
+        "pending": 454,
+        "compliance": 35.1,
         "status": "Atención"
       },
       {
@@ -96,10 +96,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 297,
+        "completed": 299,
         "expected": 511,
-        "pending": 214,
-        "compliance": 58.1,
+        "pending": 212,
+        "compliance": 58.5,
         "status": "Seguimiento"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "373ac06d23ffca8ddccc0015d2f2be55db0bc1fa6094b21fd9602b7f037151cb",
+    "responsesSha256": "eef4ff5ecbbe96c3feb03b61c589a7902acbe85a083b941ffddea9535908e784",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 7,
     "expectedCompletions": 3150,
-    "completedCompletions": 992,
-    "compliance": 31.5,
-    "validResponses": 992,
-    "storesComplete": 8,
-    "pendingCompletions": 2158,
+    "completedCompletions": 995,
+    "compliance": 31.6,
+    "validResponses": 995,
+    "storesComplete": 10,
+    "pendingCompletions": 2155,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1424,
+    "responsesRead": 1427,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 1224,
-      "newFormsRowsIncluded": 1040,
+      "newFormsRowsRead": 1227,
+      "newFormsRowsIncluded": 1043,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -933,7 +933,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 1224
+        "CeCo": 1227
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -1030,7 +1030,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 802,
+    "evidenceLinksPublished": 805,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -1074,7 +1074,7 @@
       "compliance": 22.0,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -5,
       "focusRank": 1
     },
     {
@@ -1096,7 +1096,7 @@
       "compliance": 37.8,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -5,
       "focusRank": 2
     },
     {
@@ -1118,7 +1118,7 @@
       "compliance": 6.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -5,
       "focusRank": 3
     },
     {
@@ -1140,7 +1140,7 @@
       "compliance": 42.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -5,
       "focusRank": 4
     },
     {
@@ -1162,7 +1162,7 @@
       "compliance": 44.0,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -4,
+      "daysRemaining": -5,
       "focusRank": 5
     },
     {
@@ -1184,7 +1184,7 @@
       "compliance": 44.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -8,
+      "daysRemaining": -9,
       "focusRank": 6
     },
     {
@@ -1199,11 +1199,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 108,
+      "completedStores": 111,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 342,
-      "compliance": 24.0,
+      "pendingStores": 339,
+      "compliance": 24.7,
       "deadlineLabel": "Sin fecha",
       "deadlineTone": "neutral",
       "daysRemaining": null,
@@ -1211,6 +1211,25 @@
     }
   ],
   "dms": [
+    {
+      "dm": "Monica Selene Morales Ibarra",
+      "shortName": "Monica Morales",
+      "photo": "assets/dm/monica-morales.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Sur"
+      ],
+      "stores": 13,
+      "completed": 79,
+      "expected": 91,
+      "notApplicable": 0,
+      "pending": 12,
+      "pendingStores": 8,
+      "compliance": 86.8,
+      "status": "En meta",
+      "rank": 1
+    },
     {
       "dm": "Jose De Jesus Magos Arzaluz",
       "shortName": "Jose Magos",
@@ -1226,25 +1245,6 @@
       "notApplicable": 0,
       "pending": 15,
       "pendingStores": 15,
-      "compliance": 85.7,
-      "status": "En meta",
-      "rank": 1
-    },
-    {
-      "dm": "Monica Selene Morales Ibarra",
-      "shortName": "Monica Morales",
-      "photo": "assets/dm/monica-morales.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Sur"
-      ],
-      "stores": 13,
-      "completed": 78,
-      "expected": 91,
-      "notApplicable": 0,
-      "pending": 13,
-      "pendingStores": 9,
       "compliance": 85.7,
       "status": "En meta",
       "rank": 2
@@ -1364,25 +1364,6 @@
       "rank": 8
     },
     {
-      "dm": "Manuel Alejandro Avila Molina",
-      "shortName": "Manuel Avila",
-      "photo": "assets/dm/manuel-avila.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Poniente"
-      ],
-      "stores": 13,
-      "completed": 54,
-      "expected": 91,
-      "notApplicable": 0,
-      "pending": 37,
-      "pendingStores": 13,
-      "compliance": 59.3,
-      "status": "Seguimiento",
-      "rank": 9
-    },
-    {
       "dm": "Yazmin Chabela Guadarrama",
       "shortName": "Yazmin Chabela",
       "photo": "assets/dm/yazmin-chabela.webp",
@@ -1390,6 +1371,25 @@
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
+      ],
+      "stores": 13,
+      "completed": 55,
+      "expected": 91,
+      "notApplicable": 0,
+      "pending": 36,
+      "pendingStores": 12,
+      "compliance": 60.4,
+      "status": "Seguimiento",
+      "rank": 9
+    },
+    {
+      "dm": "Manuel Alejandro Avila Molina",
+      "shortName": "Manuel Avila",
+      "photo": "assets/dm/manuel-avila.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Poniente"
       ],
       "stores": 13,
       "completed": 54,
@@ -1478,28 +1478,28 @@
       "rank": 14
     },
     {
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "shortName": "Nancy Rodriguez",
-      "photo": "assets/dm/nancy-carolina.webp",
+      "dm": "Vanessa Carreño Rios",
+      "shortName": "Vanessa Carreño",
+      "photo": "assets/dm/vanessa-carreno.webp",
       "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 48,
+      "completed": 49,
       "expected": 91,
       "notApplicable": 0,
-      "pending": 43,
+      "pending": 42,
       "pendingStores": 13,
-      "compliance": 52.7,
+      "compliance": 53.8,
       "status": "Seguimiento",
       "rank": 15
     },
     {
-      "dm": "Vanessa Carreño Rios",
-      "shortName": "Vanessa Carreño",
-      "photo": "assets/dm/vanessa-carreno.webp",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "shortName": "Nancy Rodriguez",
+      "photo": "assets/dm/nancy-carolina.webp",
       "photoSource": "CMS",
       "photoStatus": "Disponible",
       "regions": [
@@ -4780,17 +4780,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38207",
-      "store": "Lindavista II",
-      "dm": "Vanessa Carreño Rios",
-      "completed": 3,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38411",
       "store": "Torres Lindavista",
       "dm": "Vanessa Carreño Rios",
@@ -5398,6 +5387,17 @@
     {
       "ceco": "38205",
       "store": "Lindavista",
+      "dm": "Vanessa Carreño Rios",
+      "completed": 4,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 57.1,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38207",
+      "store": "Lindavista II",
       "dm": "Vanessa Carreño Rios",
       "completed": 4,
       "expected": 7,
@@ -6727,31 +6727,9 @@
       "status": "En meta"
     },
     {
-      "ceco": "38678",
-      "store": "Power Center las Americas",
-      "dm": "Monica Selene Morales Ibarra",
-      "completed": 6,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 1,
-      "compliance": 85.7,
-      "status": "En meta"
-    },
-    {
       "ceco": "38996",
       "store": "Valle de Aragon",
       "dm": "Monica Selene Morales Ibarra",
-      "completed": 6,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 1,
-      "compliance": 85.7,
-      "status": "En meta"
-    },
-    {
-      "ceco": "38561",
-      "store": "Parque Toreo",
-      "dm": "Yazmin Chabela Guadarrama",
       "completed": 6,
       "expected": 7,
       "notApplicable": 0,
@@ -17417,11 +17395,11 @@
       "dm": "Monica Selene Morales Ibarra",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 85.7,
-      "lastUpdate": "2026-10-07T00:12:15",
+      "compliance": 100.0,
+      "lastUpdate": "2026-10-09T21:59:42",
       "activities": {
         "Lay Out": true,
         "Jarras Blender | Cold Foam": true,
@@ -17429,7 +17407,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -18887,11 +18865,11 @@
       "dm": "Vanessa Carreño Rios",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 42.9,
-      "lastUpdate": "2026-10-07T12:27:06",
+      "compliance": 57.1,
+      "lastUpdate": "2026-10-09T21:39:51",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
@@ -18899,7 +18877,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -19607,11 +19585,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 85.7,
-      "lastUpdate": "2026-10-05T10:57:11",
+      "compliance": 100.0,
+      "lastUpdate": "2026-10-09T21:56:10",
       "activities": {
         "Lay Out": true,
         "Jarras Blender | Cold Foam": true,
@@ -19619,7 +19597,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -21037,6 +21015,72 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-7d756fce92ed9b9f",
+      "timestamp": "2026-10-09T21:59:42",
+      "timestampDisplay": "09/10/2026 21:59",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38678",
+      "store": "Power Center las Americas",
+      "dm": "Monica Selene Morales Ibarra",
+      "region": "Centro Sur",
+      "evidenceKey": "Cata_Cafe_Oct_38678",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38678",
+      "evidenceFileName": "image_Starbucks Power Cent.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/image_Starbucks%20Power%20Cent.jpg"
+    },
+    {
+      "id": "respuesta-9581b294dcb8bfcf",
+      "timestamp": "2026-10-09T21:56:10",
+      "timestampDisplay": "09/10/2026 21:56",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38561",
+      "store": "Parque Toreo",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38561",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38561",
+      "evidenceFileName": "IMG-20261009-WA0052_Sergio Daniel Parra.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/IMG-20261009-WA0052_Sergio%20Daniel%20Parra.jpg"
+    },
+    {
+      "id": "respuesta-bf5231431a528778",
+      "timestamp": "2026-10-09T21:39:51",
+      "timestampDisplay": "09/10/2026 21:39",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38207",
+      "store": "Lindavista II",
+      "dm": "Vanessa Carreño Rios",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38207",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38207",
+      "evidenceFileName": "17916035466374311411688990436468_Starbucks Parque Lin.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/17916035466374311411688990436468_Starbucks%20Parque%20Lin.jpg"
+    },
     {
       "id": "respuesta-e8b97b6adc29c604",
       "timestamp": "2026-10-09T20:36:45",
