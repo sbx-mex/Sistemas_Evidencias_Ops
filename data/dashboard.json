@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "bec837e75a94e2fb",
+  "buildVersion": "897b1d46d64cb6e5",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-10T08:55:05-06:00",
-  "lastUpdated": "2026-10-10T07:44:36",
-  "lastUpdatedDisplay": "10/10/2026 07:44",
+  "generatedAt": "2026-10-10T13:00:54-06:00",
+  "lastUpdated": "2026-10-10T12:43:47",
+  "lastUpdatedDisplay": "10/10/2026 12:43",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "10/10/26 · 07:44 h",
+    "cutOffDisplay": "10/10/26 · 12:43 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -64,10 +64,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 448,
+        "completed": 449,
         "expected": 700,
-        "pending": 252,
-        "compliance": 64.0,
+        "pending": 251,
+        "compliance": 64.1,
         "status": "Seguimiento"
       },
       {
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 246,
+        "completed": 247,
         "expected": 700,
-        "pending": 454,
-        "compliance": 35.1,
+        "pending": 453,
+        "compliance": 35.3,
         "status": "Atención"
       },
       {
@@ -96,10 +96,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 299,
+        "completed": 301,
         "expected": 511,
-        "pending": 212,
-        "compliance": 58.5,
+        "pending": 210,
+        "compliance": 58.9,
         "status": "Seguimiento"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "85837c65de0bc8f55d2bfa147e94ce6802b5eb53c5082955bdbbca6641947f4c",
+    "responsesSha256": "a9339ea8bf8775031b4c471d4ab2b14b89e94cd022addf1a490558aa56aff9e9",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 7,
     "expectedCompletions": 3150,
-    "completedCompletions": 995,
-    "compliance": 31.6,
-    "validResponses": 995,
-    "storesComplete": 10,
-    "pendingCompletions": 2155,
+    "completedCompletions": 999,
+    "compliance": 31.7,
+    "validResponses": 999,
+    "storesComplete": 11,
+    "pendingCompletions": 2151,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1428,
+    "responsesRead": 1435,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 1228,
-      "newFormsRowsIncluded": 1044,
+      "newFormsRowsRead": 1235,
+      "newFormsRowsIncluded": 1051,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -920,7 +920,7 @@
     "ignoredResponseRows": [],
     "ignoredResponseSourceIds": [],
     "unusedIgnoredResponseSourceIds": [],
-    "duplicateValidResponses": 154,
+    "duplicateValidResponses": 157,
     "unsafeEvidenceRows": [],
     "responseSchema": {
       "sheet": "Sheet1",
@@ -933,7 +933,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 1228
+        "CeCo": 1235
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -1030,7 +1030,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 805,
+    "evidenceLinksPublished": 809,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -1199,11 +1199,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 111,
+      "completedStores": 115,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 339,
-      "compliance": 24.7,
+      "pendingStores": 335,
+      "compliance": 25.6,
       "deadlineLabel": "Sin fecha",
       "deadlineTone": "neutral",
       "daysRemaining": null,
@@ -1259,12 +1259,12 @@
         "Centro Sur"
       ],
       "stores": 14,
-      "completed": 82,
+      "completed": 83,
       "expected": 98,
       "notApplicable": 0,
-      "pending": 16,
-      "pendingStores": 11,
-      "compliance": 83.7,
+      "pending": 15,
+      "pendingStores": 10,
+      "compliance": 84.7,
       "status": "En meta",
       "rank": 3
     },
@@ -1345,6 +1345,25 @@
       "rank": 7
     },
     {
+      "dm": "Yazmin Chabela Guadarrama",
+      "shortName": "Yazmin Chabela",
+      "photo": "assets/dm/yazmin-chabela.webp",
+      "photoSource": "CMS",
+      "photoStatus": "Disponible",
+      "regions": [
+        "Centro Norte"
+      ],
+      "stores": 13,
+      "completed": 57,
+      "expected": 91,
+      "notApplicable": 0,
+      "pending": 34,
+      "pendingStores": 12,
+      "compliance": 62.6,
+      "status": "Seguimiento",
+      "rank": 8
+    },
+    {
       "dm": "Areli Anahi Lazcano Lezama",
       "shortName": "Areli Lazcano",
       "photo": "assets/dm/areli-lazcano.webp",
@@ -1360,25 +1379,6 @@
       "pending": 35,
       "pendingStores": 13,
       "compliance": 61.5,
-      "status": "Seguimiento",
-      "rank": 8
-    },
-    {
-      "dm": "Yazmin Chabela Guadarrama",
-      "shortName": "Yazmin Chabela",
-      "photo": "assets/dm/yazmin-chabela.webp",
-      "photoSource": "CMS",
-      "photoStatus": "Disponible",
-      "regions": [
-        "Centro Norte"
-      ],
-      "stores": 13,
-      "completed": 55,
-      "expected": 91,
-      "notApplicable": 0,
-      "pending": 36,
-      "pendingStores": 12,
-      "compliance": 60.4,
       "status": "Seguimiento",
       "rank": 9
     },
@@ -1525,12 +1525,12 @@
         "Centro Poniente"
       ],
       "stores": 11,
-      "completed": 39,
+      "completed": 40,
       "expected": 77,
       "notApplicable": 0,
-      "pending": 38,
+      "pending": 37,
       "pendingStores": 11,
-      "compliance": 50.6,
+      "compliance": 51.9,
       "status": "Seguimiento",
       "rank": 17
     },
@@ -4659,17 +4659,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38587",
-      "store": "Plateros",
-      "dm": "Juan Jesus Zuñiga Flores",
-      "completed": 3,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38764",
       "store": "Star Medica Napoles",
       "dm": "Juan Jesus Zuñiga Flores",
@@ -4826,17 +4815,6 @@
     {
       "ceco": "38427",
       "store": "Plaza Satelite",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 3,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "43152",
-      "store": "Samara Satélite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 3,
       "expected": 7,
@@ -5220,6 +5198,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38587",
+      "store": "Plateros",
+      "dm": "Juan Jesus Zuñiga Flores",
+      "completed": 4,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 57.1,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38951",
       "store": "Universidad Panamericana",
       "dm": "Juan Jesus Zuñiga Flores",
@@ -5539,17 +5528,6 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38695",
-      "store": "Cetram 4 Caminos",
-      "dm": "Yazmin Chabela Guadarrama",
-      "completed": 4,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 57.1,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38197",
       "store": "Echegaray",
       "dm": "Yazmin Chabela Guadarrama",
@@ -5596,6 +5574,17 @@
     {
       "ceco": "38859",
       "store": "Plaza Satelite II N1",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 4,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 57.1,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "43152",
+      "store": "Samara Satélite",
       "dm": "Yazmin Chabela Guadarrama",
       "completed": 4,
       "expected": 7,
@@ -6309,6 +6298,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
+      "completed": 5,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 71.4,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38458",
       "store": "El Rosario",
       "dm": "Yazmin Chabela Guadarrama",
@@ -6432,17 +6432,6 @@
     {
       "ceco": "38571",
       "store": "Jolie Place",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "completed": 6,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 1,
-      "compliance": 85.7,
-      "status": "En meta"
-    },
-    {
-      "ceco": "38107",
-      "store": "Pedregal",
       "dm": "Cesar Alfonso Castillo Romero",
       "completed": 6,
       "expected": 7,
@@ -8755,11 +8744,11 @@
       "dm": "Cesar Alfonso Castillo Romero",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 6,
+      "completed": 7,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 85.7,
-      "lastUpdate": "2026-10-07T16:09:09",
+      "compliance": 100.0,
+      "lastUpdate": "2026-10-10T11:22:06",
       "activities": {
         "Lay Out": true,
         "Jarras Blender | Cold Foam": true,
@@ -8767,7 +8756,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -14875,11 +14864,11 @@
       "dm": "Juan Jesus Zuñiga Flores",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 42.9,
-      "lastUpdate": "2026-10-08T18:31:24",
+      "compliance": 57.1,
+      "lastUpdate": "2026-10-10T10:46:31",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
@@ -14887,7 +14876,7 @@
         "Va X Cuenta": false,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -14909,7 +14898,7 @@
       "expected": 7,
       "notApplicable": 0,
       "compliance": 42.9,
-      "lastUpdate": "2026-09-29T16:20:40",
+      "lastUpdate": "2026-10-10T11:16:14",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
@@ -19465,11 +19454,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 57.1,
-      "lastUpdate": "2026-10-06T11:30:22",
+      "compliance": 71.4,
+      "lastUpdate": "2026-10-10T10:37:52",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
@@ -19477,7 +19466,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -19735,11 +19724,11 @@
       "dm": "Yazmin Chabela Guadarrama",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 42.9,
-      "lastUpdate": "2026-10-05T16:35:46",
+      "compliance": 57.1,
+      "lastUpdate": "2026-10-10T12:43:47",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
@@ -19747,7 +19736,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -21015,6 +21004,152 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-13367f03afcb1485",
+      "timestamp": "2026-10-10T12:43:47",
+      "timestampDisplay": "10/10/2026 12:43",
+      "activity": "Cata Cafe Oct",
+      "ceco": "43152",
+      "store": "Samara Satélite",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_43152",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_43152",
+      "evidenceFileName": "IMG_5716_Starbucks Samara Sat.jpeg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/IMG_5716_Starbucks%20Samara%20Sat.jpeg"
+    },
+    {
+      "id": "respuesta-70e06d0d104f0e3d",
+      "timestamp": "2026-10-10T11:22:06",
+      "timestampDisplay": "10/10/2026 11:22",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38107",
+      "store": "Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Cata_Cafe_Oct_38107",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38107",
+      "evidenceFileName": "IMG-20261008-WA0038_Ana Laura Gonzalez M.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/IMG-20261008-WA0038_Ana%20Laura%20Gonzalez%20M.jpg"
+    },
+    {
+      "id": "respuesta-6281a2c069ab3a68",
+      "timestamp": "2026-10-10T11:19:57",
+      "timestampDisplay": "10/10/2026 11:19",
+      "activity": "Lay Out",
+      "ceco": "38107",
+      "store": "Pedregal",
+      "dm": "Cesar Alfonso Castillo Romero",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38107",
+      "evidenceLinkLabel": "Link_Lay_Out_38107",
+      "evidenceFileName": "LayOut_Distrital_Cesar_Alfonso_Castillo_Romer_Ana Laura Gonzalez M.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/LayOut_Distrital_Cesar_Alfonso_Castillo_Romer_Ana%20Laura%20Gonzalez%20M.jpg"
+    },
+    {
+      "id": "respuesta-f84aa8e3308e6a60",
+      "timestamp": "2026-10-10T11:16:14",
+      "timestampDisplay": "10/10/2026 11:16",
+      "activity": "Tarta Maricu",
+      "ceco": "38764",
+      "store": "Star Medica Napoles",
+      "dm": "Juan Jesus Zuñiga Flores",
+      "region": "Centro Poniente",
+      "evidenceKey": "Tarta_Maricu_38764",
+      "evidenceLinkLabel": "Link_Tarta_Maricu_38764",
+      "evidenceFileName": "17916525343414662101484229851280_Starbucks Medica Nap.jpg",
+      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/17916525343414662101484229851280_Starbucks%20Medica%20Nap.jpg",
+      "evidenceFiles": [
+        {
+          "label": "POS",
+          "sourceHeader": "Evidencia_Tarta_Copete_POS",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/17916525343414662101484229851280_Starbucks%20Medica%20Nap.jpg",
+          "fileName": "17916525343414662101484229851280_Starbucks Medica Nap.jpg"
+        },
+        {
+          "label": "Showcase",
+          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
+          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/17916521282805141040029976689187_Starbucks%20Medica%20Nap.jpg",
+          "fileName": "17916521282805141040029976689187_Starbucks Medica Nap.jpg"
+        }
+      ]
+    },
+    {
+      "id": "respuesta-f4e8c23f270a3f88",
+      "timestamp": "2026-10-10T10:46:31",
+      "timestampDisplay": "10/10/2026 10:46",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38587",
+      "store": "Plateros",
+      "dm": "Juan Jesus Zuñiga Flores",
+      "region": "Centro Poniente",
+      "evidenceKey": "Cata_Cafe_Oct_38587",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38587",
+      "evidenceFileName": "image_Starbucks Plateros.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/image_Starbucks%20Plateros.jpg"
+    },
+    {
+      "id": "respuesta-bdfb057a0aa660e9",
+      "timestamp": "2026-10-10T10:37:52",
+      "timestampDisplay": "10/10/2026 10:37",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38695",
+      "store": "Cetram 4 Caminos",
+      "dm": "Yazmin Chabela Guadarrama",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38695",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38695",
+      "evidenceFileName": "f7e1ca7f-34a8-484a-a898-700e1b84fd6e_Starbucks CEMTRAM 4.jpeg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/f7e1ca7f-34a8-484a-a898-700e1b84fd6e_Starbucks%20CEMTRAM%204.jpeg"
+    },
     {
       "id": "respuesta-9e4dc26d50cab657",
       "timestamp": "2026-10-10T07:44:36",
@@ -40053,42 +40188,6 @@
       }
     },
     {
-      "id": "respuesta-5b5807238d37f551",
-      "timestamp": "2026-09-29T16:20:40",
-      "timestampDisplay": "29/09/2026 16:20",
-      "activity": "Tarta Maricu",
-      "ceco": "38764",
-      "store": "Star Medica Napoles",
-      "dm": "Juan Jesus Zuñiga Flores",
-      "region": "Centro Poniente",
-      "evidenceKey": "Tarta_Maricu_38764",
-      "evidenceLinkLabel": "Link_Tarta_Maricu_38764",
-      "evidenceFileName": "image_Starbucks Medica Nap.jpg",
-      "evidenceSourceHeader": "Evidencia_Tarta_Copete_POS",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Starbucks%20Medica%20Nap.jpg",
-      "evidenceFiles": [
-        {
-          "label": "POS",
-          "sourceHeader": "Evidencia_Tarta_Copete_POS",
-          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Antes%201/image_Starbucks%20Medica%20Nap.jpg",
-          "fileName": "image_Starbucks Medica Nap.jpg"
-        },
-        {
-          "label": "Showcase",
-          "sourceHeader": "Evidencia_Tarta_MiniCopete_ShowCase",
-          "url": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Organizacion_Refrigeradores_Back_Despues%202/image_Starbucks%20Medica%20Nap.jpg",
-          "fileName": "image_Starbucks Medica Nap.jpg"
-        }
-      ]
-    },
-    {
       "id": "respuesta-2c6c3c291ed0babb",
       "timestamp": "2026-09-29T16:17:36",
       "timestampDisplay": "29/09/2026 16:17",
@@ -43337,28 +43436,6 @@
         "total": 13,
         "percentage": 69.2
       }
-    },
-    {
-      "id": "respuesta-b7dd2c662b287e3c",
-      "timestamp": "2026-09-28T12:35:23",
-      "timestampDisplay": "28/09/2026 12:35",
-      "activity": "Lay Out",
-      "ceco": "38107",
-      "store": "Pedregal",
-      "dm": "Cesar Alfonso Castillo Romero",
-      "region": "Centro Sur",
-      "evidenceKey": "Lay_Out_38107",
-      "evidenceLinkLabel": "Link_Lay_Out_38107",
-      "evidenceFileName": "Collage_20260928_123453194_Ana Laura Gonzalez M.jpg",
-      "evidenceSourceHeader": "Evidencia_Lay_Out",
-      "confirmed": true,
-      "answer": "Sí",
-      "notApplicable": false,
-      "status": "Realizada",
-      "evidenceAvailable": true,
-      "evidenceLinkPublished": true,
-      "valid": true,
-      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/Collage_20260928_123453194_Ana%20Laura%20Gonzalez%20M.jpg"
     },
     {
       "id": "respuesta-b95768033eb4305d",
