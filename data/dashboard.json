@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "219b67cf12d26891",
+  "buildVersion": "8cf2695580358318",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-12T06:57:14-06:00",
-  "lastUpdated": "2026-10-12T01:37:51",
-  "lastUpdatedDisplay": "12/10/2026 01:37",
+  "generatedAt": "2026-10-12T10:05:09-06:00",
+  "lastUpdated": "2026-10-12T10:02:44",
+  "lastUpdatedDisplay": "12/10/2026 10:02",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "12/10/26 · 01:37 h",
+    "cutOffDisplay": "12/10/26 · 10:02 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -64,10 +64,10 @@
         "order": 3,
         "filterValue": "Centro Poniente",
         "stores": 100,
-        "completed": 497,
+        "completed": 498,
         "expected": 700,
-        "pending": 203,
-        "compliance": 71.0,
+        "pending": 202,
+        "compliance": 71.1,
         "status": "Seguimiento"
       },
       {
@@ -96,10 +96,10 @@
         "order": 5,
         "filterValue": "Centro Norte",
         "stores": 73,
-        "completed": 344,
+        "completed": 347,
         "expected": 511,
-        "pending": 167,
-        "compliance": 67.3,
+        "pending": 164,
+        "compliance": 67.9,
         "status": "Seguimiento"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "de5417285d2a923cd9f57debcb401fc9b84b2b1e5979e7ddf5f7c42e8f6c97f4",
+    "responsesSha256": "8dad88f5e63f2fb7b3e89fbb2e0fff2d36df70f6dc9091d061308ca27b528aa3",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 7,
     "expectedCompletions": 3150,
-    "completedCompletions": 1093,
-    "compliance": 34.7,
-    "validResponses": 1093,
+    "completedCompletions": 1097,
+    "compliance": 34.8,
+    "validResponses": 1097,
     "storesComplete": 14,
-    "pendingCompletions": 2057,
+    "pendingCompletions": 2053,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1544,
+    "responsesRead": 1548,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 1344,
-      "newFormsRowsIncluded": 1160,
+      "newFormsRowsRead": 1348,
+      "newFormsRowsIncluded": 1164,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -945,7 +945,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 1344
+        "CeCo": 1348
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -1042,7 +1042,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 900,
+    "evidenceLinksPublished": 904,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -1211,11 +1211,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 184,
+      "completedStores": 188,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 266,
-      "compliance": 40.9,
+      "pendingStores": 262,
+      "compliance": 41.8,
       "deadlineLabel": "Sin fecha",
       "deadlineTone": "neutral",
       "daysRemaining": null,
@@ -1347,12 +1347,12 @@
         "Centro Poniente"
       ],
       "stores": 12,
-      "completed": 61,
+      "completed": 62,
       "expected": 84,
       "notApplicable": 0,
-      "pending": 23,
+      "pending": 22,
       "pendingStores": 12,
-      "compliance": 72.6,
+      "compliance": 73.8,
       "status": "Seguimiento",
       "rank": 7
     },
@@ -1385,12 +1385,12 @@
         "Centro Norte"
       ],
       "stores": 11,
-      "completed": 53,
+      "completed": 54,
       "expected": 77,
       "notApplicable": 0,
-      "pending": 24,
+      "pending": 23,
       "pendingStores": 11,
-      "compliance": 68.8,
+      "compliance": 70.1,
       "status": "Seguimiento",
       "rank": 9
     },
@@ -1518,12 +1518,12 @@
         "Centro Norte"
       ],
       "stores": 13,
-      "completed": 51,
+      "completed": 53,
       "expected": 91,
       "notApplicable": 0,
-      "pending": 40,
+      "pending": 38,
       "pendingStores": 13,
-      "compliance": 56.0,
+      "compliance": 58.2,
       "status": "Seguimiento",
       "rank": 16
     },
@@ -4616,30 +4616,8 @@
       "status": "Seguimiento"
     },
     {
-      "ceco": "38792",
-      "store": "Pasaje Tlanepantla",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 3,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
       "ceco": "38460",
       "store": "Santa Monica",
-      "dm": "Nancy Carolina Rodriguez Medina",
-      "completed": 3,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 4,
-      "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38694",
-      "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 3,
       "expected": 7,
@@ -4668,17 +4646,6 @@
       "notApplicable": 0,
       "pending": 4,
       "compliance": 42.9,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38227",
-      "store": "Lomas Plaza",
-      "dm": "Adriana Alejandra Tanus Buhler",
-      "completed": 4,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 57.1,
       "status": "Seguimiento"
     },
     {
@@ -4946,6 +4913,17 @@
       "status": "Seguimiento"
     },
     {
+      "ceco": "38792",
+      "store": "Pasaje Tlanepantla",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 4,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 57.1,
+      "status": "Seguimiento"
+    },
+    {
       "ceco": "38136",
       "store": "Punta Norte",
       "dm": "Nancy Carolina Rodriguez Medina",
@@ -4970,6 +4948,17 @@
     {
       "ceco": "38374",
       "store": "Valle Dorado",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "completed": 4,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 3,
+      "compliance": 57.1,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
       "dm": "Nancy Carolina Rodriguez Medina",
       "completed": 4,
       "expected": 7,
@@ -5081,17 +5070,6 @@
       "ceco": "38651",
       "store": "Via Vallejo",
       "dm": "Vanessa Carreño Rios",
-      "completed": 4,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 3,
-      "compliance": 57.1,
-      "status": "Seguimiento"
-    },
-    {
-      "ceco": "38930",
-      "store": "Blvd. Aeropuerto dt",
-      "dm": "Veronica Garcia Ortega",
       "completed": 4,
       "expected": 7,
       "notApplicable": 0,
@@ -5245,6 +5223,17 @@
     {
       "ceco": "38112",
       "store": "Insurgentes Parroquia",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "completed": 5,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 71.4,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38227",
+      "store": "Lomas Plaza",
       "dm": "Adriana Alejandra Tanus Buhler",
       "completed": 5,
       "expected": 7,
@@ -5972,6 +5961,17 @@
       "ceco": "38371",
       "store": "Montevideo DT",
       "dm": "Vanessa Carreño Rios",
+      "completed": 5,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 2,
+      "compliance": 71.4,
+      "status": "Seguimiento"
+    },
+    {
+      "ceco": "38930",
+      "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
       "completed": 5,
       "expected": 7,
       "notApplicable": 0,
@@ -6863,11 +6863,11 @@
       "dm": "Adriana Alejandra Tanus Buhler",
       "region": "Centro Poniente",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 57.1,
-      "lastUpdate": "2026-09-29T17:12:04",
+      "compliance": 71.4,
+      "lastUpdate": "2026-10-12T08:46:00",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
@@ -6875,7 +6875,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -17633,11 +17633,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 42.9,
-      "lastUpdate": "2026-10-05T20:16:28",
+      "compliance": 57.1,
+      "lastUpdate": "2026-10-12T10:02:44",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
@@ -17645,7 +17645,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -17813,11 +17813,11 @@
       "dm": "Nancy Carolina Rodriguez Medina",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 3,
+      "completed": 4,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 42.9,
-      "lastUpdate": "2026-10-06T17:37:20",
+      "compliance": 57.1,
+      "lastUpdate": "2026-10-12T09:59:49",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": false,
@@ -17825,7 +17825,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -19103,11 +19103,11 @@
       "dm": "Veronica Garcia Ortega",
       "region": "Centro Norte",
       "status": "Abierta",
-      "completed": 4,
+      "completed": 5,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 57.1,
-      "lastUpdate": "2026-10-09T12:01:21",
+      "compliance": 71.4,
+      "lastUpdate": "2026-10-12T07:11:41",
       "activities": {
         "Lay Out": false,
         "Jarras Blender | Cold Foam": true,
@@ -19115,7 +19115,7 @@
         "Va X Cuenta": true,
         "FHW": true,
         "Tarta Maricu": true,
-        "Cata Cafe Oct": false
+        "Cata Cafe Oct": true
       },
       "applicableActivities": {
         "Lay Out": true,
@@ -20993,6 +20993,94 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-ee799e7e60acc421",
+      "timestamp": "2026-10-12T10:02:44",
+      "timestampDisplay": "12/10/2026 10:02",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38792",
+      "store": "Pasaje Tlanepantla",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38792",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38792",
+      "evidenceFileName": "a408eab1-f92c-48cc-a4ae-e24276171195_Cristian Alexis Posa.jpeg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/a408eab1-f92c-48cc-a4ae-e24276171195_Cristian%20Alexis%20Posa.jpeg"
+    },
+    {
+      "id": "respuesta-fa2803e8724b33ee",
+      "timestamp": "2026-10-12T09:59:49",
+      "timestampDisplay": "12/10/2026 09:59",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38694",
+      "store": "Villas de la Hacienda",
+      "dm": "Nancy Carolina Rodriguez Medina",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38694",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38694",
+      "evidenceFileName": "bdf26422-c5b1-4d80-89cc-e1bf94dc60c0_Starbucks Villas de.jpeg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/bdf26422-c5b1-4d80-89cc-e1bf94dc60c0_Starbucks%20Villas%20de.jpeg"
+    },
+    {
+      "id": "respuesta-4c83ad08b71c5bf7",
+      "timestamp": "2026-10-12T08:46:00",
+      "timestampDisplay": "12/10/2026 08:46",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38227",
+      "store": "Lomas Plaza",
+      "dm": "Adriana Alejandra Tanus Buhler",
+      "region": "Centro Poniente",
+      "evidenceKey": "Cata_Cafe_Oct_38227",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38227",
+      "evidenceFileName": "576C8527-7360-465B-AB2D-5FE87BDAA5F8_Starbucks Lomas Plaz.png",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/576C8527-7360-465B-AB2D-5FE87BDAA5F8_Starbucks%20Lomas%20Plaz.png"
+    },
+    {
+      "id": "respuesta-7c2ca8731cb27585",
+      "timestamp": "2026-10-12T07:11:41",
+      "timestampDisplay": "12/10/2026 07:11",
+      "activity": "Cata Cafe Oct",
+      "ceco": "38930",
+      "store": "Blvd. Aeropuerto dt",
+      "dm": "Veronica Garcia Ortega",
+      "region": "Centro Norte",
+      "evidenceKey": "Cata_Cafe_Oct_38930",
+      "evidenceLinkLabel": "Link_Cata_Cafe_Oct_38930",
+      "evidenceFileName": "image_Starbucks Boulevard.jpg",
+      "evidenceSourceHeader": "Evidencia_Cata_Cafe_Oct",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia_Tarta_Copete_POS/image_Starbucks%20Boulevard.jpg"
+    },
     {
       "id": "respuesta-a4bc122b12ee5364",
       "timestamp": "2026-10-12T01:37:51",
