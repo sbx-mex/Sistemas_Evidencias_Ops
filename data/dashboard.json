@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "7b41b196efafe4d8",
+  "buildVersion": "d97cf68e33c28d23",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,7 +10,7 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-12T22:31:45-06:00",
+  "generatedAt": "2026-10-13T10:19:03-06:00",
   "lastUpdated": "2026-10-12T21:01:46",
   "lastUpdatedDisplay": "12/10/2026 21:01",
   "report": {
@@ -1088,7 +1088,7 @@
       "compliance": 28.0,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -8,
       "focusRank": 1
     },
     {
@@ -1110,7 +1110,7 @@
       "compliance": 41.3,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -8,
       "focusRank": 2
     },
     {
@@ -1132,7 +1132,7 @@
       "compliance": 6.9,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -8,
       "focusRank": 3
     },
     {
@@ -1154,7 +1154,7 @@
       "compliance": 43.6,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -8,
       "focusRank": 4
     },
     {
@@ -1176,7 +1176,7 @@
       "compliance": 44.2,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -7,
+      "daysRemaining": -8,
       "focusRank": 5
     },
     {
@@ -1198,7 +1198,7 @@
       "compliance": 45.1,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
-      "daysRemaining": -11,
+      "daysRemaining": -12,
       "focusRank": 6
     },
     {
