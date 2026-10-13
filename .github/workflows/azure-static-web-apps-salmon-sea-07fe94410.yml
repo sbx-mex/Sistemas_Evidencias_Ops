@@ -1,85 +1,11 @@
-name: Azure Static Web Apps CI/CD
-
+name: Despliegue anterior archivado
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches: [main]
-  workflow_run:
-    workflows: ["Actualizar Sistema de Evidencias OPS"]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-  pull-requests: write
-
-concurrency:
-  group: azure-evidencias-${{ github.event.pull_request.number || 'production' }}
-  cancel-in-progress: false
-
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request') || (github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository)
+  archivo:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.sha }}
-          submodules: false
-          lfs: false
-
-      - name: Comprobar credencial de despliegue
-        env:
-          AZURE_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_SEA_07FE94410 }}
-        run: |
-          if [ -z "$AZURE_DEPLOYMENT_TOKEN" ]; then
-            echo "::error::Falta el secreto AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_SEA_07FE94410. Copia el token de la Static Web App correcta en Settings > Secrets and variables > Actions."
-            exit 1
-          fi
-
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.12'
-          cache: pip
-
-      - name: Validar y reconstruir datos antes del despliegue
-        env:
-          PYTHONUTF8: '1'
-          PYTHONDONTWRITEBYTECODE: '1'
-          PYTHONPYCACHEPREFIX: /tmp/evidencias-ops-pycache
-        run: |
-          pip install --disable-pip-version-check -r requirements.txt
-          pip check
-          python -X utf8 scripts/safe_maintenance.py --force
-
-      - name: Preparar archivos web para Azure
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -X utf8 scripts/prepare_azure_public.py --output azure-public
-
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_SEA_07FE94410 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "azure-public"
-          api_location: ""
-          output_location: ""
-          skip_app_build: true
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_SEA_07FE94410 }}
-          action: "close"
+      - name: Consultar destino actual
+        run: echo "Sistema de Evidencias OPS continúa en https://sistema-evidencias-d5c6h0eqcpgefbex.mexicocentral-01.azurewebsites.net/. El histórico se conserva y este flujo ya no publica datos de Forms."
