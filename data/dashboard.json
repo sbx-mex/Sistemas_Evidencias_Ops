@@ -1,6 +1,6 @@
 {
   "schemaVersion": 14,
-  "buildVersion": "3ff0c2cb44af4f94",
+  "buildVersion": "7b41b196efafe4d8",
   "project": "Sistema de Evidencias OPS",
   "region": "Todas las regiones",
   "regions": [
@@ -10,15 +10,15 @@
     "Centro Poniente",
     "Centro Sur"
   ],
-  "generatedAt": "2026-10-12T20:51:40-06:00",
-  "lastUpdated": "2026-10-12T20:14:08",
-  "lastUpdatedDisplay": "12/10/2026 20:14",
+  "generatedAt": "2026-10-12T22:31:45-06:00",
+  "lastUpdated": "2026-10-12T21:01:46",
+  "lastUpdatedDisplay": "12/10/2026 21:01",
   "report": {
     "title": "Sistema de Evidencia OPS",
     "subtitle": "Dashboard de Avance de Actividades",
     "motto": "CADA DETALLE CUENTA",
     "footerLabel": "Starbucks México · Operaciones",
-    "cutOffDisplay": "12/10/26 · 20:14 h",
+    "cutOffDisplay": "12/10/26 · 21:01 h",
     "regionalDirector": {
       "name": "Jorge Alcantar",
       "role": "Director Regional",
@@ -80,10 +80,10 @@
         "order": 4,
         "filterValue": "Centro Sur",
         "stores": 100,
-        "completed": 269,
+        "completed": 270,
         "expected": 700,
-        "pending": 431,
-        "compliance": 38.4,
+        "pending": 430,
+        "compliance": 38.6,
         "status": "Atención"
       },
       {
@@ -122,7 +122,7 @@
   },
   "sources": {
     "responses": "Sistema de Evidencias OPS.xlsx",
-    "responsesSha256": "c0a691bff7f54d886c88dbb1e9b65afb817480dbeca377dd61fb606af86402f9",
+    "responsesSha256": "768168a18cd8bf97b08c455b305575afe9d439515347e4644325ad51ed47df3f",
     "baseline": "Corte_Forms_2026-09-17_115657.xlsx",
     "baselineSha256": "2d628eafd9b41b97116147b0ac7b1433109eba7ddfa266b291d8d2d15a5edf82",
     "cutoff": "2026-09-17T11:56:57",
@@ -266,23 +266,23 @@
     "stores": 450,
     "activities": 7,
     "expectedCompletions": 3150,
-    "completedCompletions": 1136,
+    "completedCompletions": 1137,
     "compliance": 36.1,
-    "validResponses": 1136,
+    "validResponses": 1137,
     "storesComplete": 14,
-    "pendingCompletions": 2014,
+    "pendingCompletions": 2013,
     "notApplicableCompletions": 0
   },
   "quality": {
-    "responsesRead": 1608,
+    "responsesRead": 1609,
     "cutover": {
       "enabled": true,
       "cutoff": "2026-09-17T11:56:57",
       "baselineRowsRead": 384,
       "baselineRowsIncluded": 384,
       "baselineRowsRejectedAfterCutoff": 0,
-      "newFormsRowsRead": 1408,
-      "newFormsRowsIncluded": 1224,
+      "newFormsRowsRead": 1409,
+      "newFormsRowsIncluded": 1225,
       "newFormsRowsIncludedWithoutTimestamp": 0,
       "newFormsRowsRejectedAtOrBeforeCutoff": 0,
       "newFormsRowsRejectedInactive": 184,
@@ -947,7 +947,7 @@
         "CeCo"
       ],
       "cecoSourceUsage": {
-        "CeCo": 1408
+        "CeCo": 1409
       },
       "cecoRowsUsingBoth": 0,
       "cecoRowsBlank": 0,
@@ -1044,7 +1044,7 @@
     },
     "notApplicableResponses": 0,
     "notApplicablePairs": 0,
-    "evidenceLinksPublished": 940,
+    "evidenceLinksPublished": 941,
     "privacyMode": false,
     "stabilityControls": {
       "sourceIntegrity": true,
@@ -1081,11 +1081,11 @@
       "priority": "Alta",
       "autoDetected": false,
       "conditionalApplicability": false,
-      "completedStores": 125,
+      "completedStores": 126,
       "applicableStores": 450,
       "notApplicableStores": 0,
-      "pendingStores": 325,
-      "compliance": 27.8,
+      "pendingStores": 324,
+      "compliance": 28.0,
       "deadlineLabel": "Vencida",
       "deadlineTone": "red",
       "daysRemaining": -7,
@@ -1596,12 +1596,12 @@
         "Centro Sur"
       ],
       "stores": 12,
-      "completed": 9,
+      "completed": 10,
       "expected": 84,
       "notApplicable": 0,
-      "pending": 75,
+      "pending": 74,
       "pendingStores": 12,
-      "compliance": 10.7,
+      "compliance": 11.9,
       "status": "Atención",
       "rank": 20
     },
@@ -2838,17 +2838,6 @@
     {
       "ceco": "38406",
       "store": "Medica Sur",
-      "dm": "Hazar Susim Trejo Hernandez",
-      "completed": 0,
-      "expected": 7,
-      "notApplicable": 0,
-      "pending": 7,
-      "compliance": 0.0,
-      "status": "Atención"
-    },
-    {
-      "ceco": "38402",
-      "store": "PeriSur",
       "dm": "Hazar Susim Trejo Hernandez",
       "completed": 0,
       "expected": 7,
@@ -4158,6 +4147,17 @@
     {
       "ceco": "38806",
       "store": "Patio Tlalpan",
+      "dm": "Hazar Susim Trejo Hernandez",
+      "completed": 1,
+      "expected": 7,
+      "notApplicable": 0,
+      "pending": 6,
+      "compliance": 14.3,
+      "status": "Atención"
+    },
+    {
+      "ceco": "38402",
+      "store": "PeriSur",
       "dm": "Hazar Susim Trejo Hernandez",
       "completed": 1,
       "expected": 7,
@@ -12355,13 +12355,13 @@
       "dm": "Hazar Susim Trejo Hernandez",
       "region": "Centro Sur",
       "status": "Abierta",
-      "completed": 0,
+      "completed": 1,
       "expected": 7,
       "notApplicable": 0,
-      "compliance": 0.0,
-      "lastUpdate": null,
+      "compliance": 14.3,
+      "lastUpdate": "2026-10-12T21:01:46",
       "activities": {
-        "Lay Out": false,
+        "Lay Out": true,
         "Jarras Blender | Cold Foam": false,
         "Organización Refrigeradores Back": false,
         "Va X Cuenta": false,
@@ -21005,6 +21005,28 @@
   ],
   "surveyModules": [],
   "submissions": [
+    {
+      "id": "respuesta-0d7ac19ac1d426e5",
+      "timestamp": "2026-10-12T21:01:46",
+      "timestampDisplay": "12/10/2026 21:01",
+      "activity": "Lay Out",
+      "ceco": "38402",
+      "store": "PeriSur",
+      "dm": "Hazar Susim Trejo Hernandez",
+      "region": "Centro Sur",
+      "evidenceKey": "Lay_Out_38402",
+      "evidenceLinkLabel": "Link_Lay_Out_38402",
+      "evidenceFileName": "LayOut_Distrital_Hazar_Trejo_Hernandez_Perisu_Starbucks Perisur.jpg",
+      "evidenceSourceHeader": "Evidencia_Lay_Out",
+      "confirmed": true,
+      "answer": "Sí",
+      "notApplicable": false,
+      "status": "Realizada",
+      "evidenceAvailable": true,
+      "evidenceLinkPublished": true,
+      "valid": true,
+      "evidenceUrl": "https://grupovips-my.sharepoint.com/personal/enrique_cesar_starbucks_com_mx/Documents/Nube_EnriqueCesar/Aplicaciones/Microsoft%20Forms/Sistema%20de%20Evidencias%20OPS/Evidencia%207/LayOut_Distrital_Hazar_Trejo_Hernandez_Perisu_Starbucks%20Perisur.jpg"
+    },
     {
       "id": "respuesta-47a3544b69b2ca66",
       "timestamp": "2026-10-12T20:14:08",
