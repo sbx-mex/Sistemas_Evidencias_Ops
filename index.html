@@ -34,6 +34,7 @@
       <a href="#evidencias">Evidencias</a>
     </nav>
     <div class="header-actions">
+      <button class="button quiet" id="ops-migration-open" type="button" aria-haspopup="dialog" aria-controls="ops-migration-dialog">Nuevo sitio y manuales</button>
       <button class="button quiet about-trigger" type="button" data-open-about aria-haspopup="dialog" aria-controls="about-dialog" aria-label="Acerca de · Guía para Gerentes de Tienda"><span class="about-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></span>Acerca de</button>
       <button id="install-button" class="button quiet" type="button" hidden>Instalar</button>
       <button id="refresh-button" class="refresh-button" type="button" aria-label="Actualizar datos del tablero" title="Consultar la información publicada más reciente" aria-busy="false">
@@ -273,6 +274,88 @@
 
   <button id="back-to-top" class="back-to-top" type="button" aria-label="Volver al inicio" hidden>↑ Arriba</button>
 
+  <!-- Aviso de migración independiente del tablero y de sus fuentes de datos. -->
+  <style>
+    #ops-migration-dialog { box-sizing: border-box; width: min(570px, calc(100% - 28px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid #d3e3d9; border-radius: 24px; background: #fffdf8; color: #1d3932; box-shadow: 0 24px 80px #142e3440; overflow: auto; font-family: inherit; }
+    #ops-migration-dialog::backdrop { background: #19392ed1; backdrop-filter: blur(4px); }
+    #ops-migration-dialog .ops-migration-content { padding: 30px; }
+    #ops-migration-dialog .ops-migration-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    #ops-migration-dialog .ops-migration-eyebrow { margin: 0; color: #006241; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+    #ops-migration-dialog .ops-migration-close { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; padding: 0; border: 1px solid #c9dcd2; border-radius: 50%; color: #1d3932; background: white; font-size: 24px; cursor: pointer; }
+    #ops-migration-dialog h2 { margin: 12px 0 10px; font-size: clamp(28px, 6vw, 38px); line-height: 1.15; letter-spacing: -.04em; color: #1d3932; }
+    #ops-migration-dialog .ops-migration-intro { margin: 0 0 20px; color: #526b63; font-size: 16px; line-height: 1.55; }
+    #ops-migration-dialog .ops-migration-site { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-radius: 14px; background: #006241; color: white; text-decoration: none; font-size: 16px; font-weight: 800; min-height: 52px; box-sizing: border-box; }
+    #ops-migration-dialog .ops-migration-caption { margin: 8px 0 24px; color: #526b63; font-size: 12px; line-height: 1.5; }
+    #ops-migration-dialog h3 { margin: 0 0 12px; font-size: 18px; color: #1d3932; }
+    #ops-migration-dialog .ops-migration-manuals { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    #ops-migration-dialog .ops-migration-manual { display: grid; gap: 7px; padding: 18px; border: 1px solid #c9dcd2; border-radius: 14px; text-decoration: none; background: white; color: #1d3932; min-width: 0; }
+    #ops-migration-dialog .ops-migration-manual strong { font-size: 19px; }
+    #ops-migration-dialog .ops-migration-manual span { color: #526b63; font-size: 13px; line-height: 1.4; }
+    #ops-migration-dialog .ops-migration-manual small { color: #006241; font-size: 12px; font-weight: 800; }
+    #ops-migration-dialog .ops-migration-share { margin: 18px 0; padding: 14px 16px; border-radius: 12px; background: #e7f2ec; font-size: 14px; line-height: 1.5; }
+    #ops-migration-dialog .ops-migration-stay { display: block; margin: 0 auto; padding: 12px 18px; border: 0; border-radius: 9px; background: transparent; color: #526b63; font: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+    #ops-migration-dialog a:focus-visible, #ops-migration-dialog button:focus-visible { outline: 3px solid #b67826; outline-offset: 3px; }
+    #ops-migration-dialog a:hover { filter: brightness(.97); }
+    @media (max-width: 380px) { #ops-migration-dialog .ops-migration-content { padding: 20px; } #ops-migration-dialog .ops-migration-manual { padding: 13px; } }
+    @media print { #ops-migration-dialog, #ops-migration-open { display: none !important; } }
+  </style>
+  <dialog id="ops-migration-dialog" aria-labelledby="ops-migration-title" aria-describedby="ops-migration-description">
+    <div class="ops-migration-content">
+      <div class="ops-migration-top">
+        <p class="ops-migration-eyebrow">SEGUIMOS JUNTOS</p>
+        <button class="ops-migration-close" type="button" data-ops-migration-close aria-label="Cerrar aviso de migración">×</button>
+      </div>
+      <h2 id="ops-migration-title">Migramos para ti</h2>
+      <p class="ops-migration-intro" id="ops-migration-description">Un mismo sitio para compartir tus evidencias, consultar el avance y acompañar a tu equipo.</p>
+      <a class="ops-migration-site" href="https://sistema-evidencias-d5c6h0eqcpgefbex.mexicocentral-01.azurewebsites.net/" target="_blank" rel="noopener noreferrer" autofocus>Ir al nuevo sitio <span aria-hidden="true">↗</span></a>
+      <p class="ops-migration-caption">Tienda, Operativa y Admin: entra al mismo enlace y elige tu perfil.</p>
+      <h3>Consulta tu manual</h3>
+      <div class="ops-migration-manuals">
+        <a class="ops-migration-manual" href="./assets/about/Sis_Evidencia_Tienda.pdf" target="_blank" rel="noopener noreferrer" data-project-document>
+          <strong>Tienda</strong><span>Acceso, envío y seguimiento.</span><small>Abrir manual PDF ↗</small>
+        </a>
+        <a class="ops-migration-manual" href="./assets/about/Sis_Evidencia_DM_RD_Admin.pdf" target="_blank" rel="noopener noreferrer" data-project-document>
+          <strong>RD / DM</strong><span>Validación y acceso Admin.</span><small>Abrir manual PDF ↗</small>
+        </a>
+      </div>
+      <p class="ops-migration-share"><strong>Comparte sólo el manual de Tienda con tu equipo</strong> para revisar cómo ingresar, enviar sus evidencias y consultar la validación.</p>
+      <button class="ops-migration-stay" type="button" data-ops-migration-close>Continuar en este tablero</button>
+    </div>
+  </dialog>
+  <script>
+    (() => {
+      'use strict';
+      const dialog = document.getElementById('ops-migration-dialog');
+      const trigger = document.getElementById('ops-migration-open');
+      if (!dialog || !trigger || typeof dialog.showModal !== 'function') return;
+      let previousFocus;
+      const open = () => {
+        if (dialog.open) return;
+        previousFocus = document.activeElement;
+        dialog.showModal();
+        dialog.scrollTop = 0;
+      };
+      const close = () => { if (dialog.open) dialog.close(); };
+      trigger.addEventListener('click', open);
+      dialog.querySelectorAll('[data-ops-migration-close]').forEach(button => button.addEventListener('click', close));
+      dialog.addEventListener('close', () => {
+        const target = previousFocus && previousFocus !== document.body && previousFocus.isConnected ? previousFocus : trigger;
+        target.focus({ preventScroll: true });
+      });
+      // No propagar Escape al tablero: sus filtros deben conservarse.
+      dialog.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); close(); }
+        if (event.key === 'Tab') {
+          const controls = [...dialog.querySelectorAll('a[href], button:not([disabled])')];
+          const first = controls[0], last = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+      }, true);
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', open, { once: true });
+      else open();
+    })();
+  </script>
   <script src="./data-contract.js" defer></script>
   <script src="./app.js" defer></script>
 </body>
